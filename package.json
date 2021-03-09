@@ -11,8 +11,10 @@
     "postinstall": "rn-nodeify --install --hack"
   },
   "dependencies": {
+    "@react-native-community/async-storage": "^1.12.1",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-navigation/native": "^5.9.3",
+    "@react-navigation/stack": "^5.14.3",
     "@stacks/auth": "^1.2.3",
     "@stacks/encryption": "^1.2.3",
     "@stacks/profile": "^1.2.3",

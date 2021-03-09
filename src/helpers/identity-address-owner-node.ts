@@ -1,5 +1,5 @@
 import {BIP32Interface} from 'bitcoinjs-lib';
-import {publicKeyToAddress} from '@stacks/encryption';
+import {hashCode, publicKeyToAddress} from '@stacks/encryption';
 import {getAddress} from './utils';
 
 const APPS_NODE_INDEX = 0;
@@ -17,13 +17,18 @@ export default class IdentityAddressOwnerNode {
     this.salt = salt;
   }
 
-  // getLegacyAppNode(appsNode, salt, appDomain) {
-  //   const hashBuffer = sha2Hash_1.hashSha256Sync(Buffer.from(`${appDomain}${salt}`));
-  //   const hash = hashBuffer.toString('hex');
-  //   const appIndex = hashCode(hash);
-  //   const appNodeInstance = typeof appsNode === 'string' ? bitcoinjs_lib_1.bip32.fromBase58(appsNode) : appsNode;
-  //   return appNodeInstance.deriveHardened(appIndex);
-  // }
+  getLegacyAppNode(appsNode, salt, appDomain) {
+    const hashBuffer = sha2Hash_1.hashSha256Sync(
+      Buffer.from(`${appDomain}${salt}`),
+    );
+    const hash = hashBuffer.toString('hex');
+    const appIndex = hashCode(hash);
+    const appNodeInstance =
+      typeof appsNode === 'string'
+        ? bitcoinjs_lib_1.bip32.fromBase58(appsNode)
+        : appsNode;
+    return appNodeInstance.deriveHardened(appIndex);
+  }
 
   getNode() {
     return this.hdNode;
