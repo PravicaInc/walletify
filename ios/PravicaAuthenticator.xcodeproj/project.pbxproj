@@ -15,11 +15,8 @@
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* PravicaAuthenticatorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* PravicaAuthenticatorTests.m */; };
-		322C3A627D48F2B15A211B4B /* libPods-PravicaAuthenticator-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8EAD857FAC96672D081632C8 /* libPods-PravicaAuthenticator-tvOSTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		8D8D37924F1CDF9FE3996798 /* libPods-PravicaAuthenticator-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A1CE620F03DA32586006553 /* libPods-PravicaAuthenticator-tvOS.a */; };
 		99F1D973330044F4C89982E0 /* libPods-PravicaAuthenticator.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FDFB04DFBE28D8B75198DFDE /* libPods-PravicaAuthenticator.a */; };
-		99F79131E8F9736641D60831 /* libPods-PravicaAuthenticator-PravicaAuthenticatorTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 02980893D586A8011F6E99B2 /* libPods-PravicaAuthenticator-PravicaAuthenticatorTests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,7 +41,6 @@
 		00E356EE1AD99517003FC87E /* PravicaAuthenticatorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PravicaAuthenticatorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* PravicaAuthenticatorTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PravicaAuthenticatorTests.m; sourceTree = "<group>"; };
-		02980893D586A8011F6E99B2 /* libPods-PravicaAuthenticator-PravicaAuthenticatorTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PravicaAuthenticator-PravicaAuthenticatorTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07F961A680F5B00A75B9A /* PravicaAuthenticator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PravicaAuthenticator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = PravicaAuthenticator/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = PravicaAuthenticator/AppDelegate.m; sourceTree = "<group>"; };
@@ -54,16 +50,8 @@
 		2A3985F4F8430C94C0B8F1DE /* Pods-PravicaAuthenticator.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PravicaAuthenticator.debug.xcconfig"; path = "Target Support Files/Pods-PravicaAuthenticator/Pods-PravicaAuthenticator.debug.xcconfig"; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* PravicaAuthenticator-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "PravicaAuthenticator-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* PravicaAuthenticator-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "PravicaAuthenticator-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		320F05040110844BB22B10D1 /* Pods-PravicaAuthenticator-PravicaAuthenticatorTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PravicaAuthenticator-PravicaAuthenticatorTests.release.xcconfig"; path = "Target Support Files/Pods-PravicaAuthenticator-PravicaAuthenticatorTests/Pods-PravicaAuthenticator-PravicaAuthenticatorTests.release.xcconfig"; sourceTree = "<group>"; };
 		396CFBF5A48B973364F5C74F /* Pods-PravicaAuthenticator.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PravicaAuthenticator.release.xcconfig"; path = "Target Support Files/Pods-PravicaAuthenticator/Pods-PravicaAuthenticator.release.xcconfig"; sourceTree = "<group>"; };
-		48F0CD6BF604AEF9594AAA97 /* Pods-PravicaAuthenticator-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PravicaAuthenticator-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-PravicaAuthenticator-tvOSTests/Pods-PravicaAuthenticator-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
-		6ACEBB56A9FB98602D27310F /* Pods-PravicaAuthenticator-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PravicaAuthenticator-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-PravicaAuthenticator-tvOSTests/Pods-PravicaAuthenticator-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
-		7BA32C3EA243ABFA3576A50D /* Pods-PravicaAuthenticator-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PravicaAuthenticator-tvOS.release.xcconfig"; path = "Target Support Files/Pods-PravicaAuthenticator-tvOS/Pods-PravicaAuthenticator-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = PravicaAuthenticator/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		8A1CE620F03DA32586006553 /* libPods-PravicaAuthenticator-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PravicaAuthenticator-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		8EAD857FAC96672D081632C8 /* libPods-PravicaAuthenticator-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PravicaAuthenticator-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		AF5ED00E5830B38382D38413 /* Pods-PravicaAuthenticator-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PravicaAuthenticator-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-PravicaAuthenticator-tvOS/Pods-PravicaAuthenticator-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
-		D87B947CBC9DD48975959137 /* Pods-PravicaAuthenticator-PravicaAuthenticatorTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PravicaAuthenticator-PravicaAuthenticatorTests.debug.xcconfig"; path = "Target Support Files/Pods-PravicaAuthenticator-PravicaAuthenticatorTests/Pods-PravicaAuthenticator-PravicaAuthenticatorTests.debug.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 		FDFB04DFBE28D8B75198DFDE /* libPods-PravicaAuthenticator.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PravicaAuthenticator.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -74,7 +62,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				99F79131E8F9736641D60831 /* libPods-PravicaAuthenticator-PravicaAuthenticatorTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -90,7 +77,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8D8D37924F1CDF9FE3996798 /* libPods-PravicaAuthenticator-tvOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -98,7 +84,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				322C3A627D48F2B15A211B4B /* libPods-PravicaAuthenticator-tvOSTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -141,14 +126,7 @@
 			children = (
 				2A3985F4F8430C94C0B8F1DE /* Pods-PravicaAuthenticator.debug.xcconfig */,
 				396CFBF5A48B973364F5C74F /* Pods-PravicaAuthenticator.release.xcconfig */,
-				D87B947CBC9DD48975959137 /* Pods-PravicaAuthenticator-PravicaAuthenticatorTests.debug.xcconfig */,
-				320F05040110844BB22B10D1 /* Pods-PravicaAuthenticator-PravicaAuthenticatorTests.release.xcconfig */,
-				AF5ED00E5830B38382D38413 /* Pods-PravicaAuthenticator-tvOS.debug.xcconfig */,
-				7BA32C3EA243ABFA3576A50D /* Pods-PravicaAuthenticator-tvOS.release.xcconfig */,
-				6ACEBB56A9FB98602D27310F /* Pods-PravicaAuthenticator-tvOSTests.debug.xcconfig */,
-				48F0CD6BF604AEF9594AAA97 /* Pods-PravicaAuthenticator-tvOSTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -158,9 +136,6 @@
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
 				FDFB04DFBE28D8B75198DFDE /* libPods-PravicaAuthenticator.a */,
-				02980893D586A8011F6E99B2 /* libPods-PravicaAuthenticator-PravicaAuthenticatorTests.a */,
-				8A1CE620F03DA32586006553 /* libPods-PravicaAuthenticator-tvOS.a */,
-				8EAD857FAC96672D081632C8 /* libPods-PravicaAuthenticator-tvOSTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -205,12 +180,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "PravicaAuthenticatorTests" */;
 			buildPhases = (
-				B19ECD7F40A7DDF155742BA2 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				BAE98B85B43C2D23A0D50E52 /* [CP] Embed Pods Frameworks */,
-				FB683D2BB588B26490EAA8F0 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -232,7 +204,6 @@
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				43103F67F3F306F45365A751 /* [CP] Embed Pods Frameworks */,
 				86D46FF7D2932E0CFBF4F270 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
@@ -248,7 +219,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "PravicaAuthenticator-tvOS" */;
 			buildPhases = (
-				8A92D77D49EAB065160B9B8C /* [CP] Check Pods Manifest.lock */,
 				FD10A7F122414F3F0027D42C /* Start Packager */,
 				2D02E4771E0B4A5D006451C7 /* Sources */,
 				2D02E4781E0B4A5D006451C7 /* Frameworks */,
@@ -268,7 +238,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "PravicaAuthenticator-tvOSTests" */;
 			buildPhases = (
-				82BF3D1A1AEFB3A744763F82 /* [CP] Check Pods Manifest.lock */,
 				2D02E48C1E0B4A5D006451C7 /* Sources */,
 				2D02E48D1E0B4A5D006451C7 /* Frameworks */,
 				2D02E48E1E0B4A5D006451C7 /* Resources */,
@@ -393,46 +362,6 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
 		};
-		43103F67F3F306F45365A751 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PravicaAuthenticator/Pods-PravicaAuthenticator-frameworks.sh",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL/OpenSSL.framework/OpenSSL",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PravicaAuthenticator/Pods-PravicaAuthenticator-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		82BF3D1A1AEFB3A744763F82 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-PravicaAuthenticator-tvOSTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
 		86D46FF7D2932E0CFBF4F270 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -449,28 +378,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PravicaAuthenticator/Pods-PravicaAuthenticator-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		8A92D77D49EAB065160B9B8C /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-PravicaAuthenticator-tvOS-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		A8FB3F4ECECE7D70322AB9FC /* [CP] Check Pods Manifest.lock */ = {
@@ -493,64 +400,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		B19ECD7F40A7DDF155742BA2 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-PravicaAuthenticator-PravicaAuthenticatorTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		BAE98B85B43C2D23A0D50E52 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PravicaAuthenticator-PravicaAuthenticatorTests/Pods-PravicaAuthenticator-PravicaAuthenticatorTests-frameworks.sh",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL/OpenSSL.framework/OpenSSL",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PravicaAuthenticator-PravicaAuthenticatorTests/Pods-PravicaAuthenticator-PravicaAuthenticatorTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		FB683D2BB588B26490EAA8F0 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PravicaAuthenticator-PravicaAuthenticatorTests/Pods-PravicaAuthenticator-PravicaAuthenticatorTests-resources.sh",
-				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PravicaAuthenticator-PravicaAuthenticatorTests/Pods-PravicaAuthenticator-PravicaAuthenticatorTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
@@ -646,7 +495,6 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D87B947CBC9DD48975959137 /* Pods-PravicaAuthenticator-PravicaAuthenticatorTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -669,7 +517,6 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 320F05040110844BB22B10D1 /* Pods-PravicaAuthenticator-PravicaAuthenticatorTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -695,12 +542,13 @@
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_BITCODE = NO;
+				GCC_NO_COMMON_BLOCKS = NO;
 				INFOPLIST_FILE = PravicaAuthenticator/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
-					"-ObjC",
 					"-lc++",
+					"-ObjC",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = PravicaAuthenticator;
@@ -717,12 +565,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				GCC_NO_COMMON_BLOCKS = NO;
 				INFOPLIST_FILE = PravicaAuthenticator/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
-					"-ObjC",
 					"-lc++",
+					"-ObjC",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = PravicaAuthenticator;
@@ -733,7 +582,6 @@
 		};
 		2D02E4971E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AF5ED00E5830B38382D38413 /* Pods-PravicaAuthenticator-tvOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -761,7 +609,6 @@
 		};
 		2D02E4981E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7BA32C3EA243ABFA3576A50D /* Pods-PravicaAuthenticator-tvOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -789,7 +636,6 @@
 		};
 		2D02E4991E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6ACEBB56A9FB98602D27310F /* Pods-PravicaAuthenticator-tvOSTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -816,7 +662,6 @@
 		};
 		2D02E49A1E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 48F0CD6BF604AEF9594AAA97 /* Pods-PravicaAuthenticator-tvOSTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
