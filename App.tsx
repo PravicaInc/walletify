@@ -1,4 +1,6 @@
-import React from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import {ChainID} from '@stacks/transactions';
+import React, {useEffect} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -15,11 +17,20 @@ import {
   DebugInstructions,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import {useWallet} from './src/hooks/useWallet';
 
 declare const global: {HermesInternal: null | {}};
 
 const App = () => {
-  console.warn(Buffer);
+  const {restore} = useWallet();
+  useEffect(() => {
+    restore(
+      'password',
+      'sport prefer ball sand noodle bottom coil embody regret code bar cart',
+      ChainID.Mainnet,
+      true,
+    );
+  }, []);
   return (
     <>
       <StatusBar barStyle="dark-content" />
