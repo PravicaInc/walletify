@@ -9,14 +9,8 @@ import {createStackNavigator} from 'react-navigation-stack';
 import Login from './src/screens/Login';
 import SplashScreen from './src/screens/SplashScreen';
 import SeedPhrase from './src/screens/SeedPhrase';
+import Home from './src/screens/Home';
 
-const HomeScreen = () => {
-  return (
-    <View>
-      <Text>EHH</Text>
-    </View>
-  );
-};
 const ChatPageNavigator = createStackNavigator(
   {
     Splash: {
@@ -38,7 +32,7 @@ const ChatPageNavigator = createStackNavigator(
       },
     },
     Home: {
-      screen: HomeScreen,
+      screen: Home,
       navigationOptions: {
         header: () => null,
       },
