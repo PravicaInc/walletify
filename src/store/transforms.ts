@@ -1,0 +1,54 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import {Wallet} from '@stacks/keychain';
+import {createTransform} from 'redux-persist';
+import {initialState} from './onboarding/reducer';
+
+interface OutboundState {
+  [key: string]: any;
+  currentWallet: null | Wallet;
+}
+
+export const WalletTransform = createTransform(
+  (inboundState) => {
+    return {...inboundState};
+  },
+  (outboundState: OutboundState) => {
+    if (outboundState.currentWallet) {
+      const currentWallet = outboundState.currentWallet;
+      const newWallet = new Wallet(currentWallet);
+      return {
+        ...outboundState,
+        currentWallet: newWallet,
+        identities: [...newWallet.identities],
+      };
+    }
+    return {
+      ...outboundState,
+    };
+  },
+  {whitelist: ['wallet']},
+);
+
+interface InboundOnboardingState {
+  onboardingPath?: string;
+  secretKey?: string;
+}
+
+/**
+ * For the onboarding reducer, we only want to persist the 'onboarding path'.
+ * This allows users to jump back into the step they left off on, if they close the onboarding window.
+ */
+export const OnboardingTransform = createTransform(
+  (inboundState: InboundOnboardingState) => {
+    const {secretKey, ...state} = inboundState;
+    return {
+      onboardingPath: inboundState.onboardingPath,
+      ...initialState,
+      ...state,
+    };
+  },
+  (outboundState) => {
+    return {...outboundState};
+  },
+  {whitelist: ['onboarding']},
+);

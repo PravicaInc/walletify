@@ -1,57 +1,61 @@
-import {ChainID} from '@stacks/transactions';
-import {DEFAULT_GAIA_HUB} from '../helpers/gaia';
+import {useSelector, useDispatch} from 'react-redux';
 import {
-  deriveRootKeychainFromMnemonic,
-  encryptMnemonicFormatted,
-  deriveStxAddressChain,
-  restoreIdentities,
-} from '../helpers/helpers';
-import {getBlockchainIdentities} from '../helpers/utils';
+  selectIdentities,
+  selectCurrentWallet,
+  selectFirstIdentity,
+  selectIsRestoringWallet,
+  selectIsSignedIn,
+} from '../store/wallet/selectors';
+import {selectSecretKey} from '../store/onboarding/selectors';
+import {decrypt} from '@stacks/keychain';
+import {DEFAULT_PASSWORD} from '../store/onboarding/types';
+import {useState, useEffect} from 'react';
+import {doStoreSeed} from '../store/wallet';
 
 export const useWallet = () => {
-  const restore = async (
-    password: string,
-    seedPhrase: string,
-    chain: ChainID,
-    fetchRemoteUsernames: boolean,
-  ) => {
-    const rootNode = await deriveRootKeychainFromMnemonic(seedPhrase);
-    const {encryptedMnemonicHex} = await encryptMnemonicFormatted(
-      seedPhrase,
-      password,
-    );
-    const encryptedBackupPhrase = encryptedMnemonicHex;
+  const dispatch = useDispatch();
+  const identities = useSelector(selectIdentities);
+  const firstIdentity = useSelector(selectFirstIdentity);
+  const wallet = useSelector(selectCurrentWallet);
+  const onboardingSecretKey = useSelector(selectSecretKey);
+  const isRestoringWallet = useSelector(selectIsRestoringWallet);
+  const isSignedIn = useSelector(selectIsSignedIn);
+  const [secretKey, setSecretKey] = useState(onboardingSecretKey);
 
-    const derivedIdentitiesKey = rootNode.deriveHardened(45).privateKey;
-    if (!derivedIdentitiesKey) {
-      throw new TypeError('Unable to derive config key for wallet identities');
+  const fetchSecretKey = async () => {
+    if (wallet) {
+      const decryptedKey = await decrypt(
+        wallet?.encryptedBackupPhrase,
+        DEFAULT_PASSWORD,
+      );
+      setSecretKey(decryptedKey);
     }
-    const configPrivateKey = derivedIdentitiesKey.toString('hex');
-    const {childKey: stxAddressKeychain} = deriveStxAddressChain(
-      chain,
-      rootNode,
-    );
-    const walletAttrs = await getBlockchainIdentities(rootNode, 1);
-    const lastOne = await restoreIdentities({
-      rootNode,
-      gaiaReadURL: DEFAULT_GAIA_HUB,
-      configPrivateKey,
-      identities: walletAttrs.identities,
-      fetchRemoteUsernames,
-    });
-    console.warn(
-      {
-        ...walletAttrs,
-        chain,
-        configPrivateKey,
-        stacksPrivateKey: stxAddressKeychain.toBase58(),
-        encryptedBackupPhrase,
-      },
-      lastOne,
-    );
   };
 
+  const updateSTXKeychain = async () => {
+    if (wallet && !wallet.stacksPrivateKey) {
+      const decryptedKey = await decrypt(
+        wallet?.encryptedBackupPhrase,
+        DEFAULT_PASSWORD,
+      );
+      dispatch(doStoreSeed(decryptedKey, DEFAULT_PASSWORD));
+    }
+  };
+
+  useEffect(() => {
+    void fetchSecretKey();
+  }, [onboardingSecretKey]);
+
+  useEffect(() => {
+    void updateSTXKeychain();
+  }, []);
+
   return {
-    restore,
+    identities,
+    firstIdentity,
+    wallet,
+    secretKey,
+    isRestoringWallet,
+    isSignedIn,
   };
 };
