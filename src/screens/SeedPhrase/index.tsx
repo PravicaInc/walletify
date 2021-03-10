@@ -4,8 +4,11 @@ import {
   ActivityIndicator,
   Image,
   ImageBackground,
+  Keyboard,
+  KeyboardAvoidingView,
   Text,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   View,
 } from 'react-native';
 import {styles} from './styles';
@@ -63,43 +66,45 @@ const SeedPhrase: React.FC = () => {
   };
   return (
     <>
-      <ImageBackground
-        source={require('../../assets/pravica-background.png')}
-        style={styles.container}>
-        <Image
-          style={styles.pravicaLogo}
-          source={require('../../assets/login-header.png')}
-        />
-        <View style={styles.card}>
-          <Text style={styles.description}>Enter your Send Phrase</Text>
-          <TextInput
-            placeholder={'Type or paste your seed phrase here'}
-            placeholderTextColor={'#94A5A6'}
-            style={styles.textInput}
-            textAlignVertical={'top'}
-            multiline={true}
-            onChangeText={(text) => setSeed(text)}
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+        <ImageBackground
+          source={require('../../assets/pravica-background.png')}
+          style={styles.container}>
+          <Image
+            style={styles.pravicaLogo}
+            source={require('../../assets/login-header.png')}
           />
-          <TouchableOpacity
-            disabled={isLoading}
-            onPress={onSubmit}
-            style={styles.loginButton}>
-            <>
-              {isLoading ? (
-                <ActivityIndicator size={'small'} color={'white'} />
-              ) : (
+          <KeyboardAvoidingView behavior={'position'}>
+            <View style={styles.card}>
+              <Text style={styles.description}>Enter your Seed Phrase</Text>
+              <TextInput
+                placeholder={'Type or paste your seed phrase here'}
+                placeholderTextColor={'#94A5A6'}
+                style={styles.textInput}
+                textAlignVertical={'top'}
+                multiline={true}
+                onChangeText={(text) => setSeed(text)}
+              />
+              <TouchableOpacity
+                disabled={isLoading}
+                onPress={onSubmit}
+                style={styles.loginButton}>
                 <>
                   <Text style={styles.buttonText}>Restore</Text>
-                  <Image
-                    style={styles.loginLogo}
-                    source={require('../../assets/restore.png')}
-                  />
+                  {isLoading ? (
+                    <ActivityIndicator size={'small'} color={'white'} />
+                  ) : (
+                    <Image
+                      style={styles.loginLogo}
+                      source={require('../../assets/restore.png')}
+                    />
+                  )}
                 </>
-              )}
-            </>
-          </TouchableOpacity>
-        </View>
-      </ImageBackground>
+              </TouchableOpacity>
+            </View>
+          </KeyboardAvoidingView>
+        </ImageBackground>
+      </TouchableWithoutFeedback>
     </>
   );
 };

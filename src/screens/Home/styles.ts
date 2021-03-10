@@ -32,9 +32,12 @@ export const styles = StyleSheet.create({
     color: theme.colors.black,
   },
   item: {
-    backgroundColor: '#EAEAEA',
     borderRadius: 9,
     padding: 20,
+    borderWidth: 1,
+    backgroundColor: '#EAEAEA',
+    borderColor: '#D5D5D5',
+    marginBottom: 16,
   },
   blockstackText: {
     color: '#8E8E8E',
@@ -42,7 +45,7 @@ export const styles = StyleSheet.create({
   },
   blockstackIdText: {
     color: 'black',
-    fontSize: 16,
+    fontSize: 18,
     marginBottom: 28,
   },
   adresses: {
@@ -58,6 +61,6 @@ export const styles = StyleSheet.create({
   },
   address: {
     color: '#2C3E50',
-    fontSize: 15,
+    fontSize: 13,
   },
 });

@@ -114,7 +114,7 @@ const createAccount = async ({
   const {childKey: stxAddressKeychain} = deriveStxAddressChain(chain)(rootNode);
   const walletAttrs = await getBlockchainIdentities(
     rootNode,
-    10,
+    identitiesToGenerate,
   );
 
   return new Wallet({

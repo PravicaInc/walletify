@@ -13,19 +13,27 @@ import {useNavigation} from 'react-navigation-hooks';
 import {resetNavigation} from '../../../routes';
 import {useSelector} from 'react-redux';
 import {selectCurrentWallet} from '../../store/wallet/selectors';
+import LinearGradient from 'react-native-linear-gradient';
+import AsyncStorage from '@react-native-community/async-storage';
+import {useDispatch} from 'react-redux';
+import {doSignOut} from '../../store/wallet';
+import {doSetOnboardingPath} from '../../store/onboarding/actions';
 
 const Home: React.FC = () => {
   const {dispatch} = useNavigation();
   const wallet = useSelector(selectCurrentWallet);
-
+  const currentDispatch = useDispatch();
   const logout = () => {
+    currentDispatch(doSignOut());
+    currentDispatch(doSetOnboardingPath(undefined));
+    AsyncStorage.clear();
     resetNavigation(dispatch, 'Login');
   };
 
   const renderItem = ({item}) => {
     return (
       <View style={styles.item}>
-        <Text style={styles.blockstackText}>Blockstack ID</Text>
+        {/* <Text style={styles.blockstackText}>Blockstack ID</Text> */}
         <Text style={styles.blockstackIdText}>{item.defaultUsername}</Text>
         <View style={styles.adresses}>
           <Image
@@ -66,7 +74,7 @@ const Home: React.FC = () => {
         <View style={styles.sheetContainer}>
           <FlatList
             ListHeaderComponent={
-              <Text style={styles.headerText}>Your IDs</Text>
+              <Text style={styles.headerText}>Your Stacks IDs</Text>
             }
             style={{padding: 16}}
             data={wallet?.identities}

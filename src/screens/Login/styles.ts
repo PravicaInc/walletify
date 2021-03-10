@@ -4,7 +4,7 @@ import {theme} from '../../../theme';
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 131,
+    paddingTop: 100,
     alignItems: 'center',
   },
   pravicaLogo: {width: '70%', resizeMode: 'contain'},
@@ -15,6 +15,7 @@ export const styles = StyleSheet.create({
     paddingTop: 42,
     paddingBottom: 53,
     borderRadius: 20,
+    width: '94%',
   },
   description: {
     color: theme.colors.textGreyColor,
@@ -28,7 +29,6 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     borderRadius: 4,
     marginTop: 50,
-    width: 305,
   },
   loginLogo: {width: 24, height: 24, marginRight: 9},
   buttonText: {color: theme.colors.white, fontSize: 14},

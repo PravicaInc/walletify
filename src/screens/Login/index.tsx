@@ -31,13 +31,14 @@ const Login: React.FC = () => {
             secure.
           </Text>
           <TouchableOpacity onPress={onSubmit} style={styles.loginButton}>
-            <Text style={styles.buttonText}>Continue With stack ID</Text>
+            <Text style={styles.buttonText}>Continue with your stack ID</Text>
             <Image
               style={styles.loginLogo}
               source={require('../../assets/login.png')}
             />
           </TouchableOpacity>
         </View>
+        <Text style={{color: 'white', marginTop: 'auto', marginBottom: 10}}>Powered by Pravica</Text>
       </ImageBackground>
     </>
   );

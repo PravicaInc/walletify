@@ -21,7 +21,7 @@ export const styles = StyleSheet.create({
   },
   textInput: {
     backgroundColor: '#ECF0F1',
-    height: 250,
+    height: 200,
     borderRadius: 12,
     marginTop: 24,
     padding: 16,
@@ -37,7 +37,6 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     borderRadius: 4,
     marginTop: 50,
-    width: 305,
   },
   loginLogo: {width: 24, height: 24, marginRight: 9},
   buttonText: {color: theme.colors.white, fontSize: 14},
