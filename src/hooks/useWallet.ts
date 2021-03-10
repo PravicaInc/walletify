@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {useSelector, useDispatch} from 'react-redux';
 import {
   selectIdentities,

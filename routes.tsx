@@ -8,6 +8,7 @@ import {
 import {createStackNavigator} from 'react-navigation-stack';
 import Login from './src/screens/Login';
 import SplashScreen from './src/screens/SplashScreen';
+import SeedPhrase from './src/screens/SeedPhrase';
 
 const HomeScreen = () => {
   return (
@@ -26,6 +27,12 @@ const ChatPageNavigator = createStackNavigator(
     },
     Login: {
       screen: Login,
+      navigationOptions: {
+        header: () => null,
+      },
+    },
+    SeedPhrase: {
+      screen: SeedPhrase,
       navigationOptions: {
         header: () => null,
       },

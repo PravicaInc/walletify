@@ -12,8 +12,9 @@ export const styles = StyleSheet.create({
   logo: {width: 88, height: 88},
   bottomText: {
     position: 'absolute',
-    fontSize: 10,
+    fontSize: 20,
     bottom: 30,
-    color: theme.colors.textGreyColor,
+    color: theme.colors.white,
   },
+  pravicaText: {color: theme.colors.primary, fontWeight: 'bold'},
 });

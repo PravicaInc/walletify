@@ -4,21 +4,30 @@ import {theme} from '../../../theme';
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 131,
-    alignItems: 'center',
+    padding: 16,
   },
-  pravicaLogo: {width: '70%', resizeMode: 'contain'},
+  pravicaLogo: {width: '50%', resizeMode: 'contain'},
   card: {
-    marginHorizontal: 16,
     backgroundColor: 'white',
     padding: 35,
-    paddingTop: 42,
+    paddingTop: 50,
     paddingBottom: 53,
     borderRadius: 20,
   },
   description: {
-    color: theme.colors.textGreyColor,
+    color: theme.colors.black,
+    fontSize: 24,
+    fontWeight: '500',
+  },
+  textInput: {
+    backgroundColor: '#ECF0F1',
+    height: 250,
+    borderRadius: 12,
+    marginTop: 24,
+    padding: 16,
+    paddingTop: 16,
     fontSize: 14,
+    color: 'black',
   },
   loginButton: {
     padding: 16,
