@@ -1,8 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Image,
   ImageBackground,
+  Linking,
   Text,
   TouchableOpacity,
   View,
@@ -16,6 +17,7 @@ const Login: React.FC = () => {
   const onSubmit = () => {
     resetNavigation(dispatch, 'SeedPhrase');
   };
+
   return (
     <>
       <ImageBackground
@@ -38,7 +40,9 @@ const Login: React.FC = () => {
             />
           </TouchableOpacity>
         </View>
-        <Text style={{color: 'white', marginTop: 'auto', marginBottom: 10}}>Powered by Pravica</Text>
+        <Text style={{color: 'white', marginTop: 'auto', marginBottom: 10}}>
+          Powered by Pravica
+        </Text>
       </ImageBackground>
     </>
   );

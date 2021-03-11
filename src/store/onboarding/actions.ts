@@ -190,6 +190,7 @@ export function doSaveAuthRequest(
 ): ThunkAction<void, AppState, {}, OnboardingActions> {
   return async (dispatch, getState) => {
     const {payload} = decodeToken(authRequest);
+    console.warn('HOWA ANA GEET HENA?', payload);
     const decodedAuthRequest = (payload as unknown) as DecodedAuthRequest;
     let appName = decodedAuthRequest.appDetails?.name;
     let appIcon = decodedAuthRequest.appDetails?.icon;
@@ -201,10 +202,9 @@ export function doSaveAuthRequest(
     }
 
     const state = getState();
-    const screen = selectCurrentScreen(state);
     const identities = selectIdentities(state);
     const hasIdentities = identities && identities.length;
-    console.warn(hasIdentities, screen);
+    console.warn(hasIdentities, appName, appIcon);
     dispatch(
       saveAuthRequest({
         decodedAuthRequest,
@@ -232,35 +232,39 @@ export function doFinishSignIn(
       console.error('Uh oh! Finished onboarding without auth info.');
       return;
     }
-    const appURL = new URL(decodedAuthRequest.redirect_uri);
+    // const appURL = new URL(decodedAuthRequest.redirect_uri);
     const currentIdentity = identities[identityIndex];
     await currentIdentity.refresh({fetchRemoteUsernames: true});
     const gaiaConfig = await wallet.createGaiaConfig(gaiaUrl);
+
     await wallet.getOrCreateConfig({gaiaConfig, skipUpload: true});
-    await wallet.updateConfigWithAuth({
-      identityIndex,
-      gaiaConfig,
-      app: {
-        origin: appURL.origin,
-        lastLoginAt: new Date().getTime(),
-        scopes: decodedAuthRequest.scopes,
-        appIcon: appIcon as string,
-        name: appName as string,
-      },
-    });
+    await wallet
+      .updateConfigWithAuth({
+        identityIndex,
+        gaiaConfig,
+        app: {
+          origin: decodedAuthRequest.domain_name,
+          lastLoginAt: new Date().getTime(),
+          scopes: decodedAuthRequest.scopes,
+          appIcon: appIcon as string,
+          name: appName as string,
+        },
+      })
+      .catch((e) => console.warn('e', e));
+      console.warn('3adeett', wallet,currentIdentity);
+
     const stxAddress = wallet.stacksPrivateKey
       ? wallet.getSigner().getSTXAddress(TransactionVersion.Testnet)
       : undefined;
+      console.warn('3adeettstxAddress',  stxAddress);
     const authResponse = await currentIdentity.makeAuthResponse({
       gaiaUrl,
-      appDomain: appURL.origin,
+      appDomain: decodedAuthRequest.domain_name,
       transitPublicKey: decodedAuthRequest.public_keys[0],
       scopes: decodedAuthRequest.scopes,
       stxAddress,
     });
     finalizeAuthResponse({decodedAuthRequest, authRequest, authResponse});
-    dispatch(doSetOnboardingPath(undefined));
     dispatch(didGenerateWallet(wallet));
-    dispatch(doSetOnboardingProgress(false));
   };
 }

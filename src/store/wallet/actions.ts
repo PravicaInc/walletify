@@ -3,6 +3,7 @@ import {
   deriveRootKeychainFromMnemonic,
   deriveStxAddressChain,
   getBlockchainIdentities,
+  encryptMnemonicFormatted,
   Wallet,
 } from '@stacks/keychain';
 import {
@@ -78,13 +79,13 @@ const restore = async (
   chain: ChainID,
 ) => {
   const rootNode = await deriveRootKeychainFromMnemonic(seedPhrase);
-  // const {encryptedMnemonicHex} = await encryptMnemonicFormatted(
-  //   seedPhrase,
-  //   password,
-  // );
+  const {encryptedMnemonicHex} = await encryptMnemonicFormatted(
+    seedPhrase,
+    password,
+  );
 
   const wallet = await createAccount({
-    encryptedBackupPhrase: '',
+    encryptedBackupPhrase: encryptedMnemonicHex,
     rootNode,
     chain,
   });
