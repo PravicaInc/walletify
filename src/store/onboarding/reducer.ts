@@ -10,6 +10,7 @@ import {
   SET_MAGIC_RECOVERY_CODE,
   SET_USERNAME,
   SET_ONBOARDING_PATH,
+  DELETE_AUTH_REQUEST,
 } from './types';
 
 export const initialState: OnboardingState = {
@@ -40,10 +41,16 @@ export const onboardingReducer: Reducer<OnboardingState, OnboardingActions> = (
         appIcon: action.appIcon,
         appURL: action.appURL,
       };
-      if (action.decodedAuthRequest.sendToSignIn) {
-        newState.screen = ScreenPaths.SIGN_IN;
-      }
       return newState;
+    case DELETE_AUTH_REQUEST:
+      return {
+        ...state,
+        authRequest: undefined,
+        decodedAuthRequest: undefined,
+        appName: undefined,
+        appIcon: undefined,
+        appURL: undefined,
+      };
     case SET_MAGIC_RECOVERY_CODE:
       return {
         ...state,

@@ -13,7 +13,6 @@ const SplashScreen: React.FC = () => {
   const {dispatch} = useNavigation();
   useEffect(() => {
     if (wallet) {
-      console.log(wallet);
       resetNavigation(dispatch, 'Home');
     } else {
       resetNavigation(dispatch, 'Login');

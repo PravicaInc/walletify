@@ -9,6 +9,7 @@ import {
   SET_MAGIC_RECOVERY_CODE,
   SET_USERNAME,
   SET_ONBOARDING_PATH,
+  DELETE_AUTH_REQUEST,
 } from './types';
 import {decodeToken} from 'jsontokens';
 import {doGenerateWallet, didGenerateWallet, WalletActions} from '../wallet';
@@ -20,12 +21,11 @@ import {
   selectAuthRequest,
   selectFullAppIcon,
   selectAppName,
-  selectCurrentScreen,
   isValidUrl,
 } from './selectors';
 import {selectIdentities, selectCurrentWallet} from '../wallet/selectors';
-import {TransactionVersion} from '@blockstack/stacks-transactions';
 import {JSONSchemaForWebApplicationManifestFiles} from '@schemastore/web-manifest';
+import {Linking} from 'react-native';
 
 interface FinalizeAuthParams {
   decodedAuthRequest: DecodedAuthRequest;
@@ -35,49 +35,14 @@ interface FinalizeAuthParams {
 
 export const finalizeAuthResponse = ({
   decodedAuthRequest,
-  authRequest,
   authResponse,
 }: FinalizeAuthParams) => {
   const dangerousUri = decodedAuthRequest.redirect_uri;
   if (!isValidUrl(dangerousUri) || dangerousUri.includes('javascript')) {
     throw new Error('Cannot proceed auth with malformed url');
   }
-  const redirect = `${dangerousUri}?authResponse=${authResponse}`;
-  // if (!shouldUsePopup()) {
-  //   document.location.href = redirect;
-  //   return;
-  // }
-  console.warn('do something', redirect);
-  let didSendMessageBack = false;
-  setTimeout(() => {
-    if (!didSendMessageBack) {
-      const {client} = decodedAuthRequest;
-      if (client === 'ios' || client === 'android') {
-        // document.location.href = redirect;
-        console.warn('do something', authRequest);
-      } else {
-        console.warn('do something');
-        // window.open(redirect);
-      }
-    }
-    // window.close();
-  }, 500);
-  // window.addEventListener('message', (event) => {
-  //   if (authRequest && event.data.authRequest === authRequest) {
-  //     // const source = getEventSourceWindow(event);
-  //     // if (source) {
-  //     //   source.postMessage(
-  //     //     {
-  //     //       authRequest,
-  //     //       authResponse,
-  //     //       source: 'blockstack-app',
-  //     //     },
-  //     //     event.origin,
-  //     //   );
-  //     //   didSendMessageBack = true;
-  //     // }
-  //   }
-  // });
+  const redirect = `pravica://authResponse=${authResponse}`;
+  Linking.openURL(redirect);
   return;
 };
 
@@ -188,9 +153,8 @@ const saveAuthRequest = ({
 export function doSaveAuthRequest(
   authRequest: string,
 ): ThunkAction<void, AppState, {}, OnboardingActions> {
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
     const {payload} = decodeToken(authRequest);
-    console.warn('HOWA ANA GEET HENA?', payload);
     const decodedAuthRequest = (payload as unknown) as DecodedAuthRequest;
     let appName = decodedAuthRequest.appDetails?.name;
     let appIcon = decodedAuthRequest.appDetails?.icon;
@@ -200,11 +164,6 @@ export function doSaveAuthRequest(
       appName = appManifest.name;
       appIcon = appManifest.icons[0].src as string;
     }
-
-    const state = getState();
-    const identities = selectIdentities(state);
-    const hasIdentities = identities && identities.length;
-    console.warn(hasIdentities, appName, appIcon);
     dispatch(
       saveAuthRequest({
         decodedAuthRequest,
@@ -214,6 +173,28 @@ export function doSaveAuthRequest(
         appURL: new URL(decodedAuthRequest.redirect_uri),
       }),
     );
+  };
+}
+
+const deleteAuthRequest = (): OnboardingActions => {
+  return {
+    type: DELETE_AUTH_REQUEST,
+    appName: null,
+    appIcon: null,
+    decodedAuthRequest: null,
+    authRequest: null,
+    appURL: null,
+  };
+};
+
+export function doDeleteAuthRequest(): ThunkAction<
+  void,
+  AppState,
+  {},
+  OnboardingActions
+> {
+  return async (dispatch) => {
+    dispatch(deleteAuthRequest());
   };
 }
 
@@ -251,12 +232,11 @@ export function doFinishSignIn(
         },
       })
       .catch((e) => console.warn('e', e));
-      console.warn('3adeett', wallet,currentIdentity);
 
-    const stxAddress = wallet.stacksPrivateKey
-      ? wallet.getSigner().getSTXAddress(TransactionVersion.Testnet)
-      : undefined;
-      console.warn('3adeettstxAddress',  stxAddress);
+    // const stxAddress = wallet.stacksPrivateKey
+    //   ? wallet.getSigner().getSTXAddress(TransactionVersion.Testnet)
+    //   : undefined;
+    const stxAddress = '';
     const authResponse = await currentIdentity.makeAuthResponse({
       gaiaUrl,
       appDomain: decodedAuthRequest.domain_name,

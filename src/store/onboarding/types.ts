@@ -2,6 +2,7 @@ export const ONBOARDING_PROGRESS = 'ONBOARDING/ONBOARDING_PROGRESS';
 export const CHANGE_PAGE = 'ONBOARDING/CHANGE_PAGE';
 export const SAVE_KEY = 'ONBOARDING/SAVE_KEY';
 export const SAVE_AUTH_REQUEST = 'ONBOARDING/SAVE_AUTH_REQUEST';
+export const DELETE_AUTH_REQUEST = 'ONBOARDING/DELETE_AUTH_REQUEST';
 export const SET_MAGIC_RECOVERY_CODE = 'ONBOARDING/SET_MAGIC_RECOVERY_CODE';
 export const SET_USERNAME = 'ONBOARDING/SET_USERNAME';
 export const SET_ONBOARDING_PATH = 'ONBOARDING/SET_ONBOARDING_PATH';
@@ -95,6 +96,15 @@ interface SaveAuthRequest {
   authRequest: string;
 }
 
+interface DeleteAuthRequest {
+  type: typeof DELETE_AUTH_REQUEST;
+  appName: null;
+  appIcon: null;
+  appURL: null;
+  decodedAuthRequest: null;
+  authRequest: null;
+}
+
 interface SetMagicRecoveryCode {
   type: typeof SET_MAGIC_RECOVERY_CODE;
   magicRecoveryCode: string;
@@ -117,4 +127,5 @@ export type OnboardingActions =
   | SetMagicRecoveryCode
   | SaveAuthRequest
   | SetOnboardingPath
-  | SetUsername;
+  | SetUsername
+  | DeleteAuthRequest;

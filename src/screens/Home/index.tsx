@@ -7,7 +7,6 @@ import {
   ImageBackground,
   Linking,
   Modal,
-  Pressable,
   Text,
   TouchableOpacity,
   View,
@@ -21,31 +20,34 @@ import AsyncStorage from '@react-native-community/async-storage';
 import {useDispatch} from 'react-redux';
 import {doSignOut} from '../../store/wallet';
 import {
-  doFinishSignIn,
+  doDeleteAuthRequest,
   doSaveAuthRequest,
   doSetOnboardingPath,
 } from '../../store/onboarding/actions';
-import {decodeToken} from 'jsontokens';
 import {
   selectAppName,
   selectDecodedAuthRequest,
   selectFullAppIcon,
 } from '../../store/onboarding/selectors';
+import {IdentityCard} from '../../components/IdentityCard';
+import {UsernameCard} from '../../components/UsernameCard';
 
 const useMount = (func) => useEffect(() => func(), []);
 
 const useInitialURL = () => {
-  const [url, setUrl] = useState(null);
+  const [url, setUrl] = useState('');
   const [processing, setProcessing] = useState(true);
   const currentDispatch = useDispatch();
   useMount(() => {
     const getUrlAsync = async () => {
       // Get the deep link used to open the app
       const initialUrl = await Linking.getInitialURL();
-      console.warn('Initial', initialUrl);
       // The setTimeout is just for testing purpose
       setTimeout(() => {
-        currentDispatch(doSaveAuthRequest(initialUrl?.split('=')[1]));
+        if (initialUrl) {
+          currentDispatch(doSaveAuthRequest(initialUrl?.split('=')[1]));
+          setUrl(initialUrl?.split('=')[1]);
+        }
         setProcessing(false);
       }, 1000);
     };
@@ -68,7 +70,7 @@ const Home: React.FC = () => {
   const authRequest = useSelector(selectDecodedAuthRequest);
   const name = useSelector(selectAppName);
   const icon = useSelector(selectFullAppIcon);
-  const [modalVisible, setModalVisible] = useState(true);
+  const [modalVisible, setModalVisible] = useState(false);
   const {url: initialUrl, processing} = useInitialURL();
 
   useEffect(() => {
@@ -85,38 +87,13 @@ const Home: React.FC = () => {
     });
     return () => subscription.remove();
   }, []);
-  console.warn('ehh', authRequest);
-  const renderItem = ({item}) => {
-    return (
-      <View style={styles.item}>
-        <Text style={styles.blockstackIdText}>{item.defaultUsername}</Text>
-        <View style={styles.adresses}>
-          <Image
-            source={require('../../assets/stacks.png')}
-            style={styles.icon}
-          />
-          <Text style={styles.address}>{item.address}</Text>
-        </View>
-        <View style={styles.adresses}>
-          <Image
-            source={require('../../assets/bitcoin.png')}
-            style={styles.icon}
-          />
-          <Text style={styles.address}>{wallet?.firstBitcoinAddress}</Text>
-        </View>
-      </View>
-    );
-  };
 
-  const renderModalItem = ({item}) => {
-    return (
-      <Pressable
-        onPress={() => currentDispatch(doFinishSignIn({identityIndex: 0}))}
-        style={styles.item}>
-        <Text style={styles.blockstackIdText}>{item.defaultUsername}</Text>
-      </Pressable>
-    );
-  };
+  useEffect(() => {
+    // console.warn(authRequest);
+    if (authRequest) {
+      setModalVisible(true);
+    }
+  }, [initialUrl, processing, authRequest]);
 
   return (
     <>
@@ -143,7 +120,13 @@ const Home: React.FC = () => {
             }
             style={{padding: 16}}
             data={wallet?.identities}
-            renderItem={renderItem}
+            renderItem={({item}) => (
+              <IdentityCard
+                firstBitcoinAddress={wallet?.firstBitcoinAddress || ''}
+                identity={item}
+              />
+            )}
+            keyExtractor={(item, index) => index.toString()}
           />
         </View>
         <Modal
@@ -168,13 +151,19 @@ const Home: React.FC = () => {
                 }
                 style={{padding: 16}}
                 data={wallet?.identities}
-                renderItem={renderModalItem}
+                renderItem={({index, item}) => (
+                  <UsernameCard identity={item} identityIndex={index} />
+                )}
+                keyExtractor={(item, index) => index.toString()}
               />
-              <Pressable
+              <TouchableOpacity
                 style={[styles.button, styles.buttonClose]}
-                onPress={() => setModalVisible(!modalVisible)}>
+                onPress={() => {
+                  currentDispatch(doDeleteAuthRequest());
+                  setModalVisible(!modalVisible);
+                }}>
                 <Text style={styles.textStyle}>Cancel</Text>
-              </Pressable>
+              </TouchableOpacity>
             </View>
           </View>
         </Modal>

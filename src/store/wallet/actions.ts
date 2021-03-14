@@ -56,7 +56,6 @@ export function doStoreSeed(
   return async (dispatch) => {
     dispatch(isRestoringWallet());
     const wallet = await restore(password, secretKey, ChainID.Mainnet);
-    console.warn('WALLET YASTA', wallet);
     dispatch(didRestoreWallet(wallet));
     return wallet;
   };

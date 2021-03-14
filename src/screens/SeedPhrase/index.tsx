@@ -37,7 +37,6 @@ const SeedPhrase: React.FC = () => {
 
   const onSubmit = async () => {
     setLoading(true);
-    console.warn('Clicked');
     const parsedKeyInput = seed.trim();
     try {
       if (parsedKeyInput.length === 0) {
@@ -54,7 +53,6 @@ const SeedPhrase: React.FC = () => {
         () => ({}),
         {},
       );
-      console.warn(currentWallet);
       if (currentWallet) {
         resetNavigation(dispatch, 'Home');
       }
