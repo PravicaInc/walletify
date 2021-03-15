@@ -41,7 +41,7 @@ export const styles = StyleSheet.create({
   },
   blockstackText: {
     color: 'black',
-    fontSize: 14,
+    fontSize: 20,
   },
   blockstackIdText: {
     color: 'black',
@@ -65,30 +65,18 @@ export const styles = StyleSheet.create({
   },
   centeredView: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(35, 109, 235, 0.7)',
   },
   modalView: {
     margin: 20,
-    backgroundColor: 'white',
     borderRadius: 20,
-    padding: 35,
-    width: '80%',
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
+    paddingVertical: 35,
+    flex: 1,
   },
   button: {
     borderRadius: 20,
     padding: 10,
     elevation: 2,
+    marginTop: 10,
   },
   buttonOpen: {
     backgroundColor: '#F194FF',

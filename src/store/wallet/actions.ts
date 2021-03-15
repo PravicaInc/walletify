@@ -111,7 +111,9 @@ const createAccount = async ({
     throw new TypeError('Unable to derive config key for wallet identities');
   }
   const configPrivateKey = derivedIdentitiesKey.toString('hex');
+  console.warn('TMAM');
   const {childKey: stxAddressKeychain} = deriveStxAddressChain(chain)(rootNode);
+  console.warn('EH');
   const walletAttrs = await getBlockchainIdentities(
     rootNode,
     identitiesToGenerate,

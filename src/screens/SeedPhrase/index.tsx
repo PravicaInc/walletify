@@ -37,6 +37,7 @@ const SeedPhrase: React.FC = () => {
 
   const onSubmit = async () => {
     setLoading(true);
+    setSeedError('');
     const parsedKeyInput = seed.trim();
     try {
       if (parsedKeyInput.length === 0) {
@@ -44,10 +45,10 @@ const SeedPhrase: React.FC = () => {
         setLoading(false);
         return;
       }
-      if (parsedKeyInput.split(' ').length <= 1) {
-        currentDispatch(doSetMagicRecoveryCode(parsedKeyInput));
-        return;
-      }
+      // if (parsedKeyInput.split(' ').length <= 1) {
+      //   currentDispatch(doSetMagicRecoveryCode(parsedKeyInput));
+      //   return;
+      // }
       const currentWallet = await doStoreSeed(parsedKeyInput, DEFAULT_PASSWORD)(
         currentDispatch,
         () => ({}),
@@ -83,6 +84,7 @@ const SeedPhrase: React.FC = () => {
                 multiline={true}
                 onChangeText={(text) => setSeed(text)}
               />
+              <Text style={styles.seetTextRed}>{seedError}</Text>
               <TouchableOpacity
                 disabled={isLoading}
                 onPress={onSubmit}

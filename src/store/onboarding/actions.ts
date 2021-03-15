@@ -22,27 +22,43 @@ import {
   selectFullAppIcon,
   selectAppName,
   isValidUrl,
+  selectAppId,
 } from './selectors';
 import {selectIdentities, selectCurrentWallet} from '../wallet/selectors';
 import {JSONSchemaForWebApplicationManifestFiles} from '@schemastore/web-manifest';
-import {Linking} from 'react-native';
+import {Alert, Linking} from 'react-native';
 
 interface FinalizeAuthParams {
   decodedAuthRequest: DecodedAuthRequest;
   authResponse: string;
   authRequest: string;
+  appName: string;
+  appId: string;
 }
 
 export const finalizeAuthResponse = ({
   decodedAuthRequest,
   authResponse,
+  appName,
+  appId,
 }: FinalizeAuthParams) => {
   const dangerousUri = decodedAuthRequest.redirect_uri;
   if (!isValidUrl(dangerousUri) || dangerousUri.includes('javascript')) {
     throw new Error('Cannot proceed auth with malformed url');
   }
-  const redirect = `pravica://authResponse=${authResponse}`;
-  Linking.openURL(redirect);
+  const redirect = `${appId}://authResponse=${authResponse}`;
+  Alert.alert(
+    'Attention',
+    `You are giving permission to ${appName} to access the app private key assigned to ${decodedAuthRequest.domain_name}`,
+    [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      {text: 'Accept', onPress: () => Linking.openURL(redirect)},
+    ],
+  );
   return;
 };
 
@@ -61,7 +77,9 @@ export interface DecodedAuthRequest {
   connectVersion?: string;
 }
 
-export type AppManifest = JSONSchemaForWebApplicationManifestFiles;
+export interface AppManifest extends JSONSchemaForWebApplicationManifestFiles {
+  appId?: string;
+}
 
 export const gaiaUrl = 'https://hub.blockstack.org';
 
@@ -131,6 +149,7 @@ interface SaveAuthRequestParams {
   decodedAuthRequest: DecodedAuthRequest;
   authRequest: string;
   appURL: URL;
+  appId: string;
 }
 
 const saveAuthRequest = ({
@@ -139,6 +158,7 @@ const saveAuthRequest = ({
   decodedAuthRequest,
   authRequest,
   appURL,
+  appId,
 }: SaveAuthRequestParams): OnboardingActions => {
   return {
     type: SAVE_AUTH_REQUEST,
@@ -146,6 +166,7 @@ const saveAuthRequest = ({
     appIcon,
     decodedAuthRequest,
     authRequest,
+    appId,
     appURL,
   };
 };
@@ -156,14 +177,21 @@ export function doSaveAuthRequest(
   return async (dispatch) => {
     const {payload} = decodeToken(authRequest);
     const decodedAuthRequest = (payload as unknown) as DecodedAuthRequest;
+    const appManifest = await loadManifest(decodedAuthRequest);
     let appName = decodedAuthRequest.appDetails?.name;
     let appIcon = decodedAuthRequest.appDetails?.icon;
+    if (!appManifest.appId) {
+      dispatch(deleteAuthRequest());
+      return Alert.alert(
+        'Please contact the app provider for missing informations in their manifest files, Error missing the appId',
+      );
+    }
 
     if (!appName || !appIcon) {
-      const appManifest = await loadManifest(decodedAuthRequest);
       appName = appManifest.name;
       appIcon = appManifest.icons[0].src as string;
     }
+
     dispatch(
       saveAuthRequest({
         decodedAuthRequest,
@@ -171,6 +199,7 @@ export function doSaveAuthRequest(
         appName,
         appIcon,
         appURL: new URL(decodedAuthRequest.redirect_uri),
+        appId: appManifest.appId!,
       }),
     );
   };
@@ -209,6 +238,7 @@ export function doFinishSignIn(
     const wallet = selectCurrentWallet(state);
     const appIcon = selectFullAppIcon(state);
     const appName = selectAppName(state);
+    const appId = selectAppId(state);
     if (!decodedAuthRequest || !authRequest || !identities || !wallet) {
       console.error('Uh oh! Finished onboarding without auth info.');
       return;
@@ -244,7 +274,7 @@ export function doFinishSignIn(
       scopes: decodedAuthRequest.scopes,
       stxAddress,
     });
-    finalizeAuthResponse({decodedAuthRequest, authRequest, authResponse});
+    finalizeAuthResponse({decodedAuthRequest, authRequest, authResponse, appName, appId});
     dispatch(didGenerateWallet(wallet));
   };
 }

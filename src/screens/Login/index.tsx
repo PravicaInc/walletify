@@ -1,9 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {
   Image,
   ImageBackground,
-  Linking,
   Text,
   TouchableOpacity,
   View,

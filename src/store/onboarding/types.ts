@@ -69,6 +69,7 @@ export interface OnboardingState {
   magicRecoveryCode?: string;
   username?: string;
   onboardingInProgress?: boolean;
+  appId: string | undefined;
   onboardingPath?: ScreenPaths;
 }
 
@@ -94,6 +95,7 @@ interface SaveAuthRequest {
   appURL: URL;
   decodedAuthRequest: DecodedAuthRequest;
   authRequest: string;
+  appId: string;
 }
 
 interface DeleteAuthRequest {
