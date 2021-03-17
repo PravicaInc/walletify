@@ -27,7 +27,15 @@ import {
 import {selectIdentities, selectCurrentWallet} from '../wallet/selectors';
 import {JSONSchemaForWebApplicationManifestFiles} from '@schemastore/web-manifest';
 import {Alert, Linking} from 'react-native';
-
+import {
+  // getAddressFromPrivateKey,
+  TransactionVersion,
+} from '@stacks/transactions';
+import {
+  getAddressFromPrivateKey,
+  getSigner,
+  getSTXAddress,
+} from '../../helpers/helpers';
 interface FinalizeAuthParams {
   decodedAuthRequest: DecodedAuthRequest;
   authResponse: string;
@@ -262,19 +270,25 @@ export function doFinishSignIn(
         },
       })
       .catch((e) => console.warn('e', e));
-
-    // const stxAddress = wallet.stacksPrivateKey
-    //   ? wallet.getSigner().getSTXAddress(TransactionVersion.Testnet)
-    //   : undefined;
-    const stxAddress = '';
-    const authResponse = await currentIdentity.makeAuthResponse({
-      gaiaUrl,
-      appDomain: decodedAuthRequest.domain_name,
-      transitPublicKey: decodedAuthRequest.public_keys[0],
-      scopes: decodedAuthRequest.scopes,
-      stxAddress,
-    });
-    finalizeAuthResponse({decodedAuthRequest, authRequest, authResponse, appName, appId});
-    dispatch(didGenerateWallet(wallet));
+    const stxAddress = getSTXAddress(
+      wallet.stacksPrivateKey,
+      TransactionVersion.Testnet,
+    );
+    console.warn(stxAddress);
+    // const authResponse = await currentIdentity.makeAuthResponse({
+    //   gaiaUrl,
+    //   appDomain: decodedAuthRequest.domain_name,
+    //   transitPublicKey: decodedAuthRequest.public_keys[0],
+    //   scopes: decodedAuthRequest.scopes,
+    //   stxAddress,
+    // });
+    // finalizeAuthResponse({
+    //   decodedAuthRequest,
+    //   authRequest,
+    //   authResponse,
+    //   appName,
+    //   appId,
+    // });
+    // dispatch(didGenerateWallet(wallet));
   };
 }

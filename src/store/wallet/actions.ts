@@ -3,7 +3,6 @@ import {
   deriveRootKeychainFromMnemonic,
   deriveStxAddressChain,
   getBlockchainIdentities,
-  encryptMnemonicFormatted,
   Wallet,
 } from '@stacks/keychain';
 import {
@@ -14,11 +13,11 @@ import {
   SIGN_OUT,
 } from './types';
 import {ChainID} from '@blockstack/stacks-transactions';
-// import {
-//   deriveRootKeychainFromMnemonic,
-//   deriveStxAddressChain,
-//   // encryptMnemonicFormatted,
-// } from '../../helpers/helpers';
+import {
+  // deriveRootKeychainFromMnemonic,
+  // deriveStxAddressChain,
+  encryptMnemonicFormatted,
+} from '../../helpers/helpers';
 import {DEFAULT_GAIA_HUB} from '../../helpers/gaia';
 import {BIP32Interface} from 'bip32';
 // import {getBlockchainIdentities} from '../../helpers/utils';
@@ -82,7 +81,7 @@ const restore = async (
     seedPhrase,
     password,
   );
-
+  console.warn('passed', encryptedMnemonicHex);
   const wallet = await createAccount({
     encryptedBackupPhrase: encryptedMnemonicHex,
     rootNode,
@@ -111,9 +110,7 @@ const createAccount = async ({
     throw new TypeError('Unable to derive config key for wallet identities');
   }
   const configPrivateKey = derivedIdentitiesKey.toString('hex');
-  console.warn('TMAM');
   const {childKey: stxAddressKeychain} = deriveStxAddressChain(chain)(rootNode);
-  console.warn('EH');
   const walletAttrs = await getBlockchainIdentities(
     rootNode,
     identitiesToGenerate,

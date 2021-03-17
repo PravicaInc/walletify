@@ -1,14 +1,20 @@
 import {
-  getAddressFromPrivateKey,
   ChainID,
   TransactionVersion,
+  addressHashModeToVersion,
+  addressFromVersionHash,
+  addressToString,
+  AddressHashMode,
+  hashP2PKH,
+  StacksMessageType,
 } from '@stacks/transactions';
 import {decryptContent, encryptMnemonic} from '@stacks/encryption';
+import {ec} from 'elliptic';
 
 import {BIP32Interface, fromSeed} from 'bip32';
 import {mnemonicToSeed} from 'bip39';
 
-import {ECPair} from 'bitcoinjs-lib';
+import {bip32, ECPair} from 'bitcoinjs-lib';
 
 import {makeReadOnlyGaiaConfig} from '../helpers/gaia';
 import {GaiaHubConfig} from '@stacks/storage';
@@ -18,6 +24,8 @@ import {
   makeIdentity,
   recursiveRestoreIdentities,
 } from '../helpers/utils';
+import {Buffer} from 'buffer';
+import {assertIsTruthy, WalletSigner} from '@stacks/keychain';
 
 const networkDerivationPath = "m/44'/5757'/0'/0/0";
 
@@ -152,3 +160,85 @@ export const restoreIdentities = async ({
   newIdentities = identities.concat(currentNewIdentities);
   return newIdentities;
 };
+
+export function getAddressFromPublicKey(
+  /** Public key buffer or hex string */
+  publicKey: string | Buffer,
+  transactionVersion = TransactionVersion.Mainnet,
+): string {
+  publicKey =
+    typeof publicKey === 'string' ? publicKey : publicKey.toString('hex');
+  const addrVer = addressHashModeToVersion(
+    AddressHashMode.SerializeP2PKH,
+    transactionVersion,
+  );
+  const addr = addressFromVersionHash(
+    addrVer,
+    hashP2PKH(Buffer.from(publicKey, 'hex')),
+  );
+  const addrString = addressToString(addr);
+  return addrString;
+}
+
+export function getAddressFromPrivateKey(
+  /** Private key buffer or hex string */
+  privateKey: string | Buffer,
+  transactionVersion = TransactionVersion.Mainnet,
+): string {
+  const pubKey = pubKeyfromPrivKey(privateKey);
+  return getAddressFromPublicKey(pubKey.data, transactionVersion);
+}
+
+export function getSigner(stacksPrivateKey: Buffer) {
+  return new WalletSigner({privateKey: stacksPrivateKey});
+}
+
+function pubKeyfromPrivKey(privateKey: any) {
+  var privKey = createStacksPrivateKey(privateKey);
+  var ec$1 = new ec('secp256k1');
+  var keyPair = ec$1.keyFromPrivate(
+    privKey.data.toString('hex').slice(0, 64),
+    'hex',
+  );
+  var pubKey = keyPair.getPublic(privKey.compressed, 'hex');
+  return createStacksPublicKey(pubKey);
+}
+
+function createStacksPrivateKey(key: string) {
+  var data = typeof key === 'string' ? Buffer.from(key, 'hex') : key;
+  var compressed;
+  if (data.length === 33) {
+    if (data[data.length - 1] !== 1) {
+      throw new Error(
+        'Improperly formatted private-key. 33 byte length usually ' +
+          'indicates compressed key, but last byte must be == 0x01',
+      );
+    }
+
+    compressed = true;
+  } else if (data.length === 32) {
+    compressed = false;
+  } else {
+    throw new Error(
+      'Improperly formatted private-key hex string: length should be 32 or 33 bytes, provided with length ' +
+        data.length,
+    );
+  }
+  return {data, compressed};
+}
+function createStacksPublicKey(key: string) {
+  return {
+    type: StacksMessageType.PublicKey,
+    data: Buffer.from(key, 'hex'),
+  };
+}
+
+function getSTXPrivateKey(privateKey: string) {
+  const node = bip32.fromBase58(privateKey);
+  assertIsTruthy<Buffer>(node.privateKey);
+  return node.privateKey;
+}
+
+export function getSTXAddress(privateKey: any, version: TransactionVersion) {
+  return getAddressFromPrivateKey(getSTXPrivateKey(privateKey), version);
+}
