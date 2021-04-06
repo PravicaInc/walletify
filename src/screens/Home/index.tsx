@@ -8,6 +8,8 @@ import {
   Text,
   TouchableOpacity,
   View,
+  NativeEventEmitter,
+  NativeModules,
 } from 'react-native';
 import {styles} from './styles';
 import {useNavigation} from 'react-navigation-hooks';
@@ -29,6 +31,7 @@ import {
 import {IdentityCard} from '../../components/IdentityCard';
 import {useInitialURL} from '../../hooks/useInitialURL';
 import AuthModal from '../AuthModal';
+const {EventEmitterModule} = NativeModules;
 
 const Home: React.FC = () => {
   const {dispatch} = useNavigation();
@@ -45,22 +48,34 @@ const Home: React.FC = () => {
   const icon = useSelector(selectFullAppIcon);
   const [modalVisible, setModalVisible] = useState(false);
   const {url: initialUrl, processing} = useInitialURL();
+  const [sourceApplication, setSourceApplication] = useState('');
+  const [url, setUrl] = useState('');
+  const eventEmitter = new NativeEventEmitter(EventEmitterModule);
 
   useEffect(() => {
+    eventEmitter.addListener('Linking', (event) => {
+      if (event.sourceApplication) {
+        setSourceApplication(event.sourceApplication);
+      }
+    });
     const subscription = DeviceEventEmitter.addListener('url', (e: any) => {
-      console.warn(e);
-      if (e.url) {
+      if (e.url && e.options) {
         const queryStr = e.url.split(':');
         if (queryStr.length > 1) {
           const parts = queryStr[1].split('=');
           if (parts.length > 1) {
-            currentDispatch(doSaveAuthRequest(parts[1]));
+            setUrl(parts[1]);
           }
         }
       }
     });
+    if (url && sourceApplication) {
+      currentDispatch(doSaveAuthRequest(url, sourceApplication));
+      setUrl('');
+      setSourceApplication('');
+    }
     return () => subscription.remove();
-  }, []);
+  }, [sourceApplication, url]);
 
   useEffect(() => {
     if (authRequest) {

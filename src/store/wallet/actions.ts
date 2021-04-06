@@ -2,6 +2,7 @@ import {ThunkAction} from 'redux-thunk';
 import {
   deriveRootKeychainFromMnemonic,
   deriveStxAddressChain,
+  encryptMnemonicFormatted,
   getBlockchainIdentities,
   Wallet,
 } from '@stacks/keychain';
@@ -12,15 +13,11 @@ import {
   GENERATE_WALLET,
   SIGN_OUT,
 } from './types';
+// import {encryptMnemonic} from '@stacks/encryption';
 import {ChainID} from '@blockstack/stacks-transactions';
-import {
-  // deriveRootKeychainFromMnemonic,
-  // deriveStxAddressChain,
-  encryptMnemonicFormatted,
-} from '../../helpers/helpers';
+// import {encryptMnemonicFormatted} from '../../helpers/helpers';
 import {DEFAULT_GAIA_HUB} from '../../helpers/gaia';
 import {BIP32Interface} from 'bip32';
-// import {getBlockchainIdentities} from '../../helpers/utils';
 
 export function didRestoreWallet(wallet: Wallet): WalletActions {
   return {
@@ -60,6 +57,7 @@ export function doStoreSeed(
   };
 }
 
+console.warn("crffffffytsst",crypto.subtle)
 export function doGenerateWallet(
   password: string,
 ): ThunkAction<Promise<Wallet>, {}, {}, WalletActions> {
@@ -76,22 +74,26 @@ const restore = async (
   seedPhrase: string,
   chain: ChainID,
 ) => {
-  const rootNode = await deriveRootKeychainFromMnemonic(seedPhrase);
-  const {encryptedMnemonicHex} = await encryptMnemonicFormatted(
-    seedPhrase,
-    password,
-  );
-  console.warn('passed', encryptedMnemonicHex);
-  const wallet = await createAccount({
-    encryptedBackupPhrase: encryptedMnemonicHex,
-    rootNode,
-    chain,
-  });
+  try {
+    const rootNode = await deriveRootKeychainFromMnemonic(seedPhrase);
+    // const {encryptedMnemonicHex} = await encryptMnemonicFormatted(
+    //   seedPhrase,
+    //   password,
+    // );
+    // console.warn(encryptedMnemonicHex);
+    const wallet = await createAccount({
+      encryptedBackupPhrase: 'encryptedMnemonicHex',
+      rootNode,
+      chain,
+    });
 
-  return await wallet.restoreIdentities({
-    rootNode,
-    gaiaReadURL: DEFAULT_GAIA_HUB,
-  });
+    return await wallet.restoreIdentities({
+      rootNode,
+      gaiaReadURL: DEFAULT_GAIA_HUB,
+    });
+  } catch (error) {
+    alert(error);
+  }
 };
 
 const createAccount = async ({

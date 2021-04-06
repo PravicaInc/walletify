@@ -17,7 +17,13 @@ export const selectAuthRequest = (state: AppState) =>
 
 export const selectAppName = (state: AppState) => state.onboarding.appName;
 
-export const selectAppId = (state: AppState) => state.onboarding.appId;
+export const selectBundleID = (state: AppState) => state.onboarding.bundleID;
+
+export const selectPackageName = (state: AppState) =>
+  state.onboarding.packageName;
+
+export const selectAppURLScheme = (state: AppState) =>
+  state.onboarding.appURLScheme;
 
 export const selectAppIcon = (state: AppState) => state.onboarding.appIcon;
 

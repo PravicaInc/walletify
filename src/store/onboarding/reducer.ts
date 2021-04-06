@@ -15,7 +15,9 @@ import {
 
 export const initialState: OnboardingState = {
   screen: ScreenPaths.GENERATION,
-  appId: '',
+  appURLScheme: '',
+  bundleID: '',
+  packageName: '',
 };
 
 export const onboardingReducer: Reducer<OnboardingState, OnboardingActions> = (
@@ -41,7 +43,9 @@ export const onboardingReducer: Reducer<OnboardingState, OnboardingActions> = (
         appName: action.appName,
         appIcon: action.appIcon,
         appURL: action.appURL,
-        appId: action.appId,
+        appURLScheme: action.appURLScheme,
+        packageName: action.packageName,
+        bundleID: action.bundleID,
       };
       return newState;
     case DELETE_AUTH_REQUEST:
@@ -52,7 +56,9 @@ export const onboardingReducer: Reducer<OnboardingState, OnboardingActions> = (
         appName: undefined,
         appIcon: undefined,
         appURL: undefined,
-        appId: undefined,
+        appURLScheme: undefined,
+        bundleID: undefined,
+        packageName: undefined,
       };
     case SET_MAGIC_RECOVERY_CODE:
       return {

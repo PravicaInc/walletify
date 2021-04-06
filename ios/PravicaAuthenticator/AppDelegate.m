@@ -4,14 +4,14 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 #import <React/RCTLinkingManager.h>
-
+#import "EventEmitterModule.h"
 
 @implementation AppDelegate
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+EventEmitterModule *eventEmitterModule;
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)launchOptions
 {
-
-
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
                                                    moduleName:@"PravicaAuthenticator"
@@ -23,6 +23,7 @@
   UIViewController *rootViewController = [UIViewController new];
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
+  eventEmitterModule = [EventEmitterModule allocWithZone:nil];
   [self.window makeKeyAndVisible];
   return YES;
 }
@@ -40,6 +41,8 @@
    openURL:(NSURL *)url
    options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
 {
+  NSString *sourceApplication = options[UIApplicationOpenURLOptionsSourceApplicationKey];
+  [eventEmitterModule sendEventWithName:@"Linking" body:@{@"sourceApplication": sourceApplication}];
   return [RCTLinkingManager application:application openURL:url options:options];
 }
 @end

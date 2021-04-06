@@ -66,12 +66,19 @@ export const encryptMnemonicFormatted = async (
   plaintextMnemonic: string,
   password: string,
 ) => {
-  const encryptedMnemonic = await encryptMnemonic(plaintextMnemonic, password);
-  const encryptedMnemonicHex = encryptedMnemonic.toString('hex');
-  return {
-    encryptedMnemonic,
-    encryptedMnemonicHex,
-  };
+  try {
+    const encryptedMnemonic = await encryptMnemonic(
+      plaintextMnemonic,
+      password,
+    );
+    const encryptedMnemonicHex = encryptedMnemonic.toString('hex');
+    return {
+      encryptedMnemonic,
+      encryptedMnemonicHex,
+    };
+  } catch (error) {
+    console.warn(error);
+  }
 };
 
 export const getDerivationPath = (chain: ChainID) => derivationPaths[chain];

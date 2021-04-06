@@ -22,39 +22,41 @@ import {
   selectFullAppIcon,
   selectAppName,
   isValidUrl,
-  selectAppId,
+  selectAppURLScheme,
+  selectPackageName,
+  selectBundleID,
 } from './selectors';
 import {selectIdentities, selectCurrentWallet} from '../wallet/selectors';
 import {JSONSchemaForWebApplicationManifestFiles} from '@schemastore/web-manifest';
-import {Alert, Linking} from 'react-native';
+import {Alert, Linking, Platform} from 'react-native';
 import {
   // getAddressFromPrivateKey,
   TransactionVersion,
 } from '@stacks/transactions';
-import {
-  getAddressFromPrivateKey,
-  getSigner,
-  getSTXAddress,
-} from '../../helpers/helpers';
+import {getSTXAddress} from '../../helpers/helpers';
 interface FinalizeAuthParams {
   decodedAuthRequest: DecodedAuthRequest;
   authResponse: string;
   authRequest: string;
   appName: string;
-  appId: string;
+  appURLScheme: string;
+  bundleID: string;
+  packageName: string;
 }
 
 export const finalizeAuthResponse = ({
   decodedAuthRequest,
   authResponse,
   appName,
-  appId,
+  appURLScheme,
+  bundleID,
+  packageName,
 }: FinalizeAuthParams) => {
   const dangerousUri = decodedAuthRequest.redirect_uri;
   if (!isValidUrl(dangerousUri) || dangerousUri.includes('javascript')) {
     throw new Error('Cannot proceed auth with malformed url');
   }
-  const redirect = `${appId}://authResponse=${authResponse}`;
+  const redirect = `${appURLScheme}://authResponse=${authResponse}`;
   Alert.alert(
     'Attention',
     `You are giving permission to ${appName} to access the app private key assigned to ${decodedAuthRequest.domain_name}`,
@@ -86,7 +88,9 @@ export interface DecodedAuthRequest {
 }
 
 export interface AppManifest extends JSONSchemaForWebApplicationManifestFiles {
-  appId?: string;
+  appURLScheme?: string;
+  bundleID?: string;
+  packageName?: string;
 }
 
 export const gaiaUrl = 'https://hub.blockstack.org';
@@ -157,7 +161,9 @@ interface SaveAuthRequestParams {
   decodedAuthRequest: DecodedAuthRequest;
   authRequest: string;
   appURL: URL;
-  appId: string;
+  appURLScheme: string;
+  bundleID: string;
+  packageName: string;
 }
 
 const saveAuthRequest = ({
@@ -166,7 +172,9 @@ const saveAuthRequest = ({
   decodedAuthRequest,
   authRequest,
   appURL,
-  appId,
+  bundleID,
+  appURLScheme,
+  packageName,
 }: SaveAuthRequestParams): OnboardingActions => {
   return {
     type: SAVE_AUTH_REQUEST,
@@ -174,13 +182,16 @@ const saveAuthRequest = ({
     appIcon,
     decodedAuthRequest,
     authRequest,
-    appId,
+    appURLScheme,
     appURL,
+    bundleID,
+    packageName,
   };
 };
 
 export function doSaveAuthRequest(
   authRequest: string,
+  appId: string,
 ): ThunkAction<void, AppState, {}, OnboardingActions> {
   return async (dispatch) => {
     const {payload} = decodeToken(authRequest);
@@ -188,10 +199,20 @@ export function doSaveAuthRequest(
     const appManifest = await loadManifest(decodedAuthRequest);
     let appName = decodedAuthRequest.appDetails?.name;
     let appIcon = decodedAuthRequest.appDetails?.icon;
-    if (!appManifest.appId) {
+    if (!appManifest.appURLScheme) {
       dispatch(deleteAuthRequest());
       return Alert.alert(
         'Please contact the app provider for missing informations in their manifest files, Error missing the appId',
+      );
+    }
+
+    if (
+      (Platform.OS === 'ios' && appId !== appManifest.bundleID) ||
+      (Platform.OS === 'android' && appId !== appManifest.packageName)
+    ) {
+      dispatch(deleteAuthRequest());
+      return Alert.alert(
+        "Please contact the app provider, it seems this is a malicious app asking for permissions, we recommend of deleting this app, cuz its asking for another app' appPrivateKey",
       );
     }
 
@@ -207,7 +228,9 @@ export function doSaveAuthRequest(
         appName,
         appIcon,
         appURL: new URL(decodedAuthRequest.redirect_uri),
-        appId: appManifest.appId!,
+        appURLScheme: appManifest.appURLScheme!,
+        bundleID: appManifest.bundleID!,
+        packageName: appManifest.packageName!,
       }),
     );
   };
@@ -246,7 +269,10 @@ export function doFinishSignIn(
     const wallet = selectCurrentWallet(state);
     const appIcon = selectFullAppIcon(state);
     const appName = selectAppName(state);
-    const appId = selectAppId(state);
+    const appURLScheme = selectAppURLScheme(state);
+    const bundleID = selectBundleID(state);
+    const packageName = selectPackageName(state);
+
     if (!decodedAuthRequest || !authRequest || !identities || !wallet) {
       console.error('Uh oh! Finished onboarding without auth info.');
       return;
@@ -274,21 +300,22 @@ export function doFinishSignIn(
       wallet.stacksPrivateKey,
       TransactionVersion.Testnet,
     );
-    console.warn(stxAddress);
-    // const authResponse = await currentIdentity.makeAuthResponse({
-    //   gaiaUrl,
-    //   appDomain: decodedAuthRequest.domain_name,
-    //   transitPublicKey: decodedAuthRequest.public_keys[0],
-    //   scopes: decodedAuthRequest.scopes,
-    //   stxAddress,
-    // });
-    // finalizeAuthResponse({
-    //   decodedAuthRequest,
-    //   authRequest,
-    //   authResponse,
-    //   appName,
-    //   appId,
-    // });
-    // dispatch(didGenerateWallet(wallet));
+    const authResponse = await currentIdentity.makeAuthResponse({
+      gaiaUrl,
+      appDomain: decodedAuthRequest.domain_name,
+      transitPublicKey: decodedAuthRequest.public_keys[0],
+      scopes: decodedAuthRequest.scopes,
+      stxAddress,
+    });
+    finalizeAuthResponse({
+      decodedAuthRequest,
+      authRequest,
+      authResponse,
+      appName,
+      appURLScheme,
+      bundleID,
+      packageName,
+    });
+    dispatch(didGenerateWallet(wallet));
   };
 }
