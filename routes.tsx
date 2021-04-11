@@ -10,6 +10,8 @@ import Login from './src/screens/Login';
 import SplashScreen from './src/screens/SplashScreen';
 import SeedPhrase from './src/screens/SeedPhrase';
 import Home from './src/screens/Home';
+import CreateWallet from './src/screens/CreateWallet';
+import CreatePin from './src/screens/CreatePin';
 
 const ChatPageNavigator = createStackNavigator(
   {
@@ -27,6 +29,18 @@ const ChatPageNavigator = createStackNavigator(
     },
     SeedPhrase: {
       screen: SeedPhrase,
+      navigationOptions: {
+        header: () => null,
+      },
+    },
+    CreateWallet: {
+      screen: CreateWallet,
+      navigationOptions: {
+        header: () => null,
+      },
+    },
+    CreatePin: {
+      screen: CreatePin,
       navigationOptions: {
         header: () => null,
       },

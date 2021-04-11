@@ -30,6 +30,9 @@ export const styles = StyleSheet.create({
     borderRadius: 4,
     marginTop: 50,
   },
+  continueButton: {
+    backgroundColor: theme.colors.searchText,
+  },
   loginLogo: {width: 24, height: 24, marginRight: 9},
   buttonText: {color: theme.colors.white, fontSize: 14},
 });

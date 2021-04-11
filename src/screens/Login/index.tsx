@@ -10,11 +10,15 @@ import {
 import {styles} from './styles';
 import {useNavigation} from 'react-navigation-hooks';
 import {resetNavigation} from '../../../routes';
+import {doCreateSecretKey} from '../../store/onboarding/actions';
+import {useDispatch} from 'react-redux';
 
 const Login: React.FC = () => {
-  const {dispatch} = useNavigation();
+  const {dispatch: navigationDispatch} = useNavigation();
+  const dispatch = useDispatch();
+
   const onSubmit = () => {
-    resetNavigation(dispatch, 'SeedPhrase');
+    resetNavigation(navigationDispatch, 'SeedPhrase');
   };
 
   return (
@@ -31,8 +35,20 @@ const Login: React.FC = () => {
             Pravica Authonticator will help you to keep your login seamless and
             secure.
           </Text>
+          <TouchableOpacity
+            onPress={() => {
+              dispatch(doCreateSecretKey());
+              resetNavigation(navigationDispatch, 'CreateWallet');
+            }}
+            style={[styles.loginButton, styles.continueButton]}>
+            <Text style={styles.buttonText}>Create new wallet</Text>
+            <Image
+              style={styles.loginLogo}
+              source={require('../../assets/login.png')}
+            />
+          </TouchableOpacity>
           <TouchableOpacity onPress={onSubmit} style={styles.loginButton}>
-            <Text style={styles.buttonText}>Continue with your stack ID</Text>
+            <Text style={styles.buttonText}>Continue with your Secret key</Text>
             <Image
               style={styles.loginLogo}
               source={require('../../assets/login.png')}
