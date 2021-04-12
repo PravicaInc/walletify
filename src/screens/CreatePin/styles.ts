@@ -5,6 +5,7 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
+    backgroundColor: '#F4F4F4',
   },
   pravicaLogo: {width: '50%', resizeMode: 'contain'},
   imageHeader: {
@@ -17,6 +18,7 @@ export const styles = StyleSheet.create({
     padding: 35,
     paddingTop: 50,
     paddingBottom: 53,
+    marginTop: 50,
     borderRadius: 20,
   },
   description: {
@@ -54,7 +56,7 @@ export const styles = StyleSheet.create({
   },
   loginButton: {
     padding: 16,
-    backgroundColor: theme.colors.badgeBackground,
+    backgroundColor: '#707070',
     alignItems: 'center',
     justifyContent: 'space-between',
     flexDirection: 'row',
@@ -77,8 +79,9 @@ export const styles = StyleSheet.create({
     fontWeight: '700',
     textAlign: 'center',
     marginLeft: 8,
-    borderRadius: 6,
-    backgroundColor: '#eee',
+    borderRadius: 12,
+    borderColor: '#707070',
+    borderWidth: 1,
   },
   toggle: {
     width: 55,
@@ -88,6 +91,20 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
   },
   focusCell: {
-    borderColor: '#000',
+    shadowColor: '#3CA5FF',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.9,
+    shadowRadius: 3,
+
+    elevation: 5,
+  },
+  errorTextRed: {
+    color: theme.colors.danger,
+    fontSize: 14,
+    marginTop: 16,
+    marginLeft: 16,
   },
 });

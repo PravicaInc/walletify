@@ -17,7 +17,6 @@ import {useSelector} from 'react-redux';
 import {selectSecretKey} from '../../store/onboarding/selectors';
 import {
   CodeField,
-  Cursor,
   useBlurOnFulfill,
   useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
@@ -26,10 +25,17 @@ const CreatePin: React.FC = () => {
   const secretKey = useSelector(selectSecretKey);
   const [enableMask, setEnableMask] = useState(true);
   const [value, setValue] = useState('');
+  const [secondValue, setSecondValue] = useState('');
   const ref = useBlurOnFulfill({value, cellCount: 4});
+  const refSecond = useBlurOnFulfill({secondValue, cellCount: 4});
+  const [error, setError] = useState('');
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
     setValue,
+  });
+  const [secondProps, getSecondCellOnLayoutHandler] = useClearByFocusCell({
+    secondValue,
+    setSecondValue,
   });
 
   const toggleMask = () => setEnableMask((f) => !f);
@@ -38,9 +44,10 @@ const CreatePin: React.FC = () => {
 
     if (symbol) {
       textChild = enableMask ? '•' : symbol;
-    } else if (isFocused) {
-      textChild = <Cursor />;
     }
+    // else if (isFocused) {
+    // textChild = <Cursor />;
+    // }
 
     return (
       <Text
@@ -52,16 +59,39 @@ const CreatePin: React.FC = () => {
     );
   };
 
+  const renderSecondCell = ({index, symbol, isFocused}) => {
+    let textChild = null;
+
+    if (symbol) {
+      textChild = enableMask ? '•' : symbol;
+    }
+    // else if (isFocused) {
+    //   textChild = <Cursor />;
+    // }
+
+    return (
+      <Text
+        key={index}
+        style={[styles.cell, isFocused && styles.focusCell]}
+        onLayout={getSecondCellOnLayoutHandler(index)}>
+        {textChild}
+      </Text>
+    );
+  };
+
+  const onSubmit = () => {
+    if (value === secondValue) {
+      setError('');
+      alert('Success');
+    } else {
+      setError('Seems your pincodes are not same');
+    }
+  };
+
   return (
     <>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <ImageBackground
-          source={require('../../assets/pravica-background.png')}
-          style={styles.container}>
-          <Image
-            style={styles.pravicaLogo}
-            source={require('../../assets/login-header.png')}
-          />
+        <View style={styles.container}>
           <KeyboardAvoidingView behavior={'position'}>
             <View style={styles.card}>
               <Text style={styles.title}>Your Secret Key</Text>
@@ -85,18 +115,31 @@ const CreatePin: React.FC = () => {
                   {enableMask ? '🙈' : '🐵'}
                 </Text>
               </View>
-              <TouchableOpacity style={styles.loginButton}>
-                <>
-                  <Text style={styles.buttonText}>Encrypt your secret key</Text>
-                  <Image
-                    style={styles.loginLogo}
-                    source={require('../../assets/login.png')}
-                  />
-                </>
-              </TouchableOpacity>
+              <View style={styles.fieldRow}>
+                <CodeField
+                  ref={refSecond}
+                  {...secondProps}
+                  value={secondValue}
+                  onChangeText={setSecondValue}
+                  cellCount={4}
+                  keyboardType="number-pad"
+                  textContentType="oneTimeCode"
+                  renderCell={renderSecondCell}
+                />
+              </View>
+              <Text style={styles.errorTextRed}>{error}</Text>
             </View>
+            <TouchableOpacity onPress={onSubmit} style={styles.loginButton}>
+              <>
+                <Text style={styles.buttonText}>Encrypt your secret key</Text>
+                <Image
+                  style={styles.loginLogo}
+                  source={require('../../assets/login.png')}
+                />
+              </>
+            </TouchableOpacity>
           </KeyboardAvoidingView>
-        </ImageBackground>
+        </View>
       </TouchableWithoutFeedback>
     </>
   );

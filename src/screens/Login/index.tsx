@@ -1,12 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
-import {
-  Image,
-  ImageBackground,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Image, Text, TouchableOpacity, View} from 'react-native';
 import {styles} from './styles';
 import {useNavigation} from 'react-navigation-hooks';
 import {resetNavigation} from '../../../routes';
@@ -40,33 +34,60 @@ const Login: React.FC = () => {
             <View>
               <Text style={styles.title}>Pravica guarantees your privacy</Text>
               <Text style={styles.description}>
-                <Text style={styles.description}>
-                by encrypting everything
-            </Text>
+                <Text style={styles.description}>by encrypting everything</Text>
               </Text>
             </View>
           </View>
-          <TouchableOpacity
-            onPress={() => {
-              dispatch(doCreateSecretKey());
-              resetNavigation(navigationDispatch, 'CreateWallet');
-            }}
-            style={[styles.loginButton, styles.continueButton]}>
-            <Text style={styles.buttonText}>Create new wallet</Text>
+          <View
+            style={[styles.flexRow, {paddingBottom: 0, borderBottomWidth: 0}]}>
             <Image
-              style={styles.loginLogo}
-              source={require('../../assets/login.png')}
+              style={styles.pravicaLogo}
+              source={require('../../assets/lock-icon.png')}
             />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={onSubmit} style={styles.loginButton}>
-            <Text style={styles.buttonText}>Continue with your Secret key</Text>
+            <View>
+              <Text style={styles.desc}>
+                You'll get a Secret Key that automatically encrypts everything
+                you do
+              </Text>
+            </View>
+          </View>
+          <View
+            style={[styles.flexRow, {paddingBottom: 0, borderBottomWidth: 0}]}>
             <Image
-              style={styles.loginLogo}
-              source={require('../../assets/login.png')}
+              style={styles.pravicaLogo}
+              source={require('../../assets/blind-icon.png')}
             />
-          </TouchableOpacity>
+            <View>
+              <Text style={styles.desc}>
+                Pravica won’t be able to see, access, or track your activity
+              </Text>
+            </View>
+          </View>
         </View>
-        <Text style={{color: 'white', marginTop: 'auto', marginBottom: 10}}>
+        <TouchableOpacity
+          onPress={() => {
+            dispatch(doCreateSecretKey());
+            resetNavigation(navigationDispatch, 'CreateWallet');
+          }}
+          style={[styles.loginButton]}>
+          <Text style={styles.buttonText}>Get your secrete key</Text>
+          <Image
+            style={styles.loginLogo}
+            source={require('../../assets/key-icon.png')}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={onSubmit}
+          style={[styles.loginButton, styles.continueButton]}>
+          <Text style={[styles.buttonText, {color: '#707070'}]}>
+            Continue with your Secret key
+          </Text>
+          <Image
+            style={styles.loginLogo}
+            source={require('../../assets/Icon-login-grey.png')}
+          />
+        </TouchableOpacity>
+        <Text style={{color: 'black', marginTop: 'auto', marginBottom: 10}}>
           Powered by Pravica
         </Text>
       </View>

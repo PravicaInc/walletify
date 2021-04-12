@@ -41,16 +41,20 @@ const CreateWallet: React.FC = () => {
   return (
     <>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <ImageBackground
-          source={require('../../assets/pravica-background.png')}
-          style={styles.container}>
-          <Image
-            style={styles.pravicaLogo}
-            source={require('../../assets/login-header.png')}
-          />
+        <View
+          style={[
+            styles.container,
+            {backgroundColor: secretKey ? '#F4F4F4' : 'white'},
+          ]}>
           {!secretKey ? (
             <View style={{flex: 1, alignItems: 'center'}}>
-              <Text style={{color: 'white', fontSize: 24, textAlign: 'center', fontWeight: 'bold'}}>
+              <Text
+                style={{
+                  color: 'white',
+                  fontSize: 24,
+                  textAlign: 'center',
+                  fontWeight: 'bold',
+                }}>
                 Generating your secret key!
               </Text>
               <LottieView
@@ -63,11 +67,18 @@ const CreateWallet: React.FC = () => {
             <KeyboardAvoidingView behavior={'position'}>
               {!isSaved ? (
                 <View style={styles.card}>
+                  <Image
+                    style={styles.imageHeader}
+                    source={require('../../assets/lock-icon.png')}
+                  />
                   <Text style={styles.title}>Your Secret Key</Text>
                   <Text style={styles.description}>
                     Here’s your Secret Key: 12 words that prove it’s you when
-                    you want to use on a new device. Once lost it’s lost
+                    you want to use Pravica on a new device. Once lost it’s lost
                     forever, so save it somewhere you won’t forget.
+                  </Text>
+                  <Text style={{color: '#7F8C8D', marginTop: 40}}>
+                    Your Secret Key
                   </Text>
                   <TextInput
                     placeholder={'Your seed phrase'}
@@ -75,27 +86,9 @@ const CreateWallet: React.FC = () => {
                     style={styles.textInput}
                     editable={false}
                     value={secretKey}
-                    textAlignVertical={'top'}
+                    textAlignVertical={'center'}
                     multiline={true}
                   />
-                  <TouchableOpacity
-                    disabled={isLoading}
-                    onPress={onSubmit}
-                    style={styles.loginButton}>
-                    <>
-                      <Text style={styles.buttonText}>
-                        Copy your secrete key & Go Next
-                      </Text>
-                      {isLoading ? (
-                        <ActivityIndicator size={'small'} color={'white'} />
-                      ) : (
-                        <Image
-                          style={styles.loginLogo}
-                          source={require('../../assets/copy.png')}
-                        />
-                      )}
-                    </>
-                  </TouchableOpacity>
                 </View>
               ) : (
                 <View style={styles.card}>
@@ -124,39 +117,68 @@ const CreateWallet: React.FC = () => {
                       won’t forget.
                     </Text>
                   </View>
+                </View>
+              )}
+              <>
+                {!isSaved && (
                   <TouchableOpacity
                     disabled={isLoading}
-                    onPress={createPin}
+                    onPress={onSubmit}
                     style={styles.loginButton}>
                     <>
-                      <Text style={styles.buttonText}>I've Saved it</Text>
+                      <Text style={styles.buttonText}>
+                        Copy your Secret key & Go Next
+                      </Text>
                       {isLoading ? (
                         <ActivityIndicator size={'small'} color={'white'} />
                       ) : (
                         <Image
                           style={styles.loginLogo}
-                          source={require('../../assets/login.png')}
+                          source={require('../../assets/copy.png')}
                         />
                       )}
                     </>
                   </TouchableOpacity>
-                  <TouchableOpacity
-                    onPress={() => {
-                      setSavedSecretKey(false);
-                    }}
-                    style={styles.cardItem}>
-                    <Image
-                      style={{width: 20, height: 12, marginRight: 16}}
-                      resizeMode="contain"
-                      source={require('../../assets/back_arrow.png')}
-                    />
-                    <Text>View secret key again</Text>
-                  </TouchableOpacity>
-                </View>
-              )}
+                )}
+                {isSaved && (
+                  <>
+                    <TouchableOpacity
+                      disabled={isLoading}
+                      onPress={createPin}
+                      style={styles.loginButton}>
+                      <>
+                        <Text style={styles.buttonText}>I've Saved it</Text>
+                        {isLoading ? (
+                          <ActivityIndicator size={'small'} color={'white'} />
+                        ) : (
+                          <Image
+                            style={styles.loginLogo}
+                            source={require('../../assets/login.png')}
+                          />
+                        )}
+                      </>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => {
+                        setSavedSecretKey(false);
+                      }}
+                      style={[
+                        styles.cardItem,
+                        {marginLeft: '5%', marginTop: 10},
+                      ]}>
+                      <Image
+                        style={{width: 20, height: 12, marginRight: 16}}
+                        resizeMode="contain"
+                        source={require('../../assets/back_arrow.png')}
+                      />
+                      <Text>View secret key again</Text>
+                    </TouchableOpacity>
+                  </>
+                )}
+              </>
             </KeyboardAvoidingView>
           )}
-        </ImageBackground>
+        </View>
       </TouchableWithoutFeedback>
     </>
   );
