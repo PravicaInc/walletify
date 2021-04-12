@@ -13,6 +13,7 @@
   "dependencies": {
     "@react-native-community/async-storage": "^1.12.1",
     "@react-native-community/masked-view": "^0.1.10",
+    "@react-native-cryptocurrencies/react-native-pbkdf2": "^0.1.3",
     "@schemastore/web-manifest": "^0.0.5",
     "@stacks/auth": "^1.2.3",
     "@stacks/encryption": "^1.2.3",
@@ -36,6 +37,7 @@
     "events": "^1.0.0",
     "https-browserify": "~0.0.0",
     "jsontokens": "^3.0.0",
+    "lottie-react-native": "^3.5.0",
     "path-browserify": "0.0.0",
     "process": "^0.11.0",
     "punycode": "^1.2.4",

@@ -57,15 +57,18 @@ export function doStoreSeed(
   };
 }
 
-console.warn("crffffffytsst",crypto.subtle)
 export function doGenerateWallet(
   password: string,
 ): ThunkAction<Promise<Wallet>, {}, {}, WalletActions> {
   return async (dispatch) => {
-    dispatch(isRestoringWallet());
-    const wallet = await Wallet.generate(password, ChainID.Mainnet);
-    dispatch(didGenerateWallet(wallet));
-    return wallet;
+    try {
+      dispatch(isRestoringWallet());
+      const wallet = await Wallet.generate(password, ChainID.Mainnet);
+      dispatch(didGenerateWallet(wallet));
+      return wallet;
+    } catch (error) {
+      console.warn(error);
+    }
   };
 }
 
@@ -76,13 +79,12 @@ const restore = async (
 ) => {
   try {
     const rootNode = await deriveRootKeychainFromMnemonic(seedPhrase);
-    // const {encryptedMnemonicHex} = await encryptMnemonicFormatted(
-    //   seedPhrase,
-    //   password,
-    // );
-    // console.warn(encryptedMnemonicHex);
+    const {encryptedMnemonicHex} = await encryptMnemonicFormatted(
+      seedPhrase,
+      password,
+    );
     const wallet = await createAccount({
-      encryptedBackupPhrase: 'encryptedMnemonicHex',
+      encryptedBackupPhrase: encryptedMnemonicHex,
       rootNode,
       chain,
     });

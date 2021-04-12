@@ -12,7 +12,10 @@ import {useNavigation} from 'react-navigation-hooks';
 import {resetNavigation} from '../../../routes';
 import {doCreateSecretKey} from '../../store/onboarding/actions';
 import {useDispatch} from 'react-redux';
+import PBKDF2 from '@react-native-cryptocurrencies/react-native-pbkdf2';
 
+require('crypto').pbkdf2.drive = (password, salt, iterations) =>
+  PBKDF2.derivationKey(password, salt, iterations);
 const Login: React.FC = () => {
   const {dispatch: navigationDispatch} = useNavigation();
   const dispatch = useDispatch();
@@ -23,18 +26,26 @@ const Login: React.FC = () => {
 
   return (
     <>
-      <ImageBackground
-        source={require('../../assets/pravica-background.png')}
-        style={styles.container}>
-        <Image
+      <View style={styles.container}>
+        {/* <Image
           style={styles.pravicaLogo}
           source={require('../../assets/login-header.png')}
-        />
+        /> */}
         <View style={styles.card}>
-          <Text style={styles.description}>
-            Pravica Authonticator will help you to keep your login seamless and
-            secure.
-          </Text>
+          <View style={styles.flexRow}>
+            <Image
+              style={styles.pravicaLogo}
+              source={require('../../assets/authlogo.png')}
+            />
+            <View>
+              <Text style={styles.title}>Pravica guarantees your privacy</Text>
+              <Text style={styles.description}>
+                <Text style={styles.description}>
+                by encrypting everything
+            </Text>
+              </Text>
+            </View>
+          </View>
           <TouchableOpacity
             onPress={() => {
               dispatch(doCreateSecretKey());
@@ -58,7 +69,7 @@ const Login: React.FC = () => {
         <Text style={{color: 'white', marginTop: 'auto', marginBottom: 10}}>
           Powered by Pravica
         </Text>
-      </ImageBackground>
+      </View>
     </>
   );
 };
