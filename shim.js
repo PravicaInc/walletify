@@ -27,4 +27,26 @@ if (typeof localStorage !== 'undefined') {
   localStorage.debug = isDev ? '*' : '';
 }
 
-require('crypto');
+import {NativeModules} from 'react-native';
+const Aes = NativeModules.Aes;
+
+require('crypto').pbkdf2 = async (
+  password,
+  salt,
+  cost,
+  length,
+  ignore,
+  callback,
+) => {
+  try {
+    const encrypt = await Aes.pbkdf2(
+      password,
+      salt.toString(),
+      cost,
+      length * 4,
+    );
+    callback(null, encrypt);
+  } catch (e) {
+    callback(e);
+  }
+};

@@ -6,10 +6,7 @@ import {useNavigation} from 'react-navigation-hooks';
 import {resetNavigation} from '../../../routes';
 import {doCreateSecretKey} from '../../store/onboarding/actions';
 import {useDispatch} from 'react-redux';
-import PBKDF2 from '@react-native-cryptocurrencies/react-native-pbkdf2';
 
-require('crypto').pbkdf2.drive = (password, salt, iterations) =>
-  PBKDF2.derivationKey(password, salt, iterations);
 const Login: React.FC = () => {
   const {dispatch: navigationDispatch} = useNavigation();
   const dispatch = useDispatch();
