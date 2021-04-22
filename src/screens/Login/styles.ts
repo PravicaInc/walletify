@@ -41,8 +41,8 @@ export const styles = StyleSheet.create({
   },
   desc: {
     color: theme.colors.textGreyColor,
-    fontSize: 14,
-    width: '50%',
+    fontSize: 16,
+    width: '35%',
   },
   loginButton: {
     padding: 16,

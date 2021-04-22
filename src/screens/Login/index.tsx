@@ -6,7 +6,7 @@ import {useNavigation} from 'react-navigation-hooks';
 import {resetNavigation} from '../../../routes';
 import {doCreateSecretKey} from '../../store/onboarding/actions';
 import {useDispatch} from 'react-redux';
-
+ 
 const Login: React.FC = () => {
   const {dispatch: navigationDispatch} = useNavigation();
   const dispatch = useDispatch();
@@ -63,7 +63,6 @@ const Login: React.FC = () => {
         </View>
         <TouchableOpacity
           onPress={() => {
-            dispatch(doCreateSecretKey());
             resetNavigation(navigationDispatch, 'CreateWallet');
           }}
           style={[styles.loginButton]}>

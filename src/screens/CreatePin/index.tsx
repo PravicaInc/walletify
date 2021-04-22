@@ -1,10 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useState} from 'react';
 import {
-  ActivityIndicator,
-  Clipboard,
   Image,
-  ImageBackground,
   Keyboard,
   KeyboardAvoidingView,
   Text,
@@ -20,6 +17,8 @@ import {
   useBlurOnFulfill,
   useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
+import { resetNavigation } from '../../../routes';
+import { useNavigation } from 'react-navigation-hooks';
 
 const CreatePin: React.FC = () => {
   const secretKey = useSelector(selectSecretKey);
@@ -37,6 +36,7 @@ const CreatePin: React.FC = () => {
     secondValue,
     setSecondValue,
   });
+  const {dispatch} = useNavigation();
 
   const toggleMask = () => setEnableMask((f) => !f);
   const renderCell = ({index, symbol, isFocused}) => {
@@ -82,7 +82,7 @@ const CreatePin: React.FC = () => {
   const onSubmit = () => {
     if (value === secondValue) {
       setError('');
-      alert('Success');
+      resetNavigation(dispatch, 'Home');
     } else {
       setError('Seems your pincodes are not same');
     }
@@ -100,6 +100,7 @@ const CreatePin: React.FC = () => {
                 want to use on a new device. Once lost it’s lost forever, so
                 save it somewhere you won’t forget.
               </Text>
+              <Text style={styles.confirmPinCode}>Enter your pin code</Text>
               <View style={styles.fieldRow}>
                 <CodeField
                   ref={ref}
@@ -115,6 +116,7 @@ const CreatePin: React.FC = () => {
                   {enableMask ? '🙈' : '🐵'}
                 </Text>
               </View>
+              <Text style={styles.confirmPinCode}>Confirm Pin code</Text>
               <View style={styles.fieldRow}>
                 <CodeField
                   ref={refSecond}

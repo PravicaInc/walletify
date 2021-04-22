@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
   Clipboard,
@@ -14,25 +14,34 @@ import {
   View,
 } from 'react-native';
 import {styles} from './styles';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {TextInput} from 'react-native-gesture-handler';
 import {selectSecretKey} from '../../store/onboarding/selectors';
 import {useNavigation} from 'react-navigation-hooks';
 import {resetNavigation} from '../../../routes';
 import LottieView from 'lottie-react-native';
+import {doCreateSecretKey} from '../../store/onboarding/actions';
 
 const CreateWallet: React.FC = () => {
   const [isLoading, setLoading] = useState(false);
   const [isSaved, setSavedSecretKey] = useState(false);
   const secretKey = useSelector(selectSecretKey);
   const {dispatch} = useNavigation();
-  console.warn(secretKey);
+  const dispatchAction = useDispatch();
+
   const onSubmit = async () => {
     if (secretKey) {
       Clipboard.setString(secretKey);
       setSavedSecretKey(true);
     }
   };
+
+  useEffect(() => {
+    const timeOut = setTimeout(() => {
+      dispatchAction(doCreateSecretKey());
+    }, 3000);
+    return () => clearTimeout(timeOut);
+  }, []);
 
   const createPin = () => {
     resetNavigation(dispatch, 'CreatePin');

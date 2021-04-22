@@ -23,7 +23,7 @@ export const styles = StyleSheet.create({
   },
   description: {
     color: '#7F8C8D',
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: '500',
   },
   cardItem: {

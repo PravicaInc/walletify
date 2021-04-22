@@ -67,7 +67,7 @@ export const styles = StyleSheet.create({
   buttonText: {color: theme.colors.white, fontSize: 14},
   seetTextRed: {color: theme.colors.danger, fontSize: 14, marginTop: 8},
   fieldRow: {
-    marginTop: 20,
+    marginTop: 10,
     flexDirection: 'row',
     marginLeft: 8,
   },
@@ -106,5 +106,11 @@ export const styles = StyleSheet.create({
     fontSize: 14,
     marginTop: 16,
     marginLeft: 16,
+  },
+  confirmPinCode: {
+    fontSize: 14,
+    color: 'black',
+    fontWeight: '600',
+    marginTop: 10,
   },
 });
