@@ -7,13 +7,21 @@ import {resetNavigation} from '../../../routes';
 import {theme} from '../../../theme';
 import {useSelector} from 'react-redux';
 import {selectCurrentWallet} from '../../store/wallet/selectors';
+import {selectSecretKey} from '../../store/onboarding/selectors';
 
 const SplashScreen: React.FC = () => {
   const wallet = useSelector(selectCurrentWallet);
+  const secretKey = useSelector(selectSecretKey);
   const {dispatch} = useNavigation();
   useEffect(() => {
     if (wallet) {
-      resetNavigation(dispatch, 'Home');
+      if (wallet.identities[0].usernames.length === 0) {
+        resetNavigation(dispatch, 'Username');
+      } else {
+        resetNavigation(dispatch, 'Home');
+      }
+    } else if (!secretKey) {
+      resetNavigation(dispatch, 'CreatePin');
     } else {
       resetNavigation(dispatch, 'Login');
     }

@@ -12,6 +12,7 @@ import SeedPhrase from './src/screens/SeedPhrase';
 import Home from './src/screens/Home';
 import CreateWallet from './src/screens/CreateWallet';
 import CreatePin from './src/screens/CreatePin';
+import Username from './src/screens/Username';
 
 const ChatPageNavigator = createStackNavigator(
   {
@@ -41,6 +42,12 @@ const ChatPageNavigator = createStackNavigator(
     },
     CreatePin: {
       screen: CreatePin,
+      navigationOptions: {
+        header: () => null,
+      },
+    },
+    Username: {
+      screen: Username,
       navigationOptions: {
         header: () => null,
       },

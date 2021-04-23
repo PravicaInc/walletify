@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useState} from 'react';
 import {
+  ActivityIndicator,
   Image,
   Keyboard,
   KeyboardAvoidingView,
@@ -10,21 +11,24 @@ import {
   View,
 } from 'react-native';
 import {styles} from './styles';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {selectSecretKey} from '../../store/onboarding/selectors';
 import {
   CodeField,
   useBlurOnFulfill,
   useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
-import { resetNavigation } from '../../../routes';
-import { useNavigation } from 'react-navigation-hooks';
+import {resetNavigation} from '../../../routes';
+import {useNavigation} from 'react-navigation-hooks';
+import {doStoreSeed} from '../../store/wallet';
 
 const CreatePin: React.FC = () => {
   const secretKey = useSelector(selectSecretKey);
+  const currentDispatch = useDispatch();
   const [enableMask, setEnableMask] = useState(true);
   const [value, setValue] = useState('');
   const [secondValue, setSecondValue] = useState('');
+  const [status, setStatus] = useState('initial');
   const ref = useBlurOnFulfill({value, cellCount: 4});
   const refSecond = useBlurOnFulfill({secondValue, cellCount: 4});
   const [error, setError] = useState('');
@@ -38,6 +42,10 @@ const CreatePin: React.FC = () => {
   });
   const {dispatch} = useNavigation();
 
+  const setLoadingStatus = () => setStatus('loading');
+  const setErrorStatus = () => setStatus('error');
+
+  const isLoading = status === 'loading';
   const toggleMask = () => setEnableMask((f) => !f);
   const renderCell = ({index, symbol, isFocused}) => {
     let textChild = null;
@@ -79,11 +87,20 @@ const CreatePin: React.FC = () => {
     );
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
+    setLoadingStatus();
     if (value === secondValue) {
       setError('');
-      resetNavigation(dispatch, 'Home');
+      const currentWallet = await doStoreSeed(secretKey as string, value)(
+        currentDispatch,
+        () => ({}),
+        {},
+      );
+      if (currentWallet) {
+        resetNavigation(dispatch, 'Username');
+      }
     } else {
+      setErrorStatus();
       setError('Seems your pincodes are not same');
     }
   };
@@ -131,13 +148,20 @@ const CreatePin: React.FC = () => {
               </View>
               <Text style={styles.errorTextRed}>{error}</Text>
             </View>
-            <TouchableOpacity onPress={onSubmit} style={styles.loginButton}>
+            <TouchableOpacity
+              disabled={isLoading}
+              onPress={onSubmit}
+              style={styles.loginButton}>
               <>
                 <Text style={styles.buttonText}>Encrypt your secret key</Text>
-                <Image
-                  style={styles.loginLogo}
-                  source={require('../../assets/login.png')}
-                />
+                {isLoading ? (
+                  <ActivityIndicator size={'small'} color={'white'} />
+                ) : (
+                  <Image
+                    style={styles.loginLogo}
+                    source={require('../../assets/login.png')}
+                  />
+                )}
               </>
             </TouchableOpacity>
           </KeyboardAvoidingView>

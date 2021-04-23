@@ -3,9 +3,7 @@ import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
   Clipboard,
-  Dimensions,
   Image,
-  ImageBackground,
   Keyboard,
   KeyboardAvoidingView,
   Text,
@@ -23,7 +21,6 @@ import LottieView from 'lottie-react-native';
 import {doCreateSecretKey} from '../../store/onboarding/actions';
 
 const CreateWallet: React.FC = () => {
-  const [isLoading, setLoading] = useState(false);
   const [isSaved, setSavedSecretKey] = useState(false);
   const secretKey = useSelector(selectSecretKey);
   const {dispatch} = useNavigation();
@@ -131,40 +128,30 @@ const CreateWallet: React.FC = () => {
               <>
                 {!isSaved && (
                   <TouchableOpacity
-                    disabled={isLoading}
                     onPress={onSubmit}
                     style={styles.loginButton}>
                     <>
                       <Text style={styles.buttonText}>
                         Copy your Secret key & Go Next
                       </Text>
-                      {isLoading ? (
-                        <ActivityIndicator size={'small'} color={'white'} />
-                      ) : (
-                        <Image
-                          style={styles.loginLogo}
-                          source={require('../../assets/copy.png')}
-                        />
-                      )}
+                      <Image
+                        style={styles.loginLogo}
+                        source={require('../../assets/copy.png')}
+                      />
                     </>
                   </TouchableOpacity>
                 )}
                 {isSaved && (
                   <>
                     <TouchableOpacity
-                      disabled={isLoading}
                       onPress={createPin}
                       style={styles.loginButton}>
                       <>
                         <Text style={styles.buttonText}>I've Saved it</Text>
-                        {isLoading ? (
-                          <ActivityIndicator size={'small'} color={'white'} />
-                        ) : (
-                          <Image
-                            style={styles.loginLogo}
-                            source={require('../../assets/login.png')}
-                          />
-                        )}
+                        <Image
+                          style={styles.loginLogo}
+                          source={require('../../assets/login.png')}
+                        />
                       </>
                     </TouchableOpacity>
                     <TouchableOpacity

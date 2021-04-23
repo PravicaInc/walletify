@@ -33,15 +33,13 @@ import {
   // getAddressFromPrivateKey,
   TransactionVersion,
 } from '@stacks/transactions';
-import {getSTXAddress} from '../../helpers/helpers';
+import {gaiaUrl} from "../../../constants";
 interface FinalizeAuthParams {
   decodedAuthRequest: DecodedAuthRequest;
   authResponse: string;
   authRequest: string;
   appName: string;
   appURLScheme: string;
-  bundleID: string;
-  packageName: string;
 }
 
 export const finalizeAuthResponse = ({
@@ -49,8 +47,6 @@ export const finalizeAuthResponse = ({
   authResponse,
   appName,
   appURLScheme,
-  bundleID,
-  packageName,
 }: FinalizeAuthParams) => {
   const dangerousUri = decodedAuthRequest.redirect_uri;
   if (!isValidUrl(dangerousUri) || dangerousUri.includes('javascript')) {
@@ -92,8 +88,6 @@ export interface AppManifest extends JSONSchemaForWebApplicationManifestFiles {
   bundleID?: string;
   packageName?: string;
 }
-
-export const gaiaUrl = 'https://hub.blockstack.org';
 
 export const doSetOnboardingProgress = (status: boolean): OnboardingActions => {
   return {
@@ -296,10 +290,9 @@ export function doFinishSignIn(
         },
       })
       .catch((e) => console.warn('e', e));
-    const stxAddress = getSTXAddress(
-      wallet.stacksPrivateKey,
-      TransactionVersion.Testnet,
-    );
+    const stxAddress = wallet.stacksPrivateKey
+      ? wallet.getSigner().getSTXAddress(TransactionVersion.Testnet)
+      : undefined;
     const authResponse = await currentIdentity.makeAuthResponse({
       gaiaUrl,
       appDomain: decodedAuthRequest.domain_name,
