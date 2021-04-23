@@ -20,7 +20,7 @@ const SplashScreen: React.FC = () => {
       } else {
         resetNavigation(dispatch, 'Home');
       }
-    } else if (!secretKey) {
+    } else if (!secretKey && wallet) {
       resetNavigation(dispatch, 'CreatePin');
     } else {
       resetNavigation(dispatch, 'Login');
