@@ -33,7 +33,7 @@ import {
   // getAddressFromPrivateKey,
   TransactionVersion,
 } from '@stacks/transactions';
-import {gaiaUrl} from "../../../constants";
+import {gaiaUrl, USERNAMES_ENABLED} from "../../../constants";
 interface FinalizeAuthParams {
   decodedAuthRequest: DecodedAuthRequest;
   authResponse: string;
@@ -273,9 +273,8 @@ export function doFinishSignIn(
     }
     // const appURL = new URL(decodedAuthRequest.redirect_uri);
     const currentIdentity = identities[identityIndex];
-    await currentIdentity.refresh({fetchRemoteUsernames: true});
+    await currentIdentity.refresh({fetchRemoteUsernames: USERNAMES_ENABLED});
     const gaiaConfig = await wallet.createGaiaConfig(gaiaUrl);
-
     await wallet.getOrCreateConfig({gaiaConfig, skipUpload: true});
     await wallet
       .updateConfigWithAuth({

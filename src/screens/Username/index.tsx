@@ -3,13 +3,10 @@ import React, {useState} from 'react';
 import {useDispatch} from 'react-redux';
 
 import {
-  DEFAULT_PROFILE,
   Identity,
-  IdentityKeyPair,
   IdentityNameValidityError,
-  Profile,
-  registrars,
   validateSubdomain,
+  registerSubdomain,
 } from '@stacks/keychain';
 import {
   ActivityIndicator,
@@ -23,16 +20,12 @@ import {
 } from 'react-native';
 import {useWallet} from '../../hooks/useWallet';
 import {gaiaUrl, Subdomain} from '../../../constants';
-import {doSetUsername} from '../../store/onboarding/actions';
+import {doFinishSignIn, doSetUsername} from '../../store/onboarding/actions';
 import {didGenerateWallet} from '../../store/wallet';
 import {styles} from '../CreateWallet/styles';
 import {TextInput} from 'react-native-gesture-handler';
 import {resetNavigation} from '../../../routes';
 import {theme} from '../../../theme';
-import {connectToGaiaHub} from '@stacks/storage';
-import * as c32check from 'c32check';
-import {makeZoneFile} from 'zone-file';
-import {decodeToken, SECP256K1Client, TokenSigner} from 'jsontokens';
 import {useNavigation} from 'react-navigation-hooks';
 
 const identityNameLengthError =
@@ -93,9 +86,9 @@ const Username: React.FC<{}> = () => {
     }
 
     let identity: Identity;
-    // let identityIndex: number;
+    let identityIndex: number;
     identity = wallet.identities[0];
-    // identityIndex = 0;
+    identityIndex = 0;
     try {
       await registerSubdomain({
         username,
@@ -104,7 +97,19 @@ const Username: React.FC<{}> = () => {
         identity,
       });
       await dispatch(didGenerateWallet(wallet));
-      // await dispatch(doFinishSignIn({identityIndex}));
+      const gaiaConfig = await wallet.createGaiaConfig(gaiaUrl);
+      await wallet.getOrCreateConfig({ gaiaConfig, skipUpload: true });
+      await wallet.updateConfigWithAuth({
+        identityIndex,
+        gaiaConfig,
+        app: {
+          origin: 'https://app.pravica.io',
+          lastLoginAt: new Date().getTime(),
+          scopes: ['store_write', 'publish_data'],
+          appIcon: 'https://app.pravica.io/new-logo.png',
+          name: 'Pravica',
+        },
+      });
       resetNavigation(navigationDispatch, 'Home');
     } catch (error) {
       if (error.status === 409) {
@@ -183,218 +188,3 @@ const Username: React.FC<{}> = () => {
 };
 
 export default Username;
-
-export async function uploadProfile({
-  gaiaHubUrl,
-  filePath,
-  identity,
-  signedProfileTokenData,
-  gaiaHubConfig,
-}: {
-  gaiaHubUrl: string;
-  filePath: string;
-  identity: Identity;
-  signedProfileTokenData: string;
-  gaiaHubConfig?: any;
-}): Promise<string> {
-  const identityHubConfig =
-    gaiaHubConfig || (await connectToGaiaHub(gaiaHubUrl, identity.keyPair.key));
-  return await uploadToGaiaHub(
-    filePath,
-    signedProfileTokenData,
-    identityHubConfig,
-  );
-}
-interface GaiaHubConfig {
-  address: string;
-  url_prefix: string;
-  token: string;
-  max_file_upload_size_megabytes: number | undefined;
-  server: string;
-}
-const uploadToGaiaHub = async (
-  filename: string,
-  contents: Blob | Buffer | ArrayBufferView | string,
-  hubConfig: GaiaHubConfig,
-): Promise<string> => {
-  const contentType = 'application/json';
-
-  const response = await fetch(
-    `${hubConfig.server}/store/${hubConfig.address}/${filename}`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': contentType,
-        Authorization: `bearer ${hubConfig.token}`,
-      },
-      body: contents,
-      referrer: 'no-referrer',
-      referrerPolicy: 'no-referrer',
-    },
-  );
-  const {publicURL} = await response.json();
-  return publicURL;
-};
-
-const DEFAULT_PROFILE_FILE_NAME = 'profile.json';
-
-export const registerSubdomain = async ({
-  identity,
-  gaiaHubUrl,
-  username,
-  subdomain,
-}: any) => {
-  const profile = identity.profile || DEFAULT_PROFILE;
-  const signedProfileTokenData = signProfileForUpload(
-    profile,
-    identity.keyPair,
-  );
-  const profileUrl = await uploadProfile({
-    gaiaHubUrl,
-    filePath: DEFAULT_PROFILE_FILE_NAME,
-    identity,
-    signedProfileTokenData,
-  });
-  const fullUsername = `${username}.${subdomain}`;
-  const zoneFile = makeProfileZoneFile(fullUsername, profileUrl);
-  await sendUsernameToRegistrar({
-    username,
-    subdomain,
-    zoneFile,
-    identity,
-  });
-  identity.defaultUsername = fullUsername;
-  identity.usernames.push(fullUsername);
-  return identity;
-};
-
-function signProfileForUpload(
-  profile: Profile,
-  keypair: IdentityKeyPair,
-): string {
-  const privateKey = keypair.key;
-  const publicKey = keypair.keyID;
-
-  const token = signProfileToken(profile, privateKey, {publicKey});
-  const tokenRecord = wrapProfileToken(token);
-  const tokenRecords = [tokenRecord];
-  return JSON.stringify(tokenRecords, null, 2);
-}
-function wrapProfileToken(token: string) {
-  return {
-    token,
-    decodedToken: decodeToken(token),
-  };
-}
-
-function signProfileToken(
-  profile: any,
-  privateKey: string,
-  subject?: any,
-  issuer?: any,
-  signingAlgorithm = 'ES256K',
-  issuedAt = new Date(),
-  expiresAt = nextYear(),
-): string {
-  if (signingAlgorithm !== 'ES256K') {
-    throw new Error('Signing algorithm not supported');
-  }
-
-  const publicKey = SECP256K1Client.derivePublicKey(privateKey);
-
-  if (!subject) {
-    subject = {publicKey};
-  }
-
-  if (!issuer) {
-    issuer = {publicKey};
-  }
-
-  const tokenSigner = new TokenSigner(signingAlgorithm, privateKey);
-
-  const payload = {
-    jti: makeUUID4(),
-    iat: issuedAt.toISOString(),
-    exp: expiresAt.toISOString(),
-    subject,
-    issuer,
-    claim: profile,
-  };
-
-  return tokenSigner.sign(payload);
-}
-function nextYear() {
-  return new Date(new Date().setFullYear(new Date().getFullYear() + 1));
-}
-function makeUUID4() {
-  let d = new Date().getTime();
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
-    const r = (d + Math.random() * 16) % 16 | 0;
-    d = Math.floor(d / 16);
-    return (c === 'x' ? r : (r & 0x3) | 0x8).toString(16);
-  });
-}
-
-const sendUsernameToRegistrar = async ({
-  username,
-  subdomain,
-  zoneFile,
-  identity,
-}: any) => {
-  const {registerUrl, apiKey, addressVersion} = registrars[subdomain];
-  const registrationRequestBody = JSON.stringify({
-    name: username,
-    owner_address: c32check.b58ToC32(identity.address, addressVersion),
-    zonefile: zoneFile,
-  });
-
-  const headers = new Headers({
-    Accept: 'application/json',
-    'Content-Type': 'application/json',
-  });
-  if (apiKey) {
-    headers.set('Authorization', `bearer ${apiKey}`);
-  }
-
-  const response = await fetch(registerUrl, {
-    method: 'POST',
-    headers,
-    body: registrationRequestBody,
-  });
-
-  if (!response.ok) {
-    return Promise.reject({
-      error: 'Failed to register username',
-      status: response.status,
-    });
-  }
-
-  return response.json();
-};
-function makeProfileZoneFile(origin: string, tokenFileUrl: string): string {
-  if (tokenFileUrl.indexOf('://') < 0) {
-    throw new Error('Invalid token file url');
-  }
-
-  const urlScheme = tokenFileUrl.split('://')[0];
-  const urlParts = tokenFileUrl.split('://')[1].split('/');
-  const domain = urlParts[0];
-  const pathname = `/${urlParts.slice(1).join('/')}`;
-
-  const zoneFile = {
-    $origin: origin,
-    $ttl: 3600,
-    uri: [
-      {
-        name: '_http._tcp',
-        priority: 10,
-        weight: 1,
-        target: `${urlScheme}://${domain}${pathname}`,
-      },
-    ],
-  };
-
-  const zoneFileTemplate = '{$origin}\n{$ttl}\n{uri}\n';
-
-  return makeZoneFile(zoneFile, zoneFileTemplate);
-}
