@@ -66,7 +66,7 @@ const Login: React.FC = () => {
             resetNavigation(navigationDispatch, 'CreateWallet');
           }}
           style={[styles.loginButton]}>
-          <Text style={styles.buttonText}>Get your secrete key</Text>
+          <Text style={styles.buttonText}>Get your secret key</Text>
           <Image
             style={styles.loginLogo}
             source={require('../../assets/key-icon.png')}

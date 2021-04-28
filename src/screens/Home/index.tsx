@@ -59,7 +59,7 @@ const Home: React.FC = () => {
       }
     });
     const subscription = DeviceEventEmitter.addListener('url', (e: any) => {
-      if (e.url && e.options) {
+      if (e.url) {
         const queryStr = e.url.split(':');
         if (queryStr.length > 1) {
           const parts = queryStr[1].split('=');
