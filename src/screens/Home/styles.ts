@@ -93,4 +93,17 @@ export const styles = StyleSheet.create({
     marginBottom: 15,
     textAlign: 'center',
   },
+  text: {
+    color: '#707070',
+    fontSize: 20,
+    marginLeft: 10,
+  },
+  actionButton: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    borderBottomColor: '#707070',
+    borderBottomWidth: 1,
+    paddingVertical: 16,
+  },
 });

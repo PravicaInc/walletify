@@ -13,10 +13,13 @@ import {
 } from 'react-native';
 import {styles} from './styles';
 import {useNavigation} from 'react-navigation-hooks';
-import {resetNavigation} from '../../../routes';
+import {popNavigation, resetNavigation} from '../../../routes';
 import {useDispatch, useSelector} from 'react-redux';
 import {selectCurrentWallet} from '../../store/wallet/selectors';
-import {doSetMagicRecoveryCode} from '../../store/onboarding/actions';
+import {
+  doSaveSecretKey,
+  doSetMagicRecoveryCode,
+} from '../../store/onboarding/actions';
 import {doStoreSeed} from '../../store/wallet';
 import {DEFAULT_PASSWORD} from '../../store/onboarding/types';
 import {TextInput} from 'react-native-gesture-handler';
@@ -31,7 +34,7 @@ const SeedPhrase: React.FC = () => {
   const wallet = useSelector(selectCurrentWallet);
   useEffect(() => {
     if (wallet) {
-      resetNavigation(dispatch, 'Home');
+      resetNavigation(dispatch, 'CreatePin');
     }
   }, [wallet]);
 
@@ -45,17 +48,14 @@ const SeedPhrase: React.FC = () => {
         setLoading(false);
         return;
       }
-      // if (parsedKeyInput.split(' ').length <= 1) {
-      //   currentDispatch(doSetMagicRecoveryCode(parsedKeyInput));
-      //   return;
-      // }
       const currentWallet = await doStoreSeed(parsedKeyInput, DEFAULT_PASSWORD)(
         currentDispatch,
         () => ({}),
         {},
       );
+      currentDispatch(doSaveSecretKey(parsedKeyInput));
       if (currentWallet) {
-        resetNavigation(dispatch, 'Home');
+        resetNavigation(dispatch, 'CreatePin');
       }
     } catch (error) {
       setSeedError("The Secret Key you've entered is invalid");
@@ -63,6 +63,9 @@ const SeedPhrase: React.FC = () => {
     }
     setLoading(false);
   };
+
+  const goBack = () => popNavigation(dispatch);
+
   return (
     <>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
@@ -75,6 +78,15 @@ const SeedPhrase: React.FC = () => {
           />
           <KeyboardAvoidingView behavior={'position'}>
             <View style={styles.card}>
+              <TouchableOpacity
+                onPress={goBack}
+                style={[styles.cardItem, {marginBottom: 30}]}>
+                <Image
+                  style={{width: 25, height: 15, marginRight: 16}}
+                  resizeMode="contain"
+                  source={require('../../assets/back_arrow.png')}
+                />
+              </TouchableOpacity>
               <Text style={styles.description}>Enter your Seed Phrase</Text>
               <TextInput
                 placeholder={'Type or paste your seed phrase here'}

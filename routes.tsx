@@ -4,6 +4,8 @@ import {
   createAppContainer,
   StackActions,
   NavigationActions,
+  NavigationPushActionPayload,
+  NavigationPopActionPayload,
 } from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 import Login from './src/screens/Login';
@@ -13,6 +15,7 @@ import Home from './src/screens/Home';
 import CreateWallet from './src/screens/CreateWallet';
 import CreatePin from './src/screens/CreatePin';
 import Username from './src/screens/Username';
+import EditPinCode from './src/screens/EditPinCode';
 
 const ChatPageNavigator = createStackNavigator(
   {
@@ -58,6 +61,12 @@ const ChatPageNavigator = createStackNavigator(
         header: () => null,
       },
     },
+    EditPinCode: {
+      screen: EditPinCode,
+      navigationOptions: {
+        header: () => null,
+      },
+    },
   },
   {
     initialRouteName: 'Splash',
@@ -73,6 +82,20 @@ export const resetNavigation = (dispatch: any, routeName: string) => {
       actions: [NavigationActions.navigate({routeName})],
     }),
   );
+};
+
+export const pushNavigation = (
+  dispatch: any,
+  navigationOptions: NavigationPushActionPayload,
+) => {
+  dispatch(StackActions.push(navigationOptions));
+};
+
+export const popNavigation = (
+  dispatch: any,
+  navigationOptions?: NavigationPopActionPayload,
+) => {
+  dispatch(StackActions.pop(navigationOptions));
 };
 
 export default AppNavigator;

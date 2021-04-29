@@ -3,35 +3,40 @@ import React, {useState} from 'react';
 import {
   ActivityIndicator,
   Image,
-  Keyboard,
   KeyboardAvoidingView,
+  ScrollView,
   Text,
   TouchableOpacity,
-  TouchableWithoutFeedback,
   View,
 } from 'react-native';
 import {styles} from './styles';
 import {useDispatch, useSelector} from 'react-redux';
-import {selectSecretKey} from '../../store/onboarding/selectors';
 import {
   CodeField,
   useBlurOnFulfill,
   useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
-import {resetNavigation} from '../../../routes';
+import {popNavigation, resetNavigation} from '../../../routes';
 import {useNavigation} from 'react-navigation-hooks';
 import {doStoreSeed} from '../../store/wallet';
+import {decrypt} from '@stacks/keychain';
+import {selectCurrentWallet} from '../../store/wallet/selectors';
 
-const CreatePin: React.FC = () => {
-  const secretKey = useSelector(selectSecretKey);
+const EditPinCode: React.FC = () => {
   const currentDispatch = useDispatch();
+  const wallet = useSelector(selectCurrentWallet);
   const [enableMask, setEnableMask] = useState(true);
   const [value, setValue] = useState('');
+  const [firstValue, setFirstValue] = useState('');
   const [secondValue, setSecondValue] = useState('');
   const [status, setStatus] = useState('initial');
   const ref = useBlurOnFulfill({value, cellCount: 4});
   const refSecond = useBlurOnFulfill({secondValue, cellCount: 4});
   const [error, setError] = useState('');
+  const [firstProps, getFirstCellOnLayoutHandler] = useClearByFocusCell({
+    firstValue,
+    setFirstValue,
+  });
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
     setValue,
@@ -73,10 +78,6 @@ const CreatePin: React.FC = () => {
     if (symbol) {
       textChild = enableMask ? '•' : symbol;
     }
-    // else if (isFocused) {
-    //   textChild = <Cursor />;
-    // }
-
     return (
       <Text
         key={index}
@@ -87,39 +88,98 @@ const CreatePin: React.FC = () => {
     );
   };
 
-  const onSubmit = async () => {
-    setLoadingStatus();
-    if (value === secondValue) {
-      setError('');
-      const currentWallet = await doStoreSeed(secretKey as string, value)(
-        currentDispatch,
-        () => ({}),
-        {},
-      );
-      if (currentWallet && currentWallet.identities[0].defaultUsername) {
-        resetNavigation(dispatch, 'Home');
-      } else {
-        resetNavigation(dispatch, 'Username');
-      }
-    } else {
-      setErrorStatus();
-      setError('Seems your pincodes are not same');
+  const renderFirstCell = ({index, symbol, isFocused}) => {
+    let textChild = null;
+
+    if (symbol) {
+      textChild = enableMask ? '•' : symbol;
     }
+    return (
+      <Text
+        key={index}
+        style={[styles.cell, isFocused && styles.focusCell]}
+        onLayout={getFirstCellOnLayoutHandler(index)}>
+        {textChild}
+      </Text>
+    );
   };
 
+  const onSubmit = async () => {
+    setLoadingStatus();
+    try {
+      const decryptedKey = await decrypt(
+        wallet?.encryptedBackupPhrase,
+        firstValue,
+      );
+      if (decryptedKey) {
+        if (value === secondValue) {
+          setError('');
+          const currentWallet = await doStoreSeed(
+            decryptedKey as string,
+            value,
+          )(currentDispatch, () => ({}), {});
+          if (currentWallet) {
+            resetNavigation(dispatch, 'Home');
+          }
+        } else {
+          setErrorStatus();
+          setError('Seems your pincodes are not same');
+        }
+      }
+    } catch (error) {
+      setErrorStatus();
+      setError('Something went wrong');
+    }
+  };
+  
+  const goBack = () => popNavigation(dispatch);
   return (
     <>
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <ScrollView keyboardShouldPersistTaps={'handled'} accessible={false}>
         <View style={styles.container}>
-          <KeyboardAvoidingView behavior={'position'}>
+          <KeyboardAvoidingView behavior={'padding'}>
             <View style={styles.card}>
+              <TouchableOpacity
+                onPress={goBack}
+                style={[styles.cardItem, {marginBottom: 30}]}>
+                <Image
+                  style={{width: 25, height: 15, marginRight: 16}}
+                  resizeMode="contain"
+                  source={require('../../assets/back_arrow.png')}
+                />
+              </TouchableOpacity>
               <Text style={styles.title}>Your Secret Key</Text>
               <Text style={styles.description}>
                 Here’s your Secret Key: 12 words that prove it’s you when you
                 want to use on a new device. Once lost it’s lost forever, so
                 save it somewhere you won’t forget.
               </Text>
-              <Text style={styles.confirmPinCode}>Enter your pin code</Text>
+              <Text style={styles.confirmPinCode}>Enter current pin code</Text>
+              <View
+                style={[
+                  styles.fieldRow,
+                  {
+                    borderBottomWidth: 1,
+                    borderBottomColor: 'grey',
+                    paddingBottom: 16,
+                    marginBottom: 16,
+                  },
+                ]}>
+                <CodeField
+                  ref={ref}
+                  {...props}
+                  value={firstValue}
+                  onChangeText={setFirstValue}
+                  cellCount={4}
+                  keyboardType="number-pad"
+                  textContentType="oneTimeCode"
+                  renderCell={renderFirstCell}
+                />
+                <Text style={styles.toggle} onPress={toggleMask}>
+                  {enableMask ? '🙈' : '🐵'}
+                </Text>
+              </View>
+              <Text style={styles.confirmPinCode}>Enter new pin code</Text>
               <View style={styles.fieldRow}>
                 <CodeField
                   ref={ref}
@@ -168,9 +228,9 @@ const CreatePin: React.FC = () => {
             </TouchableOpacity>
           </KeyboardAvoidingView>
         </View>
-      </TouchableWithoutFeedback>
+      </ScrollView>
     </>
   );
 };
 
-export default CreatePin;
+export default EditPinCode;

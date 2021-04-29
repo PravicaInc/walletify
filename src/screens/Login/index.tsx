@@ -3,7 +3,7 @@ import React from 'react';
 import {Image, Text, TouchableOpacity, View} from 'react-native';
 import {styles} from './styles';
 import {useNavigation} from 'react-navigation-hooks';
-import {resetNavigation} from '../../../routes';
+import {pushNavigation, resetNavigation} from '../../../routes';
 import {doCreateSecretKey} from '../../store/onboarding/actions';
 import {useDispatch} from 'react-redux';
  
@@ -12,16 +12,14 @@ const Login: React.FC = () => {
   const dispatch = useDispatch();
 
   const onSubmit = () => {
-    resetNavigation(navigationDispatch, 'SeedPhrase');
+    pushNavigation(navigationDispatch, {
+      routeName: 'SeedPhrase',
+    });
   };
 
   return (
     <>
       <View style={styles.container}>
-        {/* <Image
-          style={styles.pravicaLogo}
-          source={require('../../assets/login-header.png')}
-        /> */}
         <View style={styles.card}>
           <View style={styles.flexRow}>
             <Image

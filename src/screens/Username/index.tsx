@@ -24,7 +24,7 @@ import {doFinishSignIn, doSetUsername} from '../../store/onboarding/actions';
 import {didGenerateWallet} from '../../store/wallet';
 import {styles} from '../CreateWallet/styles';
 import {TextInput} from 'react-native-gesture-handler';
-import {resetNavigation} from '../../../routes';
+import {popNavigation, resetNavigation} from '../../../routes';
 import {theme} from '../../../theme';
 import {useNavigation} from 'react-navigation-hooks';
 
@@ -50,8 +50,8 @@ const errorTextMap = {
 const Username: React.FC<{}> = () => {
   const {wallet} = useWallet();
   const dispatch = useDispatch();
-  const {dispatch: navigationDispatch} = useNavigation();
-
+  const {dispatch: navigationDispatch, getParam} = useNavigation();
+  const isNewId = getParam('isNewId');
   const [error, setError] = useState<
     IdentityNameValidityError | ErrorReason | null
   >(null);
@@ -87,8 +87,13 @@ const Username: React.FC<{}> = () => {
 
     let identity: Identity;
     let identityIndex: number;
-    identity = wallet.identities[0];
-    identityIndex = 0;
+    if (!isNewId) {
+      identity = wallet.identities[0];
+      identityIndex = 0;
+    } else {
+      // identity = await wallet.createNewIdentity(confirmationPin);
+      // identityIndex = wallet.identities.length - 1;
+    }
     try {
       await registerSubdomain({
         username,
@@ -111,6 +116,7 @@ const Username: React.FC<{}> = () => {
         },
       });
       resetNavigation(navigationDispatch, 'Home');
+    // eslint-disable-next-line no-catch-shadow
     } catch (error) {
       if (error.status === 409) {
         setError('rateLimited');
@@ -120,12 +126,22 @@ const Username: React.FC<{}> = () => {
       setErrorStatus();
     }
   };
+  const goBack = () => popNavigation(navigationDispatch);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <View style={[styles.container, {backgroundColor: '#F4F4F4'}]}>
         <KeyboardAvoidingView behavior={'position'}>
           <View style={styles.card}>
+            {isNewId && <TouchableOpacity
+                onPress={goBack}
+                style={[styles.cardItem, {marginBottom: 30}]}>
+                <Image
+                  style={{width: 25, height: 15, marginRight: 16}}
+                  resizeMode="contain"
+                  source={require('../../assets/back_arrow.png')}
+                />
+              </TouchableOpacity>}
             <Image
               style={styles.imageHeader}
               source={require('../../assets/username-registration.png')}

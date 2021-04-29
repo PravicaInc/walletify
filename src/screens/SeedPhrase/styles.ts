@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
   card: {
     backgroundColor: 'white',
     padding: 35,
-    paddingTop: 50,
+    paddingTop: 20,
     paddingBottom: 53,
     borderRadius: 20,
   },
@@ -41,4 +41,10 @@ export const styles = StyleSheet.create({
   loginLogo: {width: 24, height: 24, marginRight: 9},
   buttonText: {color: theme.colors.white, fontSize: 14},
   seetTextRed: {color: theme.colors.danger, fontSize: 14, marginTop: 8},
+  cardItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '80%',
+    marginVertical: 10,
+  },
 });

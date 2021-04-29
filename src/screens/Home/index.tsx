@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, {useEffect, useState} from 'react';
+import React, {createRef, useEffect, useState} from 'react';
 import {
   DeviceEventEmitter,
   FlatList,
@@ -10,10 +10,11 @@ import {
   View,
   NativeEventEmitter,
   NativeModules,
+  Linking,
 } from 'react-native';
 import {styles} from './styles';
 import {useNavigation} from 'react-navigation-hooks';
-import {resetNavigation} from '../../../routes';
+import {pushNavigation, resetNavigation} from '../../../routes';
 import {useSelector} from 'react-redux';
 import {selectCurrentWallet} from '../../store/wallet/selectors';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -31,6 +32,10 @@ import {
 import {IdentityCard} from '../../components/IdentityCard';
 import {useInitialURL} from '../../hooks/useInitialURL';
 import AuthModal from '../AuthModal';
+import ActionSheet from 'react-native-actions-sheet';
+
+const actionSheetRef = createRef();
+
 const {EventEmitterModule} = NativeModules;
 
 const Home: React.FC = () => {
@@ -38,6 +43,7 @@ const Home: React.FC = () => {
   const wallet = useSelector(selectCurrentWallet);
   const currentDispatch = useDispatch();
   const logout = () => {
+    actionSheetRef.current?.setModalVisible(false);
     currentDispatch(doSignOut());
     currentDispatch(doSetOnboardingPath(undefined));
     AsyncStorage.clear();
@@ -83,6 +89,9 @@ const Home: React.FC = () => {
     }
   }, [initialUrl, processing, authRequest]);
 
+  const settings = () => {
+    actionSheetRef.current?.setModalVisible(true);
+  };
   return (
     <>
       <ImageBackground
@@ -93,11 +102,11 @@ const Home: React.FC = () => {
             style={styles.pravicaLogo}
             source={require('../../assets/login-header.png')}
           />
-          <TouchableOpacity onPress={logout} style={styles.logoutButton}>
-            <Text style={styles.buttonText}>Logout</Text>
+          <TouchableOpacity onPress={settings} style={styles.logoutButton}>
+            <Text style={styles.buttonText}>Settings</Text>
             <Image
               style={styles.logoutLogo}
-              source={require('../../assets/logout.png')}
+              source={require('../../assets/settings.png')}
             />
           </TouchableOpacity>
         </View>
@@ -124,6 +133,62 @@ const Home: React.FC = () => {
           name={name}
           setModalVisible={setModalVisible}
         />
+        <ActionSheet ref={actionSheetRef}>
+          <View style={{padding: 16}}>
+            <TouchableOpacity
+              onPress={() => {
+                actionSheetRef.current?.setModalVisible(false);
+                pushNavigation(dispatch, {
+                  routeName: 'Username',
+                  params: {
+                    isNewId: true,
+                  },
+                });
+              }}
+              style={styles.actionButton}>
+              <Image
+                style={styles.logoutLogo}
+                source={require('../../assets/person.png')}
+              />
+              <Text style={styles.text}>Add new ID</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                actionSheetRef.current?.setModalVisible(false);
+                pushNavigation(dispatch, {routeName: 'EditPinCode'});
+              }}
+              style={styles.actionButton}>
+              <Image
+                style={styles.logoutLogo}
+                source={require('../../assets/pin-settings.png')}
+              />
+              <Text style={styles.text}>Edit Pin</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                actionSheetRef.current?.setModalVisible(false);
+                Linking.openURL(
+                  'https://pravica.atlassian.net/servicedesk/customer/portals',
+                );
+              }}
+              style={styles.actionButton}>
+              <Image
+                style={styles.logoutLogo}
+                source={require('../../assets/support.png')}
+              />
+              <Text style={styles.text}>Support</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={logout}
+              style={[styles.actionButton, {borderBottomWidth: 0}]}>
+              <Image
+                style={styles.logoutLogo}
+                source={require('../../assets/logout-grey.png')}
+              />
+              <Text style={styles.text}>Logout</Text>
+            </TouchableOpacity>
+          </View>
+        </ActionSheet>
       </ImageBackground>
     </>
   );
