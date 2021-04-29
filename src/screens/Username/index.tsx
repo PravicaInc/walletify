@@ -29,6 +29,7 @@ import {theme} from '../../../theme';
 import {useNavigation} from 'react-navigation-hooks';
 import {ConfirmationPin} from '../../components/ConfirmationPin';
 import {selectCurrentWallet} from '../../store/wallet/selectors';
+import {DEFAULT_PASSWORD} from "../../store/onboarding/types";
 
 const identityNameLengthError =
   'Your username should be at least 8 characters, with a maximum of 37 characters.';
@@ -54,7 +55,6 @@ const Username: React.FC<{}> = () => {
   const dispatch = useDispatch();
   const {dispatch: navigationDispatch, getParam} = useNavigation();
   const isNewId = getParam('isNewId');
-  const [value, setValue] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [error, setError] = useState<
     IdentityNameValidityError | ErrorReason | null
@@ -86,14 +86,13 @@ const Username: React.FC<{}> = () => {
     if (isNewId) {
       setHasAttemptedSubmit(false);
       setStatus('initial');
-      setValue('');
       setShowModal(true);
     } else {
       onSubmit();
     }
   };
 
-  const onSubmit = async () => {
+  const onSubmit = async (password?: string) => {
     setHasAttemptedSubmit(true);
     setStatus('loading');
     setLoadingStatus();
@@ -110,7 +109,7 @@ const Username: React.FC<{}> = () => {
         identity = wallet.identities[0];
         identityIndex = 0;
       } else {
-        identity = await wallet.createNewIdentity(value);
+        identity = await wallet.createNewIdentity(password || DEFAULT_PASSWORD);
         identityIndex = wallet.identities.length - 1;
       }
       await registerSubdomain({
@@ -225,9 +224,7 @@ const Username: React.FC<{}> = () => {
         {showModal && (
           <ConfirmationPin
             onSubmit={onSubmit}
-            setValue={setValue}
             setShowModal={setShowModal}
-            value={value}
             wallet={wallet as Wallet}
             showModal={showModal}
           />

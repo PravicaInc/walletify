@@ -16,18 +16,17 @@ import {
 import {decrypt, Wallet} from '@stacks/keychain';
 
 interface Props {
-  onSubmit: () => void;
-  value: string;
+  onSubmit: (password: string) => void;
   showModal: boolean;
   setShowModal: (showModal: boolean) => void;
-  setValue: any;
   wallet: Wallet;
 }
 export const ConfirmationPin: React.FC<Props> = (props: Props) => {
-  const ref = useBlurOnFulfill({value: props.value, cellCount: 4});
+  const [value, setValue] = useState('');
+  const ref = useBlurOnFulfill({value, cellCount: 4});
   const [prop, getCellOnLayoutHandler] = useClearByFocusCell({
-    value: props.value,
-    setValue: props.setValue,
+    value,
+    setValue,
   });
   const [err, setError] = useState('');
 
@@ -39,7 +38,11 @@ export const ConfirmationPin: React.FC<Props> = (props: Props) => {
     return (
       <Text
         key={index}
-        style={[styles.cell, isFocused && styles.focusCell, err.length > 0 && styles.errCell]}
+        style={[
+          styles.cell,
+          isFocused && styles.focusCell,
+          err.length > 0 && styles.errCell,
+        ]}
         onLayout={getCellOnLayoutHandler(index)}>
         {textChild}
       </Text>
@@ -54,15 +57,12 @@ export const ConfirmationPin: React.FC<Props> = (props: Props) => {
         text,
       );
       if (decryptedKey) {
-        console.warn(decryptedKey);
-        props.onSubmit();
-        props.setValue('');
+        props.onSubmit(text);
       } else {
         throw new Error();
       }
     } catch (error) {
       setError('Invalid pin code');
-      console.warn(error);
     }
   };
 
@@ -79,9 +79,10 @@ export const ConfirmationPin: React.FC<Props> = (props: Props) => {
             props.setShowModal(!props.showModal);
           }}>
           <View style={[styles.centeredView]}>
-            <View style={{backgroundColor: '#fff', padding: 20, borderRadius: 20,}}>
+            <View
+              style={{backgroundColor: '#fff', padding: 20, borderRadius: 20}}>
               <TouchableOpacity
-                style={[styles.button, styles.buttonClose]}
+                style={styles.button}
                 onPress={() => props.setShowModal(!props.showModal)}>
                 <Image
                   style={styles.close}
@@ -92,10 +93,10 @@ export const ConfirmationPin: React.FC<Props> = (props: Props) => {
               <CodeField
                 ref={ref}
                 {...prop}
-                value={props.value}
+                value={value}
                 onChangeText={(text) => {
                   setError('');
-                  props.setValue(text);
+                  setValue(text);
                   if (text.length === 4) {
                     submit(text);
                   }
