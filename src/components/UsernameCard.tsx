@@ -14,9 +14,10 @@ import LinearGradient from 'react-native-linear-gradient';
 interface Props {
   identity: Identity;
   identityIndex: number;
+  dismiss: () => void;
 }
 export const UsernameCard: React.FC<Props> = (props: Props) => {
-  const {identity, identityIndex} = props;
+  const {identity, identityIndex, dismiss} = props;
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -30,7 +31,7 @@ export const UsernameCard: React.FC<Props> = (props: Props) => {
         <TouchableOpacity
           onPress={() => {
             setIsLoading(true);
-            dispatch(doFinishSignIn({identityIndex}));
+            dispatch(doFinishSignIn({identityIndex}, dismiss));
           }}
           style={styles.item}>
           <Text style={styles.blockstackIdText}>

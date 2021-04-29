@@ -33,7 +33,7 @@ import {
   // getAddressFromPrivateKey,
   TransactionVersion,
 } from '@stacks/transactions';
-import {gaiaUrl, USERNAMES_ENABLED} from "../../../constants";
+import {gaiaUrl, USERNAMES_ENABLED} from '../../../constants';
 interface FinalizeAuthParams {
   decodedAuthRequest: DecodedAuthRequest;
   authResponse: string;
@@ -42,12 +42,10 @@ interface FinalizeAuthParams {
   appURLScheme: string;
 }
 
-export const finalizeAuthResponse = ({
-  decodedAuthRequest,
-  authResponse,
-  appName,
-  appURLScheme,
-}: FinalizeAuthParams) => {
+export const finalizeAuthResponse = (
+  {decodedAuthRequest, authResponse, appName, appURLScheme}: FinalizeAuthParams,
+  dismissCb,
+) => {
   const dangerousUri = decodedAuthRequest.redirect_uri;
   if (!isValidUrl(dangerousUri) || dangerousUri.includes('javascript')) {
     throw new Error('Cannot proceed auth with malformed url');
@@ -62,7 +60,13 @@ export const finalizeAuthResponse = ({
         onPress: () => console.log('Cancel Pressed'),
         style: 'cancel',
       },
-      {text: 'Accept', onPress: () => Linking.openURL(redirect)},
+      {
+        text: 'Accept',
+        onPress: () => {
+          Linking.openURL(redirect);
+          dismissCb();
+        },
+      },
     ],
   );
   return;
@@ -254,6 +258,7 @@ export function doDeleteAuthRequest(): ThunkAction<
 
 export function doFinishSignIn(
   {identityIndex}: {identityIndex: number} = {identityIndex: 0},
+  dismissCb,
 ): ThunkAction<Promise<void>, AppState, {}, OnboardingActions | WalletActions> {
   return async (dispatch, getState) => {
     const state = getState();
@@ -299,15 +304,18 @@ export function doFinishSignIn(
       scopes: decodedAuthRequest.scopes,
       stxAddress,
     });
-    finalizeAuthResponse({
-      decodedAuthRequest,
-      authRequest,
-      authResponse,
-      appName,
-      appURLScheme,
-      bundleID,
-      packageName,
-    });
+    finalizeAuthResponse(
+      {
+        decodedAuthRequest,
+        authRequest,
+        authResponse,
+        appName,
+        appURLScheme,
+        bundleID,
+        packageName,
+      },
+      dismissCb,
+    );
     dispatch(didGenerateWallet(wallet));
   };
 }

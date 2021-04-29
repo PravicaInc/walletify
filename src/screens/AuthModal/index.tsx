@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React from 'react';
+import React, { useCallback } from 'react';
 import {
   FlatList,
   Image,
@@ -26,6 +26,10 @@ interface Props {
 const AuthModal: React.FC<Props> = (props) => {
   const dispatch = useDispatch();
   const {modalVisible, setModalVisible, icon, name, identities} = props;
+  const dismiss = useCallback(() => {
+    dispatch(doDeleteAuthRequest());
+    setModalVisible(!modalVisible);
+  }, [modalVisible]);
   return (
     <>
       <Modal
@@ -57,16 +61,13 @@ const AuthModal: React.FC<Props> = (props) => {
               style={styles.flatlist}
               data={identities}
               renderItem={({index, item}) => (
-                <UsernameCard identity={item} identityIndex={index} />
+                <UsernameCard dismiss={dismiss} identity={item} identityIndex={index} />
               )}
               keyExtractor={(item, index) => index.toString()}
               ListFooterComponent={
                 <TouchableOpacity
                   style={[styles.loginButton]}
-                  onPress={() => {
-                    dispatch(doDeleteAuthRequest());
-                    setModalVisible(!modalVisible);
-                  }}>
+                  onPress={dismiss}>
                   <Text style={styles.buttonText}>Cancel Authentication</Text>
                   <Image
                     source={require('../../assets/cancel.png')}

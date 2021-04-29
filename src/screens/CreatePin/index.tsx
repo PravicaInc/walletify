@@ -53,9 +53,6 @@ const CreatePin: React.FC = () => {
     if (symbol) {
       textChild = enableMask ? '•' : symbol;
     }
-    // else if (isFocused) {
-    // textChild = <Cursor />;
-    // }
 
     return (
       <Text

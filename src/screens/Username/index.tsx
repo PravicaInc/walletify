@@ -1,12 +1,13 @@
-import React, {useState} from 'react';
+import React, {createRef, useState} from 'react';
 
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
 import {
   Identity,
   IdentityNameValidityError,
   validateSubdomain,
   registerSubdomain,
+  Wallet,
 } from '@stacks/keychain';
 import {
   ActivityIndicator,
@@ -18,15 +19,16 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import {useWallet} from '../../hooks/useWallet';
 import {gaiaUrl, Subdomain} from '../../../constants';
-import {doFinishSignIn, doSetUsername} from '../../store/onboarding/actions';
+import {doSetUsername} from '../../store/onboarding/actions';
 import {didGenerateWallet} from '../../store/wallet';
 import {styles} from '../CreateWallet/styles';
 import {TextInput} from 'react-native-gesture-handler';
 import {popNavigation, resetNavigation} from '../../../routes';
 import {theme} from '../../../theme';
 import {useNavigation} from 'react-navigation-hooks';
+import {ConfirmationPin} from '../../components/ConfirmationPin';
+import {selectCurrentWallet} from '../../store/wallet/selectors';
 
 const identityNameLengthError =
   'Your username should be at least 8 characters, with a maximum of 37 characters.';
@@ -48,10 +50,12 @@ const errorTextMap = {
 };
 
 const Username: React.FC<{}> = () => {
-  const {wallet} = useWallet();
+  const wallet = useSelector(selectCurrentWallet);
   const dispatch = useDispatch();
   const {dispatch: navigationDispatch, getParam} = useNavigation();
   const isNewId = getParam('isNewId');
+  const [value, setValue] = useState('');
+  const [showModal, setShowModal] = useState(false);
   const [error, setError] = useState<
     IdentityNameValidityError | ErrorReason | null
   >(null);
@@ -69,10 +73,9 @@ const Username: React.FC<{}> = () => {
     setUsername(value || '');
   };
 
-  const onSubmit = async () => {
+  const setSubmit = async () => {
     setHasAttemptedSubmit(true);
     setLoadingStatus();
-
     const validationErrors = await validateSubdomain(username, Subdomain);
 
     if (validationErrors !== null) {
@@ -80,6 +83,21 @@ const Username: React.FC<{}> = () => {
       setErrorStatus();
       return;
     }
+    if (isNewId) {
+      setHasAttemptedSubmit(false);
+      setStatus('initial');
+      setValue('');
+      setShowModal(true);
+    } else {
+      onSubmit();
+    }
+  };
+
+  const onSubmit = async () => {
+    setHasAttemptedSubmit(true);
+    setStatus('loading');
+    setLoadingStatus();
+    setShowModal(false);
     if (!wallet) {
       dispatch(doSetUsername(username));
       return;
@@ -87,14 +105,14 @@ const Username: React.FC<{}> = () => {
 
     let identity: Identity;
     let identityIndex: number;
-    if (!isNewId) {
-      identity = wallet.identities[0];
-      identityIndex = 0;
-    } else {
-      // identity = await wallet.createNewIdentity(confirmationPin);
-      // identityIndex = wallet.identities.length - 1;
-    }
     try {
+      if (!isNewId) {
+        identity = wallet.identities[0];
+        identityIndex = 0;
+      } else {
+        identity = await wallet.createNewIdentity(value);
+        identityIndex = wallet.identities.length - 1;
+      }
       await registerSubdomain({
         username,
         subdomain: Subdomain,
@@ -103,7 +121,7 @@ const Username: React.FC<{}> = () => {
       });
       await dispatch(didGenerateWallet(wallet));
       const gaiaConfig = await wallet.createGaiaConfig(gaiaUrl);
-      await wallet.getOrCreateConfig({ gaiaConfig, skipUpload: true });
+      await wallet.getOrCreateConfig({gaiaConfig, skipUpload: true});
       await wallet.updateConfigWithAuth({
         identityIndex,
         gaiaConfig,
@@ -115,9 +133,12 @@ const Username: React.FC<{}> = () => {
           name: 'Pravica',
         },
       });
+      await dispatch(didGenerateWallet(wallet));
       resetNavigation(navigationDispatch, 'Home');
-    // eslint-disable-next-line no-catch-shadow
+      // eslint-disable-next-line no-catch-shadow
     } catch (error) {
+      setShowModal(false);
+      setStatus('initial');
       if (error.status === 409) {
         setError('rateLimited');
       } else {
@@ -133,7 +154,8 @@ const Username: React.FC<{}> = () => {
       <View style={[styles.container, {backgroundColor: '#F4F4F4'}]}>
         <KeyboardAvoidingView behavior={'position'}>
           <View style={styles.card}>
-            {isNewId && <TouchableOpacity
+            {isNewId && (
+              <TouchableOpacity
                 onPress={goBack}
                 style={[styles.cardItem, {marginBottom: 30}]}>
                 <Image
@@ -141,7 +163,8 @@ const Username: React.FC<{}> = () => {
                   resizeMode="contain"
                   source={require('../../assets/back_arrow.png')}
                 />
-              </TouchableOpacity>}
+              </TouchableOpacity>
+            )}
             <Image
               style={styles.imageHeader}
               source={require('../../assets/username-registration.png')}
@@ -183,7 +206,7 @@ const Username: React.FC<{}> = () => {
           </View>
           <TouchableOpacity
             disabled={isLoading}
-            onPress={onSubmit}
+            onPress={setSubmit}
             style={styles.loginButton}>
             <>
               <Text style={styles.buttonText}>Continue</Text>
@@ -198,6 +221,17 @@ const Username: React.FC<{}> = () => {
             </>
           </TouchableOpacity>
         </KeyboardAvoidingView>
+
+        {showModal && (
+          <ConfirmationPin
+            onSubmit={onSubmit}
+            setValue={setValue}
+            setShowModal={setShowModal}
+            value={value}
+            wallet={wallet as Wallet}
+            showModal={showModal}
+          />
+        )}
       </View>
     </TouchableWithoutFeedback>
   );
