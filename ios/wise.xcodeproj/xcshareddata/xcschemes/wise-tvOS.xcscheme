@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-               BuildableName = "PravicaAuthenticator-tvOS.app"
-               BlueprintName = "PravicaAuthenticator-tvOS"
-               ReferencedContainer = "container:PravicaAuthenticator.xcodeproj">
+               BuildableName = "wise-tvOS.app"
+               BlueprintName = "wise-tvOS"
+               ReferencedContainer = "container:wise.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2D02E48F1E0B4A5D006451C7"
-               BuildableName = "PravicaAuthenticator-tvOSTests.xctest"
-               BlueprintName = "PravicaAuthenticator-tvOSTests"
-               ReferencedContainer = "container:PravicaAuthenticator.xcodeproj">
+               BuildableName = "wise-tvOSTests.xctest"
+               BlueprintName = "wise-tvOSTests"
+               ReferencedContainer = "container:wise.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-            BuildableName = "PravicaAuthenticator-tvOS.app"
-            BlueprintName = "PravicaAuthenticator-tvOS"
-            ReferencedContainer = "container:PravicaAuthenticator.xcodeproj">
+            BuildableName = "wise-tvOS.app"
+            BlueprintName = "wise-tvOS"
+            ReferencedContainer = "container:wise.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-            BuildableName = "PravicaAuthenticator-tvOS.app"
-            BlueprintName = "PravicaAuthenticator-tvOS"
-            ReferencedContainer = "container:PravicaAuthenticator.xcodeproj">
+            BuildableName = "wise-tvOS.app"
+            BlueprintName = "wise-tvOS"
+            ReferencedContainer = "container:wise.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
