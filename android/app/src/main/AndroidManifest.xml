@@ -24,7 +24,7 @@
         <action android:name="android.intent.action.VIEW" />
         <category android:name="android.intent.category.DEFAULT" />
         <category android:name="android.intent.category.BROWSABLE" />
-              <data android:scheme="pravicaAuth" />
+              <data android:scheme="https" android:host="wiseapp.id" android:pathPrefix="/download"/>
           </intent-filter>
       </activity>
       <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />

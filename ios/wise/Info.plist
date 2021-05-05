@@ -28,10 +28,10 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>pravicaAuth</string>
+			<string>id.wiseapp</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>pravicaAuth</string>
+				<string>wiseapp</string>
 			</array>
 		</dict>
 	</array>

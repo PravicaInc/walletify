@@ -1,10 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, {createRef, useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
-  DeviceEventEmitter,
   FlatList,
   Image,
-  ImageBackground,
   Text,
   TouchableOpacity,
   View,
@@ -34,14 +32,13 @@ import {useInitialURL} from '../../hooks/useInitialURL';
 import AuthModal from '../AuthModal';
 import ActionSheet from 'react-native-actions-sheet';
 
-const actionSheetRef = createRef();
-
 const {EventEmitterModule} = NativeModules;
 
 const Home: React.FC = () => {
   const {dispatch} = useNavigation();
   const wallet = useSelector(selectCurrentWallet);
   const currentDispatch = useDispatch();
+  const actionSheetRef = useRef<ActionSheet>();
   const logout = () => {
     actionSheetRef.current?.setModalVisible(false);
     currentDispatch(doSignOut());
@@ -60,11 +57,12 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     eventEmitter.addListener('Linking', (event) => {
+      console.warn("linking",event)
       if (event.sourceApplication) {
         setSourceApplication(event.sourceApplication);
       }
     });
-    const subscription = DeviceEventEmitter.addListener('url', (e: any) => {
+    const subscription = Linking.addListener('url', (e: any) => {
       if (e.url) {
         const queryStr = e.url.split(':');
         if (queryStr.length > 1) {
