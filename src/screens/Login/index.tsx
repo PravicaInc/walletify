@@ -4,12 +4,9 @@ import {Image, Text, TouchableOpacity, View} from 'react-native';
 import {styles} from './styles';
 import {useNavigation} from 'react-navigation-hooks';
 import {pushNavigation, resetNavigation} from '../../../routes';
-import {doCreateSecretKey} from '../../store/onboarding/actions';
-import {useDispatch} from 'react-redux';
- 
+
 const Login: React.FC = () => {
   const {dispatch: navigationDispatch} = useNavigation();
-  const dispatch = useDispatch();
 
   const onSubmit = () => {
     pushNavigation(navigationDispatch, {

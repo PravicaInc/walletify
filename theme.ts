@@ -13,7 +13,7 @@ export const theme = {
     description: '#8E8E8E',
     badgeText: '#fff',
     textGreyColor: '#83868B',
-    badgeBackground: '#8E8E8E',
+    badgeBackground: '#5546FF',
     storyBorder: '#00f',
     searchBackground: '#f0f0f0',
     searchText: '#444',

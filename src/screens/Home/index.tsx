@@ -94,38 +94,29 @@ const Home: React.FC = () => {
   };
   return (
     <>
-      <ImageBackground
-        source={require('../../assets/pravica-background.png')}
-        style={styles.container}>
+      <View style={styles.container}>
         <View style={styles.topHeader}>
-          <Image
-            style={styles.pravicaLogo}
-            source={require('../../assets/login-header.png')}
-          />
+          <View>
+            <Image source={require('../../assets/fingerprint.png')} />
+            <Text style={styles.headerText}>Identity</Text>
+          </View>
           <TouchableOpacity onPress={settings} style={styles.logoutButton}>
-            <Text style={styles.buttonText}>Settings</Text>
             <Image
               style={styles.logoutLogo}
               source={require('../../assets/settings.png')}
             />
           </TouchableOpacity>
         </View>
-        <View style={styles.sheetContainer}>
-          <FlatList
-            ListHeaderComponent={
-              <Text style={styles.headerText}>Your Stacks IDs</Text>
-            }
-            style={{padding: 16}}
-            data={wallet?.identities}
-            renderItem={({item}) => (
-              <IdentityCard
-                firstBitcoinAddress={wallet?.firstBitcoinAddress || ''}
-                identity={item}
-              />
-            )}
-            keyExtractor={(item, index) => index.toString()}
-          />
-        </View>
+        <FlatList
+          data={wallet?.identities}
+          renderItem={({item}) => (
+            <IdentityCard
+              firstBitcoinAddress={wallet?.firstBitcoinAddress || ''}
+              identity={item}
+            />
+          )}
+          keyExtractor={(item, index) => index.toString()}
+        />
         <AuthModal
           icon={icon}
           identities={wallet?.identities || []}
@@ -189,7 +180,7 @@ const Home: React.FC = () => {
             </TouchableOpacity>
           </View>
         </ActionSheet>
-      </ImageBackground>
+      </View>
     </>
   );
 };

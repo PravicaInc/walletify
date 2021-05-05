@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {Image} from 'react-native';
 import {
   createAppContainer,
   StackActions,
@@ -16,6 +16,11 @@ import CreateWallet from './src/screens/CreateWallet';
 import CreatePin from './src/screens/CreatePin';
 import Username from './src/screens/Username';
 import EditPinCode from './src/screens/EditPinCode';
+import {theme} from './theme';
+import {createBottomTabNavigator} from 'react-navigation-tabs';
+import Wallet from './src/screens/Wallet';
+import Stacks from './src/screens/Stacks';
+import Encryptions from './src/screens/Encryptions';
 
 const ChatPageNavigator = createStackNavigator(
   {
@@ -55,12 +60,143 @@ const ChatPageNavigator = createStackNavigator(
         header: () => null,
       },
     },
-    Home: {
-      screen: Home,
-      navigationOptions: {
-        header: () => null,
+    Home: createBottomTabNavigator(
+      {
+        Wallet: {
+          screen: Wallet,
+          navigationOptions: {
+            tabBarIcon: ({focused}) => {
+              if (focused) {
+                return (
+                  <Image
+                    style={{width: 35}}
+                    source={require('./src/assets/w-active.png')}
+                    resizeMode={'contain'}
+                  />
+                );
+              } else {
+                return (
+                  <Image
+                    style={{width: 35}}
+                    source={require('./src/assets/w-inactive.png')}
+                    resizeMode={'contain'}
+                  />
+                );
+              }
+            },
+          },
+        },
+        Identities: {
+          screen: Home,
+          navigationOptions: {
+            tabBarIcon: ({focused}) => {
+              if (focused) {
+                return (
+                  <Image
+                    style={{width: 35}}
+                    source={require('./src/assets/i-active.png')}
+                    resizeMode={'contain'}
+                  />
+                );
+              } else {
+                return (
+                  <Image
+                    style={{width: 35}}
+                    source={require('./src/assets/i-inactive.png')}
+                    resizeMode={'contain'}
+                  />
+                );
+              }
+            },
+          },
+        },
+        Stacks: {
+          screen: Stacks,
+          navigationOptions: {
+            tabBarIcon: ({focused}) => {
+              if (focused) {
+                return (
+                  <Image
+                    style={{width: 35}}
+                    source={require('./src/assets/s-active.png')}
+                    resizeMode={'contain'}
+                  />
+                );
+              } else {
+                return (
+                  <Image
+                    style={{width: 35}}
+                    source={require('./src/assets/s-inactive.png')}
+                    resizeMode={'contain'}
+                  />
+                );
+              }
+            },
+          },
+        },
+        Encryption: {
+          screen: Encryptions,
+          navigationOptions: {
+            tabBarIcon: ({focused}) => {
+              if (focused) {
+                return (
+                  <Image
+                    style={{width: 35}}
+                    source={require('./src/assets/e-active.png')}
+                    resizeMode={'contain'}
+                  />
+                );
+              } else {
+                return (
+                  <Image
+                    style={{width: 35}}
+                    source={require('./src/assets/e-inactive.png')}
+                    resizeMode={'contain'}
+                  />
+                );
+              }
+            },
+          },
+        },
       },
-    },
+      {
+        initialRouteName: 'Identities',
+        tabBarOptions: {
+          activeTintColor: theme.colors.primary,
+          inactiveTintColor: theme.colors.textGreyColor,
+          showLabel: false,
+          tabStyle: {
+            backgroundColor: 'transparent',
+          },
+          labelStyle: {
+            fontWeight: 'bold',
+            fontSize: 11,
+          },
+          // indicatorStyle: {
+          //   backgroundColor: theme.colors.tabIndicator
+          // },
+          style: {
+            borderTopRightRadius: 15,
+            borderTopLeftRadius: 15,
+            // paddingBottom: 12,
+            paddingLeft: 35,
+            paddingRight: 35,
+            paddingTop: 12,
+            borderWidth: 0,
+            shadowColor: '#000000',
+            shadowOffset: {height: 4, width: 0},
+            shadowOpacity: 0.75,
+            shadowRadius: 5,
+          },
+        },
+        navigationOptions: {
+          /* HEADER Component
+        The onPress function is to
+        navigate to ContaPage when you click on the ProfilePage picture */
+          header: () => null,
+        },
+      },
+    ),
     EditPinCode: {
       screen: EditPinCode,
       navigationOptions: {
