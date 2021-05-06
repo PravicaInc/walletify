@@ -159,7 +159,7 @@ const CreatePin: React.FC = () => {
               <Text style={styles.errorTextRed}>{error}</Text>
             </View>
             <Pressable
-              disabled={value !== secondValue}
+              disabled={(value !== secondValue) || value === ''}
               onPress={onSubmit}
               style={[
                 styles.loginButton,

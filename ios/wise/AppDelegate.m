@@ -25,6 +25,7 @@ EventEmitterModule *eventEmitterModule;
   self.window.rootViewController = rootViewController;
   eventEmitterModule = [EventEmitterModule allocWithZone:nil];
   [self.window makeKeyAndVisible];
+  [NSThread sleepForTimeInterval:2.0];
   return YES;
 }
 
