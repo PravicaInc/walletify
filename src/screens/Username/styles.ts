@@ -7,7 +7,7 @@ export const styles = StyleSheet.create({
     paddingTop: 100,
     padding: 16,
     alignItems: 'center',
-    backgroundColor: '#F4F4F4',
+    backgroundColor: 'white',
   },
   flexRow: {
     flexDirection: 'row',
@@ -20,7 +20,7 @@ export const styles = StyleSheet.create({
   },
   title: {
     color: '#2C3E50',
-    fontSize: 16,
+    fontSize: 24,
     fontWeight: 'bold',
     width: '80%',
     marginBottom: 5,
@@ -36,8 +36,9 @@ export const styles = StyleSheet.create({
     width: '94%',
   },
   description: {
-    color: theme.colors.textGreyColor,
+    color: theme.colors.black,
     fontSize: 14,
+    opacity: 0.5,
   },
   desc: {
     color: theme.colors.textGreyColor,
@@ -50,9 +51,10 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     flexDirection: 'row',
-    borderRadius: 4,
+    borderRadius: 10,
     width: '90%',
     marginTop: 45,
+    height: 58,
   },
   continueButton: {
     backgroundColor: '#E0E0E0',

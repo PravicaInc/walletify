@@ -32,7 +32,9 @@ export const useCardsIdentity = (username?: string) => {
       };
     }
     return {
-      backgroundColor: 'red',
+      backgroundColor: '#F85A2E',
+      image: require('../assets/identity.png'),
+      text: 'Generic ID',
     };
   }, [username]);
 };

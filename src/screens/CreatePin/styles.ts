@@ -4,7 +4,8 @@ import {theme} from '../../../theme';
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
+    padding: 44,
+    paddingTop: 60,
     backgroundColor: '#F4F4F4',
   },
   pravicaLogo: {width: '50%', resizeMode: 'contain'},
@@ -22,9 +23,10 @@ export const styles = StyleSheet.create({
     borderRadius: 20,
   },
   description: {
-    color: '#7F8C8D',
-    fontSize: 12,
-    fontWeight: '500',
+    color: '#000',
+    fontSize: 14,
+    opacity: 0.5,
+    marginBottom: 10,
   },
   cardItem: {
     flexDirection: 'row',
@@ -40,9 +42,9 @@ export const styles = StyleSheet.create({
   },
   title: {
     color: theme.colors.black,
-    fontSize: 20,
-    fontWeight: '500',
-    marginBottom: 10,
+    fontSize: 24,
+    fontWeight: '700',
+    marginVertical: 10,
   },
   textInput: {
     backgroundColor: '#ECF0F1',
@@ -56,12 +58,12 @@ export const styles = StyleSheet.create({
   },
   loginButton: {
     padding: 16,
-    backgroundColor: '#707070',
     alignItems: 'center',
     justifyContent: 'space-between',
     flexDirection: 'row',
-    borderRadius: 4,
-    marginTop: 50,
+    borderRadius: 10,
+    backgroundColor: theme.colors.badgeBackground,
+    height: 48,
   },
   loginLogo: {width: 24, height: 24, marginRight: 9},
   buttonText: {color: theme.colors.white, fontSize: 14},
@@ -69,19 +71,24 @@ export const styles = StyleSheet.create({
   fieldRow: {
     marginTop: 10,
     flexDirection: 'row',
-    marginLeft: 8,
+    justifyContent: 'space-between',
   },
   cell: {
-    width: 55,
-    height: 55,
-    lineHeight: 55,
+    width: '23%',
+    aspectRatio: 1,
+    // paddingTop: 15,
+    textAlign: 'center',
+    textAlignVertical: 'center',
+    marginLeft: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 12,
+    borderColor: '#DEDEDE',
+    borderWidth: 1,
+  },
+  textChild: {
     fontSize: 30,
     fontWeight: '700',
-    textAlign: 'center',
-    marginLeft: 8,
-    borderRadius: 12,
-    borderColor: '#707070',
-    borderWidth: 1,
   },
   toggle: {
     width: 55,
@@ -98,7 +105,7 @@ export const styles = StyleSheet.create({
     },
     shadowOpacity: 0.9,
     shadowRadius: 3,
-
+    borderColor: '#DEDEDE',
     elevation: 5,
   },
   errorTextRed: {
@@ -110,7 +117,6 @@ export const styles = StyleSheet.create({
   confirmPinCode: {
     fontSize: 14,
     color: 'black',
-    fontWeight: '600',
     marginTop: 10,
   },
 });

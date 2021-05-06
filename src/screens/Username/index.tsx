@@ -29,7 +29,7 @@ import {theme} from '../../../theme';
 import {useNavigation} from 'react-navigation-hooks';
 import {ConfirmationPin} from '../../components/ConfirmationPin';
 import {selectCurrentWallet} from '../../store/wallet/selectors';
-import {DEFAULT_PASSWORD} from "../../store/onboarding/types";
+import {DEFAULT_PASSWORD} from '../../store/onboarding/types';
 
 const identityNameLengthError =
   'Your username should be at least 8 characters, with a maximum of 37 characters.';
@@ -150,9 +150,9 @@ const Username: React.FC<{}> = () => {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <View style={[styles.container, {backgroundColor: '#F4F4F4'}]}>
+      <View style={[styles.container]}>
         <KeyboardAvoidingView behavior={'position'}>
-          <View style={styles.card}>
+          <View>
             {isNewId && (
               <TouchableOpacity
                 onPress={goBack}
@@ -166,12 +166,12 @@ const Username: React.FC<{}> = () => {
             )}
             <Image
               style={styles.imageHeader}
-              source={require('../../assets/username-registration.png')}
+              source={require('../../assets/person-purple.png')}
             />
             <Text style={styles.title}>Choose user name</Text>
             <Text style={styles.description}>
-              This is how people will find you in Pravica and other apps you use
-              with your Secret Key.
+              This is how people will find you in the Stacks ecosystem, choose a
+              descriptive one.
             </Text>
             <TextInput
               placeholder={'Your username'}
@@ -182,9 +182,7 @@ const Username: React.FC<{}> = () => {
                 {
                   height: 48,
                   borderRadius: 4,
-                  backgroundColor: 'white',
-                  borderWidth: 1,
-                  borderColor: '#707070',
+                  backgroundColor: '#F8F8F8',
                   paddingTop: 0,
                   paddingBottom: 0,
                 },
@@ -192,6 +190,15 @@ const Username: React.FC<{}> = () => {
               value={username}
               onChangeText={handleInput}
             />
+            <Text
+              style={{
+                fontSize: 14,
+                marginTop: 8,
+                color: theme.colors.black,
+                fontWeight: '700',
+              }}>
+              .ID.STX
+            </Text>
             {error && hasAttemptedSubmit && (
               <Text
                 style={{
@@ -214,7 +221,7 @@ const Username: React.FC<{}> = () => {
               ) : (
                 <Image
                   style={styles.loginLogo}
-                  source={require('../../assets/right-arrow.png')}
+                  source={require('../../assets/login.png')}
                 />
               )}
             </>

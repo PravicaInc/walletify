@@ -9,6 +9,9 @@ export const selectCurrentScreen = (state: AppState) => state.onboarding.screen;
 
 export const selectSecretKey = (state: AppState) => state.onboarding.secretKey;
 
+export const selectHasCreatedPin = (state: AppState) =>
+  state.onboarding.hasCreatedPin;
+
 export const selectDecodedAuthRequest = (state: AppState) =>
   state.onboarding.decodedAuthRequest;
 

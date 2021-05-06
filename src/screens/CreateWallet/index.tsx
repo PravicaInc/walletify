@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useState} from 'react';
 import {
-  ActivityIndicator,
   Clipboard,
   Image,
   Keyboard,
@@ -47,48 +46,47 @@ const CreateWallet: React.FC = () => {
   return (
     <>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <View
-          style={[
-            styles.container,
-            {backgroundColor: secretKey ? '#F4F4F4' : 'white'},
-          ]}>
+        <View style={[styles.container]}>
           {!secretKey ? (
-            <View style={{flex: 1, alignItems: 'center'}}>
-              <Text
-                style={{
-                  color: 'white',
-                  fontSize: 24,
-                  textAlign: 'center',
-                  fontWeight: 'bold',
-                }}>
-                Generating your secret key!
-              </Text>
+            <View
+              style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
               <LottieView
-                source={require('../../assets/securekeyanimation.json')}
+                source={require('../../assets/securekeyanimation.min.json')}
                 autoPlay
                 loop
+                autoSize
               />
+              <Text
+                style={{
+                  color: 'black',
+                  fontSize: 16,
+                  textAlign: 'left',
+                }}>
+                Your decentralized identity is being created locally, No one can
+                access your keys.
+              </Text>
             </View>
           ) : (
             <KeyboardAvoidingView behavior={'position'}>
               {!isSaved ? (
-                <View style={styles.card}>
+                <View>
                   <Image
                     style={styles.imageHeader}
                     source={require('../../assets/lock-icon.png')}
                   />
-                  <Text style={styles.title}>Your Secret Key</Text>
+                  <Text style={styles.title}>Your Stacks ID</Text>
                   <Text style={styles.description}>
-                    Here’s your Secret Key: 12 words that prove it’s you when
-                    you want to use Pravica on a new device. Once lost it’s lost
+                    Here’s your seed phrase: 24 words that prove it’s you when
+                    you want to use WISE on a new device. Once lost it’s lost
                     forever, so save it somewhere you won’t forget.
                   </Text>
-                  <Text style={{color: '#7F8C8D', marginTop: 40}}>
-                    Your Secret Key
+                  <Text
+                    style={{color: 'black', marginTop: 30, fontWeight: 'bold'}}>
+                    Your Seed Phrase
                   </Text>
                   <TextInput
                     placeholder={'Your seed phrase'}
-                    placeholderTextColor={'#94A5A6'}
+                    placeholderTextColor={'black'}
                     style={styles.textInput}
                     editable={false}
                     value={secretKey}
@@ -97,31 +95,34 @@ const CreateWallet: React.FC = () => {
                   />
                 </View>
               ) : (
-                <View style={styles.card}>
+                <View>
                   <Image
                     style={styles.imageHeader}
-                    source={require('../../assets/lock.png')}
+                    source={require('../../assets/lock-icon.png')}
                   />
-                  <Text style={styles.title}>Save Your Secret Key</Text>
-                  <View style={styles.cardItem}>
-                    <Image
-                      style={styles.image}
-                      source={require('../../assets/file.png')}
-                    />
-                    <Text style={styles.description}>
-                      Paste your Secret Key wherever you keep critical, private,
-                      information such as passwords.
-                    </Text>
-                  </View>
-                  <View style={styles.cardItem}>
-                    <Image
-                      style={styles.image}
-                      source={require('../../assets/alert.png')}
-                    />
-                    <Text style={styles.description}>
-                      Once lost, it’s lost forever. So save it somewhere you
-                      won’t forget.
-                    </Text>
+                  <Text style={styles.title}>Save Your Seed Phrase</Text>
+                  <View style={{marginVertical: 20}}>
+                    <View style={styles.cardItem}>
+                      <Image
+                        style={styles.image}
+                        source={require('../../assets/file.png')}
+                      />
+                      <Text style={styles.description}>
+                        Paste your seed phrase wherever you keep critical and
+                        private information such as passwords.
+                      </Text>
+                    </View>
+                    <View style={styles.cardItem}>
+                      <Image
+                        style={styles.image}
+                        source={require('../../assets/alert.png')}
+                      />
+                      <Text style={styles.description}>
+                        Once lost, it’s lost forever. So save it somewhere you
+                        won’t forget. Highly recommended to save in a
+                        non-digital way.
+                      </Text>
+                    </View>
                   </View>
                 </View>
               )}
@@ -132,7 +133,7 @@ const CreateWallet: React.FC = () => {
                     style={styles.loginButton}>
                     <>
                       <Text style={styles.buttonText}>
-                        Copy your Secret key & Go Next
+                        Copy your seed phrase
                       </Text>
                       <Image
                         style={styles.loginLogo}

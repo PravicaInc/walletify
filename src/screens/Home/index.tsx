@@ -21,6 +21,7 @@ import {doSignOut} from '../../store/wallet';
 import {
   doSaveAuthRequest,
   doSetOnboardingPath,
+  doSetPinCreated,
 } from '../../store/onboarding/actions';
 import {
   selectAppName,
@@ -41,6 +42,7 @@ const Home: React.FC = () => {
   const actionSheetRef = useRef<ActionSheet>();
   const logout = () => {
     actionSheetRef.current?.setModalVisible(false);
+    currentDispatch(doSetPinCreated(false));
     currentDispatch(doSignOut());
     currentDispatch(doSetOnboardingPath(undefined));
     AsyncStorage.clear();
@@ -109,7 +111,7 @@ const Home: React.FC = () => {
           data={wallet?.identities}
           renderItem={({item}) => (
             <IdentityCard
-              firstBitcoinAddress={wallet?.firstBitcoinAddress || ''}
+              // firstBitcoinAddress={wallet?.firstBitcoinAddress || ''}
               identity={item}
             />
           )}
@@ -122,8 +124,10 @@ const Home: React.FC = () => {
           name={name}
           setModalVisible={setModalVisible}
         />
-        <ActionSheet ref={actionSheetRef}>
-          <View style={{padding: 16}}>
+        <ActionSheet
+          containerStyle={{ borderTopLeftRadius: 38, borderTopRightRadius: 38,  }}
+          ref={actionSheetRef}>
+          <View style={{paddingVertical: 48, paddingHorizontal: 48}}>
             <TouchableOpacity
               onPress={() => {
                 actionSheetRef.current?.setModalVisible(false);
@@ -137,7 +141,7 @@ const Home: React.FC = () => {
               style={styles.actionButton}>
               <Image
                 style={styles.logoutLogo}
-                source={require('../../assets/person.png')}
+                source={require('../../assets/person-action.png')}
               />
               <Text style={styles.text}>Add new ID</Text>
             </TouchableOpacity>
@@ -149,7 +153,7 @@ const Home: React.FC = () => {
               style={styles.actionButton}>
               <Image
                 style={styles.logoutLogo}
-                source={require('../../assets/pin-settings.png')}
+                source={require('../../assets/password-action.png')}
               />
               <Text style={styles.text}>Edit Pin</Text>
             </TouchableOpacity>
@@ -163,7 +167,7 @@ const Home: React.FC = () => {
               style={styles.actionButton}>
               <Image
                 style={styles.logoutLogo}
-                source={require('../../assets/support.png')}
+                source={require('../../assets/help-action.png')}
               />
               <Text style={styles.text}>Support</Text>
             </TouchableOpacity>
@@ -172,7 +176,7 @@ const Home: React.FC = () => {
               style={[styles.actionButton, {borderBottomWidth: 0}]}>
               <Image
                 style={styles.logoutLogo}
-                source={require('../../assets/logout-grey.png')}
+                source={require('../../assets/logout-action.png')}
               />
               <Text style={styles.text}>Logout</Text>
             </TouchableOpacity>

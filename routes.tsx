@@ -164,13 +164,13 @@ const ChatPageNavigator = createStackNavigator(
         tabBarOptions: {
           activeTintColor: theme.colors.primary,
           inactiveTintColor: theme.colors.textGreyColor,
-          showLabel: false,
+          showLabel: true,
           tabStyle: {
             backgroundColor: 'transparent',
           },
           labelStyle: {
             fontWeight: 'bold',
-            fontSize: 11,
+            fontSize: 10,
           },
           // indicatorStyle: {
           //   backgroundColor: theme.colors.tabIndicator
@@ -181,7 +181,8 @@ const ChatPageNavigator = createStackNavigator(
             // paddingBottom: 12,
             paddingLeft: 35,
             paddingRight: 35,
-            paddingTop: 12,
+            paddingTop: 8,
+            justifyContent: 'space-between',
             borderWidth: 0,
             shadowColor: '#000000',
             shadowOffset: {height: 4, width: 0},
@@ -190,9 +191,6 @@ const ChatPageNavigator = createStackNavigator(
           },
         },
         navigationOptions: {
-          /* HEADER Component
-        The onPress function is to
-        navigate to ContaPage when you click on the ProfilePage picture */
           header: () => null,
         },
       },

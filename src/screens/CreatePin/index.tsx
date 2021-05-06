@@ -5,14 +5,13 @@ import {
   Image,
   Keyboard,
   KeyboardAvoidingView,
+  Pressable,
   Text,
-  TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
 import {styles} from './styles';
-import {useDispatch, useSelector} from 'react-redux';
-import {selectSecretKey} from '../../store/onboarding/selectors';
+import {useDispatch} from 'react-redux';
 import {
   CodeField,
   useBlurOnFulfill,
@@ -21,9 +20,11 @@ import {
 import {resetNavigation} from '../../../routes';
 import {useNavigation} from 'react-navigation-hooks';
 import {doStoreSeed} from '../../store/wallet';
+import {doSetPinCreated} from '../../store/onboarding/actions';
+import {useWallet} from '../../hooks/useWallet';
 
 const CreatePin: React.FC = () => {
-  const secretKey = useSelector(selectSecretKey);
+  const {secretKey} = useWallet();
   const currentDispatch = useDispatch();
   const [enableMask, setEnableMask] = useState(true);
   const [value, setValue] = useState('');
@@ -55,12 +56,16 @@ const CreatePin: React.FC = () => {
     }
 
     return (
-      <Text
+      <View
         key={index}
-        style={[styles.cell, isFocused && styles.focusCell]}
+        style={[
+          styles.cell,
+          isFocused && styles.focusCell,
+          {marginLeft: index === 0 ? 0 : 8},
+        ]}
         onLayout={getCellOnLayoutHandler(index)}>
-        {textChild}
-      </Text>
+        <Text style={styles.textChild}>{textChild}</Text>
+      </View>
     );
   };
 
@@ -75,12 +80,16 @@ const CreatePin: React.FC = () => {
     // }
 
     return (
-      <Text
+      <View
         key={index}
-        style={[styles.cell, isFocused && styles.focusCell]}
+        style={[
+          styles.cell,
+          isFocused && styles.focusCell,
+          {marginLeft: index === 0 ? 0 : 8},
+        ]}
         onLayout={getSecondCellOnLayoutHandler(index)}>
-        {textChild}
-      </Text>
+        <Text style={styles.textChild}>{textChild}</Text>
+      </View>
     );
   };
 
@@ -93,6 +102,7 @@ const CreatePin: React.FC = () => {
         () => ({}),
         {},
       );
+      currentDispatch(doSetPinCreated(true));
       if (currentWallet && currentWallet.identities[0].defaultUsername) {
         resetNavigation(dispatch, 'Home');
       } else {
@@ -109,12 +119,13 @@ const CreatePin: React.FC = () => {
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View style={styles.container}>
           <KeyboardAvoidingView behavior={'position'}>
-            <View style={styles.card}>
-              <Text style={styles.title}>Your Secret Key</Text>
+            <Image source={require('../../assets/key-pin.png')} />
+            <View>
+              <Text style={styles.title}>Encrypt Your Seed Phrase</Text>
               <Text style={styles.description}>
-                Here’s your Secret Key: 12 words that prove it’s you when you
-                want to use on a new device. Once lost it’s lost forever, so
-                save it somewhere you won’t forget.
+                Your seed phrase will be used in decrypting and signing
+                processes, it’s unsafe to be stored locally in plain text, your
+                PIN code URGENTLY needed to secure your seed phrase.
               </Text>
               <Text style={styles.confirmPinCode}>Enter your pin code</Text>
               <View style={styles.fieldRow}>
@@ -128,9 +139,6 @@ const CreatePin: React.FC = () => {
                   textContentType="oneTimeCode"
                   renderCell={renderCell}
                 />
-                <Text style={styles.toggle} onPress={toggleMask}>
-                  {enableMask ? '🙈' : '🐵'}
-                </Text>
               </View>
               <Text style={styles.confirmPinCode}>Confirm Pin code</Text>
               <View style={styles.fieldRow}>
@@ -145,12 +153,18 @@ const CreatePin: React.FC = () => {
                   renderCell={renderSecondCell}
                 />
               </View>
+              <Text style={styles.toggle} onPress={toggleMask}>
+                {enableMask ? '🙈' : '🐵'}
+              </Text>
               <Text style={styles.errorTextRed}>{error}</Text>
             </View>
-            <TouchableOpacity
-              disabled={isLoading}
+            <Pressable
+              disabled={value !== secondValue}
               onPress={onSubmit}
-              style={styles.loginButton}>
+              style={[
+                styles.loginButton,
+                {opacity: value === secondValue && value !== '' ? 1 : 0.6},
+              ]}>
               <>
                 <Text style={styles.buttonText}>Encrypt your secret key</Text>
                 {isLoading ? (
@@ -162,7 +176,7 @@ const CreatePin: React.FC = () => {
                   />
                 )}
               </>
-            </TouchableOpacity>
+            </Pressable>
           </KeyboardAvoidingView>
         </View>
       </TouchableWithoutFeedback>

@@ -3,24 +3,17 @@ import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
   Image,
-  ImageBackground,
-  Keyboard,
   KeyboardAvoidingView,
   Pressable,
   Text,
   TouchableOpacity,
-  TouchableWithoutFeedback,
-  View,
 } from 'react-native';
 import {styles} from './styles';
 import {useNavigation} from 'react-navigation-hooks';
 import {popNavigation, resetNavigation} from '../../../routes';
 import {useDispatch, useSelector} from 'react-redux';
 import {selectCurrentWallet} from '../../store/wallet/selectors';
-import {
-  doSaveSecretKey,
-  doSetMagicRecoveryCode,
-} from '../../store/onboarding/actions';
+import {doSaveSecretKey} from '../../store/onboarding/actions';
 import {doStoreSeed} from '../../store/wallet';
 import {DEFAULT_PASSWORD} from '../../store/onboarding/types';
 import {ScrollView, TextInput} from 'react-native-gesture-handler';
@@ -82,7 +75,7 @@ const SeedPhrase: React.FC = () => {
           />
         </TouchableOpacity>
         <KeyboardAvoidingView behavior={'position'}>
-        <Image source={require('../../assets/logo.png')} />
+          <Image source={require('../../assets/logo.png')} />
           <Text style={styles.description}>Enter your Seed Phrase</Text>
           <TextInput
             placeholder={'Type or paste your seed phrase here'}

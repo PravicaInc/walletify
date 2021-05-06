@@ -13,7 +13,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexDirection: 'row',
   },
-  logoutLogo: {width: 24, height: 24, resizeMode: 'contain', marginLeft: 10},
+  logoutLogo: {width: 24, height: 24, resizeMode: 'contain', marginRight: 22},
   buttonText: {color: theme.colors.white, fontSize: 14, fontWeight: '700'},
   topHeader: {
     justifyContent: 'space-between',
@@ -104,7 +104,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    borderBottomColor: '#707070',
+    borderBottomColor: '#D0D2D2',
     borderBottomWidth: 1,
     paddingVertical: 16,
   },

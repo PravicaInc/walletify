@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
 import {Identity} from '@stacks/keychain';
@@ -6,7 +5,6 @@ import {useCardsIdentity} from '../hooks/useCardsIdentity';
 
 interface Props {
   identity: Identity;
-  firstBitcoinAddress: string;
 }
 
 export const IdentityCard: React.FC<Props> = (props: Props) => {
@@ -23,6 +21,7 @@ export const IdentityCard: React.FC<Props> = (props: Props) => {
             backgroundColor: cardIdentity.backgroundColor,
           },
         ]}>
+        <View style={styles.scew} />
         <View>
           <Text style={styles.blockstackText}>{cardIdentity.text}</Text>
           <Text style={styles.blockstackIdText}>
@@ -58,6 +57,18 @@ const styles = StyleSheet.create({
     shadowOffset: {height: 1, width: 0},
     shadowOpacity: 0.75,
     shadowRadius: 1,
+    position: 'relative',
+  },
+  scew: {
+    position: 'absolute',
+    top: 0,
+    right: '-30%',
+    backgroundColor: 'rgba(255,255,255,.08)',
+    width: '70%',
+    height: 171,
+    borderTopRightRadius: 15,
+    borderBottomRightRadius: 15,
+    transform: [{skewX: '-45deg'}],
   },
   blockstackText: {
     color: '#A6A5C4',
@@ -87,5 +98,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    zIndex: 1,
   },
 });

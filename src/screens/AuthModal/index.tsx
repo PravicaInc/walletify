@@ -1,9 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useCallback } from 'react';
+import React, {useCallback} from 'react';
 import {
   FlatList,
   Image,
-  ImageBackground,
   Modal,
   Text,
   TouchableOpacity,
@@ -14,6 +13,8 @@ import {useDispatch} from 'react-redux';
 import {doDeleteAuthRequest} from '../../store/onboarding/actions';
 import {UsernameCard} from '../../components/UsernameCard';
 import {Identity} from '@stacks/keychain';
+import {ScrollView} from 'react-native-gesture-handler';
+import {IdentityCard} from '../../components/IdentityCard';
 
 interface Props {
   setModalVisible: (isVisible: boolean) => void;
@@ -38,46 +39,45 @@ const AuthModal: React.FC<Props> = (props) => {
         onRequestClose={() => {
           setModalVisible(!modalVisible);
         }}>
-        <ImageBackground
-          source={require('../../assets/pravica-background.png')}
-          style={styles.centeredView}>
+        <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <View style={styles.contentWarning}>
               <View style={styles.imageContainer}>
                 <Image source={{uri: icon}} style={styles.image} />
+                <Text style={styles.warningText}>
+                  Note: {name} is asking for your permissions to generate
+                  private key to use in their apps
+                </Text>
               </View>
-              <Text style={styles.warningText}>
-                Note: Pravica is asking for your permissions to generate private
-                key to use in their apps
-              </Text>
             </View>
             <Text style={styles.blockstackText}>
               Choose an ID to use in {name}
             </Text>
             <FlatList
               ListHeaderComponent={
-                <Text style={styles.headerText}>Your Stacks IDs</Text>
+                <Text style={styles.headerText}>Your IDs</Text>
               }
+              contentContainerStyle={{height: '60%'}}
               style={styles.flatlist}
               data={identities}
-              renderItem={({index, item}) => (
-                <UsernameCard dismiss={dismiss} identity={item} identityIndex={index} />
+              renderItem={({item, index}) => (
+                <UsernameCard
+                  dismiss={dismiss}
+                  identity={item}
+                  identityIndex={index}
+                />
               )}
               keyExtractor={(item, index) => index.toString()}
-              ListFooterComponent={
-                <TouchableOpacity
-                  style={[styles.loginButton]}
-                  onPress={dismiss}>
-                  <Text style={styles.buttonText}>Cancel Authentication</Text>
-                  <Image
-                    source={require('../../assets/cancel.png')}
-                    style={styles.cancel}
-                  />
-                </TouchableOpacity>
-              }
             />
           </View>
-        </ImageBackground>
+          <TouchableOpacity style={[styles.loginButton]} onPress={dismiss}>
+            <Text style={styles.buttonText}>Cancel Authentication</Text>
+            <Image
+              source={require('../../assets/cancel.png')}
+              style={styles.cancel}
+            />
+          </TouchableOpacity>
+        </View>
       </Modal>
     </>
   );

@@ -8,6 +8,7 @@ import {
   SAVE_AUTH_REQUEST,
   SET_MAGIC_RECOVERY_CODE,
   SET_USERNAME,
+  HAS_CREATED_PIN,
   SET_ONBOARDING_PATH,
   DELETE_AUTH_REQUEST,
 } from './types';
@@ -103,6 +104,13 @@ export const doChangeScreen = (screen: ScreenPaths): OnboardingActions => {
   return {
     type: CHANGE_PAGE,
     screen,
+  };
+};
+
+export const doSetPinCreated = (hasCreatedPin: boolean): OnboardingActions => {
+  return {
+    type: HAS_CREATED_PIN,
+    hasCreatedPin,
   };
 };
 
