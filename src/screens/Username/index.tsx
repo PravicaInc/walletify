@@ -1,6 +1,6 @@
-import React, {createRef, useState} from 'react';
+import React, {useState} from 'react';
 
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 
 import {
   Identity,
@@ -28,8 +28,8 @@ import {popNavigation, resetNavigation} from '../../../routes';
 import {theme} from '../../../theme';
 import {useNavigation} from 'react-navigation-hooks';
 import {ConfirmationPin} from '../../components/ConfirmationPin';
-import {selectCurrentWallet} from '../../store/wallet/selectors';
 import {DEFAULT_PASSWORD} from '../../store/onboarding/types';
+import {useWallet} from '../../hooks/useWallet';
 
 const identityNameLengthError =
   'Your username should be at least 8 characters, with a maximum of 37 characters.';
@@ -51,7 +51,7 @@ const errorTextMap = {
 };
 
 const Username: React.FC<{}> = () => {
-  const wallet = useSelector(selectCurrentWallet);
+  const {wallet} = useWallet();
   const dispatch = useDispatch();
   const {dispatch: navigationDispatch, getParam} = useNavigation();
   const isNewId = getParam('isNewId');
