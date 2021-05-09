@@ -6,6 +6,7 @@ import {
   NativeEventEmitter,
   NativeModules,
   Linking,
+  Platform,
 } from 'react-native';
 import {styles} from './styles';
 import {useSelector} from 'react-redux';
@@ -18,12 +19,22 @@ import {
   selectFullAppIcon,
 } from '../../store/onboarding/selectors';
 import {IdentityCard} from '../../components/IdentityCard';
-import {useInitialURL} from '../../hooks/useInitialURL';
 import AuthModal from '../AuthModal';
 import {HeaderComponent} from '../../components/Header';
 
 const {EventEmitterModule} = NativeModules;
-
+const getParameterByName = (name: string, url: string) => {
+  name = name.replace(/[\[\]]/g, '\\$&');
+  const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+    results = regex.exec(url);
+  if (!results) {
+    return null;
+  }
+  if (!results[2]) {
+    return '';
+  }
+  return decodeURIComponent(results[2].replace(/\+/g, ' '));
+};
 const Home: React.FC = () => {
   const wallet = useSelector(selectCurrentWallet);
   const currentDispatch = useDispatch();
@@ -31,43 +42,48 @@ const Home: React.FC = () => {
   const name = useSelector(selectAppName);
   const icon = useSelector(selectFullAppIcon);
   const [modalVisible, setModalVisible] = useState(false);
-  const {url: initialUrl, processing} = useInitialURL();
   const [sourceApplication, setSourceApplication] = useState('');
   const [url, setUrl] = useState('');
   const eventEmitter = new NativeEventEmitter(EventEmitterModule);
 
   useEffect(() => {
-    eventEmitter.addListener('Linking', (event) => {
-      console.warn('linking', event);
-      if (event.sourceApplication) {
+    const subscription = eventEmitter.addListener('Linking', (event) => {
+      if (event?.sourceApplication) {
         setSourceApplication(event.sourceApplication);
-      }
-    });
-    const subscription = Linking.addListener('url', (e: any) => {
-      if (e.url) {
-        const queryStr = e.url.split(':');
-        if (queryStr.length > 1) {
-          const parts = queryStr[1].split('=');
-          if (parts.length > 1) {
-            setUrl(parts[1]);
-          }
+        if (Platform.OS === 'android') {
+          Linking.getInitialURL().then((initialUrl) => {
+            const token = getParameterByName('token', initialUrl || '');
+            setUrl(token || '');
+          });
         }
       }
     });
-    if (url && sourceApplication) {
+    return () => subscription.remove();
+  }, []);
+  useEffect(() => {
+    if (Platform.OS === 'ios') {
+      const subscription = Linking.addListener('url', (e: any) => {
+        if (e.url) {
+          const token = getParameterByName('token', e.url);
+          setUrl(token || '');
+        }
+      });
+      return () => subscription.remove();
+    }
+  }, []);
+
+  useEffect(() => {
+    if (url.length > 0 && sourceApplication.length > 0) {
       currentDispatch(doSaveAuthRequest(url, sourceApplication));
       setUrl('');
       setSourceApplication('');
     }
-    return () => subscription.remove();
-  }, [sourceApplication, url]);
-
+  }, [url, sourceApplication]);
   useEffect(() => {
     if (authRequest) {
       setModalVisible(true);
     }
-  }, [initialUrl, processing, authRequest]);
-
+  }, [authRequest]);
   return (
     <>
       <View style={styles.container}>
