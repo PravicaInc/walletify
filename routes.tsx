@@ -21,6 +21,7 @@ import {createBottomTabNavigator} from 'react-navigation-tabs';
 import Wallet from './src/screens/Wallet';
 import Stacks from './src/screens/Stacks';
 import Encryptions from './src/screens/Encryptions';
+import IntroSlider from './src/screens/IntroSlider';
 
 const ChatPageNavigator = createStackNavigator(
   {
@@ -59,6 +60,12 @@ const ChatPageNavigator = createStackNavigator(
       navigationOptions: {
         header: () => null,
       },
+    },
+    IntroSlider: {
+      screen: IntroSlider,
+      navigationOptions: {
+        header: () => null,
+      }
     },
     Home: createBottomTabNavigator(
       {

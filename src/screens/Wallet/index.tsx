@@ -24,7 +24,7 @@ const Wallet: React.FC = () => {
       <View style={styles.container}>
         <HeaderComponent
           title={'Wallet'}
-          imageSource={require('../../assets/fingerprint.png')}
+          imageSource={require('../../assets/wallet.png')}
         />
       </View>
     </>

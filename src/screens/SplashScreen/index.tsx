@@ -8,24 +8,32 @@ import {theme} from '../../../theme';
 import {useSelector} from 'react-redux';
 import {selectCurrentWallet} from '../../store/wallet/selectors';
 import {selectHasCreatedPin} from '../../store/onboarding/selectors';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const SplashScreen: React.FC = () => {
   const wallet = useSelector(selectCurrentWallet);
   const hasCreatedPin = useSelector(selectHasCreatedPin);
   const {dispatch} = useNavigation();
   useEffect(() => {
-    if (wallet) {
-      if (!hasCreatedPin) {
-        resetNavigation(dispatch, 'CreatePin');
-      } else if (wallet.identities[0].usernames.length === 0) {
-        resetNavigation(dispatch, 'Username');
+    AsyncStorage.getItem('appState').then((state) => {
+      if (state) {
+        if (wallet) {
+          if (!hasCreatedPin) {
+            resetNavigation(dispatch, 'CreatePin');
+          } else if (wallet.identities[0].usernames.length === 0) {
+            resetNavigation(dispatch, 'Username');
+          } else {
+            resetNavigation(dispatch, 'Home');
+          }
+        } else {
+          resetNavigation(dispatch, 'Login');
+        }
       } else {
-        resetNavigation(dispatch, 'Home');
+        resetNavigation(dispatch, 'IntroSlider');
       }
-    } else {
-      resetNavigation(dispatch, 'Login');
-    }
+    });
   }, [wallet]);
+
   return (
     <>
       <ImageBackground

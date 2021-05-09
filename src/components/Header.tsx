@@ -7,10 +7,8 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {Identity} from '@stacks/keychain';
-import {useCardsIdentity} from '../hooks/useCardsIdentity';
 import ActionSheet from 'react-native-actions-sheet';
-import { ActionSheetComponent } from './ActionSheet';
+import {Settings} from './Settings';
 
 interface Props {
   imageSource: ImageSourcePropType;
@@ -27,17 +25,17 @@ export const HeaderComponent: React.FC<Props> = (props: Props) => {
   return (
     <>
       <View style={styles.topHeader}>
-        <View>
+        <View style={styles.row}>
           <Image source={imageSource} />
-          <Text style={styles.headerText}>{title}</Text>
+          <TouchableOpacity onPress={settings} style={styles.logoutButton}>
+            <Image
+              style={styles.logoutLogo}
+              source={require('../assets/settings.png')}
+            />
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity onPress={settings} style={styles.logoutButton}>
-          <Image
-            style={styles.logoutLogo}
-            source={require('../assets/settings.png')}
-          />
-        </TouchableOpacity>
-        <ActionSheetComponent actionSheetRef={actionSheetRef} />
+        <Text style={styles.headerText}>{title}</Text>
+        <Settings actionSheetRef={actionSheetRef} />
       </View>
     </>
   );
@@ -47,8 +45,11 @@ const styles = StyleSheet.create({
   logoutLogo: {width: 24, height: 24, resizeMode: 'contain', marginLeft: 10},
   topHeader: {
     justifyContent: 'space-between',
-    alignItems: 'center',
+  },
+  row: {
     flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   logoutButton: {
     padding: 4,

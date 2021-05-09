@@ -10,7 +10,7 @@ const Encryptions: React.FC = () => {
       <View style={styles.container}>
         <HeaderComponent
           title={'Encryption'}
-          imageSource={require('../../assets/fingerprint.png')}
+          imageSource={require('../../assets/encryption.png')}
         />
       </View>
     </>

@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import AsyncStorage from '@react-native-community/async-storage';
-import React, { useRef } from 'react';
+import React, {useRef} from 'react';
 import {
   Image,
   Linking,
@@ -20,10 +20,10 @@ import {
 import {doSignOut} from '../store/wallet';
 
 interface Props {
-    actionSheetRef: any;
+  actionSheetRef: any;
 }
 
-export const ActionSheetComponent: React.FC<Props> = (props: Props) => {
+export const Settings: React.FC<Props> = (props: Props) => {
   const {dispatch} = useNavigation();
   const currentDispatch = useDispatch();
   const logout = () => {
@@ -37,6 +37,8 @@ export const ActionSheetComponent: React.FC<Props> = (props: Props) => {
   return (
     <>
       <ActionSheet
+        onPositionChanged={(e) => console.warn(e)}
+        gestureEnabled={true}
         containerStyle={{borderTopLeftRadius: 38, borderTopRightRadius: 38}}
         ref={props.actionSheetRef}>
         <View style={{paddingVertical: 48, paddingHorizontal: 48}}>

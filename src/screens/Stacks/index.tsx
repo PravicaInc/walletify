@@ -10,7 +10,7 @@ const Stacks: React.FC = () => {
       <View style={styles.container}>
         <HeaderComponent
           title={'Stacks'}
-          imageSource={require('../../assets/fingerprint.png')}
+          imageSource={require('../../assets/stacks-logo.png')}
         />
       </View>
     </>
