@@ -4,9 +4,8 @@ import {theme} from '../../../theme';
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
+    padding: 44,
   },
-  pravicaLogo: {width: '50%', resizeMode: 'contain'},
   card: {
     backgroundColor: 'white',
     padding: 35,
@@ -17,10 +16,13 @@ export const styles = StyleSheet.create({
   description: {
     color: theme.colors.black,
     fontSize: 24,
+    marginTop: 40,
     fontWeight: '500',
   },
   textInput: {
     backgroundColor: '#ECF0F1',
+    borderColor: '#DADCDD',
+    borderWidth: 1,
     height: 200,
     borderRadius: 12,
     marginTop: 24,
@@ -35,7 +37,8 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     flexDirection: 'row',
-    borderRadius: 4,
+    borderRadius: 10,
+    height: 48,
     marginTop: 50,
   },
   loginLogo: {width: 24, height: 24, marginRight: 9},

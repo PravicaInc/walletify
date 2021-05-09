@@ -1,6 +1,7 @@
 export const ONBOARDING_PROGRESS = 'ONBOARDING/ONBOARDING_PROGRESS';
 export const CHANGE_PAGE = 'ONBOARDING/CHANGE_PAGE';
 export const SAVE_KEY = 'ONBOARDING/SAVE_KEY';
+export const HAS_CREATED_PIN = 'ONBOARDING/HAS_CREATED_PIN';
 export const SAVE_AUTH_REQUEST = 'ONBOARDING/SAVE_AUTH_REQUEST';
 export const DELETE_AUTH_REQUEST = 'ONBOARDING/DELETE_AUTH_REQUEST';
 export const SET_MAGIC_RECOVERY_CODE = 'ONBOARDING/SET_MAGIC_RECOVERY_CODE';
@@ -73,6 +74,7 @@ export interface OnboardingState {
   bundleID: string | undefined;
   packageName: string | undefined;
   onboardingPath?: ScreenPaths;
+  hasCreatedPin?: boolean;
 }
 
 interface OnboardingProgressAction {
@@ -88,6 +90,11 @@ interface ChangePageAction {
 interface StoreSecretKey {
   type: typeof SAVE_KEY;
   secretKey: string;
+}
+
+interface HasCreatedPin {
+  type: typeof HAS_CREATED_PIN;
+  hasCreatedPin: boolean;
 }
 
 interface SaveAuthRequest {
@@ -134,4 +141,5 @@ export type OnboardingActions =
   | SaveAuthRequest
   | SetOnboardingPath
   | SetUsername
+  | HasCreatedPin
   | DeleteAuthRequest;

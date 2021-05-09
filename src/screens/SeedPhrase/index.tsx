@@ -3,26 +3,20 @@ import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
   Image,
-  ImageBackground,
-  Keyboard,
   KeyboardAvoidingView,
+  Pressable,
   Text,
   TouchableOpacity,
-  TouchableWithoutFeedback,
-  View,
 } from 'react-native';
 import {styles} from './styles';
 import {useNavigation} from 'react-navigation-hooks';
 import {popNavigation, resetNavigation} from '../../../routes';
 import {useDispatch, useSelector} from 'react-redux';
 import {selectCurrentWallet} from '../../store/wallet/selectors';
-import {
-  doSaveSecretKey,
-  doSetMagicRecoveryCode,
-} from '../../store/onboarding/actions';
+import {doSaveSecretKey} from '../../store/onboarding/actions';
 import {doStoreSeed} from '../../store/wallet';
 import {DEFAULT_PASSWORD} from '../../store/onboarding/types';
-import {TextInput} from 'react-native-gesture-handler';
+import {ScrollView, TextInput} from 'react-native-gesture-handler';
 
 const SeedPhrase: React.FC = () => {
   const [isLoading, setLoading] = useState(false);
@@ -68,55 +62,51 @@ const SeedPhrase: React.FC = () => {
 
   return (
     <>
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <ImageBackground
-          source={require('../../assets/pravica-background.png')}
-          style={styles.container}>
+      <ScrollView
+        style={styles.container}
+        keyboardShouldPersistTaps={'handled'}>
+        <TouchableOpacity
+          onPress={goBack}
+          style={[styles.cardItem, {marginBottom: 20}]}>
           <Image
-            style={styles.pravicaLogo}
-            source={require('../../assets/login-header.png')}
+            style={{width: 25, height: 15, marginRight: 16}}
+            resizeMode="contain"
+            source={require('../../assets/back_arrow.png')}
           />
-          <KeyboardAvoidingView behavior={'position'}>
-            <View style={styles.card}>
-              <TouchableOpacity
-                onPress={goBack}
-                style={[styles.cardItem, {marginBottom: 30}]}>
+        </TouchableOpacity>
+        <KeyboardAvoidingView behavior={'position'}>
+          <Image source={require('../../assets/logo.png')} />
+          <Text style={styles.description}>Enter your Seed Phrase</Text>
+          <TextInput
+            placeholder={'Type or paste your seed phrase here'}
+            placeholderTextColor={'#94A5A6'}
+            style={styles.textInput}
+            textAlignVertical={'top'}
+            multiline={true}
+            onChangeText={(text) => setSeed(text)}
+          />
+          <Text style={styles.seetTextRed}>{seedError}</Text>
+          <Pressable
+            disabled={isLoading}
+            onPress={onSubmit}
+            style={[
+              styles.loginButton,
+              {opacity: seed.trim().length > 0 ? 1 : 0.4},
+            ]}>
+            <>
+              <Text style={styles.buttonText}>Restore</Text>
+              {isLoading ? (
+                <ActivityIndicator size={'small'} color={'white'} />
+              ) : (
                 <Image
-                  style={{width: 25, height: 15, marginRight: 16}}
-                  resizeMode="contain"
-                  source={require('../../assets/back_arrow.png')}
+                  style={styles.loginLogo}
+                  source={require('../../assets/restore.png')}
                 />
-              </TouchableOpacity>
-              <Text style={styles.description}>Enter your Seed Phrase</Text>
-              <TextInput
-                placeholder={'Type or paste your seed phrase here'}
-                placeholderTextColor={'#94A5A6'}
-                style={styles.textInput}
-                textAlignVertical={'top'}
-                multiline={true}
-                onChangeText={(text) => setSeed(text)}
-              />
-              <Text style={styles.seetTextRed}>{seedError}</Text>
-              <TouchableOpacity
-                disabled={isLoading}
-                onPress={onSubmit}
-                style={styles.loginButton}>
-                <>
-                  <Text style={styles.buttonText}>Restore</Text>
-                  {isLoading ? (
-                    <ActivityIndicator size={'small'} color={'white'} />
-                  ) : (
-                    <Image
-                      style={styles.loginLogo}
-                      source={require('../../assets/restore.png')}
-                    />
-                  )}
-                </>
-              </TouchableOpacity>
-            </View>
-          </KeyboardAvoidingView>
-        </ImageBackground>
-      </TouchableWithoutFeedback>
+              )}
+            </>
+          </Pressable>
+        </KeyboardAvoidingView>
+      </ScrollView>
     </>
   );
 };

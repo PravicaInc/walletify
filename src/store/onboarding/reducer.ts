@@ -11,6 +11,7 @@ import {
   SET_USERNAME,
   SET_ONBOARDING_PATH,
   DELETE_AUTH_REQUEST,
+  HAS_CREATED_PIN,
 } from './types';
 
 export const initialState: OnboardingState = {
@@ -34,6 +35,11 @@ export const onboardingReducer: Reducer<OnboardingState, OnboardingActions> = (
       return {
         ...state,
         secretKey: action.secretKey,
+      };
+    case HAS_CREATED_PIN:
+      return {
+        ...state,
+        hasCreatedPin: action.hasCreatedPin,
       };
     case SAVE_AUTH_REQUEST:
       const newState = {

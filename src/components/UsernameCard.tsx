@@ -5,11 +5,13 @@ import {
   Text,
   ActivityIndicator,
   Image,
+  View,
 } from 'react-native';
 import {Identity} from '@stacks/keychain';
 import {doFinishSignIn} from '../store/onboarding/actions';
 import {useDispatch} from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
+import {useCardsIdentity} from '../hooks/useCardsIdentity';
 
 interface Props {
   identity: Identity;
@@ -21,56 +23,102 @@ export const UsernameCard: React.FC<Props> = (props: Props) => {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
 
+  const cardIdentity = useCardsIdentity(identity.defaultUsername);
+
   return (
     <>
-      <LinearGradient
-        start={{x: 0, y: 0}}
-        end={{x: 1, y: 0}}
-        colors={['#D5D5D5', '#E3E3E3', '#FFFFFF']}
-        style={styles.gradient}>
-        <TouchableOpacity
-          onPress={() => {
-            setIsLoading(true);
-            dispatch(doFinishSignIn({identityIndex}, dismiss));
-          }}
-          style={styles.item}>
-          <Text style={styles.blockstackIdText}>
-            {identity.defaultUsername}
-          </Text>
-          {isLoading ? (
-            <ActivityIndicator size={'small'} color={'black'} />
-          ) : (
-            <Image
-              style={styles.icon}
-              resizeMode={'cover'}
-              source={require('../assets/right-arrow.png')}
-            />
-          )}
-        </TouchableOpacity>
-      </LinearGradient>
+      <TouchableOpacity
+        onPress={() => {
+          setIsLoading(true);
+          dispatch(doFinishSignIn({identityIndex}, dismiss));
+        }}
+        style={[
+          styles.item,
+          {
+            backgroundColor: cardIdentity.backgroundColor,
+          },
+        ]}>
+        <View style={styles.row}>
+          <View>
+            <Text style={styles.blockstackText}>{cardIdentity.text}</Text>
+            <Text style={styles.blockstackIdText}>
+              {identity.defaultUsername?.split('.')[0]}
+            </Text>
+            <Text style={styles.blockstackIdText}>
+              {identity.defaultUsername?.replace(
+                identity.defaultUsername?.split('.')[0],
+                '',
+              )}
+            </Text>
+          </View>
+          <View style={styles.rowTwo}>
+            <Image style={styles.image} source={cardIdentity.image} />
+            {isLoading ? (
+              <ActivityIndicator size={'small'} color={'white'} />
+            ) : (
+              <Image
+                style={styles.icon}
+                resizeMode={'cover'}
+                source={require('../assets/login.png')}
+              />
+            )}
+          </View>
+        </View>
+      </TouchableOpacity>
     </>
   );
 };
 
 const styles = StyleSheet.create({
-  gradient: {
-    borderRadius: 9,
-    marginBottom: 16,
-    borderWidth: 1,
-    borderColor: '#D5D5D5',
-  },
-  icon: {width: 25, height: 23},
   item: {
-    padding: 20,
-    borderRadius: 9,
-    borderWidth: 1,
-    borderColor: '#D5D5D5',
-    alignItems: 'center',
-    flexDirection: 'row',
+    borderRadius: 15,
+    padding: 19,
+    height: 100,
+    marginBottom: 16,
+    flexDirection: 'column',
     justifyContent: 'space-between',
+    shadowColor: '#000000',
+    shadowOffset: {height: 1, width: 0},
+    shadowOpacity: 0.75,
+    shadowRadius: 1,
+  },
+  blockstackText: {
+    color: '#A6A5C4',
+    fontSize: 14,
   },
   blockstackIdText: {
-    color: 'black',
-    fontSize: 18,
+    color: 'white',
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  adresses: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    marginBottom: 16,
+  },
+  icon: {
+    width: 24,
+    height: 24,
+    marginLeft: 15,
+    resizeMode: 'contain',
+  },
+  address: {
+    color: '#2C3E50',
+    fontSize: 13,
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    zIndex: 1,
+  },
+  rowTwo: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    zIndex: 1,
+  },
+  image: {
+    width: 41,
+    resizeMode: 'contain',
   },
 });

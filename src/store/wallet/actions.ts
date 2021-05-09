@@ -58,7 +58,7 @@ export function doGenerateWallet(
 ): ThunkAction<Promise<Wallet>, {}, {}, WalletActions> {
   return async (dispatch) => {
     dispatch(isRestoringWallet());
-    const wallet = await Wallet.generate(password, ChainID.Mainnet);
+    const wallet = await Wallet.generateStrong(password, ChainID.Mainnet);
     dispatch(didGenerateWallet(wallet));
     return wallet;
   };

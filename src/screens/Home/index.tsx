@@ -1,29 +1,17 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, {createRef, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
-  DeviceEventEmitter,
   FlatList,
-  Image,
-  ImageBackground,
-  Text,
-  TouchableOpacity,
   View,
   NativeEventEmitter,
   NativeModules,
   Linking,
 } from 'react-native';
 import {styles} from './styles';
-import {useNavigation} from 'react-navigation-hooks';
-import {pushNavigation, resetNavigation} from '../../../routes';
 import {useSelector} from 'react-redux';
 import {selectCurrentWallet} from '../../store/wallet/selectors';
-import AsyncStorage from '@react-native-community/async-storage';
 import {useDispatch} from 'react-redux';
-import {doSignOut} from '../../store/wallet';
-import {
-  doSaveAuthRequest,
-  doSetOnboardingPath,
-} from '../../store/onboarding/actions';
+import {doSaveAuthRequest} from '../../store/onboarding/actions';
 import {
   selectAppName,
   selectDecodedAuthRequest,
@@ -32,23 +20,13 @@ import {
 import {IdentityCard} from '../../components/IdentityCard';
 import {useInitialURL} from '../../hooks/useInitialURL';
 import AuthModal from '../AuthModal';
-import ActionSheet from 'react-native-actions-sheet';
-
-const actionSheetRef = createRef();
+import {HeaderComponent} from '../../components/Header';
 
 const {EventEmitterModule} = NativeModules;
 
 const Home: React.FC = () => {
-  const {dispatch} = useNavigation();
   const wallet = useSelector(selectCurrentWallet);
   const currentDispatch = useDispatch();
-  const logout = () => {
-    actionSheetRef.current?.setModalVisible(false);
-    currentDispatch(doSignOut());
-    currentDispatch(doSetOnboardingPath(undefined));
-    AsyncStorage.clear();
-    resetNavigation(dispatch, 'Login');
-  };
   const authRequest = useSelector(selectDecodedAuthRequest);
   const name = useSelector(selectAppName);
   const icon = useSelector(selectFullAppIcon);
@@ -60,11 +38,12 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     eventEmitter.addListener('Linking', (event) => {
+      console.warn('linking', event);
       if (event.sourceApplication) {
         setSourceApplication(event.sourceApplication);
       }
     });
-    const subscription = DeviceEventEmitter.addListener('url', (e: any) => {
+    const subscription = Linking.addListener('url', (e: any) => {
       if (e.url) {
         const queryStr = e.url.split(':');
         if (queryStr.length > 1) {
@@ -89,43 +68,18 @@ const Home: React.FC = () => {
     }
   }, [initialUrl, processing, authRequest]);
 
-  const settings = () => {
-    actionSheetRef.current?.setModalVisible(true);
-  };
   return (
     <>
-      <ImageBackground
-        source={require('../../assets/pravica-background.png')}
-        style={styles.container}>
-        <View style={styles.topHeader}>
-          <Image
-            style={styles.pravicaLogo}
-            source={require('../../assets/login-header.png')}
-          />
-          <TouchableOpacity onPress={settings} style={styles.logoutButton}>
-            <Text style={styles.buttonText}>Settings</Text>
-            <Image
-              style={styles.logoutLogo}
-              source={require('../../assets/settings.png')}
-            />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.sheetContainer}>
-          <FlatList
-            ListHeaderComponent={
-              <Text style={styles.headerText}>Your Stacks IDs</Text>
-            }
-            style={{padding: 16}}
-            data={wallet?.identities}
-            renderItem={({item}) => (
-              <IdentityCard
-                firstBitcoinAddress={wallet?.firstBitcoinAddress || ''}
-                identity={item}
-              />
-            )}
-            keyExtractor={(item, index) => index.toString()}
-          />
-        </View>
+      <View style={styles.container}>
+        <HeaderComponent
+          title={'Identities'}
+          imageSource={require('../../assets/fingerprint.png')}
+        />
+        <FlatList
+          data={wallet?.identities}
+          renderItem={({item}) => <IdentityCard identity={item} />}
+          keyExtractor={(item, index) => index.toString()}
+        />
         <AuthModal
           icon={icon}
           identities={wallet?.identities || []}
@@ -133,63 +87,7 @@ const Home: React.FC = () => {
           name={name}
           setModalVisible={setModalVisible}
         />
-        <ActionSheet ref={actionSheetRef}>
-          <View style={{padding: 16}}>
-            <TouchableOpacity
-              onPress={() => {
-                actionSheetRef.current?.setModalVisible(false);
-                pushNavigation(dispatch, {
-                  routeName: 'Username',
-                  params: {
-                    isNewId: true,
-                  },
-                });
-              }}
-              style={styles.actionButton}>
-              <Image
-                style={styles.logoutLogo}
-                source={require('../../assets/person.png')}
-              />
-              <Text style={styles.text}>Add new ID</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                actionSheetRef.current?.setModalVisible(false);
-                pushNavigation(dispatch, {routeName: 'EditPinCode'});
-              }}
-              style={styles.actionButton}>
-              <Image
-                style={styles.logoutLogo}
-                source={require('../../assets/pin-settings.png')}
-              />
-              <Text style={styles.text}>Edit Pin</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                actionSheetRef.current?.setModalVisible(false);
-                Linking.openURL(
-                  'https://pravica.atlassian.net/servicedesk/customer/portals',
-                );
-              }}
-              style={styles.actionButton}>
-              <Image
-                style={styles.logoutLogo}
-                source={require('../../assets/support.png')}
-              />
-              <Text style={styles.text}>Support</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={logout}
-              style={[styles.actionButton, {borderBottomWidth: 0}]}>
-              <Image
-                style={styles.logoutLogo}
-                source={require('../../assets/logout-grey.png')}
-              />
-              <Text style={styles.text}>Logout</Text>
-            </TouchableOpacity>
-          </View>
-        </ActionSheet>
-      </ImageBackground>
+      </View>
     </>
   );
 };

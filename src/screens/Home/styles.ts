@@ -4,20 +4,20 @@ import {theme} from '../../../theme';
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
+    padding: 44,
+    paddingHorizontal: 28,
   },
-  pravicaLogo: {width: '50%', resizeMode: 'contain'},
   logoutButton: {
     padding: 4,
     alignItems: 'center',
     justifyContent: 'space-between',
     flexDirection: 'row',
   },
-  logoutLogo: {width: 24, height: 24, resizeMode: 'contain', marginLeft: 10},
+  logoutLogo: {width: 24, height: 24, resizeMode: 'contain', marginRight: 22},
   buttonText: {color: theme.colors.white, fontSize: 14, fontWeight: '700'},
   topHeader: {
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 16,
     flexDirection: 'row',
   },
   sheetContainer: {
@@ -27,8 +27,10 @@ export const styles = StyleSheet.create({
     borderTopRightRadius: 20,
   },
   headerText: {
-    fontSize: 24,
-    marginBottom: 16,
+    fontSize: 30,
+    marginBottom: 21,
+    marginTop: 8,
+    fontWeight: 'bold',
     color: theme.colors.black,
   },
   item: {
@@ -102,7 +104,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    borderBottomColor: '#707070',
+    borderBottomColor: '#D0D2D2',
     borderBottomWidth: 1,
     paddingVertical: 16,
   },

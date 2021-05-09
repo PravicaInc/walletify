@@ -1,5 +1,5 @@
 {
-  "name": "PravicaAuthenticator",
+  "name": "wise",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -49,7 +49,7 @@
     "react-native-linear-gradient": "^2.5.6",
     "react-native-os": "^1.0.1",
     "react-native-randombytes": "^3.6.0",
-    "react-native-reanimated": "^2.0.0",
+    "react-native-reanimated": "1.7.0",
     "react-native-safe-area-context": "^3.2.0",
     "react-native-screens": "^2.18.1",
     "react-native-tcp": "^3.2.1",
@@ -57,6 +57,7 @@
     "react-navigation": "^4.2.2",
     "react-navigation-hooks": "^1.1.0",
     "react-navigation-stack": "^2.2.3",
+    "react-navigation-tabs": "^2.7.0",
     "react-redux": "^7.2.2",
     "readable-stream": "1.0.33",
     "redux": "^4.0.5",
