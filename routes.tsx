@@ -22,6 +22,7 @@ import Wallet from './src/screens/Wallet';
 import Stacks from './src/screens/Stacks';
 import Encryptions from './src/screens/Encryptions';
 import IntroSlider from './src/screens/IntroSlider';
+import BackupIdentity from './src/screens/BackupIdentity';
 
 const ChatPageNavigator = createStackNavigator(
   {
@@ -65,7 +66,13 @@ const ChatPageNavigator = createStackNavigator(
       screen: IntroSlider,
       navigationOptions: {
         header: () => null,
-      }
+      },
+    },
+    BackupIdentity: {
+      screen: BackupIdentity,
+      navigationOptions: {
+        header: () => null,
+      },
     },
     Home: createBottomTabNavigator(
       {

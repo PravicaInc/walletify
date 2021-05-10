@@ -57,7 +57,6 @@ const AuthModal: React.FC<Props> = (props) => {
               ListHeaderComponent={
                 <Text style={styles.headerText}>Your IDs</Text>
               }
-              contentContainerStyle={{height: '60%'}}
               style={styles.flatlist}
               data={identities}
               renderItem={({item, index}) => (
@@ -69,14 +68,14 @@ const AuthModal: React.FC<Props> = (props) => {
               )}
               keyExtractor={(item, index) => index.toString()}
             />
+            <TouchableOpacity style={[styles.loginButton]} onPress={dismiss}>
+              <Text style={styles.buttonText}>Cancel Authentication</Text>
+              <Image
+                source={require('../../assets/cancel.png')}
+                style={styles.cancel}
+              />
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity style={[styles.loginButton]} onPress={dismiss}>
-            <Text style={styles.buttonText}>Cancel Authentication</Text>
-            <Image
-              source={require('../../assets/cancel.png')}
-              style={styles.cancel}
-            />
-          </TouchableOpacity>
         </View>
       </Modal>
     </>

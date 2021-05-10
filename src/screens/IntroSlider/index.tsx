@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import React from 'react';
 import {Image, Text, View} from 'react-native';
 import AppIntroSlider from 'react-native-app-intro-slider';
-import { useNavigation } from 'react-navigation-hooks';
+import {useNavigation} from 'react-navigation-hooks';
 import {resetNavigation} from '../../../routes';
 import {styles} from './styles';
 
@@ -12,7 +12,7 @@ const slides = [
     key: 'wallet',
     title: 'Wallet',
     text:
-      'A simple crypto wallet where you can hold and control your digital assets and NFTs',
+      'Wallet that holds digital assets including cryptocurrencies such as Bitcoin, STX  as well as NFTs.',
     image: require('../../assets/app_slider/w.png'),
     icon: require('../../assets/app_slider/wallet.png'),
   },
@@ -20,7 +20,7 @@ const slides = [
     key: 'identity',
     title: 'Identity',
     text:
-      'Identify yourself to an app while retaining complete control over their credentials and personal details. ',
+      'Identity management system that generates, holds, restores and authenticates BNS names within any Stacks dApp.',
     image: require('../../assets/app_slider/i.png'),
     icon: require('../../assets/app_slider/identity.png'),
   },
@@ -28,14 +28,15 @@ const slides = [
     key: 'stacks',
     title: 'Stacks',
     text:
-      'Stacking rewards (STX) token holders with bitcoin for providing a valuable service to the network by locking up their tokens for a certain time.',
+      'Empowers Stacks ecosystem with tools and services to accelerate user adoption and increasing Stacks customer base.',
     image: require('../../assets/app_slider/s.png'),
     icon: require('../../assets/app_slider/stacks.png'),
   },
   {
     key: 'encryption',
     title: 'Encryption',
-    text: 'Guarantees your security and privacy over your data and keys',
+    text:
+      'End-to-end encryption of all operations and processes are done on the client-side. Not your keys, Not your assets.',
     image: require('../../assets/app_slider/e.png'),
     icon: require('../../assets/app_slider/key.png'),
   },
