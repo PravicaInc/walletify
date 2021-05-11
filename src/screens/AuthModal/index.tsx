@@ -9,36 +9,30 @@ import {
   View,
 } from 'react-native';
 import {styles} from './styles';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {doDeleteAuthRequest} from '../../store/onboarding/actions';
 import {UsernameCard} from '../../components/UsernameCard';
 import {Identity} from '@stacks/keychain';
-import {ScrollView} from 'react-native-gesture-handler';
-import {IdentityCard} from '../../components/IdentityCard';
+import {
+  selectAppName,
+  selectFullAppIcon,
+} from '../../store/onboarding/selectors';
 
 interface Props {
-  setModalVisible: (isVisible: boolean) => void;
   modalVisible: boolean;
-  icon: string | undefined;
-  name: string | undefined;
   identities: Identity[];
 }
 
-const AuthModal: React.FC<Props> = (props) => {
+const AuthModal: React.FC<Props> = ({modalVisible, identities}) => {
   const dispatch = useDispatch();
-  const {modalVisible, setModalVisible, icon, name, identities} = props;
+  const name = useSelector(selectAppName);
+  const icon = useSelector(selectFullAppIcon);
   const dismiss = useCallback(() => {
     dispatch(doDeleteAuthRequest());
-    setModalVisible(!modalVisible);
   }, [modalVisible]);
   return (
     <>
-      <Modal
-        animationType="slide"
-        visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(!modalVisible);
-        }}>
+      <Modal animationType="slide" visible={modalVisible}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <View style={styles.contentWarning}>
