@@ -47,11 +47,7 @@ export const finalizeAuthResponse = (
   {decodedAuthRequest, authResponse, appName, appURLScheme}: FinalizeAuthParams,
   dismissCb,
 ) => {
-  const dangerousUri = decodedAuthRequest.redirect_uri;
-  if (!isValidUrl(dangerousUri) || dangerousUri.includes('javascript')) {
-    throw new Error('Cannot proceed auth with malformed url');
-  }
-  const redirect = `${appURLScheme}://authResponse=${authResponse}`;
+  const redirect = `${appURLScheme}://?authResponse=${authResponse}`;
   Alert.alert(
     'Attention',
     `You are giving permission to ${appName} to access the app private key assigned to ${decodedAuthRequest.domain_name}`,
