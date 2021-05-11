@@ -34,16 +34,15 @@ const Wallet: React.FC = () => {
           />
           <Text
             style={{
-              fontSize: 24,
+              fontSize: 22,
               fontWeight: 'bold',
               marginVertical: 20,
               textAlign: 'center',
             }}>
-            Coming soon
+            Don't let this fall off your plate
           </Text>
           <Text style={{textAlign: 'center'}}>
-            Lorem ipsum, or lipsum as it is sometimes known, is dummy text used
-            in laying out print, graphic or web designs
+            Stay tuned!
           </Text>
         </View>
       </View>

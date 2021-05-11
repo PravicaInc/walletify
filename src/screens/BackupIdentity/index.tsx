@@ -1,7 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import {decrypt} from '@stacks/keychain';
 import React, {useState} from 'react';
-import {Image, Pressable, Text, TouchableOpacity, View} from 'react-native';
+import {
+  Alert,
+  Clipboard,
+  Image,
+  Pressable,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {
   CodeField,
   useBlurOnFulfill,
@@ -23,6 +32,7 @@ const BackupIdentity: React.FC = () => {
     setValue,
   });
   const [err, setError] = useState('');
+  const [secretKey, setSecretKey] = useState('');
   const wallet = useSelector(selectCurrentWallet);
 
   const renderCell = ({index, symbol, isFocused}) => {
@@ -49,7 +59,7 @@ const BackupIdentity: React.FC = () => {
       setError('');
       const decryptedKey = await decrypt(wallet?.encryptedBackupPhrase, text);
       if (decryptedKey) {
-        console.warn(decryptedKey);
+        setSecretKey(decryptedKey);
       } else {
         throw new Error();
       }
@@ -57,6 +67,14 @@ const BackupIdentity: React.FC = () => {
       setError('Invalid pin code');
     }
   };
+
+  const onSubmit = async () => {
+    if (secretKey) {
+      Clipboard.setString(secretKey);
+      Alert.alert('Copied!');
+    }
+  };
+
   return (
     <>
       <View style={styles.container}>
@@ -70,31 +88,56 @@ const BackupIdentity: React.FC = () => {
           />
         </TouchableOpacity>
         <Text style={styles.desc}>
-          Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in
-          laying out print, graphic or web designs
+          In-order to decrypt your Seed phrase you have to enter your pin code.
         </Text>
-        <Text style={styles.text}>Please enter your pin code</Text>
-        <CodeField
-          ref={ref}
-          {...prop}
-          value={value}
-          onChangeText={setValue}
-          autoFocus={true}
-          cellCount={4}
-          keyboardType="number-pad"
-          textContentType="oneTimeCode"
-          renderCell={renderCell}
-        />
-        <Pressable
-          disabled={value.length !== 4}
-          onPress={() => submit(value)}
-          style={[styles.loginButton, {opacity: value.length !== 4 ? 0.5 : 1}]}>
-          <Text style={styles.buttonText}>Restore</Text>
-          <Image
-            style={styles.loginLogo}
-            source={require('../../assets/restore.png')}
-          />
-        </Pressable>
+        {secretKey.length > 0 ? (
+          <View style={{marginTop: 20}}>
+            <TextInput
+              placeholder={'Your seed phrase'}
+              placeholderTextColor={'black'}
+              style={styles.textInput}
+              editable={false}
+              value={secretKey}
+              textAlignVertical={'center'}
+              multiline={true}
+            />
+            <TouchableOpacity onPress={onSubmit} style={styles.loginButton}>
+              <Text style={styles.buttonText}>Copy your seed phrase</Text>
+              <Image
+                style={styles.loginLogo}
+                source={require('../../assets/copy.png')}
+              />
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <>
+            <Text style={styles.text}>Please enter your pin code</Text>
+            <CodeField
+              ref={ref}
+              {...prop}
+              value={value}
+              onChangeText={setValue}
+              autoFocus={true}
+              cellCount={4}
+              keyboardType="number-pad"
+              textContentType="oneTimeCode"
+              renderCell={renderCell}
+            />
+            <Pressable
+              disabled={value.length !== 4}
+              onPress={() => submit(value)}
+              style={[
+                styles.loginButton,
+                {opacity: value.length !== 4 ? 0.5 : 1},
+              ]}>
+              <Text style={styles.buttonText}>Restore</Text>
+              <Image
+                style={styles.loginLogo}
+                source={require('../../assets/restore.png')}
+              />
+            </Pressable>
+          </>
+        )}
       </View>
     </>
   );

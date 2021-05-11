@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect} from 'react';
-import {Text, ActivityIndicator, ImageBackground} from 'react-native';
+import {Text, ActivityIndicator, View} from 'react-native';
 import {styles} from './styles';
 import {useNavigation} from 'react-navigation-hooks';
 import {resetNavigation} from '../../../routes';
@@ -36,16 +36,14 @@ const SplashScreen: React.FC = () => {
 
   return (
     <>
-      <ImageBackground
-        source={require('../../assets/pravica-background.png')}
-        style={styles.container}>
+      <View style={styles.container}>
         {/* <Image style={styles.logo} source={require('../../assets/logo.png')} /> */}
         <ActivityIndicator size="large" color={theme.colors.white} />
         <Text style={styles.bottomText}>
           All rights reserved to{' '}
           <Text style={styles.pravicaText}>@Pravica</Text>
         </Text>
-      </ImageBackground>
+      </View>
     </>
   );
 };

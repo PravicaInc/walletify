@@ -20,17 +20,14 @@ const Stacks: React.FC = () => {
           />
           <Text
             style={{
-              fontSize: 24,
+              fontSize: 22,
               fontWeight: 'bold',
               marginVertical: 20,
               textAlign: 'center',
             }}>
-            Coming soon
+            Concentrate on the job in hand
           </Text>
-          <Text style={{textAlign: 'center'}}>
-            Lorem ipsum, or lipsum as it is sometimes known, is dummy text used
-            in laying out print, graphic or web designs
-          </Text>
+          <Text style={{textAlign: 'center'}}>Stay tuned!</Text>
         </View>
       </View>
     </>

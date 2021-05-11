@@ -70,4 +70,17 @@ export const styles = StyleSheet.create({
   errCell: {
     borderColor: '#FE3939',
   },
+  textInput: {
+    backgroundColor: '#E0E0E0',
+    height: 150,
+    justifyContent: 'center',
+    alignItems: 'center',
+    textAlignVertical: 'center',
+    borderRadius: 15,
+    marginTop: 12,
+    padding: 16,
+    paddingTop: 16,
+    fontSize: 14,
+    color: 'black',
+  },
 });
