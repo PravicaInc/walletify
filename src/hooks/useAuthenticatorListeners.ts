@@ -1,10 +1,5 @@
 import {useState, useEffect} from 'react';
-import {
-  Linking,
-  NativeEventEmitter,
-  NativeModules,
-  Platform,
-} from 'react-native';
+import {Linking, NativeEventEmitter, NativeModules} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {selectCurrentWallet} from '../store/wallet/selectors';
 import {doSaveAuthRequest} from '../store/onboarding/actions';
@@ -36,19 +31,13 @@ export const useAuthenticatorListeners = () => {
       const subscription = eventEmitter.addListener('Linking', (event) => {
         if (event?.sourceApplication) {
           setSourceApplication(event.sourceApplication);
-          if (Platform.OS === 'android') {
-            Linking.getInitialURL().then((initialUrl) => {
-              const token = getParameterByName('token', initialUrl || '');
-              setUrl(token || '');
-            });
-          }
         }
       });
       return () => subscription.remove();
     }
   }, [wallet, eventEmitter]);
   useEffect(() => {
-    if (Platform.OS === 'ios' && wallet) {
+    if (wallet) {
       const subscription = Linking.addListener('url', (e: any) => {
         if (e.url) {
           const token = getParameterByName('token', e.url);
