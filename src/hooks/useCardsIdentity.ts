@@ -22,7 +22,7 @@ export const useCardsIdentity = (username?: string) => {
       return {
         backgroundColor: '#5546FF',
         image: require('../assets/stack.png'),
-        text: 'STX ID',
+        text: 'Stacks ID',
       };
     } else if (username?.split('.').length === 2) {
       return {
