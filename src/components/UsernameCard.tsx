@@ -85,7 +85,8 @@ const styles = StyleSheet.create({
     shadowRadius: 1,
   },
   blockstackText: {
-    color: '#A6A5C4',
+    color: '#FFF',
+    opacity: 0.6,
     fontSize: 12,
   },
   blockstackIdText: {
