@@ -65,7 +65,7 @@ export const styles = StyleSheet.create({
     shadowOpacity: 0.9,
     shadowRadius: 3,
 
-    elevation: 5,
+    elevation: 1,
   },
   errCell: {
     borderColor: '#FE3939',

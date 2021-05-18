@@ -106,7 +106,7 @@ export const styles = StyleSheet.create({
     shadowOpacity: 0.9,
     shadowRadius: 3,
     borderColor: '#DEDEDE',
-    elevation: 5,
+    elevation: 1,
   },
   errorTextRed: {
     color: theme.colors.danger,

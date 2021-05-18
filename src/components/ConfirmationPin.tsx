@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
   button: {
     borderRadius: 20,
     padding: 10,
-    elevation: 2,
+    elevation: 1,
   },
   container: {
     backgroundColor: 'white',
@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.9,
     shadowRadius: 3,
 
-    elevation: 5,
+    elevation: 1,
   },
   errCell: {
     borderColor: '#FE3939',
