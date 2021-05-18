@@ -22,7 +22,6 @@ import {
   selectAuthRequest,
   selectFullAppIcon,
   selectAppName,
-  isValidUrl,
   selectAppURLScheme,
   selectPackageName,
   selectBundleID,
@@ -42,7 +41,8 @@ interface FinalizeAuthParams {
   appName: string;
   appURLScheme: string;
 }
-
+export const delay = (ms = 1000) =>
+  new Promise((res) => setTimeout(() => res('done'), ms));
 export const finalizeAuthResponse = (
   {decodedAuthRequest, authResponse, appName, appURLScheme}: FinalizeAuthParams,
   dismissCb,
@@ -59,9 +59,10 @@ export const finalizeAuthResponse = (
       },
       {
         text: 'Accept',
-        onPress: () => {
-          Linking.openURL(redirect);
+        onPress: async () => {
           dismissCb();
+          await delay(500);
+          Linking.openURL(redirect);
         },
       },
     ],

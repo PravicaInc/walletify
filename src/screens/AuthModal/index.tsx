@@ -29,7 +29,7 @@ const AuthModal: React.FC<Props> = ({modalVisible, identities}) => {
   const icon = useSelector(selectFullAppIcon);
   const dismiss = useCallback(() => {
     dispatch(doDeleteAuthRequest());
-  }, [modalVisible]);
+  }, []);
   return (
     <>
       <Modal animationType="slide" visible={modalVisible}>
