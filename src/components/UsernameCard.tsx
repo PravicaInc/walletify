@@ -39,17 +39,19 @@ export const UsernameCard: React.FC<Props> = (props: Props) => {
           },
         ]}>
         <View style={styles.row}>
-          <View>
+          <View style={{justifyContent: 'space-between', height: '100%'}}>
             <Text style={styles.blockstackText}>{cardIdentity.text}</Text>
-            <Text style={styles.blockstackIdText}>
-              {identity.defaultUsername?.split('.')[0]}
-            </Text>
-            <Text style={styles.blockstackIdText}>
-              {identity.defaultUsername?.replace(
-                identity.defaultUsername?.split('.')[0],
-                '',
-              )}
-            </Text>
+            <View>
+              <Text style={styles.blockstackIdText}>
+                {identity.defaultUsername?.split('.')[0]}
+              </Text>
+              <Text style={styles.blockstackIdText}>
+                {identity.defaultUsername?.replace(
+                  identity.defaultUsername?.split('.')[0],
+                  '',
+                )}
+              </Text>
+            </View>
           </View>
           <View style={styles.rowTwo}>
             <Image style={styles.image} source={cardIdentity.image} />
@@ -84,11 +86,11 @@ const styles = StyleSheet.create({
   },
   blockstackText: {
     color: '#A6A5C4',
-    fontSize: 14,
+    fontSize: 12,
   },
   blockstackIdText: {
     color: 'white',
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: 'bold',
   },
   adresses: {

@@ -39,8 +39,8 @@ const AuthModal: React.FC<Props> = ({modalVisible, identities}) => {
               <View style={styles.imageContainer}>
                 <Image source={{uri: icon}} style={styles.image} />
                 <Text style={styles.warningText}>
-                  Note: {name} is asking for your permissions to generate
-                  private key to use in their apps
+                  {name} is asking for your permissions to generate private key
+                  to use in their apps
                 </Text>
               </View>
             </View>

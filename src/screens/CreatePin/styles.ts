@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
 import {theme} from '../../../theme';
 
 export const styles = StyleSheet.create({
@@ -6,7 +6,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     padding: 44,
     paddingTop: 60,
-    backgroundColor: '#F4F4F4',
+    backgroundColor: '#fff',
   },
   pravicaLogo: {width: '50%', resizeMode: 'contain'},
   imageHeader: {
@@ -65,7 +65,7 @@ export const styles = StyleSheet.create({
     backgroundColor: theme.colors.badgeBackground,
     height: 48,
   },
-  loginLogo: {width: 24, height: 24, marginRight: 9},
+  loginLogo: {width: 24, height: 24},
   buttonText: {color: theme.colors.white, fontSize: 14},
   seetTextRed: {color: theme.colors.danger, fontSize: 14, marginTop: 8},
   fieldRow: {
@@ -105,8 +105,7 @@ export const styles = StyleSheet.create({
     },
     shadowOpacity: 0.9,
     shadowRadius: 3,
-    borderColor: '#DEDEDE',
-    elevation: 1,
+    borderColor: Platform.OS === 'ios' ? '#DEDEDE' : '#5546FF',
   },
   errorTextRed: {
     color: theme.colors.danger,

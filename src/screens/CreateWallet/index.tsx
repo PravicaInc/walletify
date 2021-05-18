@@ -159,16 +159,19 @@ const CreateWallet: React.FC = () => {
                       onPress={() => {
                         setSavedSecretKey(false);
                       }}
-                      style={[
-                        styles.cardItem,
-                        {marginLeft: '5%', marginTop: 10},
-                      ]}>
+                      style={[styles.cardItem, {marginTop: 50}]}>
                       <Image
-                        style={{width: 20, height: 12, marginRight: 16}}
+                        style={{width: 20, height: 12, marginRight: 4}}
                         resizeMode="contain"
-                        source={require('../../assets/back_arrow.png')}
+                        source={require('../../assets/back_arrow_blue.png')}
                       />
-                      <Text>View secret key again</Text>
+                      <Text
+                        style={{
+                          color: '#5546FF',
+                          textDecorationLine: 'underline',
+                        }}>
+                        View secret key again
+                      </Text>
                     </TouchableOpacity>
                   </>
                 )}

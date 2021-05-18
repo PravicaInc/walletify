@@ -8,6 +8,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'column',
+    backgroundColor: 'white',
   },
   logo: {width: 88, height: 88},
   bottomText: {

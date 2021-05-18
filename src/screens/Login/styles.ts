@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
     padding: 44,
     width: '100%',
     alignItems: 'flex-start',
-    backgroundColor: '#F4F4F4',
+    backgroundColor: '#fff',
   },
   flexRow: {
     flexDirection: 'row',
@@ -22,7 +22,7 @@ export const styles = StyleSheet.create({
   title: {
     color: '#2C3E50',
     fontSize: 24,
-    fontWeight: '900',
+    fontWeight: 'bold',
     marginBottom: 5,
     marginTop: 36,
   },
@@ -67,6 +67,6 @@ export const styles = StyleSheet.create({
     marginTop: 35,
     height: 48,
   },
-  loginLogo: {width: 24, height: 24, marginRight: 9},
+  loginLogo: {width: 24, height: 24},
   buttonText: {color: theme.colors.white, fontSize: 14},
 });

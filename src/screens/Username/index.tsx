@@ -168,13 +168,13 @@ const Username: React.FC<{}> = () => {
               style={styles.imageHeader}
               source={require('../../assets/person-purple.png')}
             />
-            <Text style={styles.title}>Choose user name</Text>
+            <Text style={styles.title}>Choose Username</Text>
             <Text style={styles.description}>
               This is how people will find you in the Stacks ecosystem, choose a
               descriptive one.
             </Text>
             <TextInput
-              placeholder={'Your username'}
+              placeholder={'Your Username'}
               autoCapitalize="none"
               placeholderTextColor={'#94A5A6'}
               style={[

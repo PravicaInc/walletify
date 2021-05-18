@@ -1,11 +1,11 @@
-import {StyleSheet} from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
 import {theme} from '../../../theme';
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: '#F4F4F4',
+    backgroundColor: '#fff',
   },
   pravicaLogo: {width: '50%', resizeMode: 'contain'},
   imageHeader: {
@@ -16,7 +16,7 @@ export const styles = StyleSheet.create({
   card: {
     backgroundColor: 'white',
     padding: 35,
-    paddingTop: 20,
+    paddingTop: Platform.OS === 'ios' ? 20 : 0,
     paddingBottom: 53,
     marginTop: 50,
     borderRadius: 20,
@@ -56,14 +56,14 @@ export const styles = StyleSheet.create({
   },
   loginButton: {
     padding: 16,
-    backgroundColor: '#707070',
+    backgroundColor: theme.colors.badgeBackground,
     alignItems: 'center',
     justifyContent: 'space-between',
     flexDirection: 'row',
     borderRadius: 4,
     marginTop: 50,
   },
-  loginLogo: {width: 24, height: 24, marginRight: 9},
+  loginLogo: {width: 24, height: 24},
   buttonText: {color: theme.colors.white, fontSize: 14},
   seetTextRed: {color: theme.colors.danger, fontSize: 14, marginTop: 8},
   fieldRow: {
@@ -98,8 +98,7 @@ export const styles = StyleSheet.create({
     },
     shadowOpacity: 0.9,
     shadowRadius: 3,
-
-    elevation: 1,
+    borderColor: Platform.OS === 'ios' ? '#707070' : '#5546FF',
   },
   errorTextRed: {
     color: theme.colors.danger,

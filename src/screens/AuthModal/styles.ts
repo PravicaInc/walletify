@@ -3,7 +3,7 @@ import {theme} from '../../../theme';
 
 export const styles = StyleSheet.create({
   headerText: {
-    fontSize: 24,
+    fontSize: 20,
     color: theme.colors.black,
     fontWeight: 'bold',
     marginBottom: 10,
@@ -28,7 +28,6 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   modalView: {
-    borderRadius: 20,
     paddingVertical: 35,
     alignItems: 'center',
   },
@@ -45,7 +44,7 @@ export const styles = StyleSheet.create({
     marginBottom: 20,
     marginTop: 20,
   },
-  loginLogo: {width: 24, height: 24, marginRight: 9},
+  loginLogo: {width: 24, height: 24},
   buttonText: {color: '#FF0000', fontSize: 16, fontWeight: 'bold'},
   textStyle: {
     color: 'white',
@@ -59,7 +58,7 @@ export const styles = StyleSheet.create({
   contentWarning: {
     flexDirection: 'row',
     marginBottom: 16,
-    width: '80%',
+    width: '90%',
     alignItems: 'center',
   },
   imageContainer: {
@@ -74,12 +73,10 @@ export const styles = StyleSheet.create({
   image: {
     width: 72,
     height: 72,
-    resizeMode: 'contain',
     borderRadius: 36,
     marginTop: -50,
   },
   warningText: {
-    fontWeight: 'bold',
     marginTop: 10,
     fontSize: 16,
     color: 'black',
@@ -87,8 +84,6 @@ export const styles = StyleSheet.create({
   },
   flatlist: {
     width: '100%',
-    padding: 16,
-    borderRadius: 20,
     marginTop: 20,
     height: '60%',
   },

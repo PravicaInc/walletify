@@ -64,7 +64,7 @@ const BackupIdentity: React.FC = () => {
         throw new Error();
       }
     } catch (error) {
-      setError('Invalid pin code');
+      setError('Invalid PIN');
     }
   };
 
@@ -88,7 +88,7 @@ const BackupIdentity: React.FC = () => {
           />
         </TouchableOpacity>
         <Text style={styles.desc}>
-          In-order to decrypt your Seed phrase you have to enter your pin code.
+          In-order to decrypt your seed phrase you have to enter your PIN.
         </Text>
         {secretKey.length > 0 ? (
           <View style={{marginTop: 20}}>
@@ -102,7 +102,7 @@ const BackupIdentity: React.FC = () => {
               multiline={true}
             />
             <TouchableOpacity onPress={onSubmit} style={styles.loginButton}>
-              <Text style={styles.buttonText}>Copy your seed phrase</Text>
+              <Text style={styles.buttonText}>Copy Your Seed Phrase</Text>
               <Image
                 style={styles.loginLogo}
                 source={require('../../assets/copy.png')}
@@ -111,7 +111,7 @@ const BackupIdentity: React.FC = () => {
           </View>
         ) : (
           <>
-            <Text style={styles.text}>Please enter your pin code</Text>
+            <Text style={styles.text}>Please enter your PIN</Text>
             <CodeField
               ref={ref}
               {...prop}
