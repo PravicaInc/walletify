@@ -31,8 +31,7 @@ const EditPinCode: React.FC = () => {
   const [firstValue, setFirstValue] = useState('');
   const [secondValue, setSecondValue] = useState('');
   const [status, setStatus] = useState('initial');
-  const ref = useBlurOnFulfill({value, cellCount: 4});
-  const refSecond = useBlurOnFulfill({secondValue, cellCount: 4});
+  const refSecond = useBlurOnFulfill({value: secondValue, cellCount: 4});
   const [error, setError] = useState('');
   const [firstProps, getFirstCellOnLayoutHandler] = useClearByFocusCell({
     firstValue,
@@ -140,7 +139,6 @@ const EditPinCode: React.FC = () => {
         style={{
           backgroundColor: '#fff',
         }}
-        keyboardShouldPersistTaps={'handled'}
         accessible={false}>
         <View style={styles.container}>
           <KeyboardAvoidingView behavior={'padding'}>
@@ -171,8 +169,7 @@ const EditPinCode: React.FC = () => {
                   },
                 ]}>
                 <CodeField
-                  ref={ref}
-                  {...props}
+                  {...firstProps}
                   value={firstValue}
                   onChangeText={setFirstValue}
                   cellCount={4}
@@ -187,7 +184,6 @@ const EditPinCode: React.FC = () => {
               <Text style={styles.confirmPinCode}>Enter New PIN</Text>
               <View style={styles.fieldRow}>
                 <CodeField
-                  ref={ref}
                   {...props}
                   value={value}
                   onChangeText={setValue}

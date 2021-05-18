@@ -30,8 +30,7 @@ const CreatePin: React.FC = () => {
   const [value, setValue] = useState('');
   const [secondValue, setSecondValue] = useState('');
   const [status, setStatus] = useState('initial');
-  const ref = useBlurOnFulfill({value, cellCount: 4});
-  const refSecond = useBlurOnFulfill({secondValue, cellCount: 4});
+  const refSecond = useBlurOnFulfill({value: secondValue, cellCount: 4});
   const [error, setError] = useState('');
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
@@ -118,7 +117,7 @@ const CreatePin: React.FC = () => {
     <>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View style={styles.container}>
-          <KeyboardAvoidingView behavior={'position'}>
+          <KeyboardAvoidingView behavior={'padding'}>
             <Image source={require('../../assets/key-pin.png')} />
             <View>
               <Text style={styles.title}>Encrypt Your Seed Phrase</Text>
@@ -130,7 +129,6 @@ const CreatePin: React.FC = () => {
               <Text style={styles.confirmPinCode}>Enter your PIN</Text>
               <View style={styles.fieldRow}>
                 <CodeField
-                  ref={ref}
                   {...props}
                   value={value}
                   onChangeText={setValue}
