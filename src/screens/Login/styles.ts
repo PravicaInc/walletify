@@ -1,10 +1,10 @@
 import {StyleSheet} from 'react-native';
 import {theme} from '../../../theme';
+import {isWideScreen} from '../../utils';
 
 export const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    paddingTop: 60,
+    paddingTop: isWideScreen ? 60 : 20,
     padding: 44,
     width: '100%',
     alignItems: 'flex-start',
@@ -21,10 +21,10 @@ export const styles = StyleSheet.create({
   },
   title: {
     color: '#2C3E50',
-    fontSize: 24,
+    fontSize: isWideScreen ? 24 : 16,
     fontWeight: 'bold',
     marginBottom: 5,
-    marginTop: 36,
+    marginTop: isWideScreen ? 36 : 16,
   },
   pravicaLogo: {width: 63, height: 63, resizeMode: 'contain', marginRight: 18},
   card: {
@@ -52,7 +52,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     borderRadius: 10,
     width: '100%',
-    marginTop: 45,
+    marginTop: isWideScreen ? 35 : 16,
     height: 48,
     paddingHorizontal: 20,
     shadowColor: '#000000',
@@ -64,7 +64,7 @@ export const styles = StyleSheet.create({
     borderColor: theme.colors.badgeBackground,
     backgroundColor: 'white',
     borderWidth: 1,
-    marginTop: 35,
+    marginTop: isWideScreen ? 35 : 16,
     height: 48,
   },
   loginLogo: {width: 24, height: 24},

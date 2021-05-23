@@ -5,6 +5,7 @@ import {styles} from './styles';
 import {useNavigation} from 'react-navigation-hooks';
 import {pushNavigation, resetNavigation} from '../../../routes';
 import {theme} from '../../../theme';
+import {ScrollView} from 'react-native-gesture-handler';
 
 const Login: React.FC = () => {
   const {dispatch: navigationDispatch} = useNavigation();
@@ -17,7 +18,9 @@ const Login: React.FC = () => {
 
   return (
     <>
-      <View style={styles.container}>
+      <ScrollView
+        contentContainerStyle={styles.container}
+        style={{backgroundColor: 'white'}}>
         <Image source={require('../../assets/logo.png')} />
         <Text style={styles.title}>
           Seamless onboarding experience for your decentralized authentication.
@@ -32,7 +35,8 @@ const Login: React.FC = () => {
             source={require('../../assets/lock-icon.png')}
           />
           <Text style={styles.desc}>
-            Create your decentralized identity and store your keys locally and securely.
+            Create your decentralized identity and store your keys locally and
+            securely.
           </Text>
         </View>
         <View
@@ -42,7 +46,8 @@ const Login: React.FC = () => {
             source={require('../../assets/blind-icon.png')}
           />
           <Text style={styles.desc}>
-            No dApp from stacks can access your keys, they just ask you to permit the authentication process.
+            No dApp from stacks can access your keys, they just ask you to
+            permit the authentication process.
           </Text>
         </View>
         <TouchableOpacity
@@ -68,7 +73,7 @@ const Login: React.FC = () => {
             source={require('../../assets/login-purple.png')}
           />
         </TouchableOpacity>
-      </View>
+      </ScrollView>
     </>
   );
 };

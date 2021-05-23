@@ -22,6 +22,7 @@ import {useNavigation} from 'react-navigation-hooks';
 import {doStoreSeed} from '../../store/wallet';
 import {doSetPinCreated} from '../../store/onboarding/actions';
 import {useWallet} from '../../hooks/useWallet';
+import {ScrollView} from 'react-native-gesture-handler';
 
 const CreatePin: React.FC = () => {
   const {secretKey} = useWallet();
@@ -116,7 +117,9 @@ const CreatePin: React.FC = () => {
   return (
     <>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <View style={styles.container}>
+        <ScrollView
+          contentContainerStyle={styles.container}
+          style={{backgroundColor: 'white'}}>
           <KeyboardAvoidingView behavior={'padding'}>
             <Image source={require('../../assets/key-pin.png')} />
             <View>
@@ -157,7 +160,7 @@ const CreatePin: React.FC = () => {
               <Text style={styles.errorTextRed}>{error}</Text>
             </View>
             <Pressable
-              disabled={(value !== secondValue) || value === ''}
+              disabled={value !== secondValue || value === ''}
               onPress={onSubmit}
               style={[
                 styles.loginButton,
@@ -176,7 +179,7 @@ const CreatePin: React.FC = () => {
               </>
             </Pressable>
           </KeyboardAvoidingView>
-        </View>
+        </ScrollView>
       </TouchableWithoutFeedback>
     </>
   );

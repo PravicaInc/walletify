@@ -18,6 +18,7 @@ import {
   doSetOnboardingPath,
 } from '../store/onboarding/actions';
 import {doSignOut} from '../store/wallet';
+import { isWideScreen } from '../utils';
 
 interface Props {
   actionSheetRef: any;
@@ -41,7 +42,7 @@ export const Settings: React.FC<Props> = (props: Props) => {
         gestureEnabled={true}
         containerStyle={{borderTopLeftRadius: 38, borderTopRightRadius: 38}}
         ref={props.actionSheetRef}>
-        <View style={{paddingVertical: 48, paddingHorizontal: 48}}>
+        <View style={styles.container}>
           <TouchableOpacity
             onPress={() => {
               props.actionSheetRef.current?.setModalVisible(false);
@@ -101,6 +102,7 @@ export const Settings: React.FC<Props> = (props: Props) => {
 };
 
 const styles = StyleSheet.create({
+  container: {padding: isWideScreen ? 48 : 24},
   button: {
     borderRadius: 20,
     padding: 10,

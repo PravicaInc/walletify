@@ -1,11 +1,11 @@
 import {StyleSheet} from 'react-native';
 import {theme} from '../../../theme';
+import {isWideScreen} from '../../utils';
 
 export const styles = StyleSheet.create({
   container: {
-    flex: 1,
     padding: 44,
-    paddingTop: 70,
+    paddingTop: isWideScreen ? 70 : 30,
     backgroundColor: 'white',
   },
   pravicaLogo: {width: '50%', resizeMode: 'contain'},

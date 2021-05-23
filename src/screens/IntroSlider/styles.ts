@@ -3,10 +3,10 @@ import {StyleSheet} from 'react-native';
 export const styles = StyleSheet.create({
   done: {
     color: '#5546FF',
-    fontSize: 19,
+    fontSize: 17,
     fontWeight: 'bold',
-    marginTop: 10,
-    marginRight: 26,
+    marginTop: 11,
+    marginRight: 10,
   },
   view: {
     flex: 1,
@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   title: {
-    fontSize: 42,
+    fontSize: 36,
     fontWeight: 'bold',
   },
   image: {
@@ -29,7 +29,8 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   text: {
-    marginTop: 36,
+    marginTop: 18,
+    marginBottom: 18,
     fontSize: 14,
   },
 });

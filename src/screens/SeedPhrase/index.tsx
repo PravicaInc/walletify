@@ -63,18 +63,17 @@ const SeedPhrase: React.FC = () => {
   return (
     <>
       <ScrollView
-        style={styles.container}
-        keyboardShouldPersistTaps={'handled'}>
-        <TouchableOpacity
-          onPress={goBack}
-          style={[styles.cardItem, {marginBottom: 20}]}>
+        contentContainerStyle={styles.container}
+        keyboardShouldPersistTaps={'handled'}
+        style={{backgroundColor: 'white'}}>
+        <TouchableOpacity onPress={goBack} style={styles.cardItem}>
           <Image
             style={{width: 25, height: 15, marginRight: 16}}
             resizeMode="contain"
             source={require('../../assets/back_arrow.png')}
           />
         </TouchableOpacity>
-        <KeyboardAvoidingView behavior={'position'}>
+        <KeyboardAvoidingView behavior={'padding'}>
           <Image source={require('../../assets/logo.png')} />
           <Text style={styles.description}>Enter your Seed Phrase</Text>
           <TextInput

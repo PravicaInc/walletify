@@ -1,10 +1,11 @@
 import {StyleSheet} from 'react-native';
 import {theme} from '../../../theme';
+import {isWideScreen} from '../../utils';
 
 export const styles = StyleSheet.create({
   container: {
-    flex: 1,
     padding: 44,
+    paddingVertical: isWideScreen ? 44 : 20,
     backgroundColor: 'white',
   },
   card: {
@@ -17,7 +18,7 @@ export const styles = StyleSheet.create({
   description: {
     color: theme.colors.black,
     fontSize: 24,
-    marginTop: 40,
+    marginTop: isWideScreen ? 40 : 16,
     fontWeight: '500',
   },
   textInput: {
@@ -40,7 +41,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     borderRadius: 10,
     height: 48,
-    marginTop: 50,
+    marginTop: isWideScreen ? 50 : 0,
   },
   loginLogo: {width: 24, height: 24},
   buttonText: {color: theme.colors.white, fontSize: 14},
@@ -50,5 +51,6 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     width: '80%',
     marginVertical: 10,
+    marginBottom: isWideScreen ? 20 : 0,
   },
 });

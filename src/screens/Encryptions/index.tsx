@@ -1,18 +1,21 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
-import {Image, Text, TouchableOpacity, View} from 'react-native';
+import {Image, Text, TouchableOpacity} from 'react-native';
 import {styles} from './styles';
 import {HeaderComponent} from '../../components/Header';
 import {pushNavigation} from '../../../routes';
 import {useNavigation} from 'react-navigation-hooks';
+import {ScrollView} from 'react-native-gesture-handler';
 
 const Encryptions: React.FC = () => {
   const {dispatch} = useNavigation();
 
   return (
     <>
-      <View style={styles.container}>
+      <ScrollView
+        style={{backgroundColor: 'white'}}
+        contentContainerStyle={styles.container}>
         <HeaderComponent
           title={'Encryption'}
           imageSource={require('../../assets/encryption.png')}
@@ -49,7 +52,7 @@ const Encryptions: React.FC = () => {
             source={require('../../assets/key-icon.png')}
           />
         </TouchableOpacity>
-      </View>
+      </ScrollView>
     </>
   );
 };

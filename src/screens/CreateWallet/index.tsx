@@ -12,12 +12,13 @@ import {
 } from 'react-native';
 import {styles} from './styles';
 import {useDispatch, useSelector} from 'react-redux';
-import {TextInput} from 'react-native-gesture-handler';
+import {ScrollView, TextInput} from 'react-native-gesture-handler';
 import {selectSecretKey} from '../../store/onboarding/selectors';
 import {useNavigation} from 'react-navigation-hooks';
 import {resetNavigation} from '../../../routes';
 import LottieView from 'lottie-react-native';
 import {doCreateSecretKey} from '../../store/onboarding/actions';
+import {isWideScreen} from '../../utils';
 
 const CreateWallet: React.FC = () => {
   const [isSaved, setSavedSecretKey] = useState(false);
@@ -46,7 +47,9 @@ const CreateWallet: React.FC = () => {
   return (
     <>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <View style={[styles.container]}>
+        <ScrollView
+          contentContainerStyle={styles.container}
+          style={{backgroundColor: 'white'}}>
           {!secretKey ? (
             <View
               style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
@@ -101,7 +104,7 @@ const CreateWallet: React.FC = () => {
                     source={require('../../assets/lock-icon.png')}
                   />
                   <Text style={styles.title}>Save Your Seed Phrase</Text>
-                  <View style={{marginVertical: 20}}>
+                  <View>
                     <View style={styles.cardItem}>
                       <Image
                         style={styles.image}
@@ -159,7 +162,10 @@ const CreateWallet: React.FC = () => {
                       onPress={() => {
                         setSavedSecretKey(false);
                       }}
-                      style={[styles.cardItem, {marginTop: 50}]}>
+                      style={[
+                        styles.cardItem,
+                        {marginTop: isWideScreen ? 50 : 20},
+                      ]}>
                       <Image
                         style={{width: 20, height: 12, marginRight: 4}}
                         resizeMode="contain"
@@ -178,7 +184,7 @@ const CreateWallet: React.FC = () => {
               </>
             </KeyboardAvoidingView>
           )}
-        </View>
+        </ScrollView>
       </TouchableWithoutFeedback>
     </>
   );

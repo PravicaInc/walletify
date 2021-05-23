@@ -1,10 +1,11 @@
 import {Platform, StyleSheet} from 'react-native';
 import {theme} from '../../../theme';
+import {isWideScreen} from '../../utils';
 
 export const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    padding: 16,
+    paddingHorizontal: isWideScreen ? 44 : 20,
+    paddingVertical: isWideScreen ? 60 : 25,
     backgroundColor: '#fff',
   },
   pravicaLogo: {width: '50%', resizeMode: 'contain'},
@@ -12,14 +13,6 @@ export const styles = StyleSheet.create({
     width: 90,
     height: 80,
     marginBottom: 40,
-  },
-  card: {
-    backgroundColor: 'white',
-    padding: 35,
-    paddingTop: Platform.OS === 'ios' ? 20 : 0,
-    paddingBottom: 53,
-    marginTop: 50,
-    borderRadius: 20,
   },
   description: {
     color: '#7F8C8D',
@@ -69,7 +62,6 @@ export const styles = StyleSheet.create({
   fieldRow: {
     marginTop: 10,
     flexDirection: 'row',
-    marginLeft: 8,
   },
   cell: {
     width: 55,
@@ -78,7 +70,7 @@ export const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: '700',
     textAlign: 'center',
-    marginLeft: 8,
+    marginRight: 8,
     borderRadius: 12,
     borderColor: '#707070',
     borderWidth: 1,

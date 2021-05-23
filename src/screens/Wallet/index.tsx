@@ -6,6 +6,7 @@ import {styles} from './styles';
 // import {selectCurrentWallet} from '../../store/wallet/selectors';
 // import {TransactionVersion} from '@stacks/transactions';
 import {HeaderComponent} from '../../components/Header';
+import {isWideScreen} from '../../utils';
 
 const Wallet: React.FC = () => {
   // const wallet = useSelector(selectCurrentWallet);
@@ -28,7 +29,7 @@ const Wallet: React.FC = () => {
         />
         <View style={{justifyContent: 'center', alignItems: 'center'}}>
           <Image
-            style={{width: '100%', height: 300}}
+            style={{width: '100%', height: isWideScreen ? 300 : 180}}
             resizeMode="contain"
             source={require('../../assets/coming-soon.png')}
           />
@@ -41,9 +42,7 @@ const Wallet: React.FC = () => {
             }}>
             Don't let this fall off your plate
           </Text>
-          <Text style={{textAlign: 'center'}}>
-            Stay tuned!
-          </Text>
+          <Text style={{textAlign: 'center'}}>Stay tuned!</Text>
         </View>
       </View>
     </>

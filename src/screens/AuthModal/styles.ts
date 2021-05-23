@@ -1,9 +1,10 @@
 import {StyleSheet} from 'react-native';
 import {theme} from '../../../theme';
+import { isWideScreen } from '../../utils';
 
 export const styles = StyleSheet.create({
   headerText: {
-    fontSize: 20,
+    fontSize: isWideScreen ? 20 : 14,
     color: theme.colors.black,
     fontWeight: 'bold',
     marginBottom: 10,
@@ -12,7 +13,7 @@ export const styles = StyleSheet.create({
     color: 'black',
     fontSize: 20,
     fontWeight: 'bold',
-    marginVertical: 20,
+    marginVertical: isWideScreen ? 20 : 8,
   },
   blockstackIdText: {
     color: 'white',
@@ -20,7 +21,6 @@ export const styles = StyleSheet.create({
     marginVertical: 28,
   },
   centeredView: {
-    flex: 1,
     paddingVertical: 40,
     paddingTop: 50,
     justifyContent: 'space-between',
@@ -41,8 +41,7 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     width: '100%',
     borderColor: '#FF0000',
-    marginBottom: 20,
-    marginTop: 20,
+    marginBottom: isWideScreen ? 20 : 10,
   },
   loginLogo: {width: 24, height: 24},
   buttonText: {color: '#FF0000', fontSize: 16, fontWeight: 'bold'},

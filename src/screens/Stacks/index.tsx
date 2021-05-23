@@ -3,6 +3,7 @@ import React from 'react';
 import {Image, Text, View} from 'react-native';
 import {styles} from './styles';
 import {HeaderComponent} from '../../components/Header';
+import {isWideScreen} from '../../utils';
 
 const Stacks: React.FC = () => {
   return (
@@ -14,7 +15,7 @@ const Stacks: React.FC = () => {
         />
         <View style={{justifyContent: 'center', alignItems: 'center'}}>
           <Image
-            style={{width: '100%', height: 300}}
+            style={{width: '100%', height: isWideScreen ? 300 : 180}}
             resizeMode="contain"
             source={require('../../assets/coming-soon.png')}
           />

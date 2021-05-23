@@ -136,102 +136,97 @@ const EditPinCode: React.FC = () => {
   return (
     <>
       <ScrollView
-        style={{
-          backgroundColor: '#fff',
-        }}
-        accessible={false}>
-        <View style={styles.container}>
-          <KeyboardAvoidingView behavior={'padding'}>
-            <View style={styles.card}>
-              <TouchableOpacity
-                onPress={goBack}
-                style={[styles.cardItem, {marginBottom: 30}]}>
+        contentContainerStyle={styles.container}
+        accessible={false}
+        style={{backgroundColor: 'white'}}>
+        <KeyboardAvoidingView behavior={'padding'}>
+          <TouchableOpacity
+            onPress={goBack}
+            style={[styles.cardItem, {marginBottom: 30}]}>
+            <Image
+              style={{width: 25, height: 15, marginRight: 16}}
+              resizeMode="contain"
+              source={require('../../assets/back_arrow.png')}
+            />
+          </TouchableOpacity>
+          <Text style={styles.title}>Change Your PIN</Text>
+          <Text style={styles.description}>
+            ATTENTION: You will use the new PIN through any WISE process that
+            needs PIN entry.
+          </Text>
+          <Text style={styles.confirmPinCode}>Enter Current PIN</Text>
+          <View
+            style={[
+              styles.fieldRow,
+              {
+                borderBottomWidth: 1,
+                borderBottomColor: 'grey',
+                paddingBottom: 16,
+                marginBottom: 16,
+              },
+            ]}>
+            <CodeField
+              {...firstProps}
+              value={firstValue}
+              onChangeText={setFirstValue}
+              cellCount={4}
+              keyboardType="number-pad"
+              textContentType="oneTimeCode"
+              renderCell={renderFirstCell}
+            />
+            <Text style={styles.toggle} onPress={toggleMask}>
+              {enableMask ? '🙈' : '🐵'}
+            </Text>
+          </View>
+          <Text style={styles.confirmPinCode}>Enter New PIN</Text>
+          <View style={styles.fieldRow}>
+            <CodeField
+              {...props}
+              value={value}
+              onChangeText={setValue}
+              cellCount={4}
+              keyboardType="number-pad"
+              textContentType="oneTimeCode"
+              renderCell={renderCell}
+            />
+            <Text style={styles.toggle} onPress={toggleMask}>
+              {enableMask ? '🙈' : '🐵'}
+            </Text>
+          </View>
+          <Text style={styles.confirmPinCode}>Confirm PIN</Text>
+          <View style={styles.fieldRow}>
+            <CodeField
+              ref={refSecond}
+              {...secondProps}
+              value={secondValue}
+              onChangeText={setSecondValue}
+              cellCount={4}
+              keyboardType="number-pad"
+              textContentType="oneTimeCode"
+              renderCell={renderSecondCell}
+            />
+          </View>
+          <Text style={styles.errorTextRed}>{error}</Text>
+          <Pressable
+            disabled={value !== secondValue || value === ''}
+            onPress={onSubmit}
+            style={[
+              styles.loginButton,
+              {opacity: value === secondValue && value !== '' ? 1 : 0.6},
+            ]}>
+            <>
+              <Text style={styles.buttonText}>Change PIN</Text>
+              {isLoading ? (
+                <ActivityIndicator size={'small'} color={'white'} />
+              ) : (
                 <Image
-                  style={{width: 25, height: 15, marginRight: 16}}
-                  resizeMode="contain"
-                  source={require('../../assets/back_arrow.png')}
+                  style={styles.loginLogo}
+                  source={require('../../assets/login.png')}
                 />
-              </TouchableOpacity>
-              <Text style={styles.title}>Change Your PIN</Text>
-              <Text style={styles.description}>
-                ATTENTION: You will use the new PIN through any WISE process
-                that needs PIN entry.
-              </Text>
-              <Text style={styles.confirmPinCode}>Enter Current PIN</Text>
-              <View
-                style={[
-                  styles.fieldRow,
-                  {
-                    borderBottomWidth: 1,
-                    borderBottomColor: 'grey',
-                    paddingBottom: 16,
-                    marginBottom: 16,
-                  },
-                ]}>
-                <CodeField
-                  {...firstProps}
-                  value={firstValue}
-                  onChangeText={setFirstValue}
-                  cellCount={4}
-                  keyboardType="number-pad"
-                  textContentType="oneTimeCode"
-                  renderCell={renderFirstCell}
-                />
-                <Text style={styles.toggle} onPress={toggleMask}>
-                  {enableMask ? '🙈' : '🐵'}
-                </Text>
-              </View>
-              <Text style={styles.confirmPinCode}>Enter New PIN</Text>
-              <View style={styles.fieldRow}>
-                <CodeField
-                  {...props}
-                  value={value}
-                  onChangeText={setValue}
-                  cellCount={4}
-                  keyboardType="number-pad"
-                  textContentType="oneTimeCode"
-                  renderCell={renderCell}
-                />
-                <Text style={styles.toggle} onPress={toggleMask}>
-                  {enableMask ? '🙈' : '🐵'}
-                </Text>
-              </View>
-              <Text style={styles.confirmPinCode}>Confirm PIN</Text>
-              <View style={styles.fieldRow}>
-                <CodeField
-                  ref={refSecond}
-                  {...secondProps}
-                  value={secondValue}
-                  onChangeText={setSecondValue}
-                  cellCount={4}
-                  keyboardType="number-pad"
-                  textContentType="oneTimeCode"
-                  renderCell={renderSecondCell}
-                />
-              </View>
-              <Text style={styles.errorTextRed}>{error}</Text>
-              <Pressable
-                disabled={value !== secondValue || value === ''}
-                onPress={onSubmit}
-                style={[
-                  styles.loginButton,
-                  {opacity: value === secondValue && value !== '' ? 1 : 0.6},
-                ]}>
-                <>
-                  <Text style={styles.buttonText}>Change PIN</Text>
-                  {isLoading ? (
-                    <ActivityIndicator size={'small'} color={'white'} />
-                  ) : (
-                    <Image
-                      style={styles.loginLogo}
-                      source={require('../../assets/login.png')}
-                    />
-                  )}
-                </>
-              </Pressable>
-            </View>
-          </KeyboardAvoidingView>
-        </View>
+              )}
+            </>
+          </Pressable>
+        </KeyboardAvoidingView>
       </ScrollView>
     </>
   );

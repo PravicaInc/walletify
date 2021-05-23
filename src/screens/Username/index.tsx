@@ -23,7 +23,7 @@ import {gaiaUrl, Subdomain} from '../../../constants';
 import {doSetUsername} from '../../store/onboarding/actions';
 import {didGenerateWallet} from '../../store/wallet';
 import {styles} from '../CreateWallet/styles';
-import {TextInput} from 'react-native-gesture-handler';
+import {ScrollView, TextInput} from 'react-native-gesture-handler';
 import {popNavigation, resetNavigation} from '../../../routes';
 import {theme} from '../../../theme';
 import {useNavigation} from 'react-navigation-hooks';
@@ -150,7 +150,9 @@ const Username: React.FC<{}> = () => {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <View style={[styles.container]}>
+      <ScrollView
+        contentContainerStyle={styles.container}
+        style={{backgroundColor: 'white'}}>
         <KeyboardAvoidingView behavior={'position'}>
           <View>
             {isNewId && (
@@ -236,7 +238,7 @@ const Username: React.FC<{}> = () => {
             showModal={showModal}
           />
         )}
-      </View>
+      </ScrollView>
     </TouchableWithoutFeedback>
   );
 };

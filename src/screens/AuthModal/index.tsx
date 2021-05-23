@@ -17,6 +17,7 @@ import {
   selectAppName,
   selectFullAppIcon,
 } from '../../store/onboarding/selectors';
+import {ScrollView} from 'react-native-gesture-handler';
 
 interface Props {
   modalVisible: boolean;
@@ -33,7 +34,9 @@ const AuthModal: React.FC<Props> = ({modalVisible, identities}) => {
   return (
     <>
       <Modal animationType="slide" visible={modalVisible}>
-        <View style={styles.centeredView}>
+        <ScrollView
+          contentContainerStyle={styles.centeredView}
+          style={{backgroundColor: 'white'}}>
           <View style={styles.modalView}>
             <View style={styles.contentWarning}>
               <View style={styles.imageContainer}>
@@ -44,12 +47,14 @@ const AuthModal: React.FC<Props> = ({modalVisible, identities}) => {
                 </Text>
               </View>
             </View>
-            <Text style={styles.blockstackText}>
+            {/* <Text style={styles.blockstackText}>
               Choose an ID to use in {name}
-            </Text>
+            </Text> */}
             <FlatList
               ListHeaderComponent={
-                <Text style={styles.headerText}>Your IDs</Text>
+                <Text style={styles.headerText}>
+                  Choose an ID to use in {name}
+                </Text>
               }
               style={styles.flatlist}
               data={identities}
@@ -70,7 +75,7 @@ const AuthModal: React.FC<Props> = ({modalVisible, identities}) => {
               />
             </TouchableOpacity>
           </View>
-        </View>
+        </ScrollView>
       </Modal>
     </>
   );
