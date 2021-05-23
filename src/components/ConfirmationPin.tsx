@@ -2,7 +2,7 @@
 import React, {useState} from 'react';
 import {
   Image,
-  Modal,
+  Modal, Platform,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -62,7 +62,7 @@ export const ConfirmationPin: React.FC<Props> = (props: Props) => {
         throw new Error();
       }
     } catch (error) {
-      setError('Invalid pin code');
+      setError('Invalid PIN');
     }
   };
 
@@ -89,7 +89,7 @@ export const ConfirmationPin: React.FC<Props> = (props: Props) => {
                   source={require('../assets/close.png')}
                 />
               </TouchableOpacity>
-              <Text style={styles.text}>Please enter your pin code</Text>
+              <Text style={styles.text}>Please enter your PIN</Text>
               <CodeField
                 ref={ref}
                 {...prop}
@@ -125,7 +125,6 @@ const styles = StyleSheet.create({
   button: {
     borderRadius: 20,
     padding: 10,
-    elevation: 2,
   },
   container: {
     backgroundColor: 'white',
@@ -184,8 +183,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.9,
     shadowRadius: 3,
-
-    elevation: 5,
+    borderColor: Platform.OS === 'ios' ? '#707070' : '#5546FF',
   },
   errCell: {
     borderColor: '#FE3939',

@@ -1,4 +1,5 @@
 import {useMemo} from 'react';
+import {Identity} from '@stacks/keychain';
 
 const BTC = 'btc';
 const BLOCKSTACK = 'blockstack';
@@ -22,7 +23,7 @@ export const useCardsIdentity = (username?: string) => {
       return {
         backgroundColor: '#5546FF',
         image: require('../assets/stack.png'),
-        text: 'STX ID',
+        text: 'Stacks ID',
       };
     } else if (username?.split('.').length === 2) {
       return {
@@ -38,3 +39,16 @@ export const useCardsIdentity = (username?: string) => {
     };
   }, [username]);
 };
+
+export const sortIdentities = (ids: Identity[]) =>
+  ids
+    .map((val) => ({
+      ...val,
+      orderIndex:
+        val.defaultUsername?.split('.').length === 2
+          ? 2
+          : val.defaultUsername?.includes(STX)
+          ? 1
+          : 0,
+    }))
+    .sort((a, b) => b.orderIndex - a.orderIndex) as any;

@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
 import {theme} from '../../../theme';
 
 export const styles = StyleSheet.create({
@@ -7,6 +7,7 @@ export const styles = StyleSheet.create({
     padding: 44,
     paddingTop: 64,
     paddingHorizontal: 28,
+    backgroundColor: 'white',
   },
   loginButton: {
     padding: 8,
@@ -24,7 +25,7 @@ export const styles = StyleSheet.create({
     shadowOpacity: 0.75,
     shadowRadius: 1,
   },
-  loginLogo: {width: 24, height: 24, marginRight: 9},
+  loginLogo: {width: 24, height: 24},
   buttonText: {color: theme.colors.white, fontSize: 14},
   cardItem: {
     flexDirection: 'row',
@@ -64,8 +65,7 @@ export const styles = StyleSheet.create({
     },
     shadowOpacity: 0.9,
     shadowRadius: 3,
-
-    elevation: 5,
+    borderColor: Platform.OS === 'ios' ? '#707070' : '#5546FF',
   },
   errCell: {
     borderColor: '#FE3939',

@@ -6,6 +6,7 @@ import {useSelector} from 'react-redux';
 import {selectCurrentWallet} from '../../store/wallet/selectors';
 import {IdentityCard} from '../../components/IdentityCard';
 import {HeaderComponent} from '../../components/Header';
+import {sortIdentities} from '../../hooks/useCardsIdentity';
 
 const Home: React.FC = () => {
   const wallet = useSelector(selectCurrentWallet);
@@ -17,7 +18,7 @@ const Home: React.FC = () => {
           imageSource={require('../../assets/fingerprint.png')}
         />
         <FlatList
-          data={wallet?.identities}
+          data={sortIdentities(wallet?.identities || [])}
           renderItem={({item}) => <IdentityCard identity={item} />}
           keyExtractor={(item, index) => index.toString()}
         />

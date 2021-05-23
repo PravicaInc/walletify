@@ -71,8 +71,9 @@ const styles = StyleSheet.create({
     transform: [{skewX: '-45deg'}],
   },
   blockstackText: {
-    color: '#A6A5C4',
+    color: '#FFF',
     fontSize: 14,
+    opacity: 0.6,
   },
   blockstackIdText: {
     color: 'white',

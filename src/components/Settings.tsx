@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import AsyncStorage from '@react-native-community/async-storage';
-import React, {useRef} from 'react';
+import React from 'react';
 import {
   Image,
   Linking,
@@ -69,7 +69,7 @@ export const Settings: React.FC<Props> = (props: Props) => {
               style={styles.logoutLogo}
               source={require('../assets/password-action.png')}
             />
-            <Text style={styles.text}>Edit Pin</Text>
+            <Text style={styles.text}>Change PIN</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {

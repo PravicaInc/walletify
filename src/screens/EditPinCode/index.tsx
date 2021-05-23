@@ -4,6 +4,7 @@ import {
   ActivityIndicator,
   Image,
   KeyboardAvoidingView,
+  Pressable,
   ScrollView,
   Text,
   TouchableOpacity,
@@ -30,8 +31,7 @@ const EditPinCode: React.FC = () => {
   const [firstValue, setFirstValue] = useState('');
   const [secondValue, setSecondValue] = useState('');
   const [status, setStatus] = useState('initial');
-  const ref = useBlurOnFulfill({value, cellCount: 4});
-  const refSecond = useBlurOnFulfill({secondValue, cellCount: 4});
+  const refSecond = useBlurOnFulfill({value: secondValue, cellCount: 4});
   const [error, setError] = useState('');
   const [firstProps, getFirstCellOnLayoutHandler] = useClearByFocusCell({
     firstValue,
@@ -131,11 +131,15 @@ const EditPinCode: React.FC = () => {
       setError('Something went wrong');
     }
   };
-  
+
   const goBack = () => popNavigation(dispatch);
   return (
     <>
-      <ScrollView keyboardShouldPersistTaps={'handled'} accessible={false}>
+      <ScrollView
+        style={{
+          backgroundColor: '#fff',
+        }}
+        accessible={false}>
         <View style={styles.container}>
           <KeyboardAvoidingView behavior={'padding'}>
             <View style={styles.card}>
@@ -148,13 +152,12 @@ const EditPinCode: React.FC = () => {
                   source={require('../../assets/back_arrow.png')}
                 />
               </TouchableOpacity>
-              <Text style={styles.title}>Your Secret Key</Text>
+              <Text style={styles.title}>Change Your PIN</Text>
               <Text style={styles.description}>
-                Here’s your Secret Key: 12 words that prove it’s you when you
-                want to use on a new device. Once lost it’s lost forever, so
-                save it somewhere you won’t forget.
+                ATTENTION: You will use the new PIN through any WISE process
+                that needs PIN entry.
               </Text>
-              <Text style={styles.confirmPinCode}>Enter current pin code</Text>
+              <Text style={styles.confirmPinCode}>Enter Current PIN</Text>
               <View
                 style={[
                   styles.fieldRow,
@@ -166,8 +169,7 @@ const EditPinCode: React.FC = () => {
                   },
                 ]}>
                 <CodeField
-                  ref={ref}
-                  {...props}
+                  {...firstProps}
                   value={firstValue}
                   onChangeText={setFirstValue}
                   cellCount={4}
@@ -179,10 +181,9 @@ const EditPinCode: React.FC = () => {
                   {enableMask ? '🙈' : '🐵'}
                 </Text>
               </View>
-              <Text style={styles.confirmPinCode}>Enter new pin code</Text>
+              <Text style={styles.confirmPinCode}>Enter New PIN</Text>
               <View style={styles.fieldRow}>
                 <CodeField
-                  ref={ref}
                   {...props}
                   value={value}
                   onChangeText={setValue}
@@ -195,7 +196,7 @@ const EditPinCode: React.FC = () => {
                   {enableMask ? '🙈' : '🐵'}
                 </Text>
               </View>
-              <Text style={styles.confirmPinCode}>Confirm Pin code</Text>
+              <Text style={styles.confirmPinCode}>Confirm PIN</Text>
               <View style={styles.fieldRow}>
                 <CodeField
                   ref={refSecond}
@@ -209,23 +210,26 @@ const EditPinCode: React.FC = () => {
                 />
               </View>
               <Text style={styles.errorTextRed}>{error}</Text>
+              <Pressable
+                disabled={value !== secondValue || value === ''}
+                onPress={onSubmit}
+                style={[
+                  styles.loginButton,
+                  {opacity: value === secondValue && value !== '' ? 1 : 0.6},
+                ]}>
+                <>
+                  <Text style={styles.buttonText}>Change PIN</Text>
+                  {isLoading ? (
+                    <ActivityIndicator size={'small'} color={'white'} />
+                  ) : (
+                    <Image
+                      style={styles.loginLogo}
+                      source={require('../../assets/login.png')}
+                    />
+                  )}
+                </>
+              </Pressable>
             </View>
-            <TouchableOpacity
-              disabled={isLoading}
-              onPress={onSubmit}
-              style={styles.loginButton}>
-              <>
-                <Text style={styles.buttonText}>Encrypt your secret key</Text>
-                {isLoading ? (
-                  <ActivityIndicator size={'small'} color={'white'} />
-                ) : (
-                  <Image
-                    style={styles.loginLogo}
-                    source={require('../../assets/login.png')}
-                  />
-                )}
-              </>
-            </TouchableOpacity>
           </KeyboardAvoidingView>
         </View>
       </ScrollView>

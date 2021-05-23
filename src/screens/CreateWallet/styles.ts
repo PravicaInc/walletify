@@ -69,7 +69,7 @@ export const styles = StyleSheet.create({
     marginTop: 30,
     height: 48,
   },
-  loginLogo: {width: 24, height: 24, marginRight: 9},
+  loginLogo: {width: 24, height: 24},
   buttonText: {color: theme.colors.white, fontSize: 14, fontWeight: 'bold'},
   seetTextRed: {color: theme.colors.danger, fontSize: 14, marginTop: 8},
 });

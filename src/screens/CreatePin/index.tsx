@@ -30,8 +30,7 @@ const CreatePin: React.FC = () => {
   const [value, setValue] = useState('');
   const [secondValue, setSecondValue] = useState('');
   const [status, setStatus] = useState('initial');
-  const ref = useBlurOnFulfill({value, cellCount: 4});
-  const refSecond = useBlurOnFulfill({secondValue, cellCount: 4});
+  const refSecond = useBlurOnFulfill({value: secondValue, cellCount: 4});
   const [error, setError] = useState('');
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
@@ -110,7 +109,7 @@ const CreatePin: React.FC = () => {
       }
     } else {
       setErrorStatus();
-      setError('Seems your pincodes are not same');
+      setError('Seems your PINs are not same');
     }
   };
 
@@ -118,19 +117,18 @@ const CreatePin: React.FC = () => {
     <>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View style={styles.container}>
-          <KeyboardAvoidingView behavior={'position'}>
+          <KeyboardAvoidingView behavior={'padding'}>
             <Image source={require('../../assets/key-pin.png')} />
             <View>
               <Text style={styles.title}>Encrypt Your Seed Phrase</Text>
               <Text style={styles.description}>
                 Your seed phrase will be used in decrypting and signing
                 processes, it’s unsafe to be stored locally in plain text, your
-                PIN code URGENTLY needed to secure your seed phrase.
+                PIN URGENTLY needed to secure your seed phrase.
               </Text>
-              <Text style={styles.confirmPinCode}>Enter your pin code</Text>
+              <Text style={styles.confirmPinCode}>Enter your PIN</Text>
               <View style={styles.fieldRow}>
                 <CodeField
-                  ref={ref}
                   {...props}
                   value={value}
                   onChangeText={setValue}
@@ -140,7 +138,7 @@ const CreatePin: React.FC = () => {
                   renderCell={renderCell}
                 />
               </View>
-              <Text style={styles.confirmPinCode}>Confirm Pin code</Text>
+              <Text style={styles.confirmPinCode}>Confirm PIN</Text>
               <View style={styles.fieldRow}>
                 <CodeField
                   ref={refSecond}
@@ -166,7 +164,7 @@ const CreatePin: React.FC = () => {
                 {opacity: value === secondValue && value !== '' ? 1 : 0.6},
               ]}>
               <>
-                <Text style={styles.buttonText}>Encrypt your secret key</Text>
+                <Text style={styles.buttonText}>Encrypt your Seed Phrase</Text>
                 {isLoading ? (
                   <ActivityIndicator size={'small'} color={'white'} />
                 ) : (

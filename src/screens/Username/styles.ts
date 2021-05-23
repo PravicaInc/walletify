@@ -62,6 +62,6 @@ export const styles = StyleSheet.create({
     marginTop: 35,
     borderColor: '#707070',
   },
-  loginLogo: {width: 24, height: 24, marginRight: 9},
+  loginLogo: {width: 24, height: 24},
   buttonText: {color: theme.colors.white, fontSize: 14},
 });

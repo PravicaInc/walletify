@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image} from 'react-native';
+import {Image, Platform} from 'react-native';
 import {
   createAppContainer,
   StackActions,
@@ -83,17 +83,17 @@ const ChatPageNavigator = createStackNavigator(
               if (focused) {
                 return (
                   <Image
-                    style={{width: 35}}
+                    style={{width: 35, height: 35}}
                     source={require('./src/assets/w-active.png')}
-                    resizeMode={'contain'}
+                    resizeMode={'cover'}
                   />
                 );
               } else {
                 return (
                   <Image
-                    style={{width: 35}}
+                    style={{width: 35, height: 35}}
                     source={require('./src/assets/w-inactive.png')}
-                    resizeMode={'contain'}
+                    resizeMode={'cover'}
                   />
                 );
               }
@@ -107,17 +107,17 @@ const ChatPageNavigator = createStackNavigator(
               if (focused) {
                 return (
                   <Image
-                    style={{width: 35}}
+                    style={{width: 35, height: 35}}
                     source={require('./src/assets/i-active.png')}
-                    resizeMode={'contain'}
+                    resizeMode={'cover'}
                   />
                 );
               } else {
                 return (
                   <Image
-                    style={{width: 35}}
+                    style={{width: 35, height: 35}}
                     source={require('./src/assets/i-inactive.png')}
-                    resizeMode={'contain'}
+                    resizeMode={'cover'}
                   />
                 );
               }
@@ -131,17 +131,17 @@ const ChatPageNavigator = createStackNavigator(
               if (focused) {
                 return (
                   <Image
-                    style={{width: 35}}
+                    style={{width: 35, height: 35}}
                     source={require('./src/assets/s-active.png')}
-                    resizeMode={'contain'}
+                    resizeMode={'cover'}
                   />
                 );
               } else {
                 return (
                   <Image
-                    style={{width: 35}}
+                    style={{width: 35, height: 35}}
                     source={require('./src/assets/s-inactive.png')}
-                    resizeMode={'contain'}
+                    resizeMode={'cover'}
                   />
                 );
               }
@@ -155,17 +155,17 @@ const ChatPageNavigator = createStackNavigator(
               if (focused) {
                 return (
                   <Image
-                    style={{width: 35}}
+                    style={{width: 35, height: 35}}
                     source={require('./src/assets/e-active.png')}
-                    resizeMode={'contain'}
+                    resizeMode={'cover'}
                   />
                 );
               } else {
                 return (
                   <Image
-                    style={{width: 35}}
+                    style={{width: 35, height: 35}}
                     source={require('./src/assets/e-inactive.png')}
-                    resizeMode={'contain'}
+                    resizeMode={'cover'}
                   />
                 );
               }
@@ -181,6 +181,7 @@ const ChatPageNavigator = createStackNavigator(
           showLabel: true,
           tabStyle: {
             backgroundColor: 'transparent',
+            justifyContent: 'center',
           },
           labelStyle: {
             fontWeight: 'bold',
@@ -190,18 +191,28 @@ const ChatPageNavigator = createStackNavigator(
           //   backgroundColor: theme.colors.tabIndicator
           // },
           style: {
-            borderTopRightRadius: 15,
-            borderTopLeftRadius: 15,
-            // paddingBottom: 12,
-            paddingLeft: 35,
-            paddingRight: 35,
-            paddingTop: 8,
-            justifyContent: 'space-between',
-            borderWidth: 0,
-            shadowColor: '#000000',
-            shadowOffset: {height: 4, width: 0},
-            shadowOpacity: 0.75,
-            shadowRadius: 5,
+            ...{
+              borderTopRightRadius: 15,
+              borderTopLeftRadius: 15,
+              paddingLeft: 35,
+              paddingRight: 35,
+              justifyContent: 'space-between',
+              borderWidth: 0,
+              backgroundColor: '#fff',
+              shadowColor: '#000000',
+              shadowOffset: {height: 4, width: 0},
+              shadowOpacity: 0.75,
+              shadowRadius: 5,
+            },
+            ...(Platform.OS === 'ios'
+              ? {
+                  paddingTop: 8,
+                }
+              : {
+                  height: 60,
+                  paddingTop: 10,
+                  paddingBottom: 5,
+                }),
           },
         },
         navigationOptions: {
