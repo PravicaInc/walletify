@@ -38,12 +38,11 @@ EventEmitterModule *eventEmitterModule;
 #endif
 }
 
-- (BOOL)application:(UIApplication *)application
-   openURL:(NSURL *)url
-   options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
+- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity
+ restorationHandler:(void (^)(NSArray * _Nullable))restorationHandler
 {
-  NSString *sourceApplication = options[UIApplicationOpenURLOptionsSourceApplicationKey];
-  [eventEmitterModule sendEventWithName:@"Linking" body:@{@"sourceApplication": sourceApplication}];
-  return [RCTLinkingManager application:application openURL:url options:options];
+ return [RCTLinkingManager application:application
+                  continueUserActivity:userActivity
+                    restorationHandler:restorationHandler];
 }
 @end

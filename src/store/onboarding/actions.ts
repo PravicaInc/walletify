@@ -22,32 +22,35 @@ import {
   selectAuthRequest,
   selectFullAppIcon,
   selectAppName,
-  selectAppURLScheme,
-  selectPackageName,
-  selectBundleID,
+  isValidUrl,
 } from './selectors';
 import {selectIdentities, selectCurrentWallet} from '../wallet/selectors';
 import {JSONSchemaForWebApplicationManifestFiles} from '@schemastore/web-manifest';
-import {Alert, Linking, Platform} from 'react-native';
+import {Alert, Linking} from 'react-native';
 import {
   // getAddressFromPrivateKey,
   TransactionVersion,
 } from '@stacks/transactions';
+import {URL} from 'react-native-url-polyfill';
 import {gaiaUrl, USERNAMES_ENABLED} from '../../../constants';
 interface FinalizeAuthParams {
   decodedAuthRequest: DecodedAuthRequest;
   authResponse: string;
   authRequest: string;
-  appName: string;
-  appURLScheme: string;
+  appName: string | undefined;
 }
 export const delay = (ms = 1000) =>
   new Promise((res) => setTimeout(() => res('done'), ms));
 export const finalizeAuthResponse = (
-  {decodedAuthRequest, authResponse, appName, appURLScheme}: FinalizeAuthParams,
+  {decodedAuthRequest, authResponse, appName}: FinalizeAuthParams,
   dismissCb,
 ) => {
-  const redirect = `${appURLScheme}://?authResponse=${authResponse}`;
+  const dangerousUri = decodedAuthRequest.redirect_uri;
+  if (!isValidUrl(dangerousUri) || dangerousUri.includes('javascript')) {
+    Alert.alert('Cannot proceed auth with malformed url');
+    dismissCb();
+  }
+  const redirect = `${dangerousUri}?authResponse=${authResponse}`;
   Alert.alert(
     'Attention',
     `You are giving permission to ${appName} to access the app private key assigned to ${decodedAuthRequest.domain_name}`,
@@ -164,9 +167,6 @@ interface SaveAuthRequestParams {
   decodedAuthRequest: DecodedAuthRequest;
   authRequest: string;
   appURL: URL;
-  appURLScheme: string;
-  bundleID: string;
-  packageName: string;
 }
 
 const saveAuthRequest = ({
@@ -175,9 +175,6 @@ const saveAuthRequest = ({
   decodedAuthRequest,
   authRequest,
   appURL,
-  bundleID,
-  appURLScheme,
-  packageName,
 }: SaveAuthRequestParams): OnboardingActions => {
   return {
     type: SAVE_AUTH_REQUEST,
@@ -185,57 +182,39 @@ const saveAuthRequest = ({
     appIcon,
     decodedAuthRequest,
     authRequest,
-    appURLScheme,
     appURL,
-    bundleID,
-    packageName,
   };
 };
 
 export function doSaveAuthRequest(
   authRequest: string,
-  appId: string,
 ): ThunkAction<void, AppState, {}, OnboardingActions> {
   return async (dispatch) => {
-    const {payload} = decodeToken(authRequest);
-    const decodedAuthRequest = (payload as unknown) as DecodedAuthRequest;
-    const appManifest = await loadManifest(decodedAuthRequest);
-    let appName = decodedAuthRequest.appDetails?.name;
-    let appIcon = decodedAuthRequest.appDetails?.icon;
-    if (!appManifest.appURLScheme) {
-      dispatch(deleteAuthRequest());
-      return Alert.alert(
-        'Please contact the app provider for missing informations in their manifest files, Error missing the appId',
+    try {
+      const {payload} = decodeToken(authRequest);
+      const decodedAuthRequest = (payload as unknown) as DecodedAuthRequest;
+      let appName = decodedAuthRequest.appDetails?.name;
+      let appIcon = decodedAuthRequest.appDetails?.icon;
+
+      if (!appName || !appIcon) {
+        const appManifest = await loadManifest(decodedAuthRequest);
+        appName = appManifest.name;
+        appIcon = appManifest.icons[0].src as string;
+      }
+      dispatch(
+        saveAuthRequest({
+          decodedAuthRequest,
+          authRequest,
+          appName,
+          appIcon,
+          appURL: new URL(decodedAuthRequest.redirect_uri),
+        }),
+      );
+    } catch (e) {
+      Alert.alert(
+        'Please contact the app provider for missing informations in their manifest files, Error missing app metadata',
       );
     }
-
-    if (
-      (Platform.OS === 'ios' && appId !== appManifest.bundleID) ||
-      (Platform.OS === 'android' && appId !== appManifest.packageName)
-    ) {
-      dispatch(deleteAuthRequest());
-      return Alert.alert(
-        "Please contact the app provider, it seems this is a malicious app asking for permissions, we recommend of deleting this app, cuz its asking for another app' appPrivateKey",
-      );
-    }
-
-    if (!appName || !appIcon) {
-      appName = appManifest.name;
-      appIcon = appManifest.icons[0].src as string;
-    }
-
-    dispatch(
-      saveAuthRequest({
-        decodedAuthRequest,
-        authRequest,
-        appName,
-        appIcon,
-        appURL: new URL(decodedAuthRequest.redirect_uri),
-        appURLScheme: appManifest.appURLScheme!,
-        bundleID: appManifest.bundleID!,
-        packageName: appManifest.packageName!,
-      }),
-    );
   };
 }
 
@@ -273,15 +252,13 @@ export function doFinishSignIn(
     const wallet = selectCurrentWallet(state);
     const appIcon = selectFullAppIcon(state);
     const appName = selectAppName(state);
-    const appURLScheme = selectAppURLScheme(state);
-    const bundleID = selectBundleID(state);
-    const packageName = selectPackageName(state);
 
     if (!decodedAuthRequest || !authRequest || !identities || !wallet) {
-      console.error('Uh oh! Finished onboarding without auth info.');
+      console.warn('Uh oh! Finished onboarding without auth info.');
+      dismissCb();
       return;
     }
-    // const appURL = new URL(decodedAuthRequest.redirect_uri);
+    const appURL = new URL(decodedAuthRequest.redirect_uri);
     const currentIdentity = identities[identityIndex];
     await currentIdentity.refresh({fetchRemoteUsernames: USERNAMES_ENABLED});
     const gaiaConfig = await wallet.createGaiaConfig(gaiaUrl);
@@ -291,7 +268,7 @@ export function doFinishSignIn(
         identityIndex,
         gaiaConfig,
         app: {
-          origin: decodedAuthRequest.domain_name,
+          origin: appURL.origin,
           lastLoginAt: new Date().getTime(),
           scopes: decodedAuthRequest.scopes,
           appIcon: appIcon as string,
@@ -304,7 +281,7 @@ export function doFinishSignIn(
       : undefined;
     const authResponse = await currentIdentity.makeAuthResponse({
       gaiaUrl,
-      appDomain: decodedAuthRequest.domain_name,
+      appDomain: appURL.origin,
       transitPublicKey: decodedAuthRequest.public_keys[0],
       scopes: decodedAuthRequest.scopes,
       stxAddress,
@@ -315,9 +292,6 @@ export function doFinishSignIn(
         authRequest,
         authResponse,
         appName,
-        appURLScheme,
-        bundleID,
-        packageName,
       },
       dismissCb,
     );

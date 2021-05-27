@@ -1,10 +1,8 @@
 import {useState, useEffect} from 'react';
-import {Linking, NativeEventEmitter, NativeModules} from 'react-native';
+import {Linking} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {selectCurrentWallet} from '../store/wallet/selectors';
 import {doSaveAuthRequest} from '../store/onboarding/actions';
-
-const {EventEmitterModule} = NativeModules;
 
 const getParameterByName = (name: string, url: string) => {
   name = name.replace(/[\[\]]/g, '\\$&');
@@ -22,37 +20,42 @@ const getParameterByName = (name: string, url: string) => {
 export const useAuthenticatorListeners = () => {
   const wallet = useSelector(selectCurrentWallet);
   const currentDispatch = useDispatch();
-  const [sourceApplication, setSourceApplication] = useState('');
-  const [url, setUrl] = useState('');
-  const eventEmitter = new NativeEventEmitter(EventEmitterModule);
-
+  const [authRequest, setAuthRequest] = useState('');
   useEffect(() => {
     if (wallet) {
-      const subscription = eventEmitter.addListener('Linking', (event) => {
-        if (event?.sourceApplication) {
-          setSourceApplication(event.sourceApplication);
-        }
-      });
-      return () => subscription.remove();
-    }
-  }, [wallet, eventEmitter]);
-  useEffect(() => {
-    if (wallet) {
-      const subscription = Linking.addListener('url', (e: any) => {
-        if (e.url) {
-          const token = getParameterByName('token', e.url);
-          setUrl(token || '');
-        }
+      const subscription = Linking.addListener('url', ({url}) => {
+        Linking.canOpenURL(url).then((supported) => {
+          if (supported) {
+            const token = getParameterByName('token', url);
+            setAuthRequest(token || '');
+          }
+        });
       });
       return () => subscription.remove();
     }
   }, [wallet]);
 
   useEffect(() => {
-    if (url.length > 0 && sourceApplication.length > 0 && wallet) {
-      currentDispatch(doSaveAuthRequest(url, sourceApplication));
-      setUrl('');
-      setSourceApplication('');
+    const getUrlAsync = async () => {
+      // Get the deep link used to open the app
+      const initialUrl = await Linking.getInitialURL();
+      Linking.canOpenURL(initialUrl || '').then((supported) => {
+        if (supported) {
+          const token = getParameterByName('token', initialUrl || '');
+          setAuthRequest(token || '');
+        }
+      });
+    };
+
+    if (wallet) {
+      getUrlAsync();
     }
-  }, [url, sourceApplication, wallet]);
+  }, [wallet]);
+
+  useEffect(() => {
+    if (authRequest.length > 0 && wallet) {
+      currentDispatch(doSaveAuthRequest(authRequest));
+      setAuthRequest('');
+    }
+  }, [authRequest, wallet]);
 };

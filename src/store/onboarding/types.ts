@@ -104,9 +104,6 @@ interface SaveAuthRequest {
   appURL: URL;
   decodedAuthRequest: DecodedAuthRequest;
   authRequest: string;
-  appURLScheme: string;
-  bundleID: string;
-  packageName: string;
 }
 
 interface DeleteAuthRequest {
