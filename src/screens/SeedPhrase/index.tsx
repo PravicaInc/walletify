@@ -74,7 +74,10 @@ const SeedPhrase: React.FC = () => {
           />
         </TouchableOpacity>
         <KeyboardAvoidingView behavior={'padding'}>
-          <Image source={require('../../assets/logo.png')} />
+          <Image
+            style={styles.imageLogo}
+            source={require('../../assets/logo.png')}
+          />
           <Text style={styles.description}>Enter your Seed Phrase</Text>
           <TextInput
             placeholder={'Type or paste your seed phrase here'}

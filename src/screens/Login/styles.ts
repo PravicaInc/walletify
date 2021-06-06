@@ -10,6 +10,11 @@ export const styles = StyleSheet.create({
     alignItems: 'flex-start',
     backgroundColor: '#fff',
   },
+  imageLogo: {
+    width: 155,
+    height: 60,
+    resizeMode: 'contain',
+  },
   flexRow: {
     flexDirection: 'row',
     alignItems: 'center',

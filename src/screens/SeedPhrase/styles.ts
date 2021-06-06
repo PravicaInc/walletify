@@ -15,6 +15,11 @@ export const styles = StyleSheet.create({
     paddingBottom: 53,
     borderRadius: 20,
   },
+  imageLogo: {
+    width: 155,
+    height: 60,
+    resizeMode: 'contain',
+  },
   description: {
     color: theme.colors.black,
     fontSize: 24,

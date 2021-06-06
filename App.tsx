@@ -24,12 +24,10 @@ export default function App() {
   return (
     <>
       <StatusBar barStyle="dark-content" backgroundColor={'white'} />
-      {/* <SafeAreaView style={{flex: 1}}> */}
       <Provider store={store}>
         <AppNavigator />
         <AppContainer />
       </Provider>
-      {/* </SafeAreaView> */}
     </>
   );
 }

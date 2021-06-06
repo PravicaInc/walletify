@@ -1,10 +1,11 @@
-import {Platform, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {theme} from '../../../theme';
+import {isWideScreen} from '../../utils';
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: Platform.OS === 'ios' ? 64 : 32,
+    paddingTop: isWideScreen ? 64 : 20,
     paddingHorizontal: 28,
     backgroundColor: 'white',
   },

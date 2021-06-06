@@ -11,6 +11,8 @@ export const styles = StyleSheet.create({
   pravicaLogo: {width: '50%', resizeMode: 'contain'},
   imageHeader: {
     resizeMode: 'contain',
+    width: 108,
+    height: 92,
     marginBottom: 20,
   },
   card: {

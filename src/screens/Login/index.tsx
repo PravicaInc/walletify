@@ -21,7 +21,10 @@ const Login: React.FC = () => {
       <ScrollView
         contentContainerStyle={styles.container}
         style={{backgroundColor: 'white'}}>
-        <Image source={require('../../assets/logo.png')} />
+        <Image
+          style={styles.imageLogo}
+          source={require('../../assets/logo.png')}
+        />
         <Text style={styles.title}>
           Seamless onboarding experience for your decentralized authentication.
         </Text>

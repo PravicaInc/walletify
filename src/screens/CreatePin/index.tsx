@@ -121,7 +121,10 @@ const CreatePin: React.FC = () => {
           contentContainerStyle={styles.container}
           style={{backgroundColor: 'white'}}>
           <KeyboardAvoidingView behavior={'padding'}>
-            <Image source={require('../../assets/key-pin.png')} />
+            <Image
+              style={styles.imageHeader}
+              source={require('../../assets/key-pin.png')}
+            />
             <View>
               <Text style={styles.title}>Encrypt Your Seed Phrase</Text>
               <Text style={styles.description}>

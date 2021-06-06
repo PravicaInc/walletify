@@ -26,7 +26,7 @@ export const HeaderComponent: React.FC<Props> = (props: Props) => {
     <>
       <View style={styles.topHeader}>
         <View style={styles.row}>
-          <Image source={imageSource} />
+          <Image style={styles.logo} source={imageSource} />
           <TouchableOpacity onPress={settings} style={styles.logoutButton}>
             <Image
               style={styles.logoutLogo}
@@ -50,6 +50,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+  },
+  logo: {
+    width: 32,
+    height: 32,
+    resizeMode: 'contain',
   },
   logoutButton: {
     padding: 4,
