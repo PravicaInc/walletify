@@ -1,6 +1,6 @@
 import {StyleSheet} from 'react-native';
 import {theme} from '../../../theme';
-import { isWideScreen } from '../../utils';
+import {isWideScreen} from '../../utils';
 
 export const styles = StyleSheet.create({
   headerText: {

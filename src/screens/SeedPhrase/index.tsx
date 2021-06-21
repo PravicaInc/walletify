@@ -65,10 +65,10 @@ const SeedPhrase: React.FC = () => {
       <ScrollView
         contentContainerStyle={styles.container}
         keyboardShouldPersistTaps={'handled'}
-        style={{backgroundColor: 'white'}}>
+        style={styles.white}>
         <TouchableOpacity onPress={goBack} style={styles.cardItem}>
           <Image
-            style={{width: 25, height: 15, marginRight: 16}}
+            style={styles.back}
             resizeMode="contain"
             source={require('../../assets/back_arrow.png')}
           />

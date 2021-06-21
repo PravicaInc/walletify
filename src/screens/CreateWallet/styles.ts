@@ -74,4 +74,35 @@ export const styles = StyleSheet.create({
   loginLogo: {width: 24, height: 24},
   buttonText: {color: theme.colors.white, fontSize: 14, fontWeight: 'bold'},
   seetTextRed: {color: theme.colors.danger, fontSize: 14, marginTop: 8},
+  text: {
+    color: 'black',
+    fontSize: 16,
+    textAlign: 'left',
+  },
+  animationView: {flex: 1, alignItems: 'center', justifyContent: 'center'},
+  white: {backgroundColor: 'white'},
+  phraseText: {color: 'black', marginTop: 30, fontWeight: 'bold'},
+  viewSecretKeyText: {
+    color: '#5546FF',
+    textDecorationLine: 'underline',
+  },
+  back: {width: 20, height: 12, marginRight: 4},
+  errorText: {
+    fontSize: 14,
+    marginTop: 8,
+    color: theme.colors.danger,
+  },
+  stxID: {
+    fontSize: 14,
+    marginTop: 8,
+    color: theme.colors.black,
+    fontWeight: '700',
+  },
+  input: {
+    height: 48,
+    borderRadius: 4,
+    backgroundColor: '#F8F8F8',
+    paddingTop: 0,
+    paddingBottom: 0,
+  },
 });

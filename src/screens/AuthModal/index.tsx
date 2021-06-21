@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useCallback} from 'react';
 import {
@@ -47,9 +48,6 @@ const AuthModal: React.FC<Props> = ({modalVisible, identities}) => {
                 </Text>
               </View>
             </View>
-            {/* <Text style={styles.blockstackText}>
-              Choose an ID to use in {name}
-            </Text> */}
             <FlatList
               ListHeaderComponent={
                 <Text style={styles.headerText}>

@@ -18,9 +18,7 @@ const Login: React.FC = () => {
 
   return (
     <>
-      <ScrollView
-        contentContainerStyle={styles.container}
-        style={{backgroundColor: 'white'}}>
+      <ScrollView contentContainerStyle={styles.container} style={styles.white}>
         <Image
           style={styles.imageLogo}
           source={require('../../assets/logo.png')}

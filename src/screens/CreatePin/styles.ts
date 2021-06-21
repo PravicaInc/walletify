@@ -118,4 +118,5 @@ export const styles = StyleSheet.create({
     color: 'black',
     marginTop: 10,
   },
+  white: {backgroundColor: 'white'},
 });

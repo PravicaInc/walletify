@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import {decrypt} from '@stacks/keychain';
 import React, {useState} from 'react';
 import {
@@ -11,53 +10,30 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {
-  CodeField,
-  useBlurOnFulfill,
-  useClearByFocusCell,
-} from 'react-native-confirmation-code-field';
+import {CodeField} from 'react-native-confirmation-code-field';
 import {useNavigation} from 'react-navigation-hooks';
 import {useSelector} from 'react-redux';
 import {popNavigation} from '../../../routes';
+import {usePinCode} from '../../hooks/usePinCode';
 import {selectCurrentWallet} from '../../store/wallet/selectors';
 import {styles} from './styles';
 
 const BackupIdentity: React.FC = () => {
   const goBack = () => popNavigation(dispatch);
   const {dispatch} = useNavigation();
-  const [value, setValue] = useState('');
-  const ref = useBlurOnFulfill({value, cellCount: 4});
-  const [prop, getCellOnLayoutHandler] = useClearByFocusCell({
-    value,
-    setValue,
-  });
   const [err, setError] = useState('');
   const [secretKey, setSecretKey] = useState('');
   const wallet = useSelector(selectCurrentWallet);
-
-  const renderCell = ({index, symbol, isFocused}) => {
-    let textChild = null;
-    if (symbol) {
-      textChild = '•';
-    }
-    return (
-      <Text
-        key={index}
-        style={[
-          styles.cell,
-          isFocused && styles.focusCell,
-          err.length > 0 && styles.errCell,
-        ]}
-        onLayout={getCellOnLayoutHandler(index)}>
-        {textChild}
-      </Text>
-    );
-  };
+  const {prop, ref, setValue, value, renderCell} = usePinCode(
+    styles.cell,
+    styles.focusCell,
+    err.length > 0 ? styles.errCell : {},
+  );
 
   const submit = async (text: string) => {
     try {
       setError('');
-      const decryptedKey = await decrypt(wallet?.encryptedBackupPhrase, text);
+      const decryptedKey = await decrypt(wallet!.encryptedBackupPhrase, text);
       if (decryptedKey) {
         setSecretKey(decryptedKey);
       } else {
@@ -78,11 +54,9 @@ const BackupIdentity: React.FC = () => {
   return (
     <>
       <View style={styles.container}>
-        <TouchableOpacity
-          onPress={goBack}
-          style={[styles.cardItem, {marginBottom: 20}]}>
+        <TouchableOpacity onPress={goBack} style={styles.cardItem}>
           <Image
-            style={{width: 25, height: 15, marginRight: 16}}
+            style={styles.back}
             resizeMode="contain"
             source={require('../../assets/back_arrow.png')}
           />
@@ -91,7 +65,7 @@ const BackupIdentity: React.FC = () => {
           In-order to decrypt your seed phrase you have to enter your PIN.
         </Text>
         {secretKey.length > 0 ? (
-          <View style={{marginTop: 20}}>
+          <View style={styles.view}>
             <TextInput
               placeholder={'Your seed phrase'}
               placeholderTextColor={'black'}

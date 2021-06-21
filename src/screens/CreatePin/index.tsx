@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, {useState} from 'react';
 import {
   ActivityIndicator,
@@ -12,35 +11,38 @@ import {
 } from 'react-native';
 import {styles} from './styles';
 import {useDispatch} from 'react-redux';
-import {
-  CodeField,
-  useBlurOnFulfill,
-  useClearByFocusCell,
-} from 'react-native-confirmation-code-field';
+import {CodeField} from 'react-native-confirmation-code-field';
 import {resetNavigation} from '../../../routes';
 import {useNavigation} from 'react-navigation-hooks';
 import {doStoreSeed} from '../../store/wallet';
 import {doSetPinCreated} from '../../store/onboarding/actions';
 import {useWallet} from '../../hooks/useWallet';
 import {ScrollView} from 'react-native-gesture-handler';
+import {usePinCode} from '../../hooks/usePinCode';
 
 const CreatePin: React.FC = () => {
   const {secretKey} = useWallet();
   const currentDispatch = useDispatch();
   const [enableMask, setEnableMask] = useState(true);
-  const [value, setValue] = useState('');
-  const [secondValue, setSecondValue] = useState('');
+
+  const {renderCell, prop: props, ref, setValue, value} = usePinCode(
+    styles.cell,
+    styles.focusCell,
+    undefined,
+    true,
+  );
+
+  const {
+    renderCell: renderSecondCell,
+    prop: secondProps,
+    ref: refSecond,
+    setValue: setSecondValue,
+    value: secondValue,
+  } = usePinCode(styles.cell, styles.focusCell, undefined, true);
+
   const [status, setStatus] = useState('initial');
-  const refSecond = useBlurOnFulfill({value: secondValue, cellCount: 4});
   const [error, setError] = useState('');
-  const [props, getCellOnLayoutHandler] = useClearByFocusCell({
-    value,
-    setValue,
-  });
-  const [secondProps, getSecondCellOnLayoutHandler] = useClearByFocusCell({
-    secondValue,
-    setSecondValue,
-  });
+
   const {dispatch} = useNavigation();
 
   const setLoadingStatus = () => setStatus('loading');
@@ -48,50 +50,6 @@ const CreatePin: React.FC = () => {
 
   const isLoading = status === 'loading';
   const toggleMask = () => setEnableMask((f) => !f);
-  const renderCell = ({index, symbol, isFocused}) => {
-    let textChild = null;
-
-    if (symbol) {
-      textChild = enableMask ? '•' : symbol;
-    }
-
-    return (
-      <View
-        key={index}
-        style={[
-          styles.cell,
-          isFocused && styles.focusCell,
-          {marginLeft: index === 0 ? 0 : 8},
-        ]}
-        onLayout={getCellOnLayoutHandler(index)}>
-        <Text style={styles.textChild}>{textChild}</Text>
-      </View>
-    );
-  };
-
-  const renderSecondCell = ({index, symbol, isFocused}) => {
-    let textChild = null;
-
-    if (symbol) {
-      textChild = enableMask ? '•' : symbol;
-    }
-    // else if (isFocused) {
-    //   textChild = <Cursor />;
-    // }
-
-    return (
-      <View
-        key={index}
-        style={[
-          styles.cell,
-          isFocused && styles.focusCell,
-          {marginLeft: index === 0 ? 0 : 8},
-        ]}
-        onLayout={getSecondCellOnLayoutHandler(index)}>
-        <Text style={styles.textChild}>{textChild}</Text>
-      </View>
-    );
-  };
 
   const onSubmit = async () => {
     setLoadingStatus();
@@ -119,7 +77,7 @@ const CreatePin: React.FC = () => {
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <ScrollView
           contentContainerStyle={styles.container}
-          style={{backgroundColor: 'white'}}>
+          style={styles.white}>
           <KeyboardAvoidingView behavior={'padding'}>
             <Image
               style={styles.imageHeader}
@@ -136,6 +94,7 @@ const CreatePin: React.FC = () => {
               <View style={styles.fieldRow}>
                 <CodeField
                   {...props}
+                  ref={ref}
                   value={value}
                   onChangeText={setValue}
                   cellCount={4}

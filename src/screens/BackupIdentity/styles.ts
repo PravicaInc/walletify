@@ -32,6 +32,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     width: '80%',
     marginVertical: 10,
+    marginBottom: 20,
   },
   text: {
     color: 'black',
@@ -83,4 +84,6 @@ export const styles = StyleSheet.create({
     fontSize: 14,
     color: 'black',
   },
+  back: {width: 25, height: 15, marginRight: 16},
+  view: {marginTop: 20},
 });

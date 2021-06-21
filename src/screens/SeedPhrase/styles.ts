@@ -58,4 +58,6 @@ export const styles = StyleSheet.create({
     marginVertical: 10,
     marginBottom: isWideScreen ? 20 : 0,
   },
+  white: {backgroundColor: 'white'},
+  back: {width: 25, height: 15, marginRight: 16},
 });

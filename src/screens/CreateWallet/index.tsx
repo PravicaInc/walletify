@@ -49,22 +49,16 @@ const CreateWallet: React.FC = () => {
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <ScrollView
           contentContainerStyle={styles.container}
-          style={{backgroundColor: 'white'}}>
+          style={styles.white}>
           {!secretKey ? (
-            <View
-              style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+            <View style={styles.animationView}>
               <LottieView
                 source={require('../../assets/securekeyanimation.min.json')}
                 autoPlay
                 loop
                 autoSize
               />
-              <Text
-                style={{
-                  color: 'black',
-                  fontSize: 16,
-                  textAlign: 'left',
-                }}>
+              <Text style={styles.text}>
                 Your decentralized identity is being created locally, No one can
                 access your keys.
               </Text>
@@ -83,10 +77,7 @@ const CreateWallet: React.FC = () => {
                     you want to use WISE on a new device. Once lost it’s lost
                     forever, so save it somewhere you won’t forget.
                   </Text>
-                  <Text
-                    style={{color: 'black', marginTop: 30, fontWeight: 'bold'}}>
-                    Your Seed Phrase
-                  </Text>
+                  <Text style={styles.phraseText}>Your Seed Phrase</Text>
                   <TextInput
                     placeholder={'Your seed phrase'}
                     placeholderTextColor={'black'}
@@ -167,15 +158,11 @@ const CreateWallet: React.FC = () => {
                         {marginTop: isWideScreen ? 50 : 20},
                       ]}>
                       <Image
-                        style={{width: 20, height: 12, marginRight: 4}}
+                        style={styles.back}
                         resizeMode="contain"
                         source={require('../../assets/back_arrow_blue.png')}
                       />
-                      <Text
-                        style={{
-                          color: '#5546FF',
-                          textDecorationLine: 'underline',
-                        }}>
+                      <Text style={styles.viewSecretKeyText}>
                         View secret key again
                       </Text>
                     </TouchableOpacity>

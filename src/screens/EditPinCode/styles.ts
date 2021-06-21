@@ -23,6 +23,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     width: '80%',
+    marginBottom: 30,
     marginVertical: 10,
   },
   image: {
@@ -104,4 +105,6 @@ export const styles = StyleSheet.create({
     fontWeight: '600',
     marginTop: 10,
   },
+  white: {backgroundColor: 'white'},
+  back: {width: 25, height: 15, marginRight: 16},
 });
