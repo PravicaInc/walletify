@@ -28,7 +28,7 @@ Through WISE you can:
 
 ## Seamless onboarding experience
 
-We came with a solution to ease the user’s journey authenticating through Stacks BNS. With a single tap the users and dApp developers could access the plethora of potential stacks blockchain features and services, the idea of this authenticator is, The user will login with his wallet one time using WISE, and every time any other apps try to authenticate it will ask the user’s permission to generate the identity for the current usage app, so basically, the flow is:
+We came with a solution to ease the user’s journey authenticating through [Stacks BNS](https://docs.stacks.co/build-apps/references/bns). With a single tap the users and dApp developers could access the plethora of potential stacks blockchain features and services, the idea of this authenticator is, The user will login with his wallet one time using WISE, and every time any other apps try to authenticate it will ask the user’s permission to generate the identity for the current usage app, so basically, the flow is:
 
  - The DApp requests the appPrivateKey from WISE
  - The user will review the app data within WISE interface and then decide to either grant or reject access request by that app to use any of his currently set up identities on WISE.
