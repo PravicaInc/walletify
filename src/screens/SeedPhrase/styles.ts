@@ -15,6 +15,11 @@ export const styles = StyleSheet.create({
     paddingBottom: 53,
     borderRadius: 20,
   },
+  imageLogo: {
+    width: 155,
+    height: 60,
+    resizeMode: 'contain',
+  },
   description: {
     color: theme.colors.black,
     fontSize: 24,
@@ -53,4 +58,6 @@ export const styles = StyleSheet.create({
     marginVertical: 10,
     marginBottom: isWideScreen ? 20 : 0,
   },
+  white: {backgroundColor: 'white'},
+  back: {width: 25, height: 15, marginRight: 16},
 });

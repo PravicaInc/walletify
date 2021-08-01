@@ -10,7 +10,6 @@ import {
 import {Identity} from '@stacks/keychain';
 import {doFinishSignIn} from '../store/onboarding/actions';
 import {useDispatch} from 'react-redux';
-import LinearGradient from 'react-native-linear-gradient';
 import {useCardsIdentity} from '../hooks/useCardsIdentity';
 
 interface Props {
@@ -39,7 +38,7 @@ export const UsernameCard: React.FC<Props> = (props: Props) => {
           },
         ]}>
         <View style={styles.row}>
-          <View style={{justifyContent: 'space-between', height: '100%'}}>
+          <View style={styles.view}>
             <Text style={styles.blockstackText}>{cardIdentity.text}</Text>
             <View>
               <Text style={styles.blockstackIdText}>
@@ -124,4 +123,5 @@ const styles = StyleSheet.create({
     width: 41,
     resizeMode: 'contain',
   },
+  view: {justifyContent: 'space-between', height: '100%'},
 });

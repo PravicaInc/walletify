@@ -1,19 +1,16 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, {useState} from 'react';
 import {
   Image,
-  Modal, Platform,
+  Modal,
+  Platform,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
-import {
-  CodeField,
-  useBlurOnFulfill,
-  useClearByFocusCell,
-} from 'react-native-confirmation-code-field';
+import {CodeField} from 'react-native-confirmation-code-field';
 import {decrypt, Wallet} from '@stacks/keychain';
+import {usePinCode} from '../hooks/usePinCode';
 
 interface Props {
   onSubmit: (password: string) => void;
@@ -22,32 +19,12 @@ interface Props {
   wallet: Wallet;
 }
 export const ConfirmationPin: React.FC<Props> = (props: Props) => {
-  const [value, setValue] = useState('');
-  const ref = useBlurOnFulfill({value, cellCount: 4});
-  const [prop, getCellOnLayoutHandler] = useClearByFocusCell({
-    value,
-    setValue,
-  });
   const [err, setError] = useState('');
-
-  const renderCell = ({index, symbol, isFocused}) => {
-    let textChild = null;
-    if (symbol) {
-      textChild = '•';
-    }
-    return (
-      <Text
-        key={index}
-        style={[
-          styles.cell,
-          isFocused && styles.focusCell,
-          err.length > 0 && styles.errCell,
-        ]}
-        onLayout={getCellOnLayoutHandler(index)}>
-        {textChild}
-      </Text>
-    );
-  };
+  const {prop, ref, setValue, value, renderCell} = usePinCode(
+    styles.cell,
+    styles.focusCell,
+    err.length > 0 ? styles.errCell : {},
+  );
 
   const submit = async (text: string) => {
     try {
@@ -68,19 +45,16 @@ export const ConfirmationPin: React.FC<Props> = (props: Props) => {
 
   return (
     <>
-      <View
-        style={[styles.centeredView, {backgroundColor: 'rgba(0, 0, 0, 0.5'}]}>
+      <View style={styles.centeredView}>
         <Modal
           animationType="slide"
-          style={{backgroundColor: 'red'}}
           visible={props.showModal}
           transparent={true}
           onRequestClose={() => {
             props.setShowModal(!props.showModal);
           }}>
           <View style={[styles.centeredView]}>
-            <View
-              style={{backgroundColor: '#fff', padding: 20, borderRadius: 20}}>
+            <View style={styles.view}>
               <TouchableOpacity
                 style={styles.button}
                 onPress={() => props.setShowModal(!props.showModal)}>
@@ -120,7 +94,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: 'rgba(0, 0, 0, 0.5',
   },
   button: {
     borderRadius: 20,
@@ -188,4 +162,5 @@ const styles = StyleSheet.create({
   errCell: {
     borderColor: '#FE3939',
   },
+  view: {backgroundColor: '#fff', padding: 20, borderRadius: 20},
 });

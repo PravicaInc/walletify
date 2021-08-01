@@ -18,7 +18,7 @@ import {
   doSetOnboardingPath,
 } from '../store/onboarding/actions';
 import {doSignOut} from '../store/wallet';
-import { isWideScreen } from '../utils';
+import {isWideScreen} from '../utils';
 
 interface Props {
   actionSheetRef: any;

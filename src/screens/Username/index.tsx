@@ -25,7 +25,6 @@ import {didGenerateWallet} from '../../store/wallet';
 import {styles} from '../CreateWallet/styles';
 import {ScrollView, TextInput} from 'react-native-gesture-handler';
 import {popNavigation, resetNavigation} from '../../../routes';
-import {theme} from '../../../theme';
 import {useNavigation} from 'react-navigation-hooks';
 import {ConfirmationPin} from '../../components/ConfirmationPin';
 import {DEFAULT_PASSWORD} from '../../store/onboarding/types';
@@ -150,17 +149,13 @@ const Username: React.FC<{}> = () => {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <ScrollView
-        contentContainerStyle={styles.container}
-        style={{backgroundColor: 'white'}}>
+      <ScrollView contentContainerStyle={styles.container} style={styles.white}>
         <KeyboardAvoidingView behavior={'position'}>
           <View>
             {isNewId && (
-              <TouchableOpacity
-                onPress={goBack}
-                style={[styles.cardItem, {marginBottom: 30}]}>
+              <TouchableOpacity onPress={goBack} style={styles.cardItem}>
                 <Image
-                  style={{width: 25, height: 15, marginRight: 16}}
+                  style={styles.back}
                   resizeMode="contain"
                   source={require('../../assets/back_arrow.png')}
                 />
@@ -179,37 +174,13 @@ const Username: React.FC<{}> = () => {
               placeholder={'Your Username'}
               autoCapitalize="none"
               placeholderTextColor={'#94A5A6'}
-              style={[
-                styles.textInput,
-                {
-                  height: 48,
-                  borderRadius: 4,
-                  backgroundColor: '#F8F8F8',
-                  paddingTop: 0,
-                  paddingBottom: 0,
-                },
-              ]}
+              style={[styles.textInput, styles.input]}
               value={username}
               onChangeText={handleInput}
             />
-            <Text
-              style={{
-                fontSize: 14,
-                marginTop: 8,
-                color: theme.colors.black,
-                fontWeight: '700',
-              }}>
-              .ID.STX
-            </Text>
+            <Text style={styles.stxID}>.ID.STX</Text>
             {error && hasAttemptedSubmit && (
-              <Text
-                style={{
-                  fontSize: 14,
-                  marginTop: 8,
-                  color: theme.colors.danger,
-                }}>
-                {errorTextMap[error]}
-              </Text>
+              <Text style={styles.errorText}>{errorTextMap[error]}</Text>
             )}
           </View>
           <TouchableOpacity

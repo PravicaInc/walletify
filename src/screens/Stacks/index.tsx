@@ -3,7 +3,6 @@ import React from 'react';
 import {Image, Text, View} from 'react-native';
 import {styles} from './styles';
 import {HeaderComponent} from '../../components/Header';
-import {isWideScreen} from '../../utils';
 
 const Stacks: React.FC = () => {
   return (
@@ -13,22 +12,14 @@ const Stacks: React.FC = () => {
           title={'Stacks'}
           imageSource={require('../../assets/stacks-logo.png')}
         />
-        <View style={{justifyContent: 'center', alignItems: 'center'}}>
+        <View style={styles.view}>
           <Image
-            style={{width: '100%', height: isWideScreen ? 300 : 180}}
+            style={styles.image}
             resizeMode="contain"
             source={require('../../assets/coming-soon.png')}
           />
-          <Text
-            style={{
-              fontSize: 22,
-              fontWeight: 'bold',
-              marginVertical: 20,
-              textAlign: 'center',
-            }}>
-            Concentrate on the job in hand
-          </Text>
-          <Text style={{textAlign: 'center'}}>Stay tuned!</Text>
+          <Text style={styles.text}> Concentrate on the job in hand</Text>
+          <Text style={styles.textAlign}>Stay tuned!</Text>
         </View>
       </View>
     </>

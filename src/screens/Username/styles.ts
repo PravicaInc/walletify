@@ -64,4 +64,6 @@ export const styles = StyleSheet.create({
   },
   loginLogo: {width: 24, height: 24},
   buttonText: {color: theme.colors.white, fontSize: 14},
+  white: {backgroundColor: 'white'},
+  backButton: {width: 25, height: 15, marginRight: 16},
 });

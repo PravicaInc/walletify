@@ -32,7 +32,7 @@ const SplashScreen: React.FC = () => {
         resetNavigation(dispatch, 'IntroSlider');
       }
     });
-  }, [wallet]);
+  }, [wallet, hasCreatedPin]);
 
   return (
     <>

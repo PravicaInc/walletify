@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {useState, useEffect} from 'react';
 import {Linking} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';

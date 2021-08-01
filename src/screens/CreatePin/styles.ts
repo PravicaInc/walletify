@@ -10,9 +10,9 @@ export const styles = StyleSheet.create({
   },
   pravicaLogo: {width: '50%', resizeMode: 'contain'},
   imageHeader: {
-    width: 90,
-    height: 80,
-    marginBottom: 40,
+    width: 87,
+    height: 87,
+    resizeMode: 'contain',
   },
   card: {
     backgroundColor: 'white',
@@ -118,4 +118,5 @@ export const styles = StyleSheet.create({
     color: 'black',
     marginTop: 10,
   },
+  white: {backgroundColor: 'white'},
 });

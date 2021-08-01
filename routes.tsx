@@ -107,17 +107,17 @@ const ChatPageNavigator = createStackNavigator(
               if (focused) {
                 return (
                   <Image
-                    style={{width: 35, height: 35}}
+                    style={{width: 30, height: 30}}
                     source={require('./src/assets/i-active.png')}
-                    resizeMode={'cover'}
+                    resizeMode={'contain'}
                   />
                 );
               } else {
                 return (
                   <Image
-                    style={{width: 35, height: 35}}
+                    style={{width: 30, height: 30}}
                     source={require('./src/assets/i-inactive.png')}
-                    resizeMode={'cover'}
+                    resizeMode={'contain'}
                   />
                 );
               }
