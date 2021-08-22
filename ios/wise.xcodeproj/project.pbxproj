@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* wiseTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* wiseTests.m */; };
+		13789C288837FF56BF9DA3B4 /* libPods-wise.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 176DE1A33C7FBBB9D4D5BACC /* libPods-wise.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
@@ -16,8 +17,8 @@
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* wiseTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* wiseTests.m */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		99F1D973330044F4C89982E0 /* libPods-wise.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FDFB04DFBE28D8B75198DFDE /* libPods-wise.a */; };
 		A6C27E2E2619E29F0078DC5A /* EventEmitterModule.m in Sources */ = {isa = PBXBuildFile; fileRef = A6C27E2D2619E29F0078DC5A /* EventEmitterModule.m */; };
+		AD1671C126D26F96007AF238 /* DummyFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1671C026D26F96007AF238 /* DummyFile.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,7 +39,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		00E356EE1AD99517003FC87E /* wiseTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = wiseTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* wiseTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = wiseTests.m; sourceTree = "<group>"; };
@@ -48,17 +48,19 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = wise/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = wise/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = wise/main.m; sourceTree = "<group>"; };
+		176DE1A33C7FBBB9D4D5BACC /* libPods-wise.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-wise.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		281378C8265FC331009C723D /* wise.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = wise.entitlements; path = wise/wise.entitlements; sourceTree = "<group>"; };
-		2A3985F4F8430C94C0B8F1DE /* Pods-wise.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wise.debug.xcconfig"; path = "Target Support Files/Pods-wise/Pods-wise.debug.xcconfig"; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* wise-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "wise-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* wise-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "wise-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		396CFBF5A48B973364F5C74F /* Pods-wise.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wise.release.xcconfig"; path = "Target Support Files/Pods-wise/Pods-wise.release.xcconfig"; sourceTree = "<group>"; };
+		70FE2F4CF1432991D3D64626 /* Pods-wise.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wise.release.xcconfig"; path = "Target Support Files/Pods-wise/Pods-wise.release.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = wise/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A6C27E2C2619E26F0078DC5A /* EventEmitterModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EventEmitterModule.h; sourceTree = "<group>"; };
 		A6C27E2D2619E29F0078DC5A /* EventEmitterModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EventEmitterModule.m; sourceTree = "<group>"; };
+		AD1671C026D26F96007AF238 /* DummyFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyFile.swift; sourceTree = "<group>"; };
+		AD4850D226D2705D00119CF9 /* wise-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "wise-Bridging-Header.h"; sourceTree = "<group>"; };
+		D9CD056CC8312AEDD883ABB8 /* Pods-wise.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wise.debug.xcconfig"; path = "Target Support Files/Pods-wise/Pods-wise.debug.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
-		FDFB04DFBE28D8B75198DFDE /* libPods-wise.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-wise.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,7 +75,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				99F1D973330044F4C89982E0 /* libPods-wise.a in Frameworks */,
+				13789C288837FF56BF9DA3B4 /* libPods-wise.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -114,8 +116,8 @@
 		13B07FAE1A68108700A75B9A /* wise */ = {
 			isa = PBXGroup;
 			children = (
+				AD4850D226D2705D00119CF9 /* wise-Bridging-Header.h */,
 				281378C8265FC331009C723D /* wise.entitlements */,
-				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -124,6 +126,7 @@
 				13B07FB71A68108700A75B9A /* main.m */,
 				A6C27E2C2619E26F0078DC5A /* EventEmitterModule.h */,
 				A6C27E2D2619E29F0078DC5A /* EventEmitterModule.m */,
+				AD1671C026D26F96007AF238 /* DummyFile.swift */,
 			);
 			name = wise;
 			sourceTree = "<group>";
@@ -131,8 +134,8 @@
 		240E32176E7C61F7948932D4 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				2A3985F4F8430C94C0B8F1DE /* Pods-wise.debug.xcconfig */,
-				396CFBF5A48B973364F5C74F /* Pods-wise.release.xcconfig */,
+				D9CD056CC8312AEDD883ABB8 /* Pods-wise.debug.xcconfig */,
+				70FE2F4CF1432991D3D64626 /* Pods-wise.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -142,7 +145,7 @@
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
-				FDFB04DFBE28D8B75198DFDE /* libPods-wise.a */,
+				176DE1A33C7FBBB9D4D5BACC /* libPods-wise.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -205,13 +208,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "wise" */;
 			buildPhases = (
-				A8FB3F4ECECE7D70322AB9FC /* [CP] Check Pods Manifest.lock */,
+				2AB692826BC41E143C512E6B /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				86D46FF7D2932E0CFBF4F270 /* [CP] Copy Pods Resources */,
+				5B60CAF669EDA1BD1BF889A4 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -273,7 +276,7 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = MXLF5SQD6Q;
-						LastSwiftMigration = 1120;
+						LastSwiftMigration = 1250;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -356,39 +359,7 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
 		};
-		2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Bundle React Native Code And Images";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
-		};
-		86D46FF7D2932E0CFBF4F270 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-wise/Pods-wise-resources.sh",
-				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-wise/Pods-wise-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		A8FB3F4ECECE7D70322AB9FC /* [CP] Check Pods Manifest.lock */ = {
+		2AB692826BC41E143C512E6B /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -408,6 +379,38 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Bundle React Native Code And Images";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+		};
+		5B60CAF669EDA1BD1BF889A4 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-wise/Pods-wise-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-wise/Pods-wise-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
@@ -465,6 +468,7 @@
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				A6C27E2E2619E29F0078DC5A /* EventEmitterModule.m in Sources */,
+				AD1671C126D26F96007AF238 /* DummyFile.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -505,6 +509,7 @@
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -527,6 +532,7 @@
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = wiseTests/Info.plist;
@@ -545,7 +551,7 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2A3985F4F8430C94C0B8F1DE /* Pods-wise.debug.xcconfig */;
+			baseConfigurationReference = D9CD056CC8312AEDD883ABB8 /* Pods-wise.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -565,6 +571,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = id.wiseapp;
 				PRODUCT_NAME = wise;
+				SWIFT_OBJC_BRIDGING_HEADER = "wise-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -573,7 +580,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 396CFBF5A48B973364F5C74F /* Pods-wise.release.xcconfig */;
+			baseConfigurationReference = 70FE2F4CF1432991D3D64626 /* Pods-wise.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -592,6 +599,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = id.wiseapp;
 				PRODUCT_NAME = wise;
+				SWIFT_OBJC_BRIDGING_HEADER = "wise-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -735,6 +743,7 @@
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "arm64 ";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -795,6 +804,7 @@
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "arm64 ";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
