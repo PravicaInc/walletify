@@ -29,7 +29,7 @@ const IconButton: React.FC<IconButtonProps> = props => {
 
   const textStyle = isFilled
     ? styles.filledButtonText
-    : styles.borderedButtonText;
+    : {...styles.filledButtonText, ...styles.borderedButtonText};
 
   return (
     <TouchableHighlight style={buttonStyle} {...props}>
@@ -66,8 +66,18 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   loginLogo: {width: 24, height: 24},
-  filledButtonText: {color: theme.colors.white, fontSize: 14},
-  borderedButtonText: {color: theme.colors.badgeBackground, fontSize: 14},
+  filledButtonText: {
+    color: theme.colors.white,
+    fontSize: 16,
+    textAlign: 'left',
+    fontWeight: 'bold',
+  },
+  borderedButtonText: {
+    color: theme.colors.badgeBackground,
+    fontSize: 16,
+    textAlign: 'left',
+    fontWeight: 'bold',
+  },
 });
 
 export default IconButton;

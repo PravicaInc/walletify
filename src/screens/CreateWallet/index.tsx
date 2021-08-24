@@ -19,6 +19,7 @@ import {resetNavigation} from '../../../routes';
 import LottieView from 'lottie-react-native';
 import {doCreateSecretKey} from '../../store/onboarding/actions';
 import {isWideScreen} from '../../utils';
+import IconButton from '../Login/IconButton';
 
 const CreateWallet: React.FC = () => {
   const [isSaved, setSavedSecretKey] = useState(false);
@@ -122,33 +123,21 @@ const CreateWallet: React.FC = () => {
               )}
               <>
                 {!isSaved && (
-                  <TouchableOpacity
+                  <IconButton
                     onPress={onSubmit}
-                    style={styles.loginButton}>
-                    <>
-                      <Text style={styles.buttonText}>
-                        Copy your seed phrase
-                      </Text>
-                      <Image
-                        style={styles.loginLogo}
-                        source={require('../../assets/copy.png')}
-                      />
-                    </>
-                  </TouchableOpacity>
+                    text={'Copy your seed phrase'}
+                    icon={require('../../assets/copy.png')}
+                    buttonType={0}
+                  />
                 )}
                 {isSaved && (
                   <>
-                    <TouchableOpacity
+                    <IconButton
                       onPress={createPin}
-                      style={styles.loginButton}>
-                      <>
-                        <Text style={styles.buttonText}>I've Saved it</Text>
-                        <Image
-                          style={styles.loginLogo}
-                          source={require('../../assets/login.png')}
-                        />
-                      </>
-                    </TouchableOpacity>
+                      text={"I've Saved it"}
+                      icon={require('../../assets/login.png')}
+                      buttonType={0}
+                    />
                     <TouchableOpacity
                       onPress={() => {
                         setSavedSecretKey(false);
