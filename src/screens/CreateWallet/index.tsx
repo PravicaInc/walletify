@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useState} from 'react';
 import {
-  Clipboard,
   Image,
   Keyboard,
   KeyboardAvoidingView,
@@ -20,6 +19,7 @@ import LottieView from 'lottie-react-native';
 import {doCreateSecretKey} from '../../store/onboarding/actions';
 import {isWideScreen} from '../../utils';
 import IconButton from '../Login/IconButton';
+import Clipboard from '@react-native-clipboard/clipboard';
 
 const CreateWallet: React.FC = () => {
   const [isSaved, setSavedSecretKey] = useState(false);
