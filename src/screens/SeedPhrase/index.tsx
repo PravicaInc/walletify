@@ -85,7 +85,7 @@ const SeedPhrase: React.FC = () => {
             style={styles.textInput}
             textAlignVertical={'top'}
             multiline={true}
-            onChangeText={(text) => setSeed(text)}
+            onChangeText={text => setSeed(text)}
           />
           <Text style={styles.seetTextRed}>{seedError}</Text>
           <Pressable

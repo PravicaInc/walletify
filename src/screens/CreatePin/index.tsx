@@ -49,7 +49,7 @@ const CreatePin: React.FC = () => {
   const setErrorStatus = () => setStatus('error');
 
   const isLoading = status === 'loading';
-  const toggleMask = () => setEnableMask((f) => !f);
+  const toggleMask = () => setEnableMask(f => !f);
 
   const onSubmit = async () => {
     setLoadingStatus();

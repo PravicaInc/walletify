@@ -56,7 +56,7 @@ export const styles = StyleSheet.create({
     marginTop: 45,
     height: 58,
   },
-  continueButton: {
+  borderdButton: {
     backgroundColor: '#E0E0E0',
     borderWidth: 1,
     marginTop: 35,

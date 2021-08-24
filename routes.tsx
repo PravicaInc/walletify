@@ -6,6 +6,7 @@ import {
   NavigationActions,
   NavigationPushActionPayload,
   NavigationPopActionPayload,
+  NavigationDispatch,
 } from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 import Login from './src/screens/Login';
@@ -234,7 +235,10 @@ const ChatPageNavigator = createStackNavigator(
 const AppNavigator = createAppContainer(ChatPageNavigator);
 
 // Function for reseting Navigation;
-export const resetNavigation = (dispatch: any, routeName: string) => {
+export const resetNavigation = (
+  dispatch: NavigationDispatch,
+  routeName: string,
+) => {
   dispatch(
     StackActions.reset({
       index: 0,

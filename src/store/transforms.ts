@@ -5,11 +5,12 @@ import {initialState} from './onboarding/reducer';
 
 interface OutboundState {
   [key: string]: any;
+
   currentWallet: null | Wallet;
 }
 
 export const WalletTransform = createTransform(
-  (inboundState) => {
+  inboundState => {
     return {...inboundState};
   },
   (outboundState: OutboundState) => {
@@ -47,7 +48,7 @@ export const OnboardingTransform = createTransform(
       ...state,
     };
   },
-  (outboundState) => {
+  outboundState => {
     return {...outboundState};
   },
   {whitelist: ['onboarding']},

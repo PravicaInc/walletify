@@ -1,11 +1,33 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {Image, Text, TouchableOpacity, View} from 'react-native';
+import {Image, Text, View} from 'react-native';
 import {styles} from './styles';
 import {useNavigation} from 'react-navigation-hooks';
 import {pushNavigation, resetNavigation} from '../../../routes';
-import {theme} from '../../../theme';
 import {ScrollView} from 'react-native-gesture-handler';
+import IconButton from './IconButton';
+
+const RestoreIDButton: React.FC<{onPress: () => void}> = ({onPress}) => {
+  return (
+    <IconButton
+      onPress={onPress}
+      buttonType={1}
+      icon={require('../../assets/login-purple.png')}
+      text={'Restore Your Stacks ID'}
+    />
+  );
+};
+
+const CreateStacksIDButton: React.FC<{onPress: () => void}> = ({onPress}) => {
+  return (
+    <IconButton
+      onPress={onPress}
+      buttonType={0}
+      icon={require('../../assets/key-icon.png')}
+      text={'Create Your Stacks ID'}
+    />
+  );
+};
 
 const Login: React.FC = () => {
   const {dispatch: navigationDispatch} = useNavigation();
@@ -51,29 +73,11 @@ const Login: React.FC = () => {
             permit the authentication process.
           </Text>
         </View>
-        <TouchableOpacity
-          onPress={() => {
-            resetNavigation(navigationDispatch, 'CreateWallet');
-          }}
-          style={[styles.loginButton]}>
-          <Text style={styles.buttonText}>Create Your Stacks ID</Text>
-          <Image
-            style={styles.loginLogo}
-            source={require('../../assets/key-icon.png')}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={onSubmit}
-          style={[styles.loginButton, styles.continueButton]}>
-          <Text
-            style={[styles.buttonText, {color: theme.colors.badgeBackground}]}>
-            Restore Your Stacks ID
-          </Text>
-          <Image
-            style={styles.loginLogo}
-            source={require('../../assets/login-purple.png')}
-          />
-        </TouchableOpacity>
+
+        <CreateStacksIDButton
+          onPress={() => resetNavigation(navigationDispatch, 'CreateWallet')}
+        />
+        <RestoreIDButton onPress={onSubmit} />
       </ScrollView>
     </>
   );

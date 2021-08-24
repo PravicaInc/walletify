@@ -33,14 +33,16 @@ import {
 } from '@stacks/transactions';
 import {URL} from 'react-native-url-polyfill';
 import {gaiaUrl, USERNAMES_ENABLED} from '../../../constants';
+
 interface FinalizeAuthParams {
   decodedAuthRequest: DecodedAuthRequest;
   authResponse: string;
   authRequest: string;
   appName: string | undefined;
 }
+
 export const delay = (ms = 1000) =>
-  new Promise((res) => setTimeout(() => res('done'), ms));
+  new Promise(res => setTimeout(() => res('done'), ms));
 export const finalizeAuthResponse = (
   {decodedAuthRequest, authResponse, appName}: FinalizeAuthParams,
   dismissCb,
@@ -144,7 +146,7 @@ export function doCreateSecretKey(): ThunkAction<
   {},
   OnboardingActions | WalletActions
 > {
-  return async (dispatch) => {
+  return async dispatch => {
     const wallet = await dispatch(doGenerateWallet(DEFAULT_PASSWORD));
     const secretKey = await decrypt(
       wallet.encryptedBackupPhrase,
@@ -189,7 +191,7 @@ const saveAuthRequest = ({
 export function doSaveAuthRequest(
   authRequest: string,
 ): ThunkAction<void, AppState, {}, OnboardingActions> {
-  return async (dispatch) => {
+  return async dispatch => {
     try {
       const {payload} = decodeToken(authRequest);
       const decodedAuthRequest = (payload as unknown) as DecodedAuthRequest;
@@ -235,7 +237,7 @@ export function doDeleteAuthRequest(): ThunkAction<
   {},
   OnboardingActions
 > {
-  return async (dispatch) => {
+  return async dispatch => {
     dispatch(deleteAuthRequest());
   };
 }
@@ -275,7 +277,7 @@ export function doFinishSignIn(
           name: appName as string,
         },
       })
-      .catch((e) => console.warn('e', e));
+      .catch(e => console.warn('e', e));
     const stxAddress = wallet.stacksPrivateKey
       ? wallet.getSigner().getSTXAddress(TransactionVersion.Testnet)
       : undefined;

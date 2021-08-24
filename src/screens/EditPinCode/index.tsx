@@ -58,7 +58,7 @@ const EditPinCode: React.FC = () => {
   const setErrorStatus = () => setStatus('error');
 
   const isLoading = status === 'loading';
-  const toggleMask = () => setEnableMask((f) => !f);
+  const toggleMask = () => setEnableMask(f => !f);
   const goBack = () => popNavigation(dispatch);
 
   const onSubmit = async () => {

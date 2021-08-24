@@ -68,7 +68,7 @@ export const ConfirmationPin: React.FC<Props> = (props: Props) => {
                 ref={ref}
                 {...prop}
                 value={value}
-                onChangeText={(text) => {
+                onChangeText={text => {
                   setError('');
                   setValue(text);
                   if (text.length === 4) {

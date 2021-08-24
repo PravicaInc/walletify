@@ -65,7 +65,7 @@ export const styles = StyleSheet.create({
     shadowOpacity: 0.75,
     shadowRadius: 1,
   },
-  continueButton: {
+  borderdButton: {
     borderColor: theme.colors.badgeBackground,
     backgroundColor: 'white',
     borderWidth: 1,
