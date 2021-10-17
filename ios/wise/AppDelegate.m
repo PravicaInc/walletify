@@ -5,6 +5,7 @@
 #import <React/RCTRootView.h>
 #import <React/RCTLinkingManager.h>
 #import "EventEmitterModule.h"
+#import "RNSplashScreen.h"
 
 @implementation AppDelegate
 
@@ -29,7 +30,7 @@ EventEmitterModule *eventEmitterModule;
   self.window.rootViewController = rootViewController;
   eventEmitterModule = [EventEmitterModule allocWithZone:nil];
   [self.window makeKeyAndVisible];
-  [NSThread sleepForTimeInterval:2.0];
+  [RNSplashScreen show];
   return YES;
 }
 

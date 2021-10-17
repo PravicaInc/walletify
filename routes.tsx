@@ -10,7 +10,7 @@ import {
 } from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 import Login from './src/screens/Login';
-import SplashScreen from './src/screens/SplashScreen';
+import SplashScreen from './src/screens/Splash';
 import SeedPhrase from './src/screens/SeedPhrase';
 import Home from './src/screens/Home';
 import CreateWallet from './src/screens/CreateWallet';
