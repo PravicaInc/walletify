@@ -8,7 +8,7 @@ export const Splash: React.FC = () => {
   const { dispatch } = useNavigation();
   useEffect(() => {
     AsyncStorage.getItem(FINISHED_ONBOARD).then(finished => {
-      dispatch(StackActions.replace('Home'));
+      dispatch(StackActions.replace('Onboarding'));
       SplashScreen.hide();
     });
   }, [dispatch]);
