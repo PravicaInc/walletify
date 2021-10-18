@@ -1,12 +1,6 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  Image,
-  SafeAreaView,
-  Button,
-  TouchableOpacity,
-} from 'react-native';
+import { View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import AppIntroSlider from 'react-native-app-intro-slider';
 
 import Onboarding1 from '../../assets/onboarding1.svg';
@@ -49,16 +43,30 @@ const OnBoarding: React.FC = () => {
     return (
       <View style={styles.slideContainer}>
         <SafeAreaView style={styles.slide}>
-          <Img width="300" />
-          <MyText type="bigTitle">{item.title}</MyText>
-          <MyText type="commonText">{item.body}</MyText>
+          <View style={styles.imageContainer}>
+            <Img width="300" />
+          </View>
+          <View style={styles.textContainer}>
+            <MyText type="bigTitle" style={{ textAlign: 'center' }}>
+              {item.title}
+            </MyText>
+            <MyText
+              type="commonText"
+              style={{ textAlign: 'center', marginTop: 20 }}>
+              {item.body}
+            </MyText>
+          </View>
         </SafeAreaView>
       </View>
     );
   };
 
   const renderBottomButton = () => (
-    <CustomButton type={ACTIVE_PRIMARY}>Get Started</CustomButton>
+    <View style={styles.bottomButton}>
+      <CustomButton type={ACTIVE_PRIMARY} callback={() => {}}>
+        Get Started
+      </CustomButton>
+    </View>
   );
 
   return (
