@@ -1,7 +1,8 @@
 import React, { useContext } from 'react';
-import { TextProps, TouchableOpacity, View } from 'react-native';
+import { TouchableOpacityProps, TouchableOpacity, View } from 'react-native';
 import { MyText } from '../myText';
 import { ThemeContext } from '../../../contexts/theme';
+import styles from './styles';
 
 export const ACTIVE_PRIMARY = 'activePrimary';
 type activePrimaryType = typeof ACTIVE_PRIMARY;
@@ -12,83 +13,66 @@ type activeSecondaryType = typeof ACTIVE_SECONDARY;
 export const INACTIVE_SECONDARY = 'inactiveSecondary';
 type inactiveSecondaryType = typeof INACTIVE_SECONDARY;
 
-interface IProps extends TextProps {
+interface IProps extends TouchableOpacityProps {
   type:
     | activePrimaryType
     | inactivePrimaryType
     | activeSecondaryType
     | inactiveSecondaryType;
-  callback?: (data: any) => void;
 }
 
-const CustomButton: React.FC<IProps> = props => {
-  const {
-    theme: { colors },
-  } = useContext(ThemeContext);
+const CustomButton = React.forwardRef<TouchableOpacity, IProps>(
+  (props, ref) => {
+    const {
+      theme: { colors },
+    } = useContext(ThemeContext);
 
-  const styles = {
-    wrapper: { flex: 1, height: 60 },
-    container: {
-      flex: 1,
-      justifyContent: 'center',
-      borderRadius: 13,
-    },
-    containerActivePrimary: { backgroundColor: colors.primary },
-    containerInactivePrimary: { backgroundColor: colors.inactive },
-    containerActiveSecondary: {
-      backgroundColor: colors.contrast,
-      borderWidth: 1,
-      borderColor: colors.primary,
-    },
-    containerInactiveSecondary: {
-      backgroundColor: colors.contrast,
-      borderColor: colors.inactive,
-      borderWidth: 1,
-    },
-    txt: { textAlign: 'center' },
-    txtActivePrimary: { color: colors.contrast },
-    txtInactivePrimary: { color: colors.contrast },
-    txtActiveSecondary: { color: colors.text },
-    txtInactiveSecondary: { color: colors.inactive },
-  };
+    let containerStyle;
+    let txtStyle;
+    const disabled =
+      props.type === INACTIVE_PRIMARY || props.type === INACTIVE_SECONDARY;
 
-  let containerStyle = { ...styles.container },
-    txtStyle = { ...styles.txt },
-    customProps = {};
+    switch (props.type) {
+      case ACTIVE_PRIMARY:
+        containerStyle = { backgroundColor: colors.primary };
+        txtStyle = { color: colors.contrast };
+        break;
+      case INACTIVE_PRIMARY:
+        containerStyle = { backgroundColor: colors.inactive };
+        txtStyle = { color: colors.contrast };
+        break;
+      case ACTIVE_SECONDARY:
+        containerStyle = {
+          ...styles.containerActiveSecondary,
+          backgroundColor: colors.contrast,
+          borderColor: colors.primary,
+        };
+        txtStyle = { color: colors.text };
+        break;
+      case INACTIVE_SECONDARY:
+        containerStyle = {
+          ...styles.containerActiveSecondary,
+          backgroundColor: colors.contrast,
+          borderColor: colors.inactive,
+        };
+        txtStyle = { color: colors.inactive };
+        break;
+    }
 
-  switch (props.type) {
-    case ACTIVE_PRIMARY:
-      Object.assign(containerStyle, styles.containerActivePrimary);
-      Object.assign(txtStyle, styles.txtActivePrimary);
-      break;
-    case INACTIVE_PRIMARY:
-      Object.assign(containerStyle, styles.containerInactivePrimary);
-      Object.assign(txtStyle, styles.txtInactivePrimary);
-      customProps = { disabled: true };
-      break;
-    case ACTIVE_SECONDARY:
-      Object.assign(containerStyle, styles.containerActiveSecondary);
-      Object.assign(txtStyle, styles.txtActiveSecondary);
-      break;
-    case INACTIVE_SECONDARY:
-      Object.assign(containerStyle, styles.containerInactiveSecondary);
-      Object.assign(txtStyle, styles.txtInactiveSecondary);
-      customProps = { disabled: true };
-      break;
-  }
-
-  return (
-    <TouchableOpacity
-      style={styles.wrapper}
-      onPress={props.callback}
-      {...customProps}>
-      <View style={containerStyle}>
-        <MyText style={txtStyle} type="buttonText">
-          {props.children}
-        </MyText>
-      </View>
-    </TouchableOpacity>
-  );
-};
+    return (
+      <TouchableOpacity
+        ref={ref}
+        style={styles.wrapper}
+        disabled={disabled}
+        {...props}>
+        <View style={[styles.container, containerStyle]}>
+          <MyText style={[styles.txt, txtStyle]} type="buttonText">
+            {props.children}
+          </MyText>
+        </View>
+      </TouchableOpacity>
+    );
+  },
+);
 
 export default CustomButton;
