@@ -15,7 +15,7 @@ const Splash: React.FC = () => {
   useEffect(() => {
     initLocalization();
     AsyncStorage.getItem(FINISHED_ONBOARD).then(finished => {
-      dispatch(StackActions.replace('Home'));
+      dispatch(StackActions.replace('WalletSetup'));
       SplashScreen.hide();
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps

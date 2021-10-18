@@ -62,9 +62,9 @@ const CustomButton = React.forwardRef<TouchableOpacity, IProps>(
     return (
       <TouchableOpacity
         ref={ref}
-        style={styles.wrapper}
         disabled={disabled}
-        {...props}>
+        {...props}
+        style={[styles.wrapper, props.style]}>
         <View style={[styles.container, containerStyle]}>
           <Typography style={[styles.txt, txtStyle]} type="buttonText">
             {props.children}
