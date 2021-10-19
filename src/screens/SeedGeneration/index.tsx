@@ -42,9 +42,12 @@ const seedPhrase = [
 
 const SeedGeneration: React.FC = () => {
   const { dispatch } = useNavigation();
+
   const {
     theme: { colors },
   } = useContext(ThemeContext);
+
+  const [isBlurred, setIsBlurred] = useState(true);
 
   const handleConfirm = () => dispatch(StackActions.push('EnterPassword'));
 
@@ -54,6 +57,16 @@ const SeedGeneration: React.FC = () => {
     styles.container,
     { backgroundColor: colors.contrast },
   ];
+
+  const BottomButton = isBlurred ? (
+    <CustomButton type="activePrimary" onPress={() => setIsBlurred(false)}>
+      View Seed Phrase
+    </CustomButton>
+  ) : (
+    <CustomButton type="activePrimary" onPress={handleConfirm}>
+      Continue
+    </CustomButton>
+  );
 
   return (
     <SafeAreaView style={containerStyle}>
@@ -81,12 +94,10 @@ const SeedGeneration: React.FC = () => {
           <MyText type="commonTextBold" style={styles.seedTitle}>
             Your Seed Phrase:
           </MyText>
-          <SeedPhraseGrid phrase={seedPhrase} />
+          <SeedPhraseGrid phrase={seedPhrase} isBlurred={isBlurred} />
         </View>
 
-        <CustomButton type="activePrimary" onPress={handleConfirm}>
-          Continue
-        </CustomButton>
+        {BottomButton}
       </View>
     </SafeAreaView>
   );

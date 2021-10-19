@@ -9,6 +9,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 18,
+    overflow: 'hidden',
   },
   word: {
     width: '25%',
@@ -16,6 +17,13 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     paddingRight: 5,
     paddingVertical: 15,
+  },
+  absolute: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
   },
 });
 

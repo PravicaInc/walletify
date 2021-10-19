@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { View, ViewStyle } from 'react-native';
+import { BlurView } from '@react-native-community/blur';
 
 import { MyText } from '../../components/shared/myText';
 
@@ -8,6 +9,7 @@ import styles from './styles';
 
 interface IProps {
   phrase: string[];
+  isBlurred: boolean;
 }
 
 const SeedPhraseGrid = (props: IProps) => {
@@ -38,7 +40,14 @@ const SeedPhraseGrid = (props: IProps) => {
       );
     });
 
-  return <View style={containerStyle}>{renderWords()}</View>;
+  return (
+    <View style={containerStyle}>
+      {renderWords()}
+      {props.isBlurred && (
+        <BlurView style={styles.absolute} blurType="light" blurAmount={2} />
+      )}
+    </View>
+  );
 };
 
 export default SeedPhraseGrid;
