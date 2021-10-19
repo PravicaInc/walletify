@@ -106,7 +106,7 @@ export const CustomAppHeader: React.FC<IProps> = ({
         </TouchableOpacity>
         {subTitle && (
           <TouchableOpacity onPress={handleTitleClicked} activeOpacity={0.6}>
-            <MyText style={{ color: colors.subLines }} type="commonText">
+            <MyText style={{ color: colors.lines }} type="commonText">
               {subTitle}
             </MyText>
           </TouchableOpacity>

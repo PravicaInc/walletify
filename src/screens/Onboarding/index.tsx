@@ -90,8 +90,13 @@ const OnBoarding: React.FC = () => {
     );
   };
 
+  const containerStyle = [
+    styles.container,
+    { backgroundColor: colors.contrast },
+  ];
+
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={containerStyle}>
       <AppIntroSlider
         keyExtractor={keyExtractor}
         renderItem={renderItem}

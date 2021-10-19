@@ -16,6 +16,8 @@ export const BUTTON_TEXT = 'buttonText';
 export type buttonTextType = typeof BUTTON_TEXT;
 export const COMMON_TEXT = 'commonText';
 export type commonTextType = typeof COMMON_TEXT;
+export const COMMON_TEXT_BOLD = 'commonTextBold';
+export type commonTextBoldType = typeof COMMON_TEXT_BOLD;
 export const SMALL_TEXT = 'smallText';
 export type smallTextType = typeof SMALL_TEXT;
 export const SMALL_TEXT_BOLD = 'smallTextBold';
@@ -32,6 +34,7 @@ export type StylesTypes =
   | commonTextType
   | smallTextType
   | smallTextBoldType
+  | commonTextBoldType
   | linkType;
 
 interface IStyleTypeProps {
@@ -81,6 +84,10 @@ export const Typography: React.FC<IProps> = props => {
       },
       commonText: {
         fontFamily: fonts.regular,
+        fontSize: 12,
+      },
+      commonTextBold: {
+        fontFamily: fonts.bold,
         fontSize: 12,
       },
       smallText: {

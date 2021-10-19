@@ -21,8 +21,15 @@ const WalletSetup: React.FC = () => {
 
   const disclaimerStyle = [styles.disclaimer, { color: colors.inactive }];
 
+  const handleCreate = () => dispatch(StackActions.push('SeedGeneration'));
+
+  const containerStyle = [
+    styles.container,
+    { backgroundColor: colors.contrast },
+  ];
+
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={containerStyle}>
       <View style={styles.contentContainer}>
         <Logo />
         <LockAndStacks />
@@ -31,9 +38,11 @@ const WalletSetup: React.FC = () => {
           Seamless experience for your decentralized authentication
         </MyText>
         <View style={styles.buttonsContainer}>
-          <CustomButton type={'activePrimary'}>Create Account</CustomButton>
+          <CustomButton type={'activePrimary'} onPress={handleCreate}>
+            Create Wallet
+          </CustomButton>
           <CustomButton type={'activeSecondary'} style={styles.bottomButton}>
-            Restore Account
+            Restore Wallet
           </CustomButton>
         </View>
         <MyText type={'commonText'} style={disclaimerStyle}>
