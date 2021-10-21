@@ -23,10 +23,7 @@ const SeedConfirmation: React.FC = () => {
 
   const handleGoBack = () => dispatch(StackActions.pop());
 
-  const containerStyle = [
-    styles.container,
-    { backgroundColor: colors.contrast },
-  ];
+  const containerStyle = [styles.container, { backgroundColor: colors.white }];
 
   return (
     <SafeAreaView style={containerStyle}>

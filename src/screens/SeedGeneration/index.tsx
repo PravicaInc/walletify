@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import { View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackActions, useNavigation } from '@react-navigation/native';
+import Clipboard from '@react-native-clipboard/clipboard';
 
 import CustomButton from '../../components/shared/CustomButton';
 import { CustomAppHeader } from '../../components/CustomAppHeader';
@@ -10,35 +11,15 @@ import ProgressBar from '../../components/ProgressBar';
 import SeedPhraseGrid from '../../components/SeedPhraseGrid';
 
 import { ThemeContext } from '../../contexts/theme';
+import seedPhrase from '../../data/seedPhrase';
 import LockedShield from '../../assets/locked-shield.svg';
 import styles from './styles';
 
-const seedPhrase = [
-  'Brawl',
-  'Cell',
-  'Block',
-  'Andre',
-  'Daybreak',
-  'Double',
-  'Play',
-  'Manchi',
-  'Down',
-  'to',
-  'Earth',
-  'Doorman',
-  'Uncredited',
-  'Driving',
-  'While',
-  'Black',
-  'Malik',
-  'Emancipation',
-  'Cailloux',
-  'Filming',
-  'Fight',
-  'Your',
-  'Way',
-  'Out',
-];
+enum Stage {
+  Blurred = 'Blurred',
+  ToCopy = 'ToCopy',
+  ToConfirm = 'ToConfirm',
+}
 
 const SeedGeneration: React.FC = () => {
   const { dispatch } = useNavigation();
@@ -47,21 +28,38 @@ const SeedGeneration: React.FC = () => {
     theme: { colors },
   } = useContext(ThemeContext);
 
-  const [isBlurred, setIsBlurred] = useState(true);
+  const [currentStage, setCurrentStage] = useState<Stage>(Stage.Blurred);
+
+  const handleView = () => setCurrentStage(Stage.ToCopy);
+
+  const handleCopy = () => {
+    Clipboard.setString(seedPhrase.join(' '));
+    setCurrentStage(Stage.ToConfirm);
+  };
 
   const handleConfirm = () => dispatch(StackActions.push('EnterPassword'));
 
   const handleGoBack = () => dispatch(StackActions.pop());
 
-  const BottomButton = isBlurred ? (
-    <CustomButton type="activePrimary" onPress={() => setIsBlurred(false)}>
+  let BottomButton = (
+    <CustomButton type="activePrimary" onPress={handleView}>
       View Seed Phrase
     </CustomButton>
-  ) : (
-    <CustomButton type="activePrimary" onPress={handleConfirm}>
-      Continue
-    </CustomButton>
   );
+
+  if (currentStage === Stage.ToCopy)
+    BottomButton = (
+      <CustomButton type="activePrimary" onPress={handleCopy}>
+        Copy Seed Phrase
+      </CustomButton>
+    );
+
+  if (currentStage === Stage.ToConfirm)
+    BottomButton = (
+      <CustomButton type="activePrimary" onPress={handleConfirm}>
+        Continue
+      </CustomButton>
+    );
 
   const containerStyle = [styles.container, { backgroundColor: colors.white }];
 
@@ -90,7 +88,10 @@ const SeedGeneration: React.FC = () => {
           <MyText type="commonTextBold" style={styles.seedTitle}>
             Your Seed Phrase:
           </MyText>
-          <SeedPhraseGrid phrase={seedPhrase} isBlurred={isBlurred} />
+          <SeedPhraseGrid
+            phrase={seedPhrase}
+            isBlurred={currentStage === Stage.Blurred}
+          />
         </View>
 
         {BottomButton}

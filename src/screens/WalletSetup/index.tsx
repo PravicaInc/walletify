@@ -19,14 +19,11 @@ const WalletSetup: React.FC = () => {
     theme: { colors },
   } = useContext(ThemeContext);
 
-  const disclaimerStyle = [styles.disclaimer, { color: colors.inactive }];
+  const disclaimerStyle = [styles.disclaimer, { color: colors.primary40 }];
 
   const handleCreate = () => dispatch(StackActions.push('SeedGeneration'));
 
-  const containerStyle = [
-    styles.container,
-    { backgroundColor: colors.contrast },
-  ];
+  const containerStyle = [styles.container, { backgroundColor: colors.white }];
 
   return (
     <SafeAreaView style={containerStyle}>
