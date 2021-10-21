@@ -14,6 +14,7 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
     elevation: 7,
     zIndex: 1,
+    height: 60,
   },
   fullWidth: { flex: 1 },
   titleWrapper: { flex: 1 },

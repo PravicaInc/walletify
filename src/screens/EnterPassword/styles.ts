@@ -7,10 +7,28 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   contentContainer: {
+    flex: 1,
+  },
+  keyboardContainer: {
     paddingHorizontal: PADDING_HORIZONTAL,
     flex: 1,
-    justifyContent: 'space-around',
     alignItems: 'center',
+    justifyContent: 'center',
+  },
+  shield: {
+    marginTop: 'auto',
+  },
+  title: { marginVertical: 10 },
+  description: { textAlign: 'center', marginBottom: 40 },
+  input: {
+    width: '90%',
+    marginTop: 8,
+    marginBottom: 24,
+    flex: undefined,
+    height: 60,
+  },
+  button: {
+    marginTop: 'auto',
   },
 });
 

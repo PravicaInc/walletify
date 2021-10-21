@@ -34,28 +34,28 @@ const CustomButton = React.forwardRef<TouchableOpacity, IProps>(
 
     switch (props.type) {
       case ACTIVE_PRIMARY:
-        containerStyle = { backgroundColor: colors.primary };
-        txtStyle = { color: colors.contrast };
+        containerStyle = { backgroundColor: colors.primary100 };
+        txtStyle = { color: colors.white };
         break;
       case INACTIVE_PRIMARY:
-        containerStyle = { backgroundColor: colors.inactive };
-        txtStyle = { color: colors.contrast };
+        containerStyle = { backgroundColor: colors.primary40 };
+        txtStyle = { color: colors.white };
         break;
       case ACTIVE_SECONDARY:
         containerStyle = {
           ...styles.containerActiveSecondary,
-          backgroundColor: colors.contrast,
-          borderColor: colors.primary,
+          backgroundColor: colors.white,
+          borderColor: colors.primary100,
         };
-        txtStyle = { color: colors.text };
+        txtStyle = { color: colors.primary100 };
         break;
       case INACTIVE_SECONDARY:
         containerStyle = {
           ...styles.containerActiveSecondary,
-          backgroundColor: colors.contrast,
-          borderColor: colors.inactive,
+          backgroundColor: colors.white,
+          borderColor: colors.primary40,
         };
-        txtStyle = { color: colors.inactive };
+        txtStyle = { color: colors.primary40 };
         break;
     }
 

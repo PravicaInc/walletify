@@ -21,7 +21,7 @@ const ProgressBar = (props: IProps) => {
         styles.progressItem,
         {
           backgroundColor:
-            i + 1 <= props.finished ? colors.primary : colors.lines,
+            i + 1 <= props.finished ? colors.primary100 : colors.primary10,
         },
       ];
       items.push(<View key={i} style={itemStyle} />);

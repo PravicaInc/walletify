@@ -19,7 +19,7 @@ interface IProps {
   backColor?: string;
   image?: React.ReactNode;
   customNext?: React.ReactNode;
-  title: string;
+  title?: string;
   subTitle?: string;
   nextButtonText?: string;
   containerStyle?: StyleProp<ViewStyle>;
@@ -51,8 +51,8 @@ export const CustomAppHeader: React.FC<IProps> = ({
       style={[
         styles.header,
         {
-          shadowColor: colors.inactive,
-          backgroundColor: colors.contrast,
+          shadowColor: colors.primary40,
+          backgroundColor: colors.white,
         },
         containerStyle,
       ]}>
@@ -67,13 +67,13 @@ export const CustomAppHeader: React.FC<IProps> = ({
                 width={7.5}
                 height={13.5}
                 style={styles.arrow}
-                fill={backColor || colors.primary}
+                fill={backColor || colors.primary100}
               />
             )}
             {!noBackText && (
               <MyText
                 type="buttonText"
-                style={{ color: backColor || colors.primary }}>
+                style={{ color: backColor || colors.primary100 }}>
                 {isCancel ? 'Cancel' : 'Back'}
               </MyText>
             )}
@@ -88,25 +88,27 @@ export const CustomAppHeader: React.FC<IProps> = ({
           disableFullWidth ? styles.normal : styles.fullWidth,
           styles.titleWrapper,
         ]}>
-        <TouchableOpacity
-          onPress={handleTitleClicked}
-          activeOpacity={handleTitleClicked ? 0.6 : 1}>
-          <MyText
-            numberOfLines={1}
-            ellipsizeMode="tail"
-            style={[
-              styles.title,
-              {
-                textAlign: disableFullWidth ? 'left' : 'center',
-              },
-            ]}
-            type="smallTitle">
-            {title}
-          </MyText>
-        </TouchableOpacity>
+        {title && (
+          <TouchableOpacity
+            onPress={handleTitleClicked}
+            activeOpacity={handleTitleClicked ? 0.6 : 1}>
+            <MyText
+              numberOfLines={1}
+              ellipsizeMode="tail"
+              style={[
+                styles.title,
+                {
+                  textAlign: disableFullWidth ? 'left' : 'center',
+                },
+              ]}
+              type="smallTitle">
+              {title}
+            </MyText>
+          </TouchableOpacity>
+        )}
         {subTitle && (
           <TouchableOpacity onPress={handleTitleClicked} activeOpacity={0.6}>
-            <MyText style={{ color: colors.lines }} type="commonText">
+            <MyText style={{ color: colors.primary10 }} type="commonText">
               {subTitle}
             </MyText>
           </TouchableOpacity>
@@ -120,14 +122,14 @@ export const CustomAppHeader: React.FC<IProps> = ({
             activeOpacity={0.6}
             onPress={handleGoNext}>
             {isNextLoading ? (
-              <ActivityIndicator color={colors.inactive} />
+              <ActivityIndicator color={colors.primary40} />
             ) : null}
             <MyText
               style={{
                 color:
                   isNextDisabled || isNextLoading
-                    ? colors.inactive
-                    : colors.primary,
+                    ? colors.primary40
+                    : colors.primary100,
               }}
               type="buttonText">
               {isNextLoading ? loadingText : nextButtonText}

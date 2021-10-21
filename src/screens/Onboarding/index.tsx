@@ -74,8 +74,8 @@ const OnBoarding: React.FC = () => {
                 style={[
                   styles.dot,
                   i === activeIndex
-                    ? { backgroundColor: colors.primary }
-                    : { backgroundColor: colors.inactive },
+                    ? { backgroundColor: colors.primary100 }
+                    : { backgroundColor: colors.primary40 },
                 ]}
                 onPress={handleNext(i)}
               />
@@ -90,10 +90,7 @@ const OnBoarding: React.FC = () => {
     );
   };
 
-  const containerStyle = [
-    styles.container,
-    { backgroundColor: colors.contrast },
-  ];
+  const containerStyle = [styles.container, { backgroundColor: colors.white }];
 
   return (
     <SafeAreaView style={containerStyle}>

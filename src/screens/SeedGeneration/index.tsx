@@ -53,11 +53,6 @@ const SeedGeneration: React.FC = () => {
 
   const handleGoBack = () => dispatch(StackActions.pop());
 
-  const containerStyle = [
-    styles.container,
-    { backgroundColor: colors.contrast },
-  ];
-
   const BottomButton = isBlurred ? (
     <CustomButton type="activePrimary" onPress={() => setIsBlurred(false)}>
       View Seed Phrase
@@ -68,14 +63,15 @@ const SeedGeneration: React.FC = () => {
     </CustomButton>
   );
 
+  const containerStyle = [styles.container, { backgroundColor: colors.white }];
+
   return (
     <SafeAreaView style={containerStyle}>
       <CustomAppHeader
-        title=""
         noBackText={false}
         handleGoBack={handleGoBack}
         containerStyle={{ shadowOpacity: 0 }}
-        backColor={colors.primary}
+        backColor={colors.primary100}
       />
       <View style={styles.contentContainer}>
         <ProgressBar finished={1} total={2} />
