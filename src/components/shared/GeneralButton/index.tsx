@@ -38,7 +38,7 @@ const CustomButton = React.forwardRef<TouchableOpacity, IProps>(
         txtStyle = { color: colors.white };
         break;
       case INACTIVE_PRIMARY:
-        containerStyle = { backgroundColor: colors.primary40 };
+        containerStyle = { backgroundColor: colors.primary20 };
         txtStyle = { color: colors.white };
         break;
       case ACTIVE_SECONDARY:

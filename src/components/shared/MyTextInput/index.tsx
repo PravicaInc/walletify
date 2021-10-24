@@ -6,6 +6,7 @@ import {
   TextInputProps,
   TextStyle,
   View,
+  ViewStyle,
 } from 'react-native';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { ThemeContext } from '../../../contexts/theme';
@@ -145,10 +146,14 @@ export const MyTextInput = React.forwardRef<any, IProps>((props, ref) => {
         )}
       </View>
       {touched && hasError && (
-        <View>
+        <View style={styles.errorContainer}>
           <MyText
             type="commonText"
-            style={[styles.error, { color: colors.failed100 }]}>
+            style={[
+              styles.error,
+              { color: colors.failed100 },
+              { marginLeft: '5%' },
+            ]}>
             {errorMessage}
           </MyText>
         </View>
@@ -200,8 +205,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   label: { marginBottom: 5 },
+  errorContainer: {
+    alignSelf: 'flex-start',
+  },
   error: {
     alignSelf: 'flex-start',
-    marginLeft: '10%',
+    marginLeft: '5%',
   },
 });

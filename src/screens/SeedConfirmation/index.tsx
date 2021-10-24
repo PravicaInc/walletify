@@ -19,7 +19,12 @@ const SeedConfirmation: React.FC = () => {
     theme: { colors },
   } = useContext(ThemeContext);
 
-  const handleConfirm = () => dispatch(StackActions.push('EnterPassword'));
+  const handleConfirm = () =>
+    dispatch(
+      StackActions.push('CreatePassword', {
+        progressBar: { finished: 2, total: 2 },
+      }),
+    );
 
   const handleGoBack = () => dispatch(StackActions.pop());
 

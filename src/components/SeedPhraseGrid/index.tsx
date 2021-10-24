@@ -8,7 +8,7 @@ import { ThemeContext } from '../../contexts/theme';
 import styles from './styles';
 
 interface IProps {
-  phrase: string[];
+  phrase: string;
   isBlurred: boolean;
 }
 
@@ -17,21 +17,18 @@ const SeedPhraseGrid = (props: IProps) => {
     theme: { colors },
   } = useContext(ThemeContext);
 
-  const containerStyle = [
-    styles.container,
-    { backgroundColor: colors.cardsBackground },
-  ];
+  const containerStyle = [styles.container, { backgroundColor: colors.card }];
 
   const renderWords = () =>
-    props.phrase.map((word, i) => {
+    props.phrase.split(' ').map((word, i) => {
       const wordStyle: ViewStyle[] = [styles.word];
       if (i + 1 < 21)
         wordStyle.push({
           borderBottomWidth: 0.5,
-          borderBottomColor: colors.lines,
+          borderBottomColor: colors.primary20,
         });
       return (
-        <View style={wordStyle} key={word}>
+        <View style={wordStyle} key={`word${i}`}>
           <MyText type="commonTextBold">{i + 1 + '. '}</MyText>
           <MyText type="commonText" numberOfLines={1}>
             {word}

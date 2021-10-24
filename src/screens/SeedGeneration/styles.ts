@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import { PADDING_HORIZONTAL } from '../../shared/layout';
+import { PADDING_HORIZONTAL, PADDING_VERTICAL } from '../../shared/layout';
 
 const styles = StyleSheet.create({
   container: {
@@ -8,9 +8,13 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     paddingHorizontal: PADDING_HORIZONTAL,
+    paddingVertical: PADDING_VERTICAL,
     flex: 1,
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  header: {
+    shadowOpacity: 0,
   },
   topContent: {
     alignItems: 'center',

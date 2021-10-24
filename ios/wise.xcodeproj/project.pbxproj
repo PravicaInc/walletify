@@ -45,7 +45,7 @@
 		00E356EE1AD99517003FC87E /* wiseTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = wiseTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* wiseTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = wiseTests.m; sourceTree = "<group>"; };
-		09F0C6E9B7674AC39598CD31 /* OpenSauceOne-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSauceOne-Regular.ttf"; path = "../src/assets/fonts/OpenSauceOne-Regular.ttf"; sourceTree = "<group>"; };
+		09F0C6E9B7674AC39598CD31 /* OpenSauceOne-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSauceOne-Regular.ttf"; path = "../src/assets/fonts/OpenSauceOne-Regular.ttf"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* wise.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wise.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = wise/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = wise/AppDelegate.m; sourceTree = "<group>"; };
@@ -57,9 +57,9 @@
 		2D02E47B1E0B4A5D006451C7 /* wise-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "wise-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* wise-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "wise-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		70FE2F4CF1432991D3D64626 /* Pods-wise.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wise.release.xcconfig"; path = "Target Support Files/Pods-wise/Pods-wise.release.xcconfig"; sourceTree = "<group>"; };
-		724918667AA2429D8F5AA3F5 /* OpenSauceOne-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSauceOne-Bold.ttf"; path = "../src/assets/fonts/OpenSauceOne-Bold.ttf"; sourceTree = "<group>"; };
+		724918667AA2429D8F5AA3F5 /* OpenSauceOne-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSauceOne-Bold.ttf"; path = "../src/assets/fonts/OpenSauceOne-Bold.ttf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = wise/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		85DA1DDDCE6548458EED7CA0 /* OpenSauceOne-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSauceOne-Medium.ttf"; path = "../src/assets/fonts/OpenSauceOne-Medium.ttf"; sourceTree = "<group>"; };
+		85DA1DDDCE6548458EED7CA0 /* OpenSauceOne-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSauceOne-Medium.ttf"; path = "../src/assets/fonts/OpenSauceOne-Medium.ttf"; sourceTree = "<group>"; };
 		A6C27E2C2619E26F0078DC5A /* EventEmitterModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EventEmitterModule.h; sourceTree = "<group>"; };
 		A6C27E2D2619E29F0078DC5A /* EventEmitterModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EventEmitterModule.m; sourceTree = "<group>"; };
 		AD1671C026D26F96007AF238 /* DummyFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyFile.swift; sourceTree = "<group>"; };
@@ -198,7 +198,6 @@
 				09F0C6E9B7674AC39598CD31 /* OpenSauceOne-Regular.ttf */,
 			);
 			name = Resources;
-			path = "";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -379,7 +378,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+			shellScript = "export NODE_BINARY=/Users/khaled/.nvm/versions/node/v14.18.0/bin/node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
 		2AB692826BC41E143C512E6B /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;

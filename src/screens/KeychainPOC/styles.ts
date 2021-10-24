@@ -10,10 +10,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   keyboardContainer: {
+    paddingTop: 50,
     paddingHorizontal: PADDING_HORIZONTAL,
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
   },
   shield: {
     marginTop: 'auto',
@@ -28,8 +29,9 @@ const styles = StyleSheet.create({
     height: 60,
   },
   button: {
-    marginTop: 'auto',
+    marginTop: 20,
   },
+  revleation: { marginVertical: 'auto' },
 });
 
 export default styles;

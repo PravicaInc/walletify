@@ -4,13 +4,13 @@ const requiredStrengthScore: ZXCVBNScore = 4;
 
 const requiredPasswordLength = 12;
 
-export interface ValidatedPassword extends ZXCVBNResult {
+export interface IValidatedPassword extends ZXCVBNResult {
   meetsLengthRequirement: boolean;
   meetsScoreRequirement: boolean;
   meetsAllStrengthRequirements: boolean;
 }
 
-export function validatePassword(input: string): ValidatedPassword {
+export function validatePassword(input: string): IValidatedPassword {
   const password = input.substr(0, 100);
   const result = zxcvbn(password);
   const meetsScoreRequirement = result.score >= requiredStrengthScore;

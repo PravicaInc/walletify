@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { View } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import Clipboard from '@react-native-clipboard/clipboard';
@@ -33,11 +33,16 @@ const SeedGeneration: React.FC = () => {
   const handleView = () => setCurrentStage(Stage.ToCopy);
 
   const handleCopy = () => {
-    Clipboard.setString(seedPhrase.join(' '));
+    Clipboard.setString(seedPhrase);
     setCurrentStage(Stage.ToConfirm);
   };
 
-  const handleConfirm = () => dispatch(StackActions.push('EnterPassword'));
+  const handleConfirm = () =>
+    dispatch(
+      StackActions.push('CreatePassword', {
+        progressBar: { finished: 2, total: 2 },
+      }),
+    );
 
   const handleGoBack = () => dispatch(StackActions.pop());
 
@@ -65,37 +70,41 @@ const SeedGeneration: React.FC = () => {
 
   return (
     <SafeAreaView style={containerStyle}>
-      <CustomAppHeader
-        noBackText={false}
-        handleGoBack={handleGoBack}
-        containerStyle={{ shadowOpacity: 0 }}
-        backColor={colors.primary100}
-      />
-      <View style={styles.contentContainer}>
-        <ProgressBar finished={1} total={2} />
-        <View style={styles.topContent}>
-          <LockedShield />
-          <MyText type="bigTitle" style={styles.title}>
-            Your Seed Phrase
-          </MyText>
-          <MyText type="commonText" style={styles.description}>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industryLorem Ipsum has beenLorem
-          </MyText>
-        </View>
+      <ScrollView contentContainerStyle={styles.container}>
+        <View style={styles.contentContainer}>
+          <View>
+            <ProgressBar finished={1} total={2} />
+            <CustomAppHeader
+              noBackText={false}
+              handleGoBack={handleGoBack}
+              containerStyle={styles.header}
+              backColor={colors.primary100}
+            />
+          </View>
+          <View style={styles.topContent}>
+            <LockedShield />
+            <MyText type="bigTitle" style={styles.title}>
+              Your Seed Phrase
+            </MyText>
+            <MyText type="commonText" style={styles.description}>
+              Lorem Ipsum is simply dummy text of the printing and typesetting
+              industryLorem Ipsum has beenLorem
+            </MyText>
+          </View>
 
-        <View style={styles.bottomContent}>
-          <MyText type="commonTextBold" style={styles.seedTitle}>
-            Your Seed Phrase:
-          </MyText>
-          <SeedPhraseGrid
-            phrase={seedPhrase}
-            isBlurred={currentStage === Stage.Blurred}
-          />
-        </View>
+          <View style={styles.bottomContent}>
+            <MyText type="commonTextBold" style={styles.seedTitle}>
+              Your Seed Phrase:
+            </MyText>
+            <SeedPhraseGrid
+              phrase={seedPhrase}
+              isBlurred={currentStage === Stage.Blurred}
+            />
+          </View>
 
-        {BottomButton}
-      </View>
+          {BottomButton}
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
