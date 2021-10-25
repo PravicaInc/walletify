@@ -7,17 +7,18 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   progressBar: {
-    marginTop: PADDING_VERTICAL,
+    marginBottom: PADDING_VERTICAL,
+    paddingHorizontal: PADDING_HORIZONTAL,
   },
   keyboardContainer: {
     flex: 1,
   },
   scrollableContent: {
-    flex: 1,
     paddingHorizontal: PADDING_HORIZONTAL,
     paddingBottom: PADDING_VERTICAL,
     alignItems: 'center',
     justifyContent: 'flex-start',
+    minHeight: '100%',
   },
   title: { marginVertical: 10 },
   description: { textAlign: 'center', marginBottom: 40 },

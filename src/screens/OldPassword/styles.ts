@@ -10,11 +10,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollableContent: {
-    flex: 1,
     paddingHorizontal: PADDING_HORIZONTAL,
     paddingBottom: PADDING_VERTICAL,
     alignItems: 'center',
     justifyContent: 'flex-start',
+    minHeight: '100%',
   },
   keyboardContainer: {
     flex: 1,

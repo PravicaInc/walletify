@@ -174,7 +174,6 @@ const styles = StyleSheet.create({
     marginTop: 12,
     marginBottom: 8,
     marginHorizontal: '2.5%',
-    flex: 1,
   },
   search: {
     width: '90%',

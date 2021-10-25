@@ -113,6 +113,12 @@ const CreatePassword = (props: Props) => {
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.white }]}>
+      <CustomAppHeader
+        noBackText={false}
+        handleGoBack={handleGoBack}
+        containerStyle={{ shadowOpacity: 0 }}
+        backColor={colors.primary100}
+      />
       {progressBar && (
         <ProgressBar
           finished={progressBar.finished}
@@ -120,77 +126,67 @@ const CreatePassword = (props: Props) => {
           customStyle={styles.progressBar}
         />
       )}
-      <CustomAppHeader
-        noBackText={false}
-        handleGoBack={handleGoBack}
-        containerStyle={{ shadowOpacity: 0 }}
-        backColor={colors.primary100}
-      />
-      <ScrollView contentContainerStyle={styles.container}>
-        <KeyboardAvoidingView
-          contentContainerStyle={styles.keyboardContainer}
-          style={styles.keyboardContainer}
-          // behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          keyboardVerticalOffset={100}
-          behavior="position">
-          <View style={styles.scrollableContent}>
-            <PasswordShield />
-            <View>
-              <MyText type="bigTitle" style={styles.title}>
-                Create Your Password
-              </MyText>
-            </View>
-            <View>
-              <MyText type="commonText" style={styles.description}>
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industryLorem Ipsum has beenLorem
-              </MyText>
-            </View>
-
-            <MyTextInput
-              customStyle={[styles.input, { marginBottom: 0 }]}
-              labelText="Enter a Password"
-              secureTextEntry
-              onChangeText={setPassword}
-              value={password}
-              disableCancel
-              ref={passwordRef}
-            />
-            {strengthResult && (
-              <View style={styles.passwordStrength}>
-                <ProgressBar
-                  finished={strengthResult?.finished}
-                  total={3}
-                  barsColor={strengthResult?.barsColor}
-                />
-                <MyText
-                  type="smallText"
-                  style={{
-                    color: strengthResult?.barsColor,
-                  }}>{` ${strengthResult?.textResult}`}</MyText>
-              </View>
-            )}
-            <View style={styles.bottomInput}>
-              <MyTextInput
-                ref={confirmPasswordRef}
-                customStyle={styles.input}
-                labelText="Re-enter a Password"
-                secureTextEntry
-                onChangeText={setConfirmPassword}
-                value={confirmPassword}
-                disableCancel
-                setErrorMessage={setErrorMessage}
-                errorMessage={errorMessage}
-              />
-            </View>
-            <CustomButton
-              style={styles.button}
-              type={isValidInput ? 'activePrimary' : 'inactivePrimary'}>
-              Create
-            </CustomButton>
+      <KeyboardAvoidingView
+        style={styles.keyboardContainer}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={0}>
+        <ScrollView contentContainerStyle={styles.scrollableContent}>
+          <PasswordShield />
+          <View>
+            <MyText type="bigTitle" style={styles.title}>
+              Create Your Password
+            </MyText>
           </View>
-        </KeyboardAvoidingView>
-      </ScrollView>
+          <View>
+            <MyText type="commonText" style={styles.description}>
+              Lorem Ipsum is simply dummy text of the printing and typesetting
+              industryLorem Ipsum has beenLorem
+            </MyText>
+          </View>
+
+          <MyTextInput
+            customStyle={[styles.input, { marginBottom: 0 }]}
+            labelText="Enter a Password"
+            secureTextEntry
+            onChangeText={setPassword}
+            value={password}
+            disableCancel
+            ref={passwordRef}
+          />
+          {strengthResult && (
+            <View style={styles.passwordStrength}>
+              <ProgressBar
+                finished={strengthResult?.finished}
+                total={3}
+                barsColor={strengthResult?.barsColor}
+              />
+              <MyText
+                type="smallText"
+                style={{
+                  color: strengthResult?.barsColor,
+                }}>{` ${strengthResult?.textResult}`}</MyText>
+            </View>
+          )}
+          <View style={styles.bottomInput}>
+            <MyTextInput
+              ref={confirmPasswordRef}
+              customStyle={styles.input}
+              labelText="Re-enter a Password"
+              secureTextEntry
+              onChangeText={setConfirmPassword}
+              value={confirmPassword}
+              disableCancel
+              setErrorMessage={setErrorMessage}
+              errorMessage={errorMessage}
+            />
+          </View>
+          <CustomButton
+            style={styles.button}
+            type={isValidInput ? 'activePrimary' : 'inactivePrimary'}>
+            Create
+          </CustomButton>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };

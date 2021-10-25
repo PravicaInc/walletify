@@ -10,11 +10,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollableContent: {
-    flex: 1,
     paddingHorizontal: PADDING_HORIZONTAL,
     paddingBottom: PADDING_VERTICAL,
     alignItems: 'center',
     justifyContent: 'flex-start',
+    minHeight: '100%',
   },
   topContent: {
     alignItems: 'center',
@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
   seedInput: {
     paddingVertical: 10,
     textAlignVertical: 'top',
+    flex: 1,
   },
 });
 

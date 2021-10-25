@@ -73,13 +73,13 @@ const SeedGeneration: React.FC = () => {
       <ScrollView contentContainerStyle={styles.container}>
         <View style={styles.contentContainer}>
           <View>
-            <ProgressBar finished={1} total={2} />
             <CustomAppHeader
               noBackText={false}
               handleGoBack={handleGoBack}
               containerStyle={styles.header}
               backColor={colors.primary100}
             />
+            <ProgressBar finished={1} total={2} />
           </View>
           <View style={styles.topContent}>
             <LockedShield />

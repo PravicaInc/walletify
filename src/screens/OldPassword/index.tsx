@@ -4,6 +4,7 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   TextInput,
+  Platform,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackActions, useNavigation } from '@react-navigation/native';
@@ -74,42 +75,38 @@ const OldPassword = (props: Props) => {
         containerStyle={{ shadowOpacity: 0 }}
         backColor={colors.primary100}
       />
-      <ScrollView contentContainerStyle={styles.container}>
-        <KeyboardAvoidingView
-          contentContainerStyle={styles.keyboardContainer}
-          style={styles.keyboardContainer}
-          // behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          keyboardVerticalOffset={100}
-          behavior="position">
-          <View style={styles.scrollableContent}>
-            <PasswordShield style={styles.shield} />
-            <View>
-              <MyText type="bigTitle" style={styles.title}>
-                Enter Your Password
-              </MyText>
-            </View>
-            <View>
-              <MyText type="commonText" style={styles.description}>
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industryLorem Ipsum has beenLorem
-              </MyText>
-            </View>
-
-            <MyTextInput
-              customStyle={[styles.input]}
-              labelText="Enter a Password"
-              secureTextEntry
-              onChangeText={setPassword}
-              value={password}
-              disableCancel
-              ref={passwordRef}
-              errorMessage={errorMessage}
-              setErrorMessage={setErrorMessage}
-            />
-            {bottomButton}
+      <KeyboardAvoidingView
+        style={styles.keyboardContainer}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={0}>
+        <ScrollView contentContainerStyle={styles.scrollableContent}>
+          <PasswordShield style={styles.shield} />
+          <View>
+            <MyText type="bigTitle" style={styles.title}>
+              Enter Your Password
+            </MyText>
           </View>
-        </KeyboardAvoidingView>
-      </ScrollView>
+          <View>
+            <MyText type="commonText" style={styles.description}>
+              Lorem Ipsum is simply dummy text of the printing and typesetting
+              industryLorem Ipsum has beenLorem
+            </MyText>
+          </View>
+
+          <MyTextInput
+            customStyle={[styles.input]}
+            labelText="Enter a Password"
+            secureTextEntry
+            onChangeText={setPassword}
+            value={password}
+            disableCancel
+            ref={passwordRef}
+            errorMessage={errorMessage}
+            setErrorMessage={setErrorMessage}
+          />
+          {bottomButton}
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };

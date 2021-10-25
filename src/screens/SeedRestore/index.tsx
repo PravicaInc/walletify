@@ -35,6 +35,7 @@ const SeedRestore: React.FC = () => {
   if (seedPhrase.length > 0)
     BottomButton = (
       <CustomButton
+        style={{ marginTop: 'auto' }}
         type="activePrimary"
         onPress={
           seedPhrase === 'old seed phrase' ? handleOldPassword : handleContinue
@@ -55,47 +56,44 @@ const SeedRestore: React.FC = () => {
         containerStyle={{ shadowOpacity: 0 }}
         backColor={colors.primary100}
       />
-      <ScrollView contentContainerStyle={styles.container}>
-        <KeyboardAvoidingView
-          contentContainerStyle={styles.keyboardContainer}
-          style={styles.keyboardContainer}
-          // behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          keyboardVerticalOffset={100}
-          behavior="position">
-          <View style={styles.scrollableContent}>
-            <View style={styles.topContent}>
-              <LockedShield />
-              <MyText type="bigTitle" style={styles.title}>
-                Enter Your Seed Phrase
-              </MyText>
-              <MyText type="commonText" style={styles.description}>
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industryLorem Ipsum has beenLorem
-              </MyText>
-            </View>
 
-            <View style={styles.bottomContent}>
-              <MyText type="commonTextBold" style={styles.seedTitle}>
-                Your Seed Phrase:
-              </MyText>
-              <View style={styles.seedInputContainer}>
-                <MyTextInput
-                  value={seedPhrase}
-                  customStyle={inputStyle}
-                  onChangeText={setSeedPhrase}
-                  disableCancel
-                  multiline={true}
-                  placeholder="Type Your Seed Phrase..."
-                  placeholderTextColor={colors.primary20}
-                  secureTextEntry={false}
-                />
-              </View>
-            </View>
-
-            {BottomButton}
+      <KeyboardAvoidingView
+        style={styles.keyboardContainer}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={0}>
+        <ScrollView contentContainerStyle={styles.scrollableContent}>
+          <View style={styles.topContent}>
+            <LockedShield />
+            <MyText type="bigTitle" style={styles.title}>
+              Enter Your Seed Phrase
+            </MyText>
+            <MyText type="commonText" style={styles.description}>
+              Lorem Ipsum is simply dummy text of the printing and typesetting
+              industryLorem Ipsum has beenLorem
+            </MyText>
           </View>
-        </KeyboardAvoidingView>
-      </ScrollView>
+
+          <View style={styles.bottomContent}>
+            <MyText type="commonTextBold" style={styles.seedTitle}>
+              Your Seed Phrase:
+            </MyText>
+            <View style={styles.seedInputContainer}>
+              <MyTextInput
+                value={seedPhrase}
+                customStyle={inputStyle}
+                onChangeText={setSeedPhrase}
+                disableCancel
+                multiline={true}
+                placeholder="Type Your Seed Phrase..."
+                placeholderTextColor={colors.primary20}
+                secureTextEntry={false}
+              />
+            </View>
+          </View>
+
+          {BottomButton}
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
