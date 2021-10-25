@@ -1,4 +1,4 @@
-import { Language } from '../stores/localization/types';
+import { Language } from '../stores/LocalizationStore/types';
 import { useStores } from './useStores';
 
 export const useLocalization = () => {

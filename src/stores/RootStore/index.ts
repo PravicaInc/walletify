@@ -1,7 +1,7 @@
 import NetworkStore from '../NetworkStore';
 import { create } from 'mobx-persist';
 import AsyncStorage from '@react-native-community/async-storage';
-import { LocalizationStore } from '../localization';
+import { LocalizationStore } from '../LocalizationStore';
 
 const hydrate = create({
   storage: AsyncStorage,
