@@ -2,14 +2,13 @@ import { AvailableNetworks } from '../stores/NetworkStore/types';
 import { useStores } from './useStores';
 
 const useNetwork = () => {
+  const { networkStore } = useStores();
   const {
-    networkStore: {
-      currentNetwork,
-      currentNetworkInstance,
-      setCurrentNetworkInstance,
-      setCurrentNetwork,
-    },
-  } = useStores();
+    currentNetwork,
+    currentNetworkInstance,
+    setCurrentNetworkInstance,
+    setCurrentNetwork,
+  } = networkStore;
 
   const setActiveNetwork = (network: AvailableNetworks) => {
     setCurrentNetwork(network);

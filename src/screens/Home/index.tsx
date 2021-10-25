@@ -8,6 +8,7 @@ import { useStores } from '../../hooks/useStores';
 import { observer } from 'mobx-react-lite';
 import { AvailableNetworks } from '../../stores/NetworkStore/types';
 import useNetwork from '../../hooks/useNetwork';
+import { useLocalization } from '../../hooks/useLocalization';
 
 export const Home: React.FC = observer(() => {
   const { networkStore } = useStores();
@@ -24,15 +25,20 @@ export const Home: React.FC = observer(() => {
 
 export const ChangeNetworkButton: React.FC = observer(() => {
   const { setActiveNetwork } = useNetwork();
+  const { translate } = useLocalization();
   return (
     <View>
       <TouchableOpacity
         onPress={() => setActiveNetwork(AvailableNetworks.TESTNET)}>
-        <Typography type="buttonText">Change To Testnet</Typography>
+        <Typography type="buttonText">
+          {translate('CHANGE_NETWORK_TESTNET_BUTTON')}
+        </Typography>
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => setActiveNetwork(AvailableNetworks.MAINNET)}>
-        <Typography type="buttonText">Change To Mainnet</Typography>
+        <Typography type="buttonText">
+          {translate('CHANGE_NETWORK_MAINNET_BUTTON')}
+        </Typography>
       </TouchableOpacity>
     </View>
   );
