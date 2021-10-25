@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { Routes } from './src/screens/routes';
+import { Routes } from './src/navigation';
 import { NavigationContainer } from '@react-navigation/native';
 import { Theme, ThemeContext } from './src/contexts/theme';
 import DefaultTheme from './src/themes/defaultTheme';
-import { StoresProvider } from './src/components/shared/storeProvider';
+import { StoresProvider } from './src/components/providers/storeProvider';
 import rootStore from './src/stores/RootStore';
 
 export default function App() {

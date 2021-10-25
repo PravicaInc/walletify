@@ -6,7 +6,7 @@ import SplashScreen from 'react-native-splash-screen';
 import { useLocalization } from '../../hooks/useLocalization';
 import { LANGUAGES } from '../../shared/constants';
 
-export const Splash: React.FC = () => {
+const Splash: React.FC = () => {
   const { dispatch } = useNavigation();
   const { changeLanguage } = useLocalization();
   const initLocalization = async () => {
@@ -23,3 +23,5 @@ export const Splash: React.FC = () => {
 
   return null;
 };
+
+export default Splash;

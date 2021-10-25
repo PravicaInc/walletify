@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { TouchableOpacityProps, TouchableOpacity, View } from 'react-native';
-import { MyText } from '../myText';
+import { Typography } from '../Typography';
 import { ThemeContext } from '../../../contexts/theme';
 import styles from './styles';
 
@@ -66,9 +66,9 @@ const CustomButton = React.forwardRef<TouchableOpacity, IProps>(
         disabled={disabled}
         {...props}>
         <View style={[styles.container, containerStyle]}>
-          <MyText style={[styles.txt, txtStyle]} type="buttonText">
+          <Typography style={[styles.txt, txtStyle]} type="buttonText">
             {props.children}
-          </MyText>
+          </Typography>
         </View>
       </TouchableOpacity>
     );

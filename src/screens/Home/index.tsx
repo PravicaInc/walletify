@@ -1,7 +1,7 @@
 import React from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import { styles } from './styles';
-import { Typography } from '../../components/shared/typography';
+import { Typography } from '../../components/shared/Typography';
 import Wise from '../../assets/wise.svg';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useStores } from '../../hooks/useStores';
@@ -10,7 +10,7 @@ import { AvailableNetworks } from '../../stores/NetworkStore/types';
 import useNetwork from '../../hooks/useNetwork';
 import { useLocalization } from '../../hooks/useLocalization';
 
-export const Home: React.FC = observer(() => {
+const Home: React.FC = observer(() => {
   const { networkStore } = useStores();
   return (
     <SafeAreaView style={styles.container}>
@@ -23,7 +23,7 @@ export const Home: React.FC = observer(() => {
   );
 });
 
-export const ChangeNetworkButton: React.FC = observer(() => {
+const ChangeNetworkButton: React.FC = observer(() => {
   const { setActiveNetwork } = useNetwork();
   const { translate } = useLocalization();
   return (
@@ -43,3 +43,5 @@ export const ChangeNetworkButton: React.FC = observer(() => {
     </View>
   );
 });
+
+export default Home;

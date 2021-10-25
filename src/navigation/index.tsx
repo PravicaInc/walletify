@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Splash } from './Splash';
-import { Home } from './Home';
-import Onboarding from './Onboarding';
+import Splash from '../screens/Splash';
+import Home from '../screens/Home';
+import Onboarding from '../screens/Onboarding';
 
 const Stack = createStackNavigator();
 
@@ -27,3 +27,5 @@ export const Routes: React.FC = () => {
     </Stack.Navigator>
   );
 };
+
+export default Routes;

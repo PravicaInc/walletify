@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Animated, StyleProp, TextProps, TextStyle } from 'react-native';
 import { useContext, useMemo } from 'react';
 import { findAll } from 'highlight-words-core';
-import { ThemeContext } from '../../contexts/theme';
+import { ThemeContext } from '../../../contexts/theme';
 
 export const BIG_TITLE = 'bigTitle';
 export type bigTitleType = typeof BIG_TITLE;
