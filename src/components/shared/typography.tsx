@@ -53,7 +53,7 @@ interface IProps extends TextProps {
   animationValue?: Animated.AnimatedInterpolation;
 }
 
-export const MyText: React.FC<IProps> = props => {
+export const Typography: React.FC<IProps> = props => {
   const {
     theme: { fonts },
   } = useContext(ThemeContext);
