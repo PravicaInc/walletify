@@ -21,7 +21,7 @@
   resolved "https://registry.yarnpkg.com/@babel/compat-data/-/compat-data-7.15.0.tgz#2dbaf8b85334796cafbb0f5793a90a2fc010b176"
   integrity sha512-0NqAC1IJE0S0+lL1SWFMxMkz1pKCNCjI4tr2Zx4LJSXxCLAdr6KyArnY+sno5m3yH9g737ygOyPABDsnXkpxiA==
 
-"@babel/core@^7.1.0", "@babel/core@^7.1.6", "@babel/core@^7.12.3", "@babel/core@^7.12.9", "@babel/core@^7.14.0", "@babel/core@^7.4.5", "@babel/core@^7.7.5":
+"@babel/core@^7.0.0", "@babel/core@^7.1.0", "@babel/core@^7.1.6", "@babel/core@^7.12.3", "@babel/core@^7.12.9", "@babel/core@^7.14.0", "@babel/core@^7.4.5", "@babel/core@^7.7.5":
   version "7.15.8"
   resolved "https://registry.yarnpkg.com/@babel/core/-/core-7.15.8.tgz#195b9f2bffe995d2c6c159e72fe525b4114e8c10"
   integrity sha512-3UG9dsxvYBMYwRv+gS41WKHno4K60/9GPy1CJaH6xy3Elq8CTtvtjT5R5jmNhXfCYLX2mTw+7/aq5ak/gOE0og==
@@ -1391,6 +1391,20 @@
     jsontokens "^3.0.0"
     query-string "^6.13.1"
 
+"@stacks/auth@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@stacks/auth/-/auth-2.0.1.tgz#cd774036f5edd1c8bdc5270dddb8bc06d41b74cf"
+  integrity sha512-RwKu3+Z2ryxOuS6wB8Y9hFeTnKM+31tOR4toalyPJRbkNsAqWWb0kuuPu7N5hD65zZsiyCImubAzNphJW1MGYw==
+  dependencies:
+    "@stacks/common" "^2.0.1"
+    "@stacks/encryption" "^2.0.1"
+    "@stacks/network" "^2.0.1"
+    "@stacks/profile" "^2.0.1"
+    c32check "^1.1.2"
+    cross-fetch "^3.1.4"
+    jsontokens "^3.0.0"
+    query-string "^6.13.1"
+
 "@stacks/common@^1.2.2":
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/@stacks/common/-/common-1.2.2.tgz#1365ffb0f8bd9e4cd194c63c65a1bb2c83876ba1"
@@ -1464,6 +1478,13 @@
     triplesec "^4.0.3"
     zone-file "^1.0.0"
 
+"@stacks/network@2.0.1", "@stacks/network@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@stacks/network/-/network-2.0.1.tgz#b48cf3c50793e7aff5a1fbe5ee6ed4bf86da7db5"
+  integrity sha512-eA4AHrhFcIXIurW54HxzIoR6cYqe7hg/eS6aebtgyOUBaMc5w+RwR2iqZwG4M5aO4/Bwe3xdReINUUXJgMFK3g==
+  dependencies:
+    "@stacks/common" "^2.0.1"
+
 "@stacks/network@^1.2.2":
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/@stacks/network/-/network-1.2.2.tgz#30ca87ad6339f32eb04ed3a9dbcc2e39ed933604"
@@ -1484,6 +1505,18 @@
     schema-inspector "^1.7.0"
     zone-file "^1.0.0"
 
+"@stacks/profile@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@stacks/profile/-/profile-2.0.1.tgz#d053aaa88563cea0fc7df1197da262847fc6f296"
+  integrity sha512-mS/JDo5edBXfr00huc+PzlkjRszYwcUwV/5klhQYzjxpN71JyHfAQgXggEEFCdONj2j79GKXqdD1bsLoEY1lgQ==
+  dependencies:
+    "@stacks/common" "^2.0.1"
+    "@stacks/network" "^1.2.2"
+    "@stacks/transactions" "^2.0.1"
+    jsontokens "^3.0.0"
+    schema-inspector "^2.0.1"
+    zone-file "^1.0.0"
+
 "@stacks/storage@^2.0.1":
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/@stacks/storage/-/storage-2.0.1.tgz#262b1bd9731c5ebbce498badaff75d7e19e23213"
@@ -1495,7 +1528,7 @@
     bitcoinjs-lib "^5.2.0"
     jsontokens "^3.0.0"
 
-"@stacks/transactions@^2.0.1":
+"@stacks/transactions@2.0.1", "@stacks/transactions@^2.0.1":
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/@stacks/transactions/-/transactions-2.0.1.tgz#6a9270d49f2b93067f678fe45474a1d72247d4c1"
   integrity sha512-q+8nCbn+0m1T8NbGG2sfMcBcCxdaH/F+vgBEHkhMIFHFLYXVYBGYbTX2llGS9StLp/tQq6p2Bfb1kzKFSw8FRQ==
@@ -1516,6 +1549,27 @@
     ripemd160-min "^0.0.6"
     sha.js "^2.4.11"
     smart-buffer "^4.1.0"
+
+"@stacks/wallet-sdk@2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@stacks/wallet-sdk/-/wallet-sdk-2.0.1.tgz#757e5638fa666ed90d05cce279760ed5db925223"
+  integrity sha512-Gk8bHD5uwh9vcE9ctacl/n97DWVEvgvURUpJJ00yk4TE8M0x6Ie/uqcsbttGDSPDRFSQg0h2fkzLMS3kxd6GoQ==
+  dependencies:
+    "@stacks/auth" "^2.0.1"
+    "@stacks/common" "^2.0.1"
+    "@stacks/encryption" "^2.0.1"
+    "@stacks/profile" "^2.0.1"
+    "@stacks/storage" "^2.0.1"
+    "@stacks/transactions" "^2.0.1"
+    bip32 "2.0.6"
+    bip39 "^3.0.2"
+    bitcoinjs-lib "^5.1.6"
+    bn.js "^5.1.1"
+    c32check "^1.0.1"
+    jsontokens "^3.0.0"
+    randombytes "^2.1.0"
+    triplesec "^3.0.27"
+    zone-file "^1.0.0"
 
 "@svgr/babel-plugin-add-jsx-attribute@^4.2.0":
   version "4.2.0"
@@ -1732,7 +1786,14 @@
   resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.9.tgz#97edc9037ea0c38585320b28964dde3b39e4660d"
   integrity sha512-qcUXuemtEu+E5wZSJHNxUXeCZhAfXKQ41D+duX+VYPde7xyEVZci+/oXKJL13tnRs9lR2pr4fod59GT6/X1/yQ==
 
-"@types/lodash@^4.14.149":
+"@types/lodash.memoize@4.1.6":
+  version "4.1.6"
+  resolved "https://registry.yarnpkg.com/@types/lodash.memoize/-/lodash.memoize-4.1.6.tgz#3221f981790a415cab1a239f25c17efd8b604c23"
+  integrity sha512-mYxjKiKzRadRJVClLKxS4wb3Iy9kzwJ1CkbyKiadVxejnswnRByyofmPMscFKscmYpl36BEEhCMPuWhA1R/1ZQ==
+  dependencies:
+    "@types/lodash" "*"
+
+"@types/lodash@*", "@types/lodash@^4.14.149":
   version "4.14.176"
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.176.tgz#641150fc1cda36fbfa329de603bbb175d7ee20c0"
   integrity sha512-xZmuPTa3rlZoIbtDUyJKZQimJV3bxCmzMIO2c9Pz9afyDro6kr7R79GwcB6mRhuoPmV2p1Vb66WOJH7F886WKQ==
@@ -2478,7 +2539,7 @@ bitcoin-ops@^1.3.0, bitcoin-ops@^1.4.0:
   resolved "https://registry.yarnpkg.com/bitcoin-ops/-/bitcoin-ops-1.4.1.tgz#e45de620398e22fd4ca6023de43974ff42240278"
   integrity sha512-pef6gxZFztEhaE9RY9HmWVmiIHqCb2OyS4HPKkpc6CIiiOa3Qmuoylxc5P2EkU3w+5eTSifI9SEZC88idAIGow==
 
-bitcoinjs-lib@5.2.0, bitcoinjs-lib@^5.1.10, bitcoinjs-lib@^5.2.0:
+bitcoinjs-lib@5.2.0, bitcoinjs-lib@^5.1.10, bitcoinjs-lib@^5.1.6, bitcoinjs-lib@^5.2.0:
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/bitcoinjs-lib/-/bitcoinjs-lib-5.2.0.tgz#caf8b5efb04274ded1b67e0706960b93afb9d332"
   integrity sha512-5DcLxGUDejgNBYcieMIUfjORtUeNWl828VWLHJGVKZCb4zIS1oOySTUr0LGmcqJBQgTBz3bGbRQla4FgrdQEIQ==
@@ -4469,6 +4530,11 @@ human-signals@^1.1.1:
   resolved "https://registry.yarnpkg.com/human-signals/-/human-signals-1.1.1.tgz#c5b1cd14f50aeae09ab6c59fe63ba3395fe4dfa3"
   integrity sha512-SEQu7vl8KjNL2eoGBLF3+wAjpsNfA9XMlXAYj/3EdaNfAlxKthD1xjEQfGOUhllCGGJVNY34bRr6lPINhNjyZw==
 
+i18n-js@3.8.0:
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/i18n-js/-/i18n-js-3.8.0.tgz#b8fd6b12e1d88cb71f9806c29bca7c31c012e504"
+  integrity sha512-hDsGgPuvw/2P+lXSbOafAwspK8Ste8YrwuuUg17W3wEcO1JkQxBlPgsN1t2+852nTnz4YSYTjZc/1nAA2PC/nw==
+
 iced-error@>=0.0.9:
   version "0.0.13"
   resolved "https://registry.yarnpkg.com/iced-error/-/iced-error-0.0.13.tgz#a4a8a4f1461a59c7a2a380b4f745ffd80718f08b"
@@ -5898,7 +5964,53 @@ metro-minify-uglify@0.66.2:
   dependencies:
     uglify-es "^3.1.9"
 
-metro-react-native-babel-preset@0.66.2, metro-react-native-babel-preset@^0.66.0:
+metro-react-native-babel-preset@0.66.0:
+  version "0.66.0"
+  resolved "https://registry.yarnpkg.com/metro-react-native-babel-preset/-/metro-react-native-babel-preset-0.66.0.tgz#a4495df4b24a2eb9f82705e0a53f4cbbd36d983e"
+  integrity sha512-rO3yayxplLNxFDc7HyMShN+psgEb2mbw15EMreNvgV8QnXNYHmgU6e15tLbtEvC8LuftOLuSufEdSmR/ykm+aA==
+  dependencies:
+    "@babel/core" "^7.0.0"
+    "@babel/plugin-proposal-class-properties" "^7.0.0"
+    "@babel/plugin-proposal-export-default-from" "^7.0.0"
+    "@babel/plugin-proposal-nullish-coalescing-operator" "^7.0.0"
+    "@babel/plugin-proposal-object-rest-spread" "^7.0.0"
+    "@babel/plugin-proposal-optional-catch-binding" "^7.0.0"
+    "@babel/plugin-proposal-optional-chaining" "^7.0.0"
+    "@babel/plugin-syntax-dynamic-import" "^7.0.0"
+    "@babel/plugin-syntax-export-default-from" "^7.0.0"
+    "@babel/plugin-syntax-flow" "^7.2.0"
+    "@babel/plugin-syntax-nullish-coalescing-operator" "^7.0.0"
+    "@babel/plugin-syntax-optional-chaining" "^7.0.0"
+    "@babel/plugin-transform-arrow-functions" "^7.0.0"
+    "@babel/plugin-transform-async-to-generator" "^7.0.0"
+    "@babel/plugin-transform-block-scoping" "^7.0.0"
+    "@babel/plugin-transform-classes" "^7.0.0"
+    "@babel/plugin-transform-computed-properties" "^7.0.0"
+    "@babel/plugin-transform-destructuring" "^7.0.0"
+    "@babel/plugin-transform-exponentiation-operator" "^7.0.0"
+    "@babel/plugin-transform-flow-strip-types" "^7.0.0"
+    "@babel/plugin-transform-for-of" "^7.0.0"
+    "@babel/plugin-transform-function-name" "^7.0.0"
+    "@babel/plugin-transform-literals" "^7.0.0"
+    "@babel/plugin-transform-modules-commonjs" "^7.0.0"
+    "@babel/plugin-transform-object-assign" "^7.0.0"
+    "@babel/plugin-transform-parameters" "^7.0.0"
+    "@babel/plugin-transform-react-display-name" "^7.0.0"
+    "@babel/plugin-transform-react-jsx" "^7.0.0"
+    "@babel/plugin-transform-react-jsx-self" "^7.0.0"
+    "@babel/plugin-transform-react-jsx-source" "^7.0.0"
+    "@babel/plugin-transform-regenerator" "^7.0.0"
+    "@babel/plugin-transform-runtime" "^7.0.0"
+    "@babel/plugin-transform-shorthand-properties" "^7.0.0"
+    "@babel/plugin-transform-spread" "^7.0.0"
+    "@babel/plugin-transform-sticky-regex" "^7.0.0"
+    "@babel/plugin-transform-template-literals" "^7.0.0"
+    "@babel/plugin-transform-typescript" "^7.5.0"
+    "@babel/plugin-transform-unicode-regex" "^7.0.0"
+    "@babel/template" "^7.0.0"
+    react-refresh "^0.4.0"
+
+metro-react-native-babel-preset@0.66.2:
   version "0.66.2"
   resolved "https://registry.yarnpkg.com/metro-react-native-babel-preset/-/metro-react-native-babel-preset-0.66.2.tgz#fddebcf413ad4ea617d4f47f7c1da401052de734"
   integrity sha512-H/nLBAz0MgfDloSe1FjyH4EnbokHFdncyERvLPXDACY3ROVRCeUyFNo70ywRGXW2NMbrV4H7KUyU4zkfWhC2HQ==
@@ -7024,7 +7136,7 @@ react-native-aes-crypto@^1.3.10:
   resolved "https://registry.yarnpkg.com/react-native-aes-crypto/-/react-native-aes-crypto-1.3.10.tgz#8e7d536a19481dd087e8c40083008a843f961495"
   integrity sha512-aQsbXCmsQEaXqjpKo8S0ot5CnK6KGN/Jx0qN1B3I8Au8Egl66BKryxD9wmorHYdjx+omctdug/mNWHKDRmDlow==
 
-react-native-app-intro-slider@^4.0.4:
+react-native-app-intro-slider@4.0.4:
   version "4.0.4"
   resolved "https://registry.yarnpkg.com/react-native-app-intro-slider/-/react-native-app-intro-slider-4.0.4.tgz#fa5cda7057db62c448ac975ffd2ba0cff94cc8d8"
   integrity sha512-Zkjaol6X3BbZkHUpVDj2LjdidpS6rCgKi0fx80xgGKa0pHxBRd4swWTv2bHnnvu5k1/HXwYk0mY2TbK+2jHl5w==
@@ -7624,6 +7736,13 @@ schema-inspector@^1.7.0:
   version "1.7.0"
   resolved "https://registry.yarnpkg.com/schema-inspector/-/schema-inspector-1.7.0.tgz#b3f8b97fc26ba930ef16cd7b8fcf77201ce468db"
   integrity sha512-Cj4XP6O3QfDhOq7bIPpz3Ev+sjR++nqFsIggBVIk/8axqFc2p+XSwNBWih9Ut/p8k36f1uCyXB+TzumZUsxVBQ==
+  dependencies:
+    async "~2.6.3"
+
+schema-inspector@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/schema-inspector/-/schema-inspector-2.0.1.tgz#6f3ae9763414439bf30b17b7fc53553884d489ef"
+  integrity sha512-lqR4tOVfoqf9Z8cgX/zvXuWPnTWCqrc4WSgeSPDDc1bWbMABaqdSTY98xj7iRKHOIRtKjc4M8EWCgUu5ASlHkg==
   dependencies:
     async "~2.6.3"
 
@@ -8368,6 +8487,18 @@ tr46@~0.0.3:
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/tr46/-/tr46-0.0.3.tgz#8184fd347dac9cdc185992f3a6622e14b9d9ab6a"
   integrity sha1-gYT9NH2snNwYWZLzpmIuFLnZq2o=
+
+triplesec@^3.0.27:
+  version "3.0.27"
+  resolved "https://registry.yarnpkg.com/triplesec/-/triplesec-3.0.27.tgz#43ba5a9f0e11ebba20c7563ecca947b2f94e82c5"
+  integrity sha512-FDhkxa3JYnPOerOd+8k+SBmm7cb7KkyX+xXwNFV3XV6dsQgHuRvjtbnzWfPJ2kimeR8ErjZfPd/6r7RH6epHDw==
+  dependencies:
+    iced-error ">=0.0.9"
+    iced-lock "^1.0.1"
+    iced-runtime "^1.0.2"
+    more-entropy ">=0.0.7"
+    progress "~1.1.2"
+    uglify-js "^3.1.9"
 
 triplesec@^4.0.3:
   version "4.0.3"
