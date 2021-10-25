@@ -3,43 +3,41 @@ import { View, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AppIntroSlider from 'react-native-app-intro-slider';
 import { StackActions, useNavigation } from '@react-navigation/native';
-
-import Onboarding1 from '../../assets/onboarding1.svg';
-import Onboarding2 from '../../assets/onboarding2.svg';
-import Onboarding3 from '../../assets/onboarding3.svg';
-import CustomButton from '../../components/shared/CustomButton';
-import { MyText } from '../../components/shared/myText';
+import Onboarding1 from '../../assets/images/onboarding/onboarding1.svg';
+import Onboarding2 from '../../assets/images/onboarding/onboarding2.svg';
+import Onboarding3 from '../../assets/images/onboarding/onboarding3.svg';
+import GeneralButton from '../../components/shared/GeneralButton';
+import { Typography } from '../../components/shared/Typography';
 import { ThemeContext } from '../../contexts/theme';
 import styles from './styles';
-
-const data = [
-  {
-    svg: Onboarding1,
-    title: 'Manage Your Assets',
-    body: 'WISE is a mobile wallet that you can use anywhere anytime. Only you own your assets.',
-  },
-  {
-    svg: Onboarding2,
-    title: 'Manage Your Accounts',
-    body: 'To manage which account to authenticate or pay with. Each account could have its own identity.',
-  },
-  {
-    svg: Onboarding3,
-    title: 'Earn BTC',
-    body: 'You can stack your STX through WISE and earn rewards in BTC without any kind of fees.',
-  },
-];
-
-type Item = typeof data[0];
+import { useLocalization } from '../../hooks/useLocalization';
 
 const OnBoarding: React.FC = () => {
   const slider = useRef<any>();
-
+  const { dispatch } = useNavigation();
+  const { translate } = useLocalization();
   const {
     theme: { colors },
   } = useContext(ThemeContext);
+  const data = [
+    {
+      svg: Onboarding1,
+      title: translate('ONBOARDING_FIRST_SCREEN_TITLE'),
+      body: translate('ONBOARDING_FIRST_SCREEN_BODY'),
+    },
+    {
+      svg: Onboarding2,
+      title: translate('ONBOARDING_SECOND_SCREEN_TITLE'),
+      body: translate('ONBOARDING_SECOND_SCREEN_BODY'),
+    },
+    {
+      svg: Onboarding3,
+      title: translate('ONBOARDING_THIRD_SCREEN_TITLE'),
+      body: translate('ONBOARDING_THIRD_SCREEN_BODY'),
+    },
+  ];
 
-  const { dispatch } = useNavigation();
+  type Item = typeof data[0];
 
   const keyExtractor = (item: Item) => item.title;
 
@@ -48,12 +46,12 @@ const OnBoarding: React.FC = () => {
     return (
       <View style={styles.slide}>
         <Img width="300" />
-        <MyText type="bigTitle" style={styles.title}>
+        <Typography type="bigTitle" style={styles.title}>
           {item.title}
-        </MyText>
-        <MyText type="commonText" style={styles.body}>
+        </Typography>
+        <Typography type="commonText" style={styles.body}>
           {item.body}
-        </MyText>
+        </Typography>
       </View>
     );
   };
@@ -83,11 +81,11 @@ const OnBoarding: React.FC = () => {
               />
             ))}
         </View>
-        <CustomButton
+        <GeneralButton
           type={isDone ? 'activePrimary' : 'inactivePrimary'}
           onPress={isDone ? handleDone : undefined}>
           Get Started
-        </CustomButton>
+        </GeneralButton>
       </View>
     );
   };
