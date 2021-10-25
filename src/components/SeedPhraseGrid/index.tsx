@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { View, ViewStyle } from 'react-native';
 import { BlurView } from '@react-native-community/blur';
 
-import { MyText } from '../../components/shared/myText';
+import { Typography } from '../../components/shared/Typography';
 
 import { ThemeContext } from '../../contexts/theme';
 import styles from './styles';
@@ -22,17 +22,18 @@ const SeedPhraseGrid = (props: IProps) => {
   const renderWords = () =>
     props.phrase.split(' ').map((word, i) => {
       const wordStyle: ViewStyle[] = [styles.word];
-      if (i + 1 < 21)
+      if (i + 1 < 21) {
         wordStyle.push({
           borderBottomWidth: 0.5,
           borderBottomColor: colors.primary20,
         });
+      }
       return (
         <View style={wordStyle} key={`word${i}`}>
-          <MyText type="commonTextBold">{i + 1 + '. '}</MyText>
-          <MyText type="commonText" numberOfLines={1}>
+          <Typography type="commonTextBold">{i + 1 + '. '}</Typography>
+          <Typography type="commonText" numberOfLines={1}>
             {word}
-          </MyText>
+          </Typography>
         </View>
       );
     });

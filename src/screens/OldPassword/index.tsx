@@ -9,14 +9,14 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import CustomButton from '../../components/shared/CustomButton';
+import GeneralButton from '../../components/shared/GeneralButton';
 import { CustomAppHeader } from '../../components/CustomAppHeader';
-import { MyText } from '../../components/shared/myText';
-import { MyTextInput } from '../../components/shared/MyTextInput';
+import { Typography } from '../../components/shared/Typography';
+import { GeneralTextInput } from '../../components/shared/GeneralTextInput';
 import { ThemeContext } from '../../contexts/theme';
 import PasswordShield from '../../assets/password-shield.svg';
 import styles from './styles';
-import { RootStackParamList } from '../routes';
+import { RootStackParamList } from '../../navigation/types';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'OldPassword'>;
 
@@ -51,19 +51,19 @@ const OldPassword = (props: Props) => {
   const handleGoBack = () => dispatch(StackActions.pop());
 
   let bottomButton = (
-    <CustomButton style={styles.button} type={'inactivePrimary'}>
+    <GeneralButton style={styles.button} type={'inactivePrimary'}>
       Confirm
-    </CustomButton>
+    </GeneralButton>
   );
 
   if (password.length > 0) {
     bottomButton = (
-      <CustomButton
+      <GeneralButton
         style={styles.button}
         type={'activePrimary'}
         onPress={handleConfirm}>
         Confirm
-      </CustomButton>
+      </GeneralButton>
     );
   }
 
@@ -82,18 +82,18 @@ const OldPassword = (props: Props) => {
         <ScrollView contentContainerStyle={styles.scrollableContent}>
           <PasswordShield style={styles.shield} />
           <View>
-            <MyText type="bigTitle" style={styles.title}>
+            <Typography type="bigTitle" style={styles.title}>
               Enter Your Password
-            </MyText>
+            </Typography>
           </View>
           <View>
-            <MyText type="commonText" style={styles.description}>
+            <Typography type="commonText" style={styles.description}>
               Lorem Ipsum is simply dummy text of the printing and typesetting
               industryLorem Ipsum has beenLorem
-            </MyText>
+            </Typography>
           </View>
 
-          <MyTextInput
+          <GeneralTextInput
             customStyle={[styles.input]}
             labelText="Enter a Password"
             secureTextEntry

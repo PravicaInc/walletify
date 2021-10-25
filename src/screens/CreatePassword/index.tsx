@@ -9,16 +9,16 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import CustomButton from '../../components/shared/CustomButton';
+import GeneralButton from '../../components/shared/GeneralButton';
 import { CustomAppHeader } from '../../components/CustomAppHeader';
-import { MyText } from '../../components/shared/myText';
+import { Typography } from '../../components/shared/Typography';
 import ProgressBar from '../../components/ProgressBar';
-import { MyTextInput } from '../../components/shared/MyTextInput';
+import { GeneralTextInput } from '../../components/shared/GeneralTextInput';
 import { ThemeContext } from '../../contexts/theme';
 import PasswordShield from '../../assets/password-shield.svg';
 import styles from './styles';
-import { validatePassword } from '../../components/shared/MyTextInput/validate-password';
-import { RootStackParamList } from '../routes';
+import { validatePassword } from '../../components/shared/GeneralTextInput/validate-password';
+import { RootStackParamList } from '../../navigation/types';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'CreatePassword'>;
 
@@ -133,18 +133,18 @@ const CreatePassword = (props: Props) => {
         <ScrollView contentContainerStyle={styles.scrollableContent}>
           <PasswordShield />
           <View>
-            <MyText type="bigTitle" style={styles.title}>
+            <Typography type="bigTitle" style={styles.title}>
               Create Your Password
-            </MyText>
+            </Typography>
           </View>
           <View>
-            <MyText type="commonText" style={styles.description}>
+            <Typography type="commonText" style={styles.description}>
               Lorem Ipsum is simply dummy text of the printing and typesetting
               industryLorem Ipsum has beenLorem
-            </MyText>
+            </Typography>
           </View>
 
-          <MyTextInput
+          <GeneralTextInput
             customStyle={[styles.input, { marginBottom: 0 }]}
             labelText="Enter a Password"
             secureTextEntry
@@ -160,15 +160,17 @@ const CreatePassword = (props: Props) => {
                 total={3}
                 barsColor={strengthResult?.barsColor}
               />
-              <MyText
+              <Typography
                 type="smallText"
                 style={{
                   color: strengthResult?.barsColor,
-                }}>{` ${strengthResult?.textResult}`}</MyText>
+                }}>
+                {` ${strengthResult?.textResult}`}
+              </Typography>
             </View>
           )}
           <View style={styles.bottomInput}>
-            <MyTextInput
+            <GeneralTextInput
               ref={confirmPasswordRef}
               customStyle={styles.input}
               labelText="Re-enter a Password"
@@ -180,11 +182,11 @@ const CreatePassword = (props: Props) => {
               errorMessage={errorMessage}
             />
           </View>
-          <CustomButton
+          <GeneralButton
             style={styles.button}
             type={isValidInput ? 'activePrimary' : 'inactivePrimary'}>
             Create
-          </CustomButton>
+          </GeneralButton>
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>

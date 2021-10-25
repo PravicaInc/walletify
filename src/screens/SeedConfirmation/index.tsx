@@ -3,9 +3,9 @@ import { View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackActions, useNavigation } from '@react-navigation/native';
 
-import CustomButton from '../../components/shared/CustomButton';
+import GeneralButton from '../../components/shared/GeneralButton';
 import { CustomAppHeader } from '../../components/CustomAppHeader';
-import { MyText } from '../../components/shared/myText';
+import { Typography } from '../../components/shared/Typography';
 import ProgressBar from '../../components/ProgressBar';
 
 import { ThemeContext } from '../../contexts/theme';
@@ -41,10 +41,10 @@ const SeedConfirmation: React.FC = () => {
       <View style={styles.contentContainer}>
         <ProgressBar finished={2} total={3} />
         <LockedShield />
-        <MyText type="bigTitle">Seed Confirmation</MyText>
-        <CustomButton type="activePrimary" onPress={handleConfirm}>
+        <Typography type="bigTitle">Seed Confirmation</Typography>
+        <GeneralButton type="activePrimary" onPress={handleConfirm}>
           Continue
-        </CustomButton>
+        </GeneralButton>
       </View>
     </SafeAreaView>
   );

@@ -3,10 +3,10 @@ import { View, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackActions, useNavigation } from '@react-navigation/native';
 
-import CustomButton from '../../components/shared/CustomButton';
+import GeneralButton from '../../components/shared/GeneralButton';
 import { CustomAppHeader } from '../../components/CustomAppHeader';
-import { MyText } from '../../components/shared/myText';
-import { MyTextInput } from '../../components/shared/MyTextInput';
+import { Typography } from '../../components/shared/Typography';
+import { GeneralTextInput } from '../../components/shared/GeneralTextInput';
 
 import { ThemeContext } from '../../contexts/theme';
 import LockedShield from '../../assets/locked-shield.svg';
@@ -29,19 +29,19 @@ const SeedRestore: React.FC = () => {
   const handleGoBack = () => dispatch(StackActions.pop());
 
   let BottomButton = (
-    <CustomButton type="inactivePrimary">Continue</CustomButton>
+    <GeneralButton type="inactivePrimary">Continue</GeneralButton>
   );
 
   if (seedPhrase.length > 0)
     BottomButton = (
-      <CustomButton
+      <GeneralButton
         style={{ marginTop: 'auto' }}
         type="activePrimary"
         onPress={
           seedPhrase === 'old seed phrase' ? handleOldPassword : handleContinue
         }>
         Continue
-      </CustomButton>
+      </GeneralButton>
     );
 
   const containerStyle = [styles.container, { backgroundColor: colors.white }];
@@ -64,21 +64,21 @@ const SeedRestore: React.FC = () => {
         <ScrollView contentContainerStyle={styles.scrollableContent}>
           <View style={styles.topContent}>
             <LockedShield />
-            <MyText type="bigTitle" style={styles.title}>
+            <Typography type="bigTitle" style={styles.title}>
               Enter Your Seed Phrase
-            </MyText>
-            <MyText type="commonText" style={styles.description}>
+            </Typography>
+            <Typography type="commonText" style={styles.description}>
               Lorem Ipsum is simply dummy text of the printing and typesetting
               industryLorem Ipsum has beenLorem
-            </MyText>
+            </Typography>
           </View>
 
           <View style={styles.bottomContent}>
-            <MyText type="commonTextBold" style={styles.seedTitle}>
+            <Typography type="commonTextBold" style={styles.seedTitle}>
               Your Seed Phrase:
-            </MyText>
+            </Typography>
             <View style={styles.seedInputContainer}>
-              <MyTextInput
+              <GeneralTextInput
                 value={seedPhrase}
                 customStyle={inputStyle}
                 onChangeText={setSeedPhrase}

@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { ActivityIndicator, StyleProp, View, ViewStyle } from 'react-native';
 import styles from './styles';
 import { ThemeContext } from '../../contexts/theme';
-import { MyText } from '../shared/myText';
+import { Typography } from '../shared/Typography';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Chevron from '../../assets/chevron-right.svg';
 
@@ -71,11 +71,11 @@ export const CustomAppHeader: React.FC<IProps> = ({
               />
             )}
             {!noBackText && (
-              <MyText
+              <Typography
                 type="buttonText"
                 style={{ color: backColor || colors.primary100 }}>
                 {isCancel ? 'Cancel' : 'Back'}
-              </MyText>
+              </Typography>
             )}
           </TouchableOpacity>
         </View>
@@ -92,7 +92,7 @@ export const CustomAppHeader: React.FC<IProps> = ({
           <TouchableOpacity
             onPress={handleTitleClicked}
             activeOpacity={handleTitleClicked ? 0.6 : 1}>
-            <MyText
+            <Typography
               numberOfLines={1}
               ellipsizeMode="tail"
               style={[
@@ -103,14 +103,14 @@ export const CustomAppHeader: React.FC<IProps> = ({
               ]}
               type="smallTitle">
               {title}
-            </MyText>
+            </Typography>
           </TouchableOpacity>
         )}
         {subTitle && (
           <TouchableOpacity onPress={handleTitleClicked} activeOpacity={0.6}>
-            <MyText style={{ color: colors.primary10 }} type="commonText">
+            <Typography style={{ color: colors.primary10 }} type="commonText">
               {subTitle}
-            </MyText>
+            </Typography>
           </TouchableOpacity>
         )}
       </View>
@@ -124,7 +124,7 @@ export const CustomAppHeader: React.FC<IProps> = ({
             {isNextLoading ? (
               <ActivityIndicator color={colors.primary40} />
             ) : null}
-            <MyText
+            <Typography
               style={{
                 color:
                   isNextDisabled || isNextLoading
@@ -133,7 +133,7 @@ export const CustomAppHeader: React.FC<IProps> = ({
               }}
               type="buttonText">
               {isNextLoading ? loadingText : nextButtonText}
-            </MyText>
+            </Typography>
           </TouchableOpacity>
         </View>
       ) : customNext ? (

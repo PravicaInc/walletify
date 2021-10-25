@@ -7,8 +7,8 @@ import { StackActions, useNavigation } from '@react-navigation/native';
 import Logo from '../../assets/wise.svg';
 import LockAndStacks from '../../assets/lock-and-stacks.svg';
 
-import CustomButton from '../../components/shared/CustomButton';
-import { MyText } from '../../components/shared/myText';
+import GeneralButton from '../../components/shared/GeneralButton';
+import { Typography } from '../../components/shared/Typography';
 import { ThemeContext } from '../../contexts/theme';
 
 import styles from './styles';
@@ -34,24 +34,24 @@ const WalletSetup: React.FC = () => {
           <Logo />
           <LockAndStacks />
 
-          <MyText type={'bigTitle'} style={styles.title}>
+          <Typography type={'bigTitle'} style={styles.title}>
             Seamless experience for your decentralized authentication
-          </MyText>
+          </Typography>
           <View style={styles.buttonsContainer}>
-            <CustomButton type={'activePrimary'} onPress={handleCreate}>
+            <GeneralButton type={'activePrimary'} onPress={handleCreate}>
               Create Wallet
-            </CustomButton>
-            <CustomButton
+            </GeneralButton>
+            <GeneralButton
               type={'activeSecondary'}
               style={styles.bottomButton}
               onPress={handleRestore}>
               Restore Wallet
-            </CustomButton>
+            </GeneralButton>
           </View>
-          <MyText type={'commonText'} style={disclaimerStyle}>
+          <Typography type={'commonText'} style={disclaimerStyle}>
             Lorem Ipsum is simply dummy text of the printing and typesetting
             industryLorem Ipsum has beenLorem Ipsum is simply dummy text of the.
-          </MyText>
+          </Typography>
         </View>
       </ScrollView>
     </SafeAreaView>

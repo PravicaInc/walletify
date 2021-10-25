@@ -2,9 +2,9 @@ import React, { useContext, useState } from 'react';
 import { View, KeyboardAvoidingView, Platform, Switch } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import CustomButton from '../../components/shared/CustomButton';
-import { MyText } from '../../components/shared/myText';
-import { MyTextInput } from '../../components/shared/MyTextInput';
+import GeneralButton from '../../components/shared/GeneralButton';
+import { Typography } from '../../components/shared/Typography';
+import { GeneralTextInput } from '../../components/shared/GeneralTextInput';
 import { ThemeContext } from '../../contexts/theme';
 import styles from './styles';
 
@@ -102,7 +102,7 @@ const EnterPassword: React.FC = () => {
         style={styles.keyboardContainer}
         keyboardVerticalOffset={0}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-        <MyTextInput
+        <GeneralTextInput
           customStyle={styles.input}
           labelText="Enter a Password"
           secureTextEntry
@@ -111,7 +111,7 @@ const EnterPassword: React.FC = () => {
           disableCancel
         />
         <View style={{ flexDirection: 'row' }}>
-          <MyText type="commonTextBold">Toggle Biometrics:</MyText>
+          <Typography type="commonTextBold">Toggle Biometrics:</Typography>
           <View>
             <Switch
               onValueChange={handleToggleBiometry} // eslint-disable-line react/jsx-no-bind
@@ -119,29 +119,29 @@ const EnterPassword: React.FC = () => {
             />
           </View>
         </View>
-        <CustomButton
+        <GeneralButton
           style={styles.button}
           type="activePrimary"
           onPress={handlePressCreate}>
           Create / Replace
-        </CustomButton>
-        <CustomButton
+        </GeneralButton>
+        <GeneralButton
           style={styles.button}
           type="activeSecondary"
           onPress={handlePressReveal}>
           Reveal Password
-        </CustomButton>
+        </GeneralButton>
         <View>
           {revealedPassword !== undefined && (
             <View style={{ marginTop: 30 }}>
-              <MyText type="commonTextBold">{`Your Password is: `}</MyText>
-              <MyText type="commonText">{revealedPassword}</MyText>
+              <Typography type="commonTextBold">{`Your Password is: `}</Typography>
+              <Typography type="commonText">{revealedPassword}</Typography>
             </View>
           )}
           {revealedPhrase !== undefined && (
             <View style={{ marginTop: 30 }}>
-              <MyText type="commonTextBold">{`Your seed phrase is: `}</MyText>
-              <MyText type="commonText">{revealedPhrase}</MyText>
+              <Typography type="commonTextBold">{`Your seed phrase is: `}</Typography>
+              <Typography type="commonText">{revealedPhrase}</Typography>
             </View>
           )}
         </View>

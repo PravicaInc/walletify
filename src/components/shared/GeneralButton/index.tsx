@@ -21,7 +21,7 @@ interface IProps extends TouchableOpacityProps {
     | inactiveSecondaryType;
 }
 
-const CustomButton = React.forwardRef<TouchableOpacity, IProps>(
+const GeneralButton = React.forwardRef<TouchableOpacity, IProps>(
   (props, ref) => {
     const {
       theme: { colors },
@@ -75,4 +75,4 @@ const CustomButton = React.forwardRef<TouchableOpacity, IProps>(
   },
 );
 
-export default CustomButton;
+export default GeneralButton;

@@ -15,7 +15,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import CloseIcon from '../../../assets/icon-reject-contact.svg';
 import HiddenEye from '../../../assets/hidden-eye.svg';
 import VisibleEye from '../../../assets/visible-eye.svg';
-import { MyText } from '../myText';
+import { Typography } from '../Typography';
 
 interface IProps extends TextInputProps {
   customStyle?: StyleProp<TextStyle>;
@@ -25,7 +25,7 @@ interface IProps extends TextInputProps {
   labelText?: string;
   disableCancel?: boolean;
 }
-export const MyTextInput = React.forwardRef<any, IProps>((props, ref) => {
+export const GeneralTextInput = React.forwardRef<any, IProps>((props, ref) => {
   const {
     theme: { colors, fonts },
   } = useContext(ThemeContext);
@@ -55,14 +55,14 @@ export const MyTextInput = React.forwardRef<any, IProps>((props, ref) => {
     <>
       {props.labelText && (
         <View>
-          <MyText
+          <Typography
             type="commonText"
             style={[
               styles.label,
               { color: inputFocused ? colors.primary100 : colors.primary100 },
             ]}>
             {props.labelText}
-          </MyText>
+          </Typography>
         </View>
       )}
       <View
@@ -147,7 +147,7 @@ export const MyTextInput = React.forwardRef<any, IProps>((props, ref) => {
       </View>
       {touched && hasError && (
         <View style={styles.errorContainer}>
-          <MyText
+          <Typography
             type="commonText"
             style={[
               styles.error,
@@ -155,7 +155,7 @@ export const MyTextInput = React.forwardRef<any, IProps>((props, ref) => {
               { marginLeft: '5%' },
             ]}>
             {errorMessage}
-          </MyText>
+          </Typography>
         </View>
       )}
     </>

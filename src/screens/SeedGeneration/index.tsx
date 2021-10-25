@@ -4,9 +4,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import Clipboard from '@react-native-clipboard/clipboard';
 
-import CustomButton from '../../components/shared/CustomButton';
+import GeneralButton from '../../components/shared/GeneralButton';
 import { CustomAppHeader } from '../../components/CustomAppHeader';
-import { MyText } from '../../components/shared/myText';
+import { Typography } from '../../components/shared/Typography';
 import ProgressBar from '../../components/ProgressBar';
 import SeedPhraseGrid from '../../components/SeedPhraseGrid';
 
@@ -47,23 +47,23 @@ const SeedGeneration: React.FC = () => {
   const handleGoBack = () => dispatch(StackActions.pop());
 
   let BottomButton = (
-    <CustomButton type="activePrimary" onPress={handleView}>
+    <GeneralButton type="activePrimary" onPress={handleView}>
       View Seed Phrase
-    </CustomButton>
+    </GeneralButton>
   );
 
   if (currentStage === Stage.ToCopy)
     BottomButton = (
-      <CustomButton type="activePrimary" onPress={handleCopy}>
+      <GeneralButton type="activePrimary" onPress={handleCopy}>
         Copy Seed Phrase
-      </CustomButton>
+      </GeneralButton>
     );
 
   if (currentStage === Stage.ToConfirm)
     BottomButton = (
-      <CustomButton type="activePrimary" onPress={handleConfirm}>
+      <GeneralButton type="activePrimary" onPress={handleConfirm}>
         Continue
-      </CustomButton>
+      </GeneralButton>
     );
 
   const containerStyle = [styles.container, { backgroundColor: colors.white }];
@@ -83,19 +83,19 @@ const SeedGeneration: React.FC = () => {
           </View>
           <View style={styles.topContent}>
             <LockedShield />
-            <MyText type="bigTitle" style={styles.title}>
+            <Typography type="bigTitle" style={styles.title}>
               Your Seed Phrase
-            </MyText>
-            <MyText type="commonText" style={styles.description}>
+            </Typography>
+            <Typography type="commonText" style={styles.description}>
               Lorem Ipsum is simply dummy text of the printing and typesetting
               industryLorem Ipsum has beenLorem
-            </MyText>
+            </Typography>
           </View>
 
           <View style={styles.bottomContent}>
-            <MyText type="commonTextBold" style={styles.seedTitle}>
+            <Typography type="commonTextBold" style={styles.seedTitle}>
               Your Seed Phrase:
-            </MyText>
+            </Typography>
             <SeedPhraseGrid
               phrase={seedPhrase}
               isBlurred={currentStage === Stage.Blurred}
