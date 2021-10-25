@@ -1,6 +1,4 @@
 import { makeAutoObservable } from 'mobx';
-import { persist } from 'mobx-persist';
-import { createModelSchema, primitive } from 'serializr';
 import { StacksTestnet, StacksMainnet, StacksNetwork } from '@stacks/network';
 import { ChainID } from '@stacks/transactions';
 import {
@@ -10,22 +8,23 @@ import {
 } from '../../shared/constants';
 import { RootStore } from '../RootStore';
 import { defaultNetworks, Networks, Network, AvailableNetworks } from './types';
-
-createModelSchema(Network, {
-  url: primitive(),
-  name: primitive(),
-  chainId: primitive(),
-});
+import { makePersistable } from 'mobx-persist-store';
+import AsyncStorage from '@react-native-community/async-storage';
 
 class NetworkStore {
   rootStore: RootStore;
   networks: Networks = defaultNetworks;
-  @persist('object', Network) currentNetwork: Network;
+  currentNetwork: Network = defaultNetworks[AvailableNetworks.MAINNET];
   currentNetworkInstance: StacksNetwork;
 
   constructor(rootStore: RootStore) {
     makeAutoObservable(this);
     this.rootStore = rootStore;
+    makePersistable(this, {
+      name: 'networkStore',
+      properties: ['currentNetwork'],
+      storage: AsyncStorage,
+    });
   }
 
   setCurrentNetwork = (network: AvailableNetworks) => {
