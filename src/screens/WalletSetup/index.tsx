@@ -13,7 +13,9 @@ import { ThemeContext } from '../../contexts/theme';
 
 import styles from './styles';
 
+
 const WalletSetup: React.FC = () => {
+
   const { dispatch } = useNavigation();
   const {
     theme: { colors },
@@ -21,7 +23,11 @@ const WalletSetup: React.FC = () => {
 
   const disclaimerStyle = [styles.disclaimer, { color: colors.primary40 }];
 
-  const handleCreate = () => dispatch(StackActions.push('SeedGeneration'));
+  const handleCreate = () =>  dispatch(
+    StackActions.push('CreatePassword', {
+      progressBar: { finished: 1, total: 2 }
+    }),
+  );
 
   const handleRestore = () => dispatch(StackActions.push('SeedRestore'));
 

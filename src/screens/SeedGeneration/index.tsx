@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { View, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackActions, useNavigation } from '@react-navigation/native';
@@ -14,6 +14,10 @@ import { ThemeContext } from '../../contexts/theme';
 import seedPhrase from '../../data/seedPhrase';
 import LockedShield from '../../assets/locked-shield.svg';
 import styles from './styles';
+import { useStores } from "../../hooks/useStores";
+import {generateSecretKey} from "@stacks/wallet-sdk"
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../../navigation/types";
 
 enum Stage {
   Blurred = 'Blurred',
@@ -21,14 +25,17 @@ enum Stage {
   ToConfirm = 'ToConfirm',
 }
 
-const SeedGeneration: React.FC = () => {
-  const { dispatch } = useNavigation();
+type Props = NativeStackScreenProps<RootStackParamList, 'SeedGeneration'>;
 
+const SeedGeneration: React.FC<Props> = (props) => {
+  const { dispatch } = useNavigation();
   const {
     theme: { colors },
   } = useContext(ThemeContext);
-
   const [currentStage, setCurrentStage] = useState<Stage>(Stage.Blurred);
+const [seedPhrase, setSeedPhrase]= useState(generateSecretKey(256))
+
+
 
   const handleView = () => setCurrentStage(Stage.ToCopy);
 
@@ -40,7 +47,8 @@ const SeedGeneration: React.FC = () => {
   const handleConfirm = () =>
     dispatch(
       StackActions.push('CreatePassword', {
-        progressBar: { finished: 2, total: 2 },
+        progressBar: { finished: 1, total: 2 },
+        seed: seedPhrase,
       }),
     );
 
@@ -79,7 +87,7 @@ const SeedGeneration: React.FC = () => {
               containerStyle={styles.header}
               backColor={colors.primary100}
             />
-            <ProgressBar finished={1} total={2} />
+            <ProgressBar finished={2} total={2} />
           </View>
           <View style={styles.topContent}>
             <LockedShield />
