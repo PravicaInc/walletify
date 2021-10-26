@@ -5,7 +5,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import { Theme, ThemeContext } from './src/contexts/theme';
 import DefaultTheme from './src/themes/defaultTheme';
 import { StoresProvider } from './src/components/providers/storeProvider';
-import rootStore from './src/stores/RootStore';
 import SecureKeychain from './src/core/SecureKeychain';
 
 export default function App() {
@@ -13,7 +12,7 @@ export default function App() {
   SecureKeychain.init('WiseApp.id');
   return (
     <SafeAreaProvider>
-      <StoresProvider store={rootStore}>
+      <StoresProvider>
         <ThemeContext.Provider value={{ theme, setTheme }}>
           <NavigationContainer>
             <Routes />
