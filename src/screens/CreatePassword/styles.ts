@@ -10,6 +10,9 @@ const styles = StyleSheet.create({
     marginBottom: PADDING_VERTICAL,
     paddingHorizontal: PADDING_HORIZONTAL,
   },
+  header: {
+    shadowOpacity: 0,
+  },
   keyboardContainer: {
     flex: 1,
   },
@@ -22,6 +25,7 @@ const styles = StyleSheet.create({
   },
   title: { marginVertical: 10 },
   description: { textAlign: 'center', marginBottom: 40 },
+
   input: {
     width: '90%',
     marginTop: 8,
@@ -29,6 +33,8 @@ const styles = StyleSheet.create({
     flex: undefined,
     height: 60,
   },
+  topInput: { marginBottom: 0 },
+
   bottomInput: {
     marginTop: 24,
     width: '100%',
@@ -42,6 +48,16 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     marginTop: 10,
   },
+  switchContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '90%',
+    marginTop: 20,
+  },
+  switchLabelContainer: {
+    flexDirection: 'row',
+  },
+  switchLabelIcon: { marginRight: 10 },
   button: {
     marginTop: 'auto',
   },

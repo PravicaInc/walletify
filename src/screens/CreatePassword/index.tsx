@@ -9,16 +9,22 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { observer } from 'mobx-react-lite';
+import * as Keychain from 'react-native-keychain';
+import SecureKeychain from '../../shared/SecureKeychain';
+import { useStores } from '../../hooks/useStores';
 import GeneralButton from '../../components/shared/GeneralButton';
+import { GeneralSwitch } from '../../components/shared/GeneralSwitch';
 import { CustomAppHeader } from '../../components/CustomAppHeader';
 import { Typography } from '../../components/shared/Typography';
 import ProgressBar from '../../components/ProgressBar';
 import { GeneralTextInput } from '../../components/shared/GeneralTextInput';
 import { ThemeContext } from '../../contexts/theme';
 import PasswordShield from '../../assets/password-shield.svg';
+import FingerPrint from '../../assets/finger-print.svg';
 import styles from './styles';
 import { validatePassword } from '../../components/shared/GeneralTextInput/validate-password';
-import { RootStackParamList } from '../../navigation/types';
+import { RootStackParamList, WalletSetupFlow } from '../../navigation/types';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'CreatePassword'>;
 
@@ -34,13 +40,18 @@ enum StrengthLevel {
   Weak = 'Weak',
 }
 
-const CreatePassword = (props: Props) => {
+const CreatePassword = observer((props: Props) => {
   const { dispatch } = useNavigation();
+
+  const { uiStore } = useStores();
+  const { setIsBiometryEnabled } = uiStore;
+
+  const [isBioSwitchOn, setisBioSwitchOn] = useState(false);
 
   const passwordRef = useRef<TextInput>(null);
   const confirmPasswordRef = useRef<TextInput>(null);
 
-  const progressBar = props.route.params?.progressBar;
+  const flow = props.route.params?.flow;
 
   const {
     theme: { colors },
@@ -57,13 +68,8 @@ const CreatePassword = (props: Props) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       if (isPasswordFocused && isPasswordFocused()) {
-        const {
-          meetsAllStrengthRequirements,
-          meetsLengthRequirement,
-          meetsScoreRequirement,
-          score,
-        } = validatePassword(password);
-        console.log('score', score);
+        const { meetsAllStrengthRequirements, meetsLengthRequirement, score } =
+          validatePassword(password);
         let finished, barsColor, textResult;
         if (meetsAllStrengthRequirements) {
           finished = 3;
@@ -106,6 +112,30 @@ const CreatePassword = (props: Props) => {
 
   const handleGoBack = () => dispatch(StackActions.pop());
 
+  const handlePressCreate = async () => {
+    setIsBiometryEnabled(isBioSwitchOn);
+    try {
+      if (isBioSwitchOn) {
+        await SecureKeychain.setGenericPassword(
+          password,
+          Keychain.ACCESS_CONTROL.BIOMETRY_CURRENT_SET_OR_DEVICE_PASSCODE,
+        );
+      } else {
+        await SecureKeychain.setGenericPassword(
+          password,
+          Keychain.ACCESS_CONTROL.APPLICATION_PASSWORD,
+        );
+      }
+      const nextPage =
+        flow === WalletSetupFlow.CreateWallet
+          ? 'SeedGeneration'
+          : 'SeedRestore';
+      dispatch(StackActions.push(nextPage, { password }));
+    } catch (e) {
+      console.warn(e);
+    }
+  };
+
   const isValidInput =
     confirmPassword === password &&
     strengthResult?.textResult &&
@@ -116,16 +146,12 @@ const CreatePassword = (props: Props) => {
       <CustomAppHeader
         noBackText={false}
         handleGoBack={handleGoBack}
-        containerStyle={{ shadowOpacity: 0 }}
+        containerStyle={styles.header}
         backColor={colors.primary100}
       />
-      {progressBar && (
-        <ProgressBar
-          finished={progressBar.finished}
-          total={progressBar.total}
-          customStyle={styles.progressBar}
-        />
-      )}
+      {/* {flow === WalletSetupFlow.CreateWallet && (
+        <ProgressBar finished={1} total={3} />
+      )} */}
       <KeyboardAvoidingView
         style={styles.keyboardContainer}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -145,7 +171,7 @@ const CreatePassword = (props: Props) => {
           </View>
 
           <GeneralTextInput
-            customStyle={[styles.input, { marginBottom: 0 }]}
+            customStyle={[styles.input, styles.topInput]}
             labelText="Enter a Password"
             secureTextEntry
             onChangeText={setPassword}
@@ -182,8 +208,20 @@ const CreatePassword = (props: Props) => {
               errorMessage={errorMessage}
             />
           </View>
+          <View style={styles.switchContainer}>
+            <View style={styles.switchLabelContainer}>
+              <FingerPrint style={styles.switchLabelIcon} />
+              <Typography type="smallTitleR">Sign With Biometrics</Typography>
+            </View>
+            <GeneralSwitch
+              toggleLock={() => setisBioSwitchOn(prevState => !prevState)}
+              isLocked={isBioSwitchOn}
+            />
+          </View>
+
           <GeneralButton
             style={styles.button}
+            onPress={handlePressCreate}
             type={isValidInput ? 'activePrimary' : 'inactivePrimary'}>
             Create
           </GeneralButton>
@@ -191,6 +229,6 @@ const CreatePassword = (props: Props) => {
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
-};
+});
 
 export default CreatePassword;

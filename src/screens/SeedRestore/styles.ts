@@ -6,6 +6,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  header: { shadowOpacity: 0 },
   keyboardContainer: {
     flex: 1,
   },
@@ -39,6 +40,9 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     textAlignVertical: 'top',
     flex: 1,
+  },
+  button: {
+    marginTop: 'auto',
   },
 });
 

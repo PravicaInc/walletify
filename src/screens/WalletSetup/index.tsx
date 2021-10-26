@@ -10,12 +10,11 @@ import LockAndStacks from '../../assets/lock-and-stacks.svg';
 import GeneralButton from '../../components/shared/GeneralButton';
 import { Typography } from '../../components/shared/Typography';
 import { ThemeContext } from '../../contexts/theme';
+import { WalletSetupFlow } from '../../navigation/types';
 
 import styles from './styles';
 
-
 const WalletSetup: React.FC = () => {
-
   const { dispatch } = useNavigation();
   const {
     theme: { colors },
@@ -23,13 +22,19 @@ const WalletSetup: React.FC = () => {
 
   const disclaimerStyle = [styles.disclaimer, { color: colors.primary40 }];
 
-  const handleCreate = () =>  dispatch(
-    StackActions.push('CreatePassword', {
-      progressBar: { finished: 1, total: 2 }
-    }),
-  );
+  const handleCreate = () =>
+    dispatch(
+      StackActions.push('CreatePassword', {
+        flow: WalletSetupFlow.CreateWallet,
+      }),
+    );
 
-  const handleRestore = () => dispatch(StackActions.push('SeedRestore'));
+  const handleRestore = () =>
+    dispatch(
+      StackActions.push('CreatePassword', {
+        flow: WalletSetupFlow.RestoreWallet,
+      }),
+    );
 
   const containerStyle = [styles.container, { backgroundColor: colors.white }];
 

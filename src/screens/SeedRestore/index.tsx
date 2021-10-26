@@ -2,26 +2,37 @@ import React, { useContext, useState } from 'react';
 import { View, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackActions, useNavigation } from '@react-navigation/native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 import GeneralButton from '../../components/shared/GeneralButton';
 import { CustomAppHeader } from '../../components/CustomAppHeader';
 import { Typography } from '../../components/shared/Typography';
 import { GeneralTextInput } from '../../components/shared/GeneralTextInput';
+import { useStores } from '../../hooks/useStores';
 
 import { ThemeContext } from '../../contexts/theme';
 import LockedShield from '../../assets/locked-shield.svg';
+
+import { RootStackParamList } from '../../navigation/types';
 import styles from './styles';
 
-const SeedRestore: React.FC = () => {
-  const { dispatch } = useNavigation();
+type Props = NativeStackScreenProps<RootStackParamList, 'SeedGeneration'>;
 
+const SeedRestore: React.FC<Props> = props => {
+  const { dispatch } = useNavigation();
+  const password = props.route.params?.password;
+
+  const { walletStore } = useStores();
   const {
     theme: { colors },
   } = useContext(ThemeContext);
 
   const [seedPhrase, setSeedPhrase] = useState('');
 
-  const handleContinue = () => dispatch(StackActions.push('CreatePassword'));
+  const handleContinue = async () => {
+    await walletStore.restoreWallet(seedPhrase, password);
+    dispatch(StackActions.replace('Home'));
+  };
 
   const handleOldPassword = () =>
     dispatch(StackActions.push('OldPassword', { seedPhrase }));
@@ -32,10 +43,10 @@ const SeedRestore: React.FC = () => {
     <GeneralButton type="inactivePrimary">Continue</GeneralButton>
   );
 
-  if (seedPhrase.length > 0)
+  if (seedPhrase.length > 0) {
     BottomButton = (
       <GeneralButton
-        style={{ marginTop: 'auto' }}
+        style={styles.button}
         type="activePrimary"
         onPress={
           seedPhrase === 'old seed phrase' ? handleOldPassword : handleContinue
@@ -43,6 +54,7 @@ const SeedRestore: React.FC = () => {
         Continue
       </GeneralButton>
     );
+  }
 
   const containerStyle = [styles.container, { backgroundColor: colors.white }];
 
@@ -53,7 +65,7 @@ const SeedRestore: React.FC = () => {
       <CustomAppHeader
         noBackText={false}
         handleGoBack={handleGoBack}
-        containerStyle={{ shadowOpacity: 0 }}
+        containerStyle={styles.header}
         backColor={colors.primary100}
       />
 

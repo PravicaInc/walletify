@@ -1,14 +1,19 @@
+export enum WalletSetupFlow {
+  CreateWallet = 'CreateWallet',
+  RestoreWallet = 'RestoreWallet',
+}
+
 export type RootStackParamList = {
   Splash: undefined;
   Home: undefined;
   Onboarding: undefined;
   WalletSetup: undefined;
-  SeedGeneration: undefined;
+  SeedGeneration: { password: string };
   SeedConfirmation: undefined;
-  CreatePassword:
-    | { progressBar: { finished: number; total: number } }
-    | undefined;
-  SeedRestore: undefined;
+  CreatePassword: {
+    flow: WalletSetupFlow;
+  };
+  SeedRestore: { password: string };
   KeychainPOC: undefined;
   OldPassword: { seedPhrase: string } | undefined;
 };
