@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { View, KeyboardAvoidingView, Platform, Switch } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import * as Keychain from 'react-native-keychain';
 
 import GeneralButton from '../../components/shared/GeneralButton';
 import { Typography } from '../../components/shared/Typography';
@@ -8,18 +9,13 @@ import { GeneralTextInput } from '../../components/shared/GeneralTextInput';
 import { ThemeContext } from '../../contexts/theme';
 import styles from './styles';
 
-import SecureKeychain from '../../core/SecureKeychain';
+import SecureKeychain from '../../shared/SecureKeychain';
 import { decrypt, encrypt } from '@stacks/keychain';
-import {
-  EXISTING_USER,
-  NEXT_MAKER_REMINDER,
-  TRUE,
-  SEED_PHRASE_HINTS,
-  BIOMETRY_CHOICE_DISABLED,
-} from '../../constants/storage';
 
-import seedPhrase from '../../data/seedPhrase';
+
+// import seedPhrase from '../../data/seedPhrase';
 import AsyncStorage from '@react-native-community/async-storage';
+import { trackDerivedFunction } from "mobx/dist/core/derivation";
 
 const EnterPassword: React.FC = () => {
   const {
@@ -38,25 +34,24 @@ const EnterPassword: React.FC = () => {
   );
 
   const handlePressCreate = async () => {
+
+
     try {
       if (biometryChoice) {
         await SecureKeychain.setGenericPassword(
           password,
-          SecureKeychain.TYPES.BIOMETRICS,
+          Keychain.ACCESS_CONTROL.BIOMETRY_CURRENT_SET_OR_DEVICE_PASSCODE
         );
       } else {
-        await SecureKeychain.setGenericPassword(
-          password,
-          SecureKeychain.TYPES.REMEMBER_ME,
-        );
+        await SecureKeychain.setGenericPassword(password,undefined);
       }
-
+const seedPhrase = "ostrich cage heavy assist develop property cactus fish bounce badge health laptop"
       const mnemonicSeedPhrase = seedPhrase.split(' ').slice(0, 12).join(' ');
 
       const encryptedSeed = await encrypt(mnemonicSeedPhrase, password);
 
       await AsyncStorage.setItem(
-        SEED_PHRASE_HINTS,
+        "SEED_PHRASE_HINTS",
         JSON.stringify(encryptedSeed),
       );
 
@@ -72,9 +67,9 @@ const EnterPassword: React.FC = () => {
     try {
       const passwordObject = await SecureKeychain.getGenericPassword();
 
-      const pwd = passwordObject.password;
+const pwd=passwordObject.password;
 
-      const encryptedSeedPhrase = await AsyncStorage.getItem(SEED_PHRASE_HINTS);
+      const encryptedSeedPhrase = await AsyncStorage.getItem("SEED_PHRASE_HINTS");
       const decryptedSeedPhrase = await decrypt(
         JSON.parse(encryptedSeedPhrase),
         pwd,
@@ -88,9 +83,9 @@ const EnterPassword: React.FC = () => {
 
   const handleToggleBiometry = async biometryChoice => {
     if (!biometryChoice) {
-      await AsyncStorage.setItem(BIOMETRY_CHOICE_DISABLED, TRUE);
+      await AsyncStorage.setItem("BIOMETRY_CHOICE_DISABLED", true);
     } else {
-      await AsyncStorage.removeItem(BIOMETRY_CHOICE_DISABLED);
+      await AsyncStorage.removeItem("BIOMETRY_CHOICE_DISABLED");
     }
     setBiometryChoice(biometryChoice);
   };
