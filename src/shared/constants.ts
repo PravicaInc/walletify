@@ -7,3 +7,5 @@ export const DEFAULT_TESTNET_SERVER =
 export const DEFAULT_MAINNET_SERVER = 'https://stacks-node-api.stacks.co';
 
 export const DEFAULT_NETWORK = 'mainnet';
+
+export const gaiaUrl = 'https://hub.blockstack.org';
