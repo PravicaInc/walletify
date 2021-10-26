@@ -16,6 +16,10 @@ class UIStore {
       storage: AsyncStorage,
     });
   }
+
+  setHasSeenOnBoarding = (value: boolean) => {
+    this.hasSeenOnBoarding = value;
+  };
 }
 
 export default UIStore;

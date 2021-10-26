@@ -11,11 +11,14 @@ import { Typography } from '../../components/shared/Typography';
 import { ThemeContext } from '../../contexts/theme';
 import styles from './styles';
 import { useLocalization } from '../../hooks/useLocalization';
+import { observer } from 'mobx-react-lite';
+import { useStores } from "../../hooks/useStores";
 
-const OnBoarding: React.FC = () => {
+const OnBoarding: React.FC = observer(() => {
   const slider = useRef<any>();
   const { dispatch } = useNavigation();
   const { translate } = useLocalization();
+  const {uiStore} = useStores();
   const {
     theme: { colors },
   } = useContext(ThemeContext);
@@ -62,7 +65,10 @@ const OnBoarding: React.FC = () => {
     const handleNext = (index: number) => () =>
       slider.current?.goToSlide(index, true);
 
-    const handleDone = () => dispatch(StackActions.replace('Home'));
+    const handleDone = () => {
+      uiStore.setHasSeenOnBoarding(true);
+      dispatch(StackActions.replace('WalletSetup'));
+    };
 
     return (
       <View style={styles.paginationContainer}>
@@ -104,6 +110,6 @@ const OnBoarding: React.FC = () => {
       />
     </SafeAreaView>
   );
-};
+});
 
 export default OnBoarding;
