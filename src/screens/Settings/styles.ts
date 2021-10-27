@@ -9,10 +9,56 @@ export const styles = StyleSheet.create({
     shadowOpacity: 0,
   },
   contentContainer: {
-    paddingHorizontal: PADDING_HORIZONTAL,
+    paddingHorizontal: '5%',
     paddingVertical: PADDING_VERTICAL,
     flex: 1,
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  topContent: {
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    width: '100%',
+  },
+  card: {
+    width: '100%',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    backgroundColor: 'grey',
+    borderRadius: 26,
+    padding: 15,
+    flexDirection: 'row',
+  },
+  cardTextContainer: {
+    marginLeft: 10,
+  },
+  settingsItemsContainer: {
+    width: '100%',
+    paddingVertical: 10,
+    borderBottomWidth: 0.5,
+  },
+  settingsItem: {
+    flexDirection: 'row',
+    paddingVertical: 15,
+    alignItems: 'center',
+  },
+  bioSetting: {
+    justifyContent: 'space-between',
+  },
+  bioSettingLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  settingsItemText: {
+    marginLeft: 10,
+  },
+  bottomContent: {
+    width: '100%',
+    justifyContent: 'flex-start',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  bottomText: {
+    marginLeft: 5,
   },
 });

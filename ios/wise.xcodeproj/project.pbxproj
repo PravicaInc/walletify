@@ -355,7 +355,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n";
+			shellScript = "export NODE_BINARY=/Users/khaled/.nvm/versions/node/v14.18.0/bin/node\n";
 		};
 		2AB692826BC41E143C512E6B /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;

@@ -8,7 +8,7 @@ type Props = {
   icon: React.FC;
 };
 
-const HomeNextLink = (props: Props) => {
+const SettingsNextLink = (props: Props) => {
   const {
     theme: { colors },
   } = useContext(ThemeContext);
@@ -33,4 +33,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeNextLink;
+export default SettingsNextLink;
