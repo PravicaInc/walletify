@@ -16,4 +16,5 @@ export type RootStackParamList = {
   SeedRestore: { password: string };
   KeychainPOC: undefined;
   OldPassword: { seedPhrase: string } | undefined;
+  Settings: undefined;
 };

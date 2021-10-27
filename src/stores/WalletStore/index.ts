@@ -8,7 +8,7 @@ import {
   WalletConfig,
   restoreWalletAccounts,
 } from '@stacks/wallet-sdk/dist';
-import { makePersistable } from 'mobx-persist-store';
+import { makePersistable, isHydrated } from 'mobx-persist-store';
 import AsyncStorage from '@react-native-community/async-storage';
 import { gaiaUrl } from '../../shared/constants';
 
@@ -59,4 +59,8 @@ export class WalletStore {
       gaiaHubUrl: gaiaUrl,
     });
   };
+
+  get isHydrated() {
+    return isHydrated(this);
+  }
 }

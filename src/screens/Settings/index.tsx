@@ -4,6 +4,7 @@ import { StackActions, useNavigation } from '@react-navigation/native';
 
 import { Typography } from '../../components/shared/Typography';
 import RoundedImage from '../../components/shared/RoundedImage';
+import SettingsIcon from '../../assets/settings.svg';
 
 import Wise from '../../assets/wise.svg';
 import PlaceholderImg from '../../assets/home-placeholder.svg';
@@ -13,11 +14,12 @@ import { observer } from 'mobx-react-lite';
 import { AvailableNetworks } from '../../stores/NetworkStore/types';
 import useNetwork from '../../hooks/useNetwork';
 import { useLocalization } from '../../hooks/useLocalization';
+import HomeNextLink from '../../components/HomeNextLink';
 import { CustomAppHeader } from '../../components/CustomAppHeader';
 import { ThemeContext } from '../../contexts/theme';
 import { styles } from './styles';
 
-const Home: React.FC = observer(() => {
+const Settings: React.FC = observer(() => {
   const { networkStore } = useStores();
   const {
     theme: { colors },
@@ -25,7 +27,7 @@ const Home: React.FC = observer(() => {
 
   const { dispatch } = useNavigation();
 
-  const goToSettings = () => dispatch(StackActions.push('Settings'));
+  const handleGoBack = () => dispatch(StackActions.pop());
 
   const containerStyle = [styles.container, { backgroundColor: colors.white }];
 
@@ -33,19 +35,20 @@ const Home: React.FC = observer(() => {
     <SafeAreaView style={containerStyle}>
       <ScrollView contentContainerStyle={styles.contentContainer}>
         <CustomAppHeader
-          image={<Wise />}
-          customNext={
-            <TouchableOpacity onPress={goToSettings}>
-              <RoundedImage
-                image={PlaceholderImg}
-                diameter={40}
-                hasAura={true}
-              />
-            </TouchableOpacity>
-          }
+          handleGoBack={handleGoBack}
           containerStyle={styles.header}
+          backColor={colors.primary100}
+          noBackText
+          customBack={
+            <Typography type="bigTitle" style={{ color: colors.primary100 }}>
+              Settings
+            </Typography>
+          }
+          customNext={
+            <HomeNextLink text="Manage Accounts" icon={SettingsIcon} />
+          }
         />
-
+        <Typography type="bigTitle">Settings Screen</Typography>
         {/* <Typography type="bigTitle">
         {networkStore.currentNetwork.name}
       </Typography>
@@ -55,25 +58,4 @@ const Home: React.FC = observer(() => {
   );
 });
 
-// const ChangeNetworkButton: React.FC = observer(() => {
-//   const { setActiveNetwork } = useNetwork();
-//   const { translate } = useLocalization();
-//   return (
-//     <View>
-//       <TouchableOpacity
-//         onPress={() => setActiveNetwork(AvailableNetworks.TESTNET)}>
-//         <Typography type="buttonText">
-//           {translate('CHANGE_NETWORK_TESTNET_BUTTON')}
-//         </Typography>
-//       </TouchableOpacity>
-//       <TouchableOpacity
-//         onPress={() => setActiveNetwork(AvailableNetworks.MAINNET)}>
-//         <Typography type="buttonText">
-//           {translate('CHANGE_NETWORK_MAINNET_BUTTON')}
-//         </Typography>
-//       </TouchableOpacity>
-//     </View>
-//   );
-// });
-
-export default Home;
+export default Settings;

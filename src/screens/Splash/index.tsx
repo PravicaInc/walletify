@@ -7,8 +7,9 @@ import { LANGUAGES } from '../../shared/constants';
 import { useStores } from '../../hooks/useStores';
 
 const Splash: React.FC = observer(() => {
-  const { uiStore } = useStores();
+  const { uiStore, walletStore } = useStores();
   const { hasSeenOnBoarding } = uiStore;
+  const { encryptedSeedPhrase } = walletStore;
   const { dispatch } = useNavigation();
   const { changeLanguage } = useLocalization();
   const initLocalization = async () => {
@@ -16,12 +17,16 @@ const Splash: React.FC = observer(() => {
   };
   useEffect(() => {
     initLocalization();
-    if (hasSeenOnBoarding) {
-      dispatch(StackActions.replace('WalletSetup'));
-    } else {
-      dispatch(StackActions.replace('Onboarding'));
+    if (uiStore.isHydrated && walletStore.isHydrated) {
+      if (encryptedSeedPhrase.length > 0) {
+        dispatch(StackActions.replace('Home'));
+      } else if (hasSeenOnBoarding) {
+        dispatch(StackActions.replace('WalletSetup'));
+      } else {
+        dispatch(StackActions.replace('Onboarding'));
+      }
+      SplashScreen.hide();
     }
-    SplashScreen.hide();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
 

@@ -23,6 +23,7 @@ interface IProps {
   subTitle?: string;
   nextButtonText?: string;
   containerStyle?: StyleProp<ViewStyle>;
+  customBack?: React.ReactNode;
 }
 export const CustomAppHeader: React.FC<IProps> = ({
   isCancel,
@@ -34,6 +35,7 @@ export const CustomAppHeader: React.FC<IProps> = ({
   isNextDisabled,
   image,
   noBackText,
+  customBack,
   disableFullWidth,
   containerStyle,
   isNextLoading,
@@ -77,6 +79,7 @@ export const CustomAppHeader: React.FC<IProps> = ({
                 {isCancel ? 'Cancel' : 'Back'}
               </Typography>
             )}
+            {customBack}
           </TouchableOpacity>
         </View>
       )}
