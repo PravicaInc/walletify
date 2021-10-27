@@ -3,7 +3,7 @@ import { View, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import Clipboard from '@react-native-clipboard/clipboard';
-
+import { observer } from 'mobx-react-lite';
 import GeneralButton from '../../components/shared/GeneralButton';
 import { CustomAppHeader } from '../../components/CustomAppHeader';
 import { Typography } from '../../components/shared/Typography';
@@ -29,13 +29,14 @@ const seedPhrase = generateSecretKey(256);
 
 type Props = NativeStackScreenProps<RootStackParamList, 'SeedGeneration'>;
 
-const SeedGeneration: React.FC<Props> = props => {
+const SeedGeneration: React.FC<Props> = observer(props => {
   const { dispatch } = useNavigation();
   const {
     theme: { colors },
   } = useContext(ThemeContext);
   const [currentStage, setCurrentStage] = useState<Stage>(Stage.Blurred);
-  // const [seedPhrase, setSeedPhrase] = useState(generateSecretKey(256));
+
+  const [isLoading, setIsloading] = useState(false);
 
   const { walletStore } = useStores();
 
@@ -49,6 +50,7 @@ const SeedGeneration: React.FC<Props> = props => {
   };
 
   const handleConfirm = async () => {
+    setIsloading(true);
     await walletStore.createWallet(seedPhrase, password);
     dispatch(StackActions.replace('Home'));
   };
@@ -56,14 +58,18 @@ const SeedGeneration: React.FC<Props> = props => {
   const handleGoBack = () => dispatch(StackActions.pop());
 
   let BottomButton = (
-    <GeneralButton type="activePrimary" onPress={handleView}>
+    <GeneralButton
+      type={isLoading ? 'inactivePrimary' : 'activePrimary'}
+      onPress={handleView}>
       View Seed Phrase
     </GeneralButton>
   );
 
   if (currentStage === Stage.ToCopy) {
     BottomButton = (
-      <GeneralButton type="activePrimary" onPress={handleCopy}>
+      <GeneralButton
+        type={isLoading ? 'inactivePrimary' : 'activePrimary'}
+        onPress={handleCopy}>
         Copy Seed Phrase
       </GeneralButton>
     );
@@ -71,7 +77,9 @@ const SeedGeneration: React.FC<Props> = props => {
 
   if (currentStage === Stage.ToConfirm) {
     BottomButton = (
-      <GeneralButton type="activePrimary" onPress={handleConfirm}>
+      <GeneralButton
+        type={isLoading ? 'inactivePrimary' : 'activePrimary'}
+        onPress={handleConfirm}>
         Continue
       </GeneralButton>
     );
@@ -83,15 +91,14 @@ const SeedGeneration: React.FC<Props> = props => {
     <SafeAreaView style={containerStyle}>
       <ScrollView contentContainerStyle={styles.container}>
         <View style={styles.contentContainer}>
-          <View>
-            <CustomAppHeader
-              noBackText={false}
-              handleGoBack={handleGoBack}
-              containerStyle={styles.header}
-              backColor={colors.primary100}
-            />
-            {/* <ProgressBar finished={2} total={3} /> */}
-          </View>
+          <CustomAppHeader
+            noBackText={false}
+            handleGoBack={handleGoBack}
+            containerStyle={styles.header}
+            backColor={colors.primary100}
+          />
+          {/* <ProgressBar finished={2} total={3} /> */}
+
           <View style={styles.topContent}>
             <LockedShield />
             <Typography type="bigTitle" style={styles.title}>
@@ -118,6 +125,6 @@ const SeedGeneration: React.FC<Props> = props => {
       </ScrollView>
     </SafeAreaView>
   );
-};
+});
 
 export default SeedGeneration;
