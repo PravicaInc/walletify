@@ -62,26 +62,6 @@ export const Routes: React.FC = () => {
       />
       <Stack.Screen
         options={{ headerShown: false }}
-        name="Settings"
-        component={Settings}
-      />
-      <Stack.Screen
-        options={{ headerShown: false }}
-        name="ChangePassword"
-        component={ChangePassword}
-      />
-      <Stack.Screen
-        options={{ headerShown: false }}
-        name="ShowSeedPhrase"
-        component={ShowSeedPhrase}
-      />
-      <Stack.Screen
-        options={{ headerShown: false }}
-        name="RecoverSeedPhrase"
-        component={RecoverSeedPhrase}
-      />
-      <Stack.Screen
-        options={{ headerShown: false }}
         name="Login"
         component={Login}
       />
