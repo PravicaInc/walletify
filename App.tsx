@@ -5,13 +5,14 @@ import { NavigationContainer } from '@react-navigation/native';
 import { Theme, ThemeContext } from './src/contexts/theme';
 import DefaultTheme from './src/themes/defaultTheme';
 import { StoresProvider } from './src/components/providers/storeProvider';
-import rootStore from './src/stores/RootStore';
+
 
 export default function App() {
   const [theme, setTheme] = useState<Theme>(DefaultTheme);
+
   return (
     <SafeAreaProvider>
-      <StoresProvider store={rootStore}>
+      <StoresProvider>
         <ThemeContext.Provider value={{ theme, setTheme }}>
           <NavigationContainer>
             <Routes />

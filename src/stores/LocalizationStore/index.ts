@@ -1,27 +1,27 @@
 import memoize from 'lodash.memoize';
 import i18n from 'i18n-js';
-import { action, makeAutoObservable, observable } from 'mobx';
-import { persist } from 'mobx-persist';
-import { createModelSchema, primitive } from 'serializr';
+import { makeAutoObservable } from 'mobx';
 import { Language } from './types';
 import { EN } from '../../translations';
 import { RootStore } from '../RootStore';
-
-createModelSchema(Language, {
-  key: primitive(),
-  title: primitive(),
-  isRTL: primitive(),
-});
+import { makePersistable } from 'mobx-persist-store';
+import AsyncStorage from '@react-native-community/async-storage';
+import { LANGUAGES } from '../../shared/constants';
 
 export class LocalizationStore {
   rootStore: RootStore;
-  @persist('object', Language) currentLanguage: Language;
+  currentLanguage: Language = LANGUAGES[0];
 
-  @observable translate: (arg0: any) => string = () => '';
+  translate: (arg0: any) => string = () => '';
 
   constructor(rootStore: RootStore) {
     makeAutoObservable(this);
     this.rootStore = rootStore;
+    makePersistable(this, {
+      name: 'localization',
+      properties: ['currentLanguage'],
+      storage: AsyncStorage,
+    });
   }
 
   getCurrentLanguage() {
@@ -32,7 +32,7 @@ export class LocalizationStore {
     this.translate = translateFn;
   }
 
-  @action private setCurrentLanguage = (
+  private setCurrentLanguage = (
     language: Language,
     translations: Record<string, string>,
   ) => {
@@ -49,7 +49,7 @@ export class LocalizationStore {
     this.currentLanguage = language;
   };
 
-  @action updateTranslations = async (language: Language) => {
+  updateTranslations = async (language: Language) => {
     try {
       const translationMap = language.key === 'en' ? EN : EN;
       this.setCurrentLanguage(language, translationMap);

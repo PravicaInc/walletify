@@ -5,19 +5,26 @@ export const LIGHT = 'light';
 export type light = typeof LIGHT;
 
 export interface IThemeColors {
-  primary: string;
-  secondary: string;
-  lines: string;
-  inactive: string;
-  cardsBackground: string;
-  success: string;
-  successLight: string;
-  failure: string;
-  failureLight: string;
-  pending: string;
-  pendingLight: string;
-  text: string;
-  contrast: string;
+  primary100: string;
+  primary60: string;
+  primary40: string;
+  primary20: string;
+  primary10: string;
+  primary5: string;
+  secondary100: string;
+  secondary60: string;
+  secondary40: string;
+  secondary20: string;
+  secondary10: string;
+  secondary5: string;
+  card: string;
+  confirm100: string;
+  confirm10: string;
+  failed100: string;
+  failed10: string;
+  warning100: string;
+  warning10: string;
+  white: string;
 }
 
 export interface Theme {

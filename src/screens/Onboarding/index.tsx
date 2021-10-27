@@ -1,5 +1,5 @@
 import React, { useRef, useContext } from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AppIntroSlider from 'react-native-app-intro-slider';
 import { StackActions, useNavigation } from '@react-navigation/native';
@@ -11,11 +11,14 @@ import { Typography } from '../../components/shared/Typography';
 import { ThemeContext } from '../../contexts/theme';
 import styles from './styles';
 import { useLocalization } from '../../hooks/useLocalization';
+import { observer } from 'mobx-react-lite';
+import { useStores } from '../../hooks/useStores';
 
-const OnBoarding: React.FC = () => {
+const OnBoarding: React.FC = observer(() => {
   const slider = useRef<any>();
   const { dispatch } = useNavigation();
   const { translate } = useLocalization();
+  const { uiStore } = useStores();
   const {
     theme: { colors },
   } = useContext(ThemeContext);
@@ -62,7 +65,10 @@ const OnBoarding: React.FC = () => {
     const handleNext = (index: number) => () =>
       slider.current?.goToSlide(index, true);
 
-    const handleDone = () => dispatch(StackActions.replace('Home'));
+    const handleDone = () => {
+      uiStore.setHasSeenOnBoarding(true);
+      dispatch(StackActions.replace('WalletSetup'));
+    };
 
     return (
       <View style={styles.paginationContainer}>
@@ -74,8 +80,8 @@ const OnBoarding: React.FC = () => {
                 style={[
                   styles.dot,
                   i === activeIndex
-                    ? { backgroundColor: colors.primary }
-                    : { backgroundColor: colors.inactive },
+                    ? { backgroundColor: colors.primary100 }
+                    : { backgroundColor: colors.primary40 },
                 ]}
                 onPress={handleNext(i)}
               />
@@ -90,18 +96,22 @@ const OnBoarding: React.FC = () => {
     );
   };
 
+  const containerStyle = [styles.container, { backgroundColor: colors.white }];
+
   return (
-    <SafeAreaView style={styles.container}>
-      <AppIntroSlider
-        keyExtractor={keyExtractor}
-        renderItem={renderItem}
-        bottomButton
-        data={data}
-        renderPagination={renderPagination}
-        ref={slider}
-      />
+    <SafeAreaView style={containerStyle}>
+      <ScrollView contentContainerStyle={styles.container}>
+        <AppIntroSlider
+          keyExtractor={keyExtractor}
+          renderItem={renderItem}
+          bottomButton
+          data={data}
+          renderPagination={renderPagination}
+          ref={slider}
+        />
+      </ScrollView>
     </SafeAreaView>
   );
-};
+});
 
 export default OnBoarding;

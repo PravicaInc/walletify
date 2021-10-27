@@ -21,7 +21,7 @@ interface IProps extends TouchableOpacityProps {
     | inactiveSecondaryType;
 }
 
-const CustomButton = React.forwardRef<TouchableOpacity, IProps>(
+const GeneralButton = React.forwardRef<TouchableOpacity, IProps>(
   (props, ref) => {
     const {
       theme: { colors },
@@ -34,37 +34,37 @@ const CustomButton = React.forwardRef<TouchableOpacity, IProps>(
 
     switch (props.type) {
       case ACTIVE_PRIMARY:
-        containerStyle = { backgroundColor: colors.primary };
-        txtStyle = { color: colors.contrast };
+        containerStyle = { backgroundColor: colors.primary100 };
+        txtStyle = { color: colors.white };
         break;
       case INACTIVE_PRIMARY:
-        containerStyle = { backgroundColor: colors.inactive };
-        txtStyle = { color: colors.contrast };
+        containerStyle = { backgroundColor: colors.primary20 };
+        txtStyle = { color: colors.white };
         break;
       case ACTIVE_SECONDARY:
         containerStyle = {
           ...styles.containerActiveSecondary,
-          backgroundColor: colors.contrast,
-          borderColor: colors.primary,
+          backgroundColor: colors.white,
+          borderColor: colors.primary100,
         };
-        txtStyle = { color: colors.text };
+        txtStyle = { color: colors.primary100 };
         break;
       case INACTIVE_SECONDARY:
         containerStyle = {
           ...styles.containerActiveSecondary,
-          backgroundColor: colors.contrast,
-          borderColor: colors.inactive,
+          backgroundColor: colors.white,
+          borderColor: colors.primary40,
         };
-        txtStyle = { color: colors.inactive };
+        txtStyle = { color: colors.primary40 };
         break;
     }
 
     return (
       <TouchableOpacity
         ref={ref}
-        style={styles.wrapper}
         disabled={disabled}
-        {...props}>
+        {...props}
+        style={[styles.wrapper, props.style]}>
         <View style={[styles.container, containerStyle]}>
           <Typography style={[styles.txt, txtStyle]} type="buttonText">
             {props.children}
@@ -75,4 +75,4 @@ const CustomButton = React.forwardRef<TouchableOpacity, IProps>(
   },
 );
 
-export default CustomButton;
+export default GeneralButton;

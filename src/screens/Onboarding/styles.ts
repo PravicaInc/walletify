@@ -1,12 +1,13 @@
 import { StyleSheet } from 'react-native';
+import { PADDING_HORIZONTAL, PADDING_VERTICAL } from '../../shared/layout';
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
+  container: { flex: 1, paddingVertical: PADDING_VERTICAL },
   slide: {
     flex: 1,
     justifyContent: 'flex-end',
     alignItems: 'center',
-    paddingHorizontal: '2.5%',
+    paddingHorizontal: PADDING_HORIZONTAL,
   },
   title: {
     textAlign: 'center',
