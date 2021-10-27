@@ -16,14 +16,14 @@ export class WalletStore {
   rootStore: RootStore;
   wallet: Wallet;
   walletConfig: WalletConfig | null;
-  secretPhrase: string;
+  encryptedSeedPhrase: string = '';
 
   constructor(rootStore: RootStore) {
-    this.rootStore = rootStore;
     makeAutoObservable(this);
+    this.rootStore = rootStore;
     makePersistable(this, {
       name: 'wallet',
-      properties: ['secretPhrase'],
+      properties: ['encryptedSeedPhrase'],
       storage: AsyncStorage,
     });
   }
@@ -44,8 +44,7 @@ export class WalletStore {
       secretKey,
       password,
     });
-    console.log('generatedWallet', generatedWallet);
-    this.secretPhrase = generatedWallet.encryptedSecretKey;
+    this.encryptedSeedPhrase = generatedWallet.encryptedSecretKey;
     this.wallet = generatedWallet;
   };
 
@@ -54,6 +53,7 @@ export class WalletStore {
       secretKey,
       password,
     });
+    this.encryptedSeedPhrase = generatedWallet.encryptedSecretKey;
     this.wallet = await restoreWalletAccounts({
       wallet: generatedWallet,
       gaiaHubUrl: gaiaUrl,
