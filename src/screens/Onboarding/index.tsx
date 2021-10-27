@@ -1,5 +1,5 @@
 import React, { useRef, useContext } from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AppIntroSlider from 'react-native-app-intro-slider';
 import { StackActions, useNavigation } from '@react-navigation/native';
@@ -12,13 +12,13 @@ import { ThemeContext } from '../../contexts/theme';
 import styles from './styles';
 import { useLocalization } from '../../hooks/useLocalization';
 import { observer } from 'mobx-react-lite';
-import { useStores } from "../../hooks/useStores";
+import { useStores } from '../../hooks/useStores';
 
 const OnBoarding: React.FC = observer(() => {
   const slider = useRef<any>();
   const { dispatch } = useNavigation();
   const { translate } = useLocalization();
-  const {uiStore} = useStores();
+  const { uiStore } = useStores();
   const {
     theme: { colors },
   } = useContext(ThemeContext);
@@ -100,14 +100,16 @@ const OnBoarding: React.FC = observer(() => {
 
   return (
     <SafeAreaView style={containerStyle}>
-      <AppIntroSlider
-        keyExtractor={keyExtractor}
-        renderItem={renderItem}
-        bottomButton
-        data={data}
-        renderPagination={renderPagination}
-        ref={slider}
-      />
+      <ScrollView contentContainerStyle={styles.container}>
+        <AppIntroSlider
+          keyExtractor={keyExtractor}
+          renderItem={renderItem}
+          bottomButton
+          data={data}
+          renderPagination={renderPagination}
+          ref={slider}
+        />
+      </ScrollView>
     </SafeAreaView>
   );
 });
