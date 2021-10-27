@@ -9,7 +9,6 @@ import SeedConfirmation from '../screens/SeedConfirmation';
 import CreatePassword from '../screens/CreatePassword';
 import SeedRestore from '../screens/SeedRestore';
 import OldPassword from '../screens/OldPassword';
-import KeychainPOC from '../screens/KeychainPOC';
 import { RootStackParamList } from './types';
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -61,11 +60,6 @@ export const Routes: React.FC = () => {
         options={{ headerShown: false }}
         name="OldPassword"
         component={OldPassword}
-      />
-      <Stack.Screen
-        options={{ headerShown: false }}
-        name="KeychainPOC"
-        component={KeychainPOC}
       />
     </Stack.Navigator>
   );
