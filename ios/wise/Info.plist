@@ -51,6 +51,8 @@
 	<false/>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Wise would like to use Face ID to protect your wallet </string>
+	<key>UIStatusBarStyle</key>
+	<string>UIStatusBarStyleDarkContent</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>OpenSauceOne-Bold.ttf</string>
