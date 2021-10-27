@@ -5,6 +5,7 @@ import {
   Platform,
   TextInput,
   ScrollView,
+  Switch,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackActions, useNavigation } from '@react-navigation/native';
@@ -14,7 +15,6 @@ import * as Keychain from 'react-native-keychain';
 import SecureKeychain from '../../shared/SecureKeychain';
 import { useStores } from '../../hooks/useStores';
 import GeneralButton from '../../components/shared/GeneralButton';
-import { GeneralSwitch } from '../../components/shared/GeneralSwitch';
 import { CustomAppHeader } from '../../components/CustomAppHeader';
 import { Typography } from '../../components/shared/Typography';
 import ProgressBar from '../../components/ProgressBar';
@@ -41,30 +41,41 @@ enum StrengthLevel {
 }
 
 const CreatePassword = observer((props: Props) => {
-  const { dispatch } = useNavigation();
-
-  const { uiStore } = useStores();
-  const { setIsBiometryEnabled } = uiStore;
-
-  const [isBioSwitchOn, setisBioSwitchOn] = useState(false);
-
-  const passwordRef = useRef<TextInput>(null);
-  const confirmPasswordRef = useRef<TextInput>(null);
-
-  const flow = props.route.params?.flow;
-
+  // theme
   const {
     theme: { colors },
   } = useContext(ThemeContext);
+
+  // navigation
+  const { dispatch } = useNavigation();
+  const flow = props.route.params?.flow;
+  const handleGoBack = () => dispatch(StackActions.pop());
+
+  // biometrics
+  const { uiStore } = useStores();
+  const { setIsBiometryEnabled } = uiStore;
+  const [isBioSwitchOn, setisBioSwitchOn] = useState(false);
+  const [hasBioSetup, setHasBioSetup] = useState<Keychain.BIOMETRY_TYPE | null>(
+    null,
+  );
+  const getBioSetup = async () => {
+    const type = await SecureKeychain.getSupportedBiometryType();
+    setHasBioSetup(type);
+  };
+  useEffect(() => {
+    getBioSetup();
+  }, []);
+
+  // password and its confirmation
+  const passwordRef = useRef<TextInput>(null);
+  const confirmPasswordRef = useRef<TextInput>(null);
   const [strengthResult, setStrengthResult] = useState<
     StrengthResultType | undefined
   >(undefined);
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
-
   const isPasswordFocused = passwordRef.current?.isFocused;
-
   useEffect(() => {
     const timer = setTimeout(() => {
       if (isPasswordFocused && isPasswordFocused()) {
@@ -92,9 +103,7 @@ const CreatePassword = observer((props: Props) => {
       clearTimeout(timer);
     };
   }, [password]);
-
   const isConfirmPasswordFocused = confirmPasswordRef.current?.isFocused;
-
   useEffect(() => {
     const timer = setTimeout(() => {
       if (
@@ -109,9 +118,10 @@ const CreatePassword = observer((props: Props) => {
       clearTimeout(timer);
     };
   }, [confirmPassword]);
-
-  const handleGoBack = () => dispatch(StackActions.pop());
-
+  const isValidInput =
+    confirmPassword === password &&
+    strengthResult?.textResult &&
+    ['Netural', 'Powerful'].includes(strengthResult?.textResult);
   const handlePressCreate = async () => {
     setIsBiometryEnabled(isBioSwitchOn);
     try {
@@ -135,11 +145,6 @@ const CreatePassword = observer((props: Props) => {
       console.warn(e);
     }
   };
-
-  const isValidInput =
-    confirmPassword === password &&
-    strengthResult?.textResult &&
-    ['Netural', 'Powerful'].includes(strengthResult?.textResult);
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.white }]}>
@@ -213,9 +218,10 @@ const CreatePassword = observer((props: Props) => {
               <FingerPrint style={styles.switchLabelIcon} />
               <Typography type="smallTitleR">Sign With Biometrics</Typography>
             </View>
-            <GeneralSwitch
-              toggleLock={() => setisBioSwitchOn(prevState => !prevState)}
-              isLocked={isBioSwitchOn}
+            <Switch
+              onChange={() => setisBioSwitchOn(prevState => !prevState)}
+              value={isBioSwitchOn}
+              disabled={!hasBioSetup}
             />
           </View>
 
