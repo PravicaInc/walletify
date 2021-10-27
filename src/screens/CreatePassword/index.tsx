@@ -11,7 +11,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { observer } from 'mobx-react-lite';
-import * as Keychain from 'react-native-keychain';
+import { BIOMETRY_TYPE, ACCESS_CONTROL } from 'react-native-keychain';
 import SecureKeychain from '../../shared/SecureKeychain';
 import { useStores } from '../../hooks/useStores';
 import GeneralButton from '../../components/shared/GeneralButton';
@@ -55,9 +55,7 @@ const CreatePassword = observer((props: Props) => {
   const { uiStore } = useStores();
   const { setIsBiometryEnabled } = uiStore;
   const [isBioSwitchOn, setisBioSwitchOn] = useState(false);
-  const [hasBioSetup, setHasBioSetup] = useState<Keychain.BIOMETRY_TYPE | null>(
-    null,
-  );
+  const [hasBioSetup, setHasBioSetup] = useState<BIOMETRY_TYPE | null>(null);
   const getBioSetup = async () => {
     const type = await SecureKeychain.getSupportedBiometryType();
     setHasBioSetup(type);
@@ -128,12 +126,12 @@ const CreatePassword = observer((props: Props) => {
       if (isBioSwitchOn) {
         await SecureKeychain.setGenericPassword(
           password,
-          Keychain.ACCESS_CONTROL.BIOMETRY_CURRENT_SET_OR_DEVICE_PASSCODE,
+          ACCESS_CONTROL.BIOMETRY_CURRENT_SET_OR_DEVICE_PASSCODE,
         );
       } else {
         await SecureKeychain.setGenericPassword(
           password,
-          Keychain.ACCESS_CONTROL.APPLICATION_PASSWORD,
+          ACCESS_CONTROL.APPLICATION_PASSWORD,
         );
       }
       const nextPage =
@@ -154,9 +152,6 @@ const CreatePassword = observer((props: Props) => {
         containerStyle={styles.header}
         backColor={colors.primary100}
       />
-      {/* {flow === WalletSetupFlow.CreateWallet && (
-        <ProgressBar finished={1} total={3} />
-      )} */}
       <KeyboardAvoidingView
         style={styles.keyboardContainer}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}

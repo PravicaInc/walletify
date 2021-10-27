@@ -16,14 +16,12 @@ const Splash: React.FC = observer(() => {
   };
   useEffect(() => {
     initLocalization();
-    // if (uiStore.isHydrated) {
     if (hasSeenOnBoarding) {
       dispatch(StackActions.replace('WalletSetup'));
     } else {
       dispatch(StackActions.replace('Onboarding'));
     }
     SplashScreen.hide();
-    // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
 
