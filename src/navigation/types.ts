@@ -17,4 +17,5 @@ export type RootStackParamList = {
   KeychainPOC: undefined;
   OldPassword: { seedPhrase: string } | undefined;
   Settings: undefined;
+  ChangePassword: undefined;
 };

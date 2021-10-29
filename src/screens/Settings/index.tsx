@@ -35,12 +35,13 @@ import { styles } from './styles';
 type Props = {
   icon: React.FC;
   text: string;
+  onPress?: () => void;
 };
 
 const TouchableSettingsItem = (props: Props) => {
   const SettingIcon = props.icon;
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={props.onPress}>
       <View style={styles.settingsItem}>
         <SettingIcon />
         <Typography type="buttonText" style={styles.settingsItemText}>
@@ -77,7 +78,10 @@ const Settings: React.FC = observer(() => {
     getBioSetup();
   }, []);
 
+  // navigation handlers
   const handleGoBack = () => dispatch(StackActions.pop());
+  const handleChangePassword = () =>
+    dispatch(StackActions.push('ChangePassword'));
 
   const containerStyle = [styles.container, { backgroundColor: colors.white }];
   const cardStyle = [styles.card, { backgroundColor: colors.card }];
@@ -87,6 +91,7 @@ const Settings: React.FC = observer(() => {
     { borderBottomColor: colors.primary20 },
   ];
   const bottomTextStyle = [styles.bottomText, { color: colors.failed100 }];
+
   return (
     <SafeAreaView style={containerStyle}>
       <ScrollView contentContainerStyle={styles.contentContainer}>
@@ -117,7 +122,11 @@ const Settings: React.FC = observer(() => {
           </View>
           {/* Card component end*/}
           <View style={settingsItemsContainerStyle}>
-            <TouchableSettingsItem icon={PasswordIcon} text="Change Password" />
+            <TouchableSettingsItem
+              icon={PasswordIcon}
+              text="Change Password"
+              onPress={handleChangePassword}
+            />
             <View style={[styles.settingsItem, styles.bioSetting]}>
               <View style={styles.bioSettingLeft}>
                 <FingerPrintIcon />
@@ -138,7 +147,11 @@ const Settings: React.FC = observer(() => {
           </View>
           <View style={settingsItemsContainerStyle}>
             {bottomSettingsList.map(item => (
-              <TouchableSettingsItem icon={item.icon} text={item.text} />
+              <TouchableSettingsItem
+                key={item.text}
+                icon={item.icon}
+                text={item.text}
+              />
             ))}
           </View>
         </View>

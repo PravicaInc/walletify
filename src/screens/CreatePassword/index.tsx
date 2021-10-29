@@ -128,11 +128,6 @@ const CreatePassword = observer((props: Props) => {
           password,
           ACCESS_CONTROL.BIOMETRY_CURRENT_SET_OR_DEVICE_PASSCODE,
         );
-      } else {
-        await SecureKeychain.setGenericPassword(
-          password,
-          ACCESS_CONTROL.APPLICATION_PASSWORD,
-        );
       }
       const nextPage =
         flow === WalletSetupFlow.CreateWallet

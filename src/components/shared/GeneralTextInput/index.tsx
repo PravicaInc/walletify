@@ -29,6 +29,7 @@ export const GeneralTextInput = React.forwardRef<any, IProps>((props, ref) => {
   const {
     theme: { colors, fonts },
   } = useContext(ThemeContext);
+
   const [inputFocused, setInputFocused] = useState<boolean>(false);
   const [isEyeClosed, toggleEye] = useState<boolean>(true);
   const [touched, setTouched] = useState<boolean>(false);
@@ -51,6 +52,7 @@ export const GeneralTextInput = React.forwardRef<any, IProps>((props, ref) => {
   const handleToggleEye = useCallback(() => {
     toggleEye(prevState => !prevState);
   }, []);
+
   return (
     <>
       {props.labelText && (
@@ -71,11 +73,12 @@ export const GeneralTextInput = React.forwardRef<any, IProps>((props, ref) => {
           {
             shadowColor: hasError ? colors.failed100 : colors.primary100,
             shadowOpacity: inputFocused ? 0.9 : 0,
-            borderColor: hasError
-              ? colors.failed10
-              : inputFocused
-              ? colors.primary10
-              : colors.primary40,
+            borderColor:
+              hasError && touched
+                ? colors.failed10
+                : inputFocused
+                ? colors.primary10
+                : colors.primary40,
             backgroundColor: colors.white,
           },
           props.customStyle,
