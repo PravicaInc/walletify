@@ -65,6 +65,11 @@ export const Routes: React.FC = () => {
         name="Login"
         component={Login}
       />
+      <Stack.Screen
+        options={{ headerShown: false }}
+        name="ChangePassword"
+        component={ChangePassword}
+      />
     </Stack.Navigator>
   );
 };
