@@ -70,6 +70,11 @@ export const Routes: React.FC = () => {
         name="ChangePassword"
         component={ChangePassword}
       />
+      <Stack.Screen
+        options={{ headerShown: false }}
+        name="EnterPassword"
+        component={EnterPassword}
+      />
     </Stack.Navigator>
   );
 };
