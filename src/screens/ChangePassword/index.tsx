@@ -120,8 +120,9 @@ const ChangePassword = observer(() => {
   }, [repeatPassword]);
 
   // store and keychain
-  const { walletStore } = useStores();
-  const { encryptedSeedPhrase, restoreWallet } = walletStore;
+  const { walletStore, uiStore } = useStores();
+  const { encryptedSeedPhrase, createWallet } = walletStore;
+  const { isBiometryEnabled } = uiStore;
 
   // confirm handler
   const isValidInput =
@@ -135,17 +136,20 @@ const ChangePassword = observer(() => {
     let seedPhrase = '';
     try {
       seedPhrase = await decrypt(encryptedSeedPhrase, oldPassword);
-      await restoreWallet(seedPhrase, password);
-      const hasBioSetup = await SecureKeychain.getSupportedBiometryType();
-      if (hasBioSetup) {
+      await createWallet(seedPhrase, password);
+      if (isBiometryEnabled) {
         await SecureKeychain.setGenericPassword(
           password,
           ACCESS_CONTROL.BIOMETRY_CURRENT_SET_OR_DEVICE_PASSCODE,
         );
       }
+      dispatch(StackActions.pop());
     } catch (error: any) {
       setOldPwdErrorMsg('Your old password is wrong');
       setLoading(false);
+      setOldPassword('');
+      setPassword('');
+      setOldPassword('');
     }
   };
 

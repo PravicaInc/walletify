@@ -11,6 +11,7 @@ import SeedRestore from '../screens/SeedRestore';
 import OldPassword from '../screens/OldPassword';
 import Settings from '../screens/Settings';
 import ChangePassword from '../screens/ChangePassword';
+import EnterPassword from '../screens/EnterPassword';
 import { RootStackParamList } from './types';
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -72,6 +73,11 @@ export const Routes: React.FC = () => {
         options={{ headerShown: false }}
         name="ChangePassword"
         component={ChangePassword}
+      />
+      <Stack.Screen
+        options={{ headerShown: false }}
+        name="EnterPassword"
+        component={EnterPassword}
       />
     </Stack.Navigator>
   );

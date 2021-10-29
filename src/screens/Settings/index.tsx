@@ -1,13 +1,8 @@
 import React, { useContext, useState, useEffect } from 'react';
-import {
-  TouchableOpacity,
-  View,
-  ScrollView,
-  Text,
-  Image,
-  Switch,
-} from 'react-native';
+import { TouchableOpacity, View, ScrollView, Switch } from 'react-native';
 import { StackActions, useNavigation } from '@react-navigation/native';
+import { BIOMETRY_TYPE, ACCESS_CONTROL } from 'react-native-keychain';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 import { Typography } from '../../components/shared/Typography';
 import RoundedImage from '../../components/shared/RoundedImage';
@@ -28,17 +23,17 @@ import SpeakIcon from '../../assets/images/settings/speak.svg';
 import FingerPrintIcon from '../../assets/finger-print.svg';
 import ExitIcon from '../../assets/images/settings/exit.svg';
 import SecureKeychain from '../../shared/SecureKeychain';
-import { BIOMETRY_TYPE, ACCESS_CONTROL } from 'react-native-keychain';
+import { RootStackParamList } from '../../navigation/types';
 
 import { styles } from './styles';
 
-type Props = {
+type TProps = {
   icon: React.FC;
   text: string;
   onPress?: () => void;
 };
 
-const TouchableSettingsItem = (props: Props) => {
+const TouchableSettingsItem = (props: TProps) => {
   const SettingIcon = props.icon;
   return (
     <TouchableOpacity onPress={props.onPress}>
@@ -58,25 +53,51 @@ const bottomSettingsList = [
   { icon: BugIcon, text: 'Report a Bug' },
 ];
 
-const Settings: React.FC = observer(() => {
+type SProps = NativeStackScreenProps<RootStackParamList, 'Settings'>;
+
+const Settings = observer((props: SProps) => {
   const {
     theme: { colors },
   } = useContext(ThemeContext);
 
   const { dispatch } = useNavigation();
 
+  const password = props.route.params?.password;
+
   // biometrics
   const { uiStore } = useStores();
   const { isBiometryEnabled, setIsBiometryEnabled } = uiStore;
-  const [isBioSwitchOn, setisBioSwitchOn] = useState(isBiometryEnabled);
   const [hasBioSetup, setHasBioSetup] = useState<BIOMETRY_TYPE | null>(null);
-  const getBioSetup = async () => {
-    const type = await SecureKeychain.getSupportedBiometryType();
-    setHasBioSetup(type);
-  };
+
   useEffect(() => {
+    const getBioSetup = async () => {
+      const type = await SecureKeychain.getSupportedBiometryType();
+      setHasBioSetup(type);
+    };
     getBioSetup();
   }, []);
+
+  useEffect(() => {
+    const updateBio = async () => {
+      await SecureKeychain.setGenericPassword(
+        password || '',
+        ACCESS_CONTROL.BIOMETRY_CURRENT_SET_OR_DEVICE_PASSCODE,
+      );
+      setIsBiometryEnabled(true);
+    };
+    if (password && password.length > 0) {
+      updateBio();
+    }
+  }, [password]);
+
+  const handleBiometricToggle = async () => {
+    if (isBiometryEnabled) {
+      await SecureKeychain.resetGenericPassword();
+      setIsBiometryEnabled(false);
+    } else {
+      dispatch(StackActions.push('EnterPassword', { nextScreen: 'Settings' }));
+    }
+  };
 
   // navigation handlers
   const handleGoBack = () => dispatch(StackActions.pop());
@@ -135,8 +156,8 @@ const Settings: React.FC = observer(() => {
                 </Typography>
               </View>
               <Switch
-                onChange={() => setisBioSwitchOn(prevState => !prevState)}
-                value={isBioSwitchOn}
+                onChange={handleBiometricToggle}
+                value={isBiometryEnabled}
                 disabled={!hasBioSetup}
               />
             </View>
