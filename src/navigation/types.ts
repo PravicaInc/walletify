@@ -21,4 +21,5 @@ export type RootStackParamList = {
   EnterPassword: {
     nextScreen: string;
   };
+  ShowSeedPhrase: { seedPhrase?: string };
 };

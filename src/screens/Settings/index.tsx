@@ -99,6 +99,9 @@ const Settings = observer((props: SProps) => {
     }
   };
 
+  const handleRecoverSeedPhrase = () =>
+    dispatch(StackActions.push('ShowSeedPhrase'));
+
   // navigation handlers
   const handleGoBack = () => dispatch(StackActions.pop());
   const handleChangePassword = () =>
@@ -164,6 +167,7 @@ const Settings = observer((props: SProps) => {
             <TouchableSettingsItem
               icon={LockIcon}
               text="Recover the Seed Phrase"
+              onPress={handleRecoverSeedPhrase}
             />
           </View>
           <View style={settingsItemsContainerStyle}>

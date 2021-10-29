@@ -12,6 +12,7 @@ import OldPassword from '../screens/OldPassword';
 import Settings from '../screens/Settings';
 import ChangePassword from '../screens/ChangePassword';
 import EnterPassword from '../screens/EnterPassword';
+import ShowSeedPhrase from '../screens/ShowSeedPhrase';
 import { RootStackParamList } from './types';
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -78,6 +79,11 @@ export const Routes: React.FC = () => {
         options={{ headerShown: false }}
         name="EnterPassword"
         component={EnterPassword}
+      />
+      <Stack.Screen
+        options={{ headerShown: false }}
+        name="ShowSeedPhrase"
+        component={ShowSeedPhrase}
       />
     </Stack.Navigator>
   );
