@@ -75,6 +75,11 @@ export const Routes: React.FC = () => {
         name="EnterPassword"
         component={EnterPassword}
       />
+      <Stack.Screen
+        options={{ headerShown: false }}
+        name="ShowSeedPhrase"
+        component={ShowSeedPhrase}
+      />
     </Stack.Navigator>
   );
 };

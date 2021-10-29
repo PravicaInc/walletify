@@ -65,7 +65,8 @@ const EnterPassword = (props: Props) => {
         secretKey: seedPhrase,
         password,
       });
-      navigate(nextScreen, { password });
+      const params = nextScreen === 'Settings' ? { password } : { seedPhrase };
+      navigate(nextScreen, params);
     } catch (e) {
       setPassword('');
       setErrorMessage('The password you entered is wrong');
