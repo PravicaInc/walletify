@@ -52,8 +52,7 @@ const ShowSeedPhrase: React.FC<Props> = observer(props => {
         Write it down, copy it, save it, or even memorize it.
       </Typography>
       <Typography type="commonText" style={descriptionStyle}>
-        Write it down, copy it, save it, or even memorize it. Just make sure
-        your Seed Phrase is safe and accessible.
+        Just make sure your Seed Phrase is safe and accessible.
       </Typography>
     </>
   ) : (
@@ -100,8 +99,7 @@ const ShowSeedPhrase: React.FC<Props> = observer(props => {
             <GeneralButton
               type={'activePrimary'}
               onPress={handleAction}
-              // style={styles.button}
-            >
+              style={styles.actionButton}>
               {actionText}
             </GeneralButton>
           </View>

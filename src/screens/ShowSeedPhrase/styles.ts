@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { BackHandler, StyleSheet } from 'react-native';
 
 import { PADDING_HORIZONTAL, PADDING_VERTICAL } from '../../shared/layout';
 
@@ -9,18 +9,18 @@ const styles = StyleSheet.create({
   contentContainer: {
     paddingHorizontal: PADDING_HORIZONTAL,
     paddingVertical: PADDING_VERTICAL,
-
     justifyContent: 'flex-start',
     alignItems: 'center',
     height: '100%',
   },
   header: {
     shadowOpacity: 0,
+    height: 20,
   },
   topContent: {
     alignItems: 'center',
     width: '90%',
-    flex: 0.6,
+    flex: 0.7,
     justifyContent: 'center',
   },
   title: { marginVertical: 10 },
@@ -29,9 +29,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flex: 1,
     width: '100%',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
   },
-  seedTitle: { marginVertical: 10 },
+  seedTitle: { marginBottom: 10 },
+  actionButton: { marginTop: 'auto' },
 });
 
 export default styles;
