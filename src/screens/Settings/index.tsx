@@ -103,7 +103,7 @@ const Settings = observer((props: SProps) => {
     dispatch(StackActions.push('ShowSeedPhrase'));
 
   // navigation handlers
-  const handleGoBack = () => dispatch(StackActions.pop());
+  const handleGoBack = () => dispatch(StackActions.replace('Home'));
   const handleChangePassword = () =>
     dispatch(StackActions.push('ChangePassword'));
 
