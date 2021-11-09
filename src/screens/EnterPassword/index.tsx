@@ -84,7 +84,7 @@ const EnterPassword = (props: Props) => {
         handleGoBack={handleGoBack}
         containerStyle={styles.header}
         backColor={colors.secondary100}
-        title="Change Password"
+        title="Enter Password"
         nextButtonText="Confirm"
         isNextDisabled={errorMessage.length > 0}
         isNextLoading={isLoading}
