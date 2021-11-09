@@ -81,7 +81,7 @@ const OnBoarding: React.FC = observer(() => {
                   styles.dot,
                   i === activeIndex
                     ? { backgroundColor: colors.primary100 }
-                    : { backgroundColor: colors.primary40 },
+                    : { backgroundColor: colors.primary10 },
                 ]}
                 onPress={handleNext(i)}
               />

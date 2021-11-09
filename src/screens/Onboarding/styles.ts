@@ -7,6 +7,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-end',
     alignItems: 'center',
+    paddingBottom: '25%',
     paddingHorizontal: PADDING_HORIZONTAL,
   },
   title: {
@@ -19,18 +20,15 @@ const styles = StyleSheet.create({
     width: '80%',
   },
   paginationContainer: {
-    paddingHorizontal: '2.5%',
-    flex: 0.7,
-    justifyContent: 'flex-end',
+    paddingHorizontal: PADDING_HORIZONTAL,
+    flex: 0.35,
+    justifyContent: 'space-between',
   },
   paginationDots: {
     height: 16,
-    margin: 16,
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 'auto',
-    marginBottom: 'auto',
+    alignItems: 'stretch',
   },
   dot: {
     width: 10,
