@@ -5,7 +5,8 @@ import { StackActions, useNavigation } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 import GeneralButton from '../../components/shared/GeneralButton';
-import { CustomAppHeader } from '../../components/CustomAppHeader';
+import Header from '../../components/shared/Header';
+import HeaderBack from '../../components/shared/HeaderBack';
 import { Typography } from '../../components/shared/Typography';
 import { GeneralTextInput } from '../../components/shared/GeneralTextInput';
 import { useStores } from '../../hooks/useStores';
@@ -62,50 +63,51 @@ const SeedRestore: React.FC<Props> = props => {
 
   return (
     <SafeAreaView style={containerStyle}>
-      <CustomAppHeader
-        noBackText={false}
-        handleGoBack={handleGoBack}
-        containerStyle={styles.header}
-        backColor={colors.primary100}
-      />
+      <View style={styles.container}>
+        <Header
+          leftComponent={
+            <HeaderBack onPress={handleGoBack} text="Back" hasChevron />
+          }
+        />
 
-      <KeyboardAvoidingView
-        style={styles.keyboardContainer}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        keyboardVerticalOffset={0}>
-        <ScrollView contentContainerStyle={styles.scrollableContent}>
-          <View style={styles.topContent}>
-            <LockedShield />
-            <Typography type="bigTitle" style={styles.title}>
-              Enter Your Seed Phrase
-            </Typography>
-            <Typography type="commonText" style={styles.description}>
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industryLorem Ipsum has beenLorem
-            </Typography>
-          </View>
-
-          <View style={styles.bottomContent}>
-            <Typography type="commonTextBold" style={styles.seedTitle}>
-              Your Seed Phrase:
-            </Typography>
-            <View style={styles.seedInputContainer}>
-              <GeneralTextInput
-                value={seedPhrase}
-                customStyle={inputStyle}
-                onChangeText={setSeedPhrase}
-                disableCancel
-                multiline={true}
-                placeholder="Type Your Seed Phrase..."
-                placeholderTextColor={colors.primary20}
-                secureTextEntry={false}
-              />
+        <KeyboardAvoidingView
+          style={styles.keyboardContainer}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          keyboardVerticalOffset={0}>
+          <ScrollView contentContainerStyle={styles.scrollableContent}>
+            <View style={styles.topContent}>
+              <LockedShield />
+              <Typography type="bigTitle" style={styles.title}>
+                Enter Your Seed Phrase
+              </Typography>
+              <Typography type="commonText" style={styles.description}>
+                Lorem Ipsum is simply dummy text of the printing and typesetting
+                industryLorem Ipsum has beenLorem
+              </Typography>
             </View>
-          </View>
 
-          {BottomButton}
-        </ScrollView>
-      </KeyboardAvoidingView>
+            <View style={styles.bottomContent}>
+              <Typography type="commonTextBold" style={styles.seedTitle}>
+                Your Seed Phrase:
+              </Typography>
+              <View style={styles.seedInputContainer}>
+                <GeneralTextInput
+                  value={seedPhrase}
+                  customStyle={inputStyle}
+                  onChangeText={setSeedPhrase}
+                  disableCancel
+                  multiline={true}
+                  placeholder="Type Your Seed Phrase..."
+                  placeholderTextColor={colors.primary20}
+                  secureTextEntry={false}
+                />
+              </View>
+            </View>
+
+            {BottomButton}
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </View>
     </SafeAreaView>
   );
 };

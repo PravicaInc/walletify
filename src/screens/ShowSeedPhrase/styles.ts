@@ -1,4 +1,4 @@
-import { BackHandler, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 import { PADDING_HORIZONTAL, PADDING_VERTICAL } from '../../shared/layout';
 
@@ -32,7 +32,8 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   seedTitle: { marginBottom: 10 },
-  actionButton: { marginTop: 'auto' },
+  actionButtonTop: { marginBottom: 'auto' },
+  actionButtonBottom: { marginTop: 'auto' },
 });
 
 export default styles;

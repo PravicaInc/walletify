@@ -5,8 +5,6 @@ import { PADDING_HORIZONTAL, PADDING_VERTICAL } from '../../shared/layout';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  progressBar: {
     marginBottom: PADDING_VERTICAL,
     paddingHorizontal: PADDING_HORIZONTAL,
   },
@@ -17,17 +15,16 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollableContent: {
-    paddingHorizontal: PADDING_HORIZONTAL,
-    paddingBottom: PADDING_VERTICAL,
     alignItems: 'center',
     justifyContent: 'flex-start',
     minHeight: '100%',
+    paddingTop: '20%',
   },
   title: { marginVertical: 10 },
   description: { textAlign: 'center', marginBottom: 40 },
 
   input: {
-    width: '90%',
+    width: '99%',
     marginTop: 8,
     marginBottom: 24,
     flex: undefined,
@@ -42,7 +39,6 @@ const styles = StyleSheet.create({
   },
   passwordStrength: {
     flexDirection: 'row',
-    marginLeft: '5%',
     alignSelf: 'flex-start',
     width: '40%',
     alignItems: 'flex-end',
@@ -51,7 +47,7 @@ const styles = StyleSheet.create({
   switchContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: '90%',
+    width: '100%',
     marginVertical: 20,
   },
   switchLabelContainer: {

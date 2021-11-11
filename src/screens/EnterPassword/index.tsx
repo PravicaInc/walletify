@@ -10,6 +10,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { generateWallet, decrypt } from '@stacks/wallet-sdk/dist';
+import Header from '../../components/shared/Header';
+import HeaderBack from '../../components/shared/HeaderBack';
+import HeaderConfirm from '../../components/shared/HeaderConfirm';
 import { CustomAppHeader } from '../../components/CustomAppHeader';
 import { Typography } from '../../components/shared/Typography';
 import { GeneralTextInput } from '../../components/shared/GeneralTextInput';
@@ -78,49 +81,57 @@ const EnterPassword = (props: Props) => {
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.white }]}>
-      <CustomAppHeader
-        noBackText={false}
-        isCancel
-        handleGoBack={handleGoBack}
-        containerStyle={styles.header}
-        backColor={colors.secondary100}
-        title="Enter Password"
-        nextButtonText="Confirm"
-        isNextDisabled={errorMessage.length > 0}
-        isNextLoading={isLoading}
-        loadingText=""
-        handleGoNext={handleGoNext}
-      />
-      <KeyboardAvoidingView
-        style={styles.keyboardContainer}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        keyboardVerticalOffset={0}>
-        <ScrollView contentContainerStyle={styles.scrollableContent}>
-          <PasswordShield style={styles.shield} />
-          <View>
-            <Typography type="bigTitle" style={styles.title}>
-              Enter Your Password
-            </Typography>
-          </View>
-          <View>
-            <Typography type="commonText" style={descriptionStyle}>
-              Just to make sure it's you!
-            </Typography>
-          </View>
+      <View style={styles.container}>
+        <Header
+          leftComponent={
+            <HeaderBack
+              text="Cancel"
+              customStyle={{ color: colors.secondary100 }}
+              onPress={handleGoBack}
+            />
+          }
+          title="Password"
+          rightComponent={
+            <HeaderConfirm
+              text="Confirm"
+              customStyle={{ color: colors.secondary100 }}
+              disabled={password.length === 0}
+              isLoading={isLoading}
+              onPress={handleGoNext}
+            />
+          }
+        />
+        <KeyboardAvoidingView
+          style={styles.keyboardContainer}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          keyboardVerticalOffset={0}>
+          <ScrollView contentContainerStyle={styles.scrollableContent}>
+            <PasswordShield style={styles.shield} />
+            <View>
+              <Typography type="bigTitle" style={styles.title}>
+                Enter Your Password
+              </Typography>
+            </View>
+            <View>
+              <Typography type="commonText" style={descriptionStyle}>
+                Just to make sure it's you!
+              </Typography>
+            </View>
 
-          <GeneralTextInput
-            customStyle={[styles.input]}
-            labelText="Enter Your Password"
-            secureTextEntry
-            onChangeText={setPassword}
-            value={password}
-            disableCancel
-            ref={passwordRef}
-            errorMessage={errorMessage}
-            setErrorMessage={setErrorMessage}
-          />
-        </ScrollView>
-      </KeyboardAvoidingView>
+            <GeneralTextInput
+              customStyle={[styles.input]}
+              labelText="Enter Your Password"
+              secureTextEntry
+              onChangeText={setPassword}
+              value={password}
+              disableCancel
+              ref={passwordRef}
+              errorMessage={errorMessage}
+              setErrorMessage={setErrorMessage}
+            />
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </View>
     </SafeAreaView>
   );
 };

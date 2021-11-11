@@ -6,7 +6,8 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { observer } from 'mobx-react-lite';
 import GeneralButton from '../../components/shared/GeneralButton';
-import { CustomAppHeader } from '../../components/CustomAppHeader';
+import Header from '../../components/shared/Header';
+import HeaderBack from '../../components/shared/HeaderBack';
 import { Typography } from '../../components/shared/Typography';
 import SeedPhraseGrid from '../../components/SeedPhraseGrid';
 
@@ -80,11 +81,10 @@ const ShowSeedPhrase: React.FC<Props> = observer(props => {
     <SafeAreaView style={containerStyle}>
       <ScrollView contentContainerStyle={styles.container}>
         <View style={styles.contentContainer}>
-          <CustomAppHeader
-            noBackText={false}
-            handleGoBack={handleGoBack}
-            containerStyle={styles.header}
-            backColor={colors.primary100}
+          <Header
+            leftComponent={
+              <HeaderBack onPress={handleGoBack} text="Back" hasChevron />
+            }
           />
           <View style={styles.topContent}>
             <LockedShield />
@@ -99,7 +99,9 @@ const ShowSeedPhrase: React.FC<Props> = observer(props => {
             <GeneralButton
               type={'activePrimary'}
               onPress={handleAction}
-              style={styles.actionButton}>
+              style={
+                seedPhrase ? styles.actionButtonBottom : styles.actionButtonTop
+              }>
               {actionText}
             </GeneralButton>
           </View>

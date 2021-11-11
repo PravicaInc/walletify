@@ -12,7 +12,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useStores } from '../../hooks/useStores';
 import { observer } from 'mobx-react-lite';
 import SettingsNextLink from '../../components/SettingsNextLink';
-import { CustomAppHeader } from '../../components/CustomAppHeader';
+import Header from '../../components/shared/Header';
+import HeaderBack from '../../components/shared/HeaderBack';
 import { ThemeContext } from '../../contexts/theme';
 
 import BugIcon from '../../assets/images/settings/bug.svg';
@@ -120,17 +121,17 @@ const Settings = observer((props: SProps) => {
     <SafeAreaView style={containerStyle}>
       <ScrollView contentContainerStyle={styles.contentContainer}>
         <View style={styles.topContent}>
-          <CustomAppHeader
-            handleGoBack={handleGoBack}
-            containerStyle={styles.header}
-            backColor={colors.primary100}
-            noBackText
-            customBack={
-              <Typography type="bigTitle" style={{ color: colors.primary100 }}>
-                Settings
-              </Typography>
+          <Header
+            leftComponent={
+              <HeaderBack
+                onPress={handleGoBack}
+                text="Settings"
+                textType="bigTitle"
+                hasChevron
+                chevronSize={{ width: 9, height: 16.2 }}
+              />
             }
-            customNext={
+            rightComponent={
               <SettingsNextLink text="Manage Accounts" icon={SettingsIcon} />
             }
           />

@@ -15,7 +15,9 @@ import { BIOMETRY_TYPE, ACCESS_CONTROL } from 'react-native-keychain';
 import SecureKeychain from '../../shared/SecureKeychain';
 import { useStores } from '../../hooks/useStores';
 import GeneralButton from '../../components/shared/GeneralButton';
-import { CustomAppHeader } from '../../components/CustomAppHeader';
+import Header from '../../components/shared/Header';
+import HeaderBack from '../../components/shared/HeaderBack';
+
 import { Typography } from '../../components/shared/Typography';
 import ProgressBar from '../../components/ProgressBar';
 import { GeneralTextInput } from '../../components/shared/GeneralTextInput';
@@ -141,88 +143,90 @@ const CreatePassword = observer((props: Props) => {
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.white }]}>
-      <CustomAppHeader
-        noBackText={false}
-        handleGoBack={handleGoBack}
-        containerStyle={styles.header}
-        backColor={colors.primary100}
-      />
-      <KeyboardAvoidingView
-        style={styles.keyboardContainer}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        keyboardVerticalOffset={0}>
-        <ScrollView contentContainerStyle={styles.scrollableContent}>
-          <PasswordShield />
-          <View>
-            <Typography type="bigTitle" style={styles.title}>
-              Create Your Password
-            </Typography>
-          </View>
-          <View>
-            <Typography type="commonText" style={styles.description}>
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industryLorem Ipsum has beenLorem
-            </Typography>
-          </View>
-
-          <GeneralTextInput
-            customStyle={[styles.input, styles.topInput]}
-            labelText="Enter a Password"
-            secureTextEntry
-            onChangeText={setPassword}
-            value={password}
-            disableCancel
-            ref={passwordRef}
-          />
-          {strengthResult && (
-            <View style={styles.passwordStrength}>
-              <ProgressBar
-                finished={strengthResult?.finished}
-                total={3}
-                barsColor={strengthResult?.barsColor}
-              />
-              <Typography
-                type="smallText"
-                style={{
-                  color: strengthResult?.barsColor,
-                }}>
-                {` ${strengthResult?.textResult}`}
+      <View style={styles.container}>
+        <Header
+          leftComponent={
+            <HeaderBack onPress={handleGoBack} text="Back" hasChevron />
+          }
+        />
+        <KeyboardAvoidingView
+          style={styles.keyboardContainer}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          keyboardVerticalOffset={0}>
+          <ScrollView contentContainerStyle={styles.scrollableContent}>
+            <PasswordShield />
+            <View>
+              <Typography type="bigTitle" style={styles.title}>
+                Create Your Password
               </Typography>
             </View>
-          )}
-          <View style={styles.bottomInput}>
-            <GeneralTextInput
-              ref={confirmPasswordRef}
-              customStyle={styles.input}
-              labelText="Re-enter a Password"
-              secureTextEntry
-              onChangeText={setConfirmPassword}
-              value={confirmPassword}
-              disableCancel
-              setErrorMessage={setErrorMessage}
-              errorMessage={errorMessage}
-            />
-          </View>
-          <View style={styles.switchContainer}>
-            <View style={styles.switchLabelContainer}>
-              <FingerPrint style={styles.switchLabelIcon} />
-              <Typography type="smallTitleR">Sign With Biometrics</Typography>
+            <View>
+              <Typography
+                type="commonText"
+                style={[styles.description, { color: colors.primary60 }]}>
+                Create a password for inApp permissions
+              </Typography>
             </View>
-            <Switch
-              onChange={() => setisBioSwitchOn(prevState => !prevState)}
-              value={isBioSwitchOn}
-              disabled={!hasBioSetup}
-            />
-          </View>
 
-          <GeneralButton
-            style={styles.button}
-            onPress={handlePressCreate}
-            type={isValidInput ? 'activePrimary' : 'inactivePrimary'}>
-            Create
-          </GeneralButton>
-        </ScrollView>
-      </KeyboardAvoidingView>
+            <GeneralTextInput
+              customStyle={[styles.input, styles.topInput]}
+              labelText="Enter a Password"
+              secureTextEntry
+              onChangeText={setPassword}
+              value={password}
+              disableCancel
+              ref={passwordRef}
+            />
+            {strengthResult && (
+              <View style={styles.passwordStrength}>
+                <ProgressBar
+                  finished={strengthResult?.finished}
+                  total={3}
+                  barsColor={strengthResult?.barsColor}
+                />
+                <Typography
+                  type="smallText"
+                  style={{
+                    color: strengthResult?.barsColor,
+                  }}>
+                  {` ${strengthResult?.textResult}`}
+                </Typography>
+              </View>
+            )}
+            <View style={styles.bottomInput}>
+              <GeneralTextInput
+                ref={confirmPasswordRef}
+                customStyle={styles.input}
+                labelText="Re-enter a Password"
+                secureTextEntry
+                onChangeText={setConfirmPassword}
+                value={confirmPassword}
+                disableCancel
+                setErrorMessage={setErrorMessage}
+                errorMessage={errorMessage}
+              />
+            </View>
+            <View style={styles.switchContainer}>
+              <View style={styles.switchLabelContainer}>
+                <FingerPrint style={styles.switchLabelIcon} />
+                <Typography type="smallTitleR">Sign With Biometrics</Typography>
+              </View>
+              <Switch
+                onChange={() => setisBioSwitchOn(prevState => !prevState)}
+                value={isBioSwitchOn}
+                disabled={!hasBioSetup}
+              />
+            </View>
+
+            <GeneralButton
+              style={styles.button}
+              onPress={handlePressCreate}
+              type={isValidInput ? 'activePrimary' : 'inactivePrimary'}>
+              Create
+            </GeneralButton>
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </View>
     </SafeAreaView>
   );
 });

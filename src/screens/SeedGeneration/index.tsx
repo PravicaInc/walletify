@@ -5,7 +5,8 @@ import { StackActions, useNavigation } from '@react-navigation/native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { observer } from 'mobx-react-lite';
 import GeneralButton from '../../components/shared/GeneralButton';
-import { CustomAppHeader } from '../../components/CustomAppHeader';
+import Header from '../../components/shared/Header';
+import HeaderBack from '../../components/shared/HeaderBack';
 import { Typography } from '../../components/shared/Typography';
 // import ProgressBar from '../../components/ProgressBar';
 import SeedPhraseGrid from '../../components/SeedPhraseGrid';
@@ -91,11 +92,10 @@ const SeedGeneration: React.FC<Props> = observer(props => {
     <SafeAreaView style={containerStyle}>
       <ScrollView contentContainerStyle={styles.container}>
         <View style={styles.contentContainer}>
-          <CustomAppHeader
-            noBackText={false}
-            handleGoBack={handleGoBack}
-            containerStyle={styles.header}
-            backColor={colors.primary100}
+          <Header
+            leftComponent={
+              <HeaderBack onPress={handleGoBack} text="Back" hasChevron />
+            }
           />
           {/* <ProgressBar finished={2} total={3} /> */}
 

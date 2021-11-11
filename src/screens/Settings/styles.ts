@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
     shadowOpacity: 0,
   },
   contentContainer: {
-    paddingHorizontal: '5%',
+    paddingHorizontal: PADDING_HORIZONTAL,
     paddingVertical: PADDING_VERTICAL,
     flex: 1,
     justifyContent: 'space-between',
@@ -28,6 +28,7 @@ export const styles = StyleSheet.create({
     borderRadius: 26,
     padding: 15,
     flexDirection: 'row',
+    marginTop: '8%',
   },
   cardTextContainer: {
     marginLeft: 10,

@@ -152,11 +152,7 @@ export const GeneralTextInput = React.forwardRef<any, IProps>((props, ref) => {
         <View style={styles.errorContainer}>
           <Typography
             type="commonText"
-            style={[
-              styles.error,
-              { color: colors.failed100 },
-              { marginLeft: '5%' },
-            ]}>
+            style={[styles.error, { color: colors.failed100 }]}>
             {errorMessage}
           </Typography>
         </View>
@@ -176,7 +172,6 @@ const styles = StyleSheet.create({
     borderRadius: 13,
     marginTop: 12,
     marginBottom: 8,
-    marginHorizontal: '2.5%',
   },
   search: {
     width: '90%',
@@ -212,6 +207,5 @@ const styles = StyleSheet.create({
   },
   error: {
     alignSelf: 'flex-start',
-    marginLeft: '5%',
   },
 });

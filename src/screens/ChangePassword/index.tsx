@@ -5,6 +5,7 @@ import {
   Platform,
   TextInput,
   ScrollView,
+  LayoutChangeEvent,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackActions, useNavigation } from '@react-navigation/native';
@@ -12,7 +13,9 @@ import { observer } from 'mobx-react-lite';
 import { ACCESS_CONTROL } from 'react-native-keychain';
 import SecureKeychain from '../../shared/SecureKeychain';
 import { useStores } from '../../hooks/useStores';
-import { CustomAppHeader } from '../../components/CustomAppHeader';
+import Header from '../../components/shared/Header';
+import HeaderBack from '../../components/shared/HeaderBack';
+import HeaderConfirm from '../../components/shared/HeaderConfirm';
 import { Typography } from '../../components/shared/Typography';
 import ProgressBar from '../../components/ProgressBar';
 import { GeneralTextInput } from '../../components/shared/GeneralTextInput';
@@ -153,84 +156,100 @@ const ChangePassword = observer(() => {
     }
   };
 
+  const [leftComponentWidth, setLeftComponentWidth] = useState<number>(0);
+  const handleLayoutChange = (event: LayoutChangeEvent) => {
+    let { width } = event.nativeEvent.layout;
+    setLeftComponentWidth(width);
+  };
+
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.white }]}>
-      <CustomAppHeader
-        noBackText={false}
-        isCancel
-        handleGoBack={handleGoBack}
-        containerStyle={styles.header}
-        backColor={colors.secondary100}
-        title="Change Password"
-        nextButtonText="Confirm"
-        isNextDisabled={!isValidInput}
-        isNextLoading={loading}
-        loadingText=""
-        handleGoNext={handlePressConfirm}
-      />
-      <KeyboardAvoidingView
-        style={styles.keyboardContainer}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        keyboardVerticalOffset={0}>
-        <ScrollView contentContainerStyle={styles.scrollableContent}>
-          <PasswordShield />
-          <View>
-            <Typography type="bigTitle" style={styles.title}>
-              Change Your Password
-            </Typography>
-          </View>
-          <View style={styles.inputContainer}>
-            <GeneralTextInput
-              ref={oldPasswordRef}
-              customStyle={styles.input}
-              labelText="Enter Old Password"
-              secureTextEntry
-              onChangeText={setOldPassword}
-              value={oldPassword}
-              disableCancel
-              setErrorMessage={setOldPwdErrorMsg}
-              errorMessage={oldPwdErrorMsg}
+      <View style={styles.container}>
+        <Header
+          leftComponent={
+            <HeaderBack
+              text="Cancel"
+              customStyle={{ color: colors.secondary100 }}
+              onPress={handleGoBack}
+              onLayout={handleLayoutChange}
             />
+          }
+          leftComponentWidth={leftComponentWidth}
+          title="Change Password"
+          rightComponent={
+            <HeaderConfirm
+              text="Confirm"
+              customStyle={{ color: colors.secondary100 }}
+              disabled={!isValidInput}
+              isLoading={loading}
+              onPress={handlePressConfirm}
+            />
+          }
+        />
+        <KeyboardAvoidingView
+          style={styles.keyboardContainer}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          keyboardVerticalOffset={0}>
+          <ScrollView contentContainerStyle={styles.scrollableContent}>
+            <PasswordShield />
+            <View>
+              <Typography type="bigTitle" style={styles.title}>
+                Change Your Password
+              </Typography>
+            </View>
+            <View style={styles.inputContainer}>
+              <GeneralTextInput
+                ref={oldPasswordRef}
+                customStyle={styles.input}
+                labelText="Enter Old Password"
+                secureTextEntry
+                onChangeText={setOldPassword}
+                value={oldPassword}
+                disableCancel
+                setErrorMessage={setOldPwdErrorMsg}
+                errorMessage={oldPwdErrorMsg}
+              />
 
-            <GeneralTextInput
-              customStyle={[styles.input]}
-              labelText="Enter a Password"
-              secureTextEntry
-              onChangeText={setPassword}
-              value={password}
-              disableCancel
-              ref={passwordRef}
-            />
-            {strengthResult && (
-              <View style={styles.passwordStrength}>
-                <ProgressBar
-                  finished={strengthResult?.finished}
-                  total={3}
-                  barsColor={strengthResult?.barsColor}
-                />
-                <Typography
-                  type="smallText"
-                  style={{
-                    color: strengthResult?.barsColor,
-                  }}>
-                  {` ${strengthResult?.textResult}`}
-                </Typography>
-              </View>
-            )}
-            <GeneralTextInput
-              ref={repeatPasswordRef}
-              customStyle={styles.input}
-              labelText="Re-enter a Password"
-              secureTextEntry
-              onChangeText={setRepeatPassword}
-              value={repeatPassword}
-              disableCancel
-              setErrorMessage={setRepeatPwdErrorMsg}
-              errorMessage={repeatPwdErrorMsg}
-            />
-          </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
+              <GeneralTextInput
+                customStyle={styles.input}
+                labelText="Enter a Password"
+                secureTextEntry
+                onChangeText={setPassword}
+                value={password}
+                disableCancel
+                ref={passwordRef}
+              />
+              {strengthResult && (
+                <View style={styles.passwordStrength}>
+                  <ProgressBar
+                    finished={strengthResult?.finished}
+                    total={3}
+                    barsColor={strengthResult?.barsColor}
+                  />
+                  <Typography
+                    type="smallText"
+                    style={{
+                      color: strengthResult?.barsColor,
+                    }}>
+                    {` ${strengthResult?.textResult}`}
+                  </Typography>
+                </View>
+              )}
+              <GeneralTextInput
+                ref={repeatPasswordRef}
+                customStyle={styles.input}
+                labelText="Re-enter a Password"
+                secureTextEntry
+                onChangeText={setRepeatPassword}
+                value={repeatPassword}
+                disableCancel
+                setErrorMessage={setRepeatPwdErrorMsg}
+                errorMessage={repeatPwdErrorMsg}
+              />
+            </View>
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </View>
     </SafeAreaView>
   );
 });

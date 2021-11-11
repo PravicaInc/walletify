@@ -13,7 +13,7 @@ import { observer } from 'mobx-react-lite';
 import { AvailableNetworks } from '../../stores/NetworkStore/types';
 import useNetwork from '../../hooks/useNetwork';
 import { useLocalization } from '../../hooks/useLocalization';
-import { CustomAppHeader } from '../../components/CustomAppHeader';
+import Header from '../../components/shared/Header';
 import { ThemeContext } from '../../contexts/theme';
 import { styles } from './styles';
 
@@ -32,9 +32,9 @@ const Home: React.FC = observer(() => {
   return (
     <SafeAreaView style={containerStyle}>
       <ScrollView contentContainerStyle={styles.contentContainer}>
-        <CustomAppHeader
-          image={<Wise />}
-          customNext={
+        <Header
+          leftComponent={<Wise />}
+          rightComponent={
             <TouchableOpacity onPress={goToSettings}>
               <RoundedImage
                 image={PlaceholderImg}
@@ -43,7 +43,6 @@ const Home: React.FC = observer(() => {
               />
             </TouchableOpacity>
           }
-          containerStyle={styles.header}
         />
 
         {/* <Typography type="bigTitle">

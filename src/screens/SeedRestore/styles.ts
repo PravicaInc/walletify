@@ -5,13 +5,12 @@ import { PADDING_HORIZONTAL, PADDING_VERTICAL } from '../../shared/layout';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingHorizontal: PADDING_HORIZONTAL,
   },
-  header: { shadowOpacity: 0 },
   keyboardContainer: {
     flex: 1,
   },
   scrollableContent: {
-    paddingHorizontal: PADDING_HORIZONTAL,
     paddingBottom: PADDING_VERTICAL,
     alignItems: 'center',
     justifyContent: 'flex-start',
