@@ -1,4 +1,4 @@
-import { BackHandler, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 import { PADDING_HORIZONTAL, PADDING_VERTICAL } from '../../shared/layout';
 

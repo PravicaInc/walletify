@@ -175,8 +175,6 @@ const ChangePassword = observer(() => {
     }
   };
 
-  console.log(oldPwdChanged, pwdChanged, confirmPwdChanged);
-
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.white }]}>
       <View style={styles.container}>
