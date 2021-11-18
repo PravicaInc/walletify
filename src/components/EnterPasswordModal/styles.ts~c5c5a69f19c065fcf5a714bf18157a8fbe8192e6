@@ -3,10 +3,13 @@ import { StyleSheet } from 'react-native';
 import { PADDING_HORIZONTAL, PADDING_VERTICAL } from '../../shared/layout';
 
 const styles = StyleSheet.create({
+  safeAreaContainer: { flex: 1 },
   container: {
     flex: 1,
     paddingHorizontal: PADDING_HORIZONTAL,
-    paddingBottom: PADDING_VERTICAL,
+    paddingVertical: PADDING_VERTICAL,
+    borderTopLeftRadius: 13,
+    borderTopRightRadius: 13,
   },
   header: {
     shadowOpacity: 0,
@@ -32,6 +35,10 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     flex: undefined,
     height: 60,
+  },
+  confirmContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });
 
