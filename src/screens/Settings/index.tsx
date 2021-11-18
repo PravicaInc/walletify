@@ -2,18 +2,16 @@ import React, { useContext, useState, useEffect } from 'react';
 import { TouchableOpacity, View, ScrollView, Switch } from 'react-native';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { BIOMETRY_TYPE, ACCESS_CONTROL } from 'react-native-keychain';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 import { Typography } from '../../components/shared/Typography';
-import RoundedImage from '../../components/shared/RoundedImage';
-import SettingsIcon from '../../assets/settings.svg';
-import PlaceholderImg from '../../assets/home-placeholder.svg';
+import AccountAvatar from '../../components/shared/AccountAvatar';
+import SettingsIcon from '../../assets/manage.svg';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useStores } from '../../hooks/useStores';
 import { observer } from 'mobx-react-lite';
-import SettingsNextLink from '../../components/SettingsNextLink';
 import Header from '../../components/shared/Header';
 import HeaderBack from '../../components/shared/HeaderBack';
+import EnterPasswordModal from '../../components/EnterPasswordModal';
 import { ThemeContext } from '../../contexts/theme';
 
 import BugIcon from '../../assets/images/settings/bug.svg';
@@ -24,9 +22,32 @@ import SpeakIcon from '../../assets/images/settings/speak.svg';
 import FingerPrintIcon from '../../assets/finger-print.svg';
 import ExitIcon from '../../assets/images/settings/exit.svg';
 import SecureKeychain from '../../shared/SecureKeychain';
-import { RootStackParamList } from '../../navigation/types';
 
 import { styles } from './styles';
+
+type SettingsLinkProps = {
+  text: string;
+  icon: React.FC;
+};
+
+const SettingsNextLink = (props: SettingsLinkProps) => {
+  const {
+    theme: { colors },
+  } = useContext(ThemeContext);
+
+  const Icon = props.icon;
+
+  return (
+    <View style={styles.settingsLinkContainer}>
+      <Icon />
+      <Typography
+        type="buttonText"
+        style={[styles.settingsLinkText, { color: colors.secondary100 }]}>
+        {props.text}
+      </Typography>
+    </View>
+  );
+};
 
 type TProps = {
   icon: React.FC;
@@ -54,16 +75,14 @@ const bottomSettingsList = [
   { icon: BugIcon, text: 'Report a Bug' },
 ];
 
-type SProps = NativeStackScreenProps<RootStackParamList, 'Settings'>;
-
-const Settings = observer((props: SProps) => {
+const Settings = observer(() => {
   const {
     theme: { colors },
   } = useContext(ThemeContext);
 
   const { dispatch } = useNavigation();
 
-  const password = props.route.params?.password;
+  const [enterPasswordVisible, setEnterPasswordVisible] = useState(false);
 
   // biometrics
   const { uiStore } = useStores();
@@ -78,47 +97,37 @@ const Settings = observer((props: SProps) => {
     getBioSetup();
   }, []);
 
-  useEffect(() => {
-    const updateBio = async () => {
-      await SecureKeychain.setGenericPassword(
-        password || '',
-        ACCESS_CONTROL.BIOMETRY_CURRENT_SET_OR_DEVICE_PASSCODE,
-      );
-      setIsBiometryEnabled(true);
-    };
-    if (password && password.length > 0) {
-      updateBio();
-    }
-  }, [password]);
-
   const handleBiometricToggle = async () => {
     if (isBiometryEnabled) {
       await SecureKeychain.resetGenericPassword();
       setIsBiometryEnabled(false);
     } else {
-      dispatch(StackActions.push('EnterPassword', { nextScreen: 'Settings' }));
+      toggleEnterPassword();
     }
   };
 
+  const toggleEnterPassword = () =>
+    setEnterPasswordVisible(!enterPasswordVisible);
+
+  const handleBioOn = async ({ password }: { password: string }) => {
+    await SecureKeychain.setGenericPassword(
+      password || '',
+      ACCESS_CONTROL.BIOMETRY_CURRENT_SET_OR_DEVICE_PASSCODE,
+    );
+    setIsBiometryEnabled(true);
+    toggleEnterPassword();
+  };
+
   const handleRecoverSeedPhrase = () =>
-    dispatch(StackActions.push('ShowSeedPhrase'));
+    dispatch(StackActions.push('RecoverSeedPhrase'));
 
   // navigation handlers
   const handleGoBack = () => dispatch(StackActions.replace('Home'));
   const handleChangePassword = () =>
     dispatch(StackActions.push('ChangePassword'));
 
-  const containerStyle = [styles.container, { backgroundColor: colors.white }];
-  const cardStyle = [styles.card, { backgroundColor: colors.card }];
-  const cardSubtitleStyle = { color: colors.primary40 };
-  const settingsItemsContainerStyle = [
-    styles.settingsItemsContainer,
-    { borderBottomColor: colors.primary20 },
-  ];
-  const bottomTextStyle = [styles.bottomText, { color: colors.failed100 }];
-
   return (
-    <SafeAreaView style={containerStyle}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.white }]}>
       <ScrollView contentContainerStyle={styles.contentContainer}>
         <View style={styles.topContent}>
           <Header
@@ -135,18 +144,22 @@ const Settings = observer((props: SProps) => {
               <SettingsNextLink text="Manage Accounts" icon={SettingsIcon} />
             }
           />
-          {/* Card component start*/}
-          <View style={cardStyle}>
-            <RoundedImage image={PlaceholderImg} diameter={55} hasAura={true} />
+          <View style={[styles.card, { backgroundColor: colors.card }]}>
+            <AccountAvatar accountIndex={3} diameter={55} hasAura={true} />
             <View style={styles.cardTextContainer}>
               <Typography type="bigTitle">Account 1</Typography>
-              <Typography type="smallTitleR" style={cardSubtitleStyle}>
+              <Typography
+                type="smallTitleR"
+                style={{ color: colors.primary40 }}>
                 (SP6A....45G4)
               </Typography>
             </View>
           </View>
-          {/* Card component end*/}
-          <View style={settingsItemsContainerStyle}>
+          <View
+            style={[
+              styles.settingsItemsContainer,
+              { borderBottomColor: colors.primary20 },
+            ]}>
             <TouchableSettingsItem
               icon={PasswordIcon}
               text="Change Password"
@@ -164,6 +177,11 @@ const Settings = observer((props: SProps) => {
                 value={isBiometryEnabled}
                 disabled={!hasBioSetup}
               />
+              <EnterPasswordModal
+                handleNextAction={handleBioOn}
+                toggleEnterPassword={toggleEnterPassword}
+                enterPasswordVisible={enterPasswordVisible}
+              />
             </View>
             <TouchableSettingsItem
               icon={LockIcon}
@@ -171,7 +189,11 @@ const Settings = observer((props: SProps) => {
               onPress={handleRecoverSeedPhrase}
             />
           </View>
-          <View style={settingsItemsContainerStyle}>
+          <View
+            style={[
+              styles.settingsItemsContainer,
+              { borderBottomColor: colors.primary20 },
+            ]}>
             {bottomSettingsList.map(item => (
               <TouchableSettingsItem
                 key={item.text}
@@ -183,7 +205,9 @@ const Settings = observer((props: SProps) => {
         </View>
         <View style={styles.bottomContent}>
           <ExitIcon />
-          <Typography type="buttonText" style={bottomTextStyle}>
+          <Typography
+            type="buttonText"
+            style={[styles.bottomText, { color: colors.failed100 }]}>
             Reset Wallet
           </Typography>
         </View>
