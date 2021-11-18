@@ -13,7 +13,7 @@ import GeneralButton from '../../components/shared/GeneralButton';
 import { CustomAppHeader } from '../../components/CustomAppHeader';
 import { Typography } from '../../components/shared/Typography';
 import { GeneralTextInput } from '../../components/shared/GeneralTextInput';
-import { ThemeContext } from '../../contexts/theme';
+import { ThemeContext } from '../../contexts/Theme/theme';
 import PasswordShield from '../../assets/password-shield.svg';
 import styles from './styles';
 import { RootStackParamList } from '../../navigation/types';

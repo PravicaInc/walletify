@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { ActivityIndicator, StyleProp, View, ViewStyle } from 'react-native';
 import styles from './styles';
-import { ThemeContext } from '../../contexts/theme';
+import { ThemeContext } from '../../contexts/Theme/theme';
 import { Typography } from '../shared/Typography';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Chevron from '../../assets/chevron-right.svg';

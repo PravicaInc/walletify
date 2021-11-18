@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { View, ViewStyle, StyleProp } from 'react-native';
-import { ThemeContext } from '../../contexts/theme';
+import { ThemeContext } from '../../contexts/Theme/theme';
 
 import styles from './styles';
 

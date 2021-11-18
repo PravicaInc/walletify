@@ -8,7 +8,7 @@ import { CustomAppHeader } from '../../components/CustomAppHeader';
 import { Typography } from '../../components/shared/Typography';
 import ProgressBar from '../../components/ProgressBar';
 
-import { ThemeContext } from '../../contexts/theme';
+import { ThemeContext } from '../../contexts/Theme/theme';
 import LockedShield from '../../assets/locked-shield.svg';
 
 import styles from './styles';

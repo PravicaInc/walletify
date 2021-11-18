@@ -1,1 +1,0 @@
-export const FINISHED_ONBOARD = 'FINISHED_ONBOARD';
