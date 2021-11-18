@@ -13,6 +13,7 @@ import ChangePassword from '../screens/ChangePassword';
 import ShowSeedPhrase from '../screens/ShowSeedPhrase';
 import RecoverSeedPhrase from '../screens/RecoverSeedPhrase';
 import { RootStackParamList } from './types';
+import Login from '../screens/Login';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -78,6 +79,11 @@ export const Routes: React.FC = () => {
         options={{ headerShown: false }}
         name="RecoverSeedPhrase"
         component={RecoverSeedPhrase}
+      />
+      <Stack.Screen
+        options={{ headerShown: false }}
+        name="Login"
+        component={Login}
       />
     </Stack.Navigator>
   );
