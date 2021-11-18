@@ -20,8 +20,6 @@ const WalletSetup: React.FC = () => {
     theme: { colors },
   } = useContext(ThemeContext);
 
-  const disclaimerStyle = [styles.disclaimer, { color: colors.primary40 }];
-
   const handleCreate = () =>
     dispatch(
       StackActions.push('CreatePassword', {
@@ -36,10 +34,8 @@ const WalletSetup: React.FC = () => {
       }),
     );
 
-  const containerStyle = [styles.container, { backgroundColor: colors.white }];
-
   return (
-    <SafeAreaView style={containerStyle}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.white }]}>
       <ScrollView contentContainerStyle={styles.container}>
         <View style={styles.contentContainer}>
           <Logo />
@@ -59,7 +55,9 @@ const WalletSetup: React.FC = () => {
               Restore Wallet
             </GeneralButton>
           </View>
-          <Typography type={'commonText'} style={disclaimerStyle}>
+          <Typography
+            type={'commonText'}
+            style={[styles.disclaimer, { color: colors.primary40 }]}>
             Lorem Ipsum is simply dummy text of the printing and typesetting
             industryLorem Ipsum has beenLorem Ipsum is simply dummy text of the.
           </Typography>
