@@ -9,7 +9,7 @@ import {
   ViewStyle,
 } from 'react-native';
 import { useCallback, useContext, useEffect, useState } from 'react';
-import { ThemeContext } from '../../../contexts/theme';
+import { ThemeContext } from '../../../contexts/Theme/theme';
 // import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import CloseIcon from '../../../assets/icon-reject-contact.svg';

@@ -4,7 +4,7 @@ import { BlurView } from '@react-native-community/blur';
 
 import { Typography } from '../../components/shared/Typography';
 
-import { ThemeContext } from '../../contexts/theme';
+import { ThemeContext } from '../../contexts/Theme/theme';
 import styles from './styles';
 
 interface IProps {

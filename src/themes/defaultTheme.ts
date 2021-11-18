@@ -1,5 +1,5 @@
 import { Fonts } from '../assets/fonts';
-import { Theme } from '../contexts/theme';
+import { Theme } from '../contexts/Theme/theme';
 
 export const DefaultTheme: Theme = {
   id: 'light',

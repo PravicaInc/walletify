@@ -1,5 +1,5 @@
 import React from 'react';
-import DefaultTheme from '../themes/defaultTheme';
+import DefaultTheme from '../../themes/defaultTheme';
 
 export const LIGHT = 'light';
 export type light = typeof LIGHT;

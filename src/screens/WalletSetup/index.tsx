@@ -9,7 +9,7 @@ import LockAndStacks from '../../assets/lock-and-stacks.svg';
 
 import GeneralButton from '../../components/shared/GeneralButton';
 import { Typography } from '../../components/shared/Typography';
-import { ThemeContext } from '../../contexts/theme';
+import { ThemeContext } from '../../contexts/Theme/theme';
 import { WalletSetupFlow } from '../../navigation/types';
 
 import styles from './styles';

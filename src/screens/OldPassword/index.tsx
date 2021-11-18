@@ -14,7 +14,7 @@ import Header from '../../components/shared/Header';
 import HeaderBack from '../../components/shared/HeaderBack';
 import { Typography } from '../../components/shared/Typography';
 import { GeneralTextInput } from '../../components/shared/GeneralTextInput';
-import { ThemeContext } from '../../contexts/theme';
+import { ThemeContext } from '../../contexts/Theme/theme';
 import PasswordShield from '../../assets/password-shield.svg';
 import styles from './styles';
 import { RootStackParamList } from '../../navigation/types';
