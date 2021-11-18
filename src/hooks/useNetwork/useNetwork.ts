@@ -4,7 +4,7 @@ import { useMemo } from 'react';
 import {
   DEFAULT_MAINNET_SERVER,
   DEFAULT_TESTNET_SERVER,
-} from '../../shared/constants';
+} from '../../models/network';
 import { useAtom } from 'jotai';
 import { selectedNetworkKey, selectedNetwork } from './networkStore';
 import { useAtomValue } from 'jotai/utils';
