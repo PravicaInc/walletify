@@ -5,7 +5,7 @@ export enum WalletSetupFlow {
 
 export type RootStackParamList = {
   Splash: undefined;
-  Home: undefined;
+  Home: { seedPhrase: string; password: string };
   Onboarding: undefined;
   WalletSetup: undefined;
   SeedConfirmation: undefined;
