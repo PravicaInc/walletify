@@ -72,13 +72,13 @@ export const Routes: React.FC = () => {
       />
       <Stack.Screen
         options={{ headerShown: false }}
-        name="EnterPassword"
-        component={EnterPassword}
+        name="ShowSeedPhrase"
+        component={ShowSeedPhrase}
       />
       <Stack.Screen
         options={{ headerShown: false }}
-        name="ShowSeedPhrase"
-        component={ShowSeedPhrase}
+        name="RecoverSeedPhrase"
+        component={RecoverSeedPhrase}
       />
     </Stack.Navigator>
   );

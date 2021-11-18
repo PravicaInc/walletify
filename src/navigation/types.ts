@@ -20,8 +20,6 @@ export type RootStackParamList = {
   RecoverSeedPhrase: undefined;
   Login: undefined;
   ChangePassword: undefined;
-  EnterPassword: {
-    nextScreen: string;
-  };
-  ShowSeedPhrase: { seedPhrase?: string };
+  ShowSeedPhrase: { seedPhrase?: string; password?: string };
+  RecoverSeedPhrase: undefined;
 };
