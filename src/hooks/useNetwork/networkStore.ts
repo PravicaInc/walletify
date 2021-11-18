@@ -4,8 +4,8 @@ import {
   AvailableNetworks,
   defaultNetworks,
   Network,
+  DEFAULT_NETWORK,
 } from '../../models/network';
-import { DEFAULT_NETWORK } from '../../shared/constants';
 
 export const selectedNetworkKey = atom<AvailableNetworks>(DEFAULT_NETWORK);
 

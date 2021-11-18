@@ -1,13 +1,16 @@
 import { ChainID } from '@stacks/transactions';
-import {
-  DEFAULT_MAINNET_SERVER,
-  DEFAULT_TESTNET_SERVER,
-} from '../shared/constants';
 
 export enum AvailableNetworks {
   MAINNET = 'mainnet',
   TESTNET = 'testnet',
 }
+
+export const DEFAULT_NETWORK = AvailableNetworks.MAINNET;
+
+export const DEFAULT_TESTNET_SERVER =
+  'https://stacks-node-api.testnet.stacks.co';
+
+export const DEFAULT_MAINNET_SERVER = 'https://stacks-node-api.stacks.co';
 
 export interface Network {
   url: string;
