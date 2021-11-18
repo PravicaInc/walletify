@@ -6,6 +6,7 @@ import { Theme, ThemeContext } from './src/contexts/theme';
 import DefaultTheme from './src/themes/defaultTheme';
 import { StoresProvider } from './src/components/providers/storeProvider';
 
+
 export default function App() {
   const [theme, setTheme] = useState<Theme>(DefaultTheme);
 
