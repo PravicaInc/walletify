@@ -8,13 +8,13 @@ import GeneralButton from '../../components/shared/GeneralButton';
 import { CustomAppHeader } from '../../components/CustomAppHeader';
 import { Typography } from '../../components/shared/Typography';
 import { GeneralTextInput } from '../../components/shared/GeneralTextInput';
-import { useStores } from '../../hooks/useStores';
 
-import { ThemeContext } from '../../contexts/theme';
+import { ThemeContext } from '../../contexts/Theme/theme';
 import LockedShield from '../../assets/locked-shield.svg';
 
 import { RootStackParamList } from '../../navigation/types';
 import styles from './styles';
+import { useWallet } from '../../hooks/useWallet/useWallet';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'SeedGeneration'>;
 
@@ -22,7 +22,6 @@ const SeedRestore: React.FC<Props> = props => {
   const { dispatch } = useNavigation();
   const password = props.route.params?.password;
 
-  const { walletStore } = useStores();
   const {
     theme: { colors },
   } = useContext(ThemeContext);
@@ -30,8 +29,12 @@ const SeedRestore: React.FC<Props> = props => {
   const [seedPhrase, setSeedPhrase] = useState('');
 
   const handleContinue = async () => {
-    await walletStore.restoreWallet(seedPhrase, password);
-    dispatch(StackActions.replace('Home'));
+    dispatch(
+      StackActions.replace('Home', {
+        password,
+        seedPhrase,
+      }),
+    );
   };
 
   const handleOldPassword = () =>

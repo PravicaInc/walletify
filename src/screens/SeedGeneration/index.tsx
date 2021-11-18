@@ -3,19 +3,17 @@ import { View, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import Clipboard from '@react-native-clipboard/clipboard';
-import { observer } from 'mobx-react-lite';
 import GeneralButton from '../../components/shared/GeneralButton';
 import { CustomAppHeader } from '../../components/CustomAppHeader';
 import { Typography } from '../../components/shared/Typography';
 // import ProgressBar from '../../components/ProgressBar';
 import SeedPhraseGrid from '../../components/SeedPhraseGrid';
 
-import { ThemeContext } from '../../contexts/theme';
+import { ThemeContext } from '../../contexts/Theme/theme';
 
 import LockedShield from '../../assets/locked-shield.svg';
 import styles from './styles';
-import { useStores } from '../../hooks/useStores';
-import { generateSecretKey } from '@stacks/wallet-sdk';
+import { generateSecretKey } from '@stacks/wallet-sdk/dist';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/types';
 
@@ -29,7 +27,7 @@ const seedPhrase = generateSecretKey(256);
 
 type Props = NativeStackScreenProps<RootStackParamList, 'SeedGeneration'>;
 
-const SeedGeneration: React.FC<Props> = observer(props => {
+const SeedGeneration: React.FC<Props> = props => {
   const { dispatch } = useNavigation();
   const {
     theme: { colors },
@@ -37,8 +35,6 @@ const SeedGeneration: React.FC<Props> = observer(props => {
   const [currentStage, setCurrentStage] = useState<Stage>(Stage.Blurred);
 
   const [isLoading, setIsloading] = useState(false);
-
-  const { walletStore } = useStores();
 
   const password = props.route.params?.password;
 
@@ -51,8 +47,12 @@ const SeedGeneration: React.FC<Props> = observer(props => {
 
   const handleConfirm = async () => {
     setIsloading(true);
-    await walletStore.createWallet(seedPhrase, password);
-    dispatch(StackActions.replace('Home'));
+    dispatch(
+      StackActions.replace('Home', {
+        password,
+        seedPhrase,
+      }),
+    );
   };
 
   const handleGoBack = () => dispatch(StackActions.pop());
@@ -125,6 +125,6 @@ const SeedGeneration: React.FC<Props> = observer(props => {
       </ScrollView>
     </SafeAreaView>
   );
-});
+};
 
 export default SeedGeneration;
