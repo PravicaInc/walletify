@@ -4,8 +4,6 @@ import { PADDING_HORIZONTAL, PADDING_VERTICAL } from '../../shared/layout';
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // alignItems: 'center',
-    // justifyContent: 'space-between',
   },
   header: {
     shadowOpacity: 0,

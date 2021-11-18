@@ -22,7 +22,7 @@ const OnBoarding: React.FC = observer(() => {
   const {
     theme: { colors },
   } = useContext(ThemeContext);
-  const data = [
+  const onboardingSteps = [
     {
       svg: Onboarding1,
       title: translate('ONBOARDING_FIRST_SCREEN_TITLE'),
@@ -40,7 +40,7 @@ const OnBoarding: React.FC = observer(() => {
     },
   ];
 
-  type Item = typeof data[0];
+  type Item = typeof onboardingSteps[0];
 
   const keyExtractor = (item: Item) => item.title;
 
@@ -59,8 +59,8 @@ const OnBoarding: React.FC = observer(() => {
     );
   };
 
-  const renderPagination = (activeIndex: number) => {
-    const isDone = activeIndex >= data.length - 1;
+  const renderPagination = (activeStep: number) => {
+    const isDone = activeStep >= onboardingSteps.length - 1;
 
     const handleNext = (index: number) => () =>
       slider.current?.goToSlide(index, true);
@@ -73,17 +73,17 @@ const OnBoarding: React.FC = observer(() => {
     return (
       <View style={styles.paginationContainer}>
         <View style={styles.paginationDots}>
-          {data.length > 1 &&
-            data.map((_, i) => (
+          {onboardingSteps.length > 1 &&
+            onboardingSteps.map((_, stepIndex) => (
               <TouchableOpacity
-                key={i}
+                key={stepIndex}
                 style={[
                   styles.dot,
-                  i === activeIndex
+                  stepIndex === activeStep
                     ? { backgroundColor: colors.primary100 }
                     : { backgroundColor: colors.primary10 },
                 ]}
-                onPress={handleNext(i)}
+                onPress={handleNext(stepIndex)}
               />
             ))}
         </View>
@@ -96,16 +96,14 @@ const OnBoarding: React.FC = observer(() => {
     );
   };
 
-  const containerStyle = [styles.container, { backgroundColor: colors.white }];
-
   return (
-    <SafeAreaView style={containerStyle}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.white }]}>
       <ScrollView contentContainerStyle={styles.container}>
         <AppIntroSlider
           keyExtractor={keyExtractor}
           renderItem={renderItem}
           bottomButton
-          data={data}
+          data={onboardingSteps}
           renderPagination={renderPagination}
           ref={slider}
         />

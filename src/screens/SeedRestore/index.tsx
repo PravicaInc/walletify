@@ -57,12 +57,8 @@ const SeedRestore: React.FC<Props> = props => {
     );
   }
 
-  const containerStyle = [styles.container, { backgroundColor: colors.white }];
-
-  const inputStyle = [styles.seedInput, { backgroundColor: colors.card }];
-
   return (
-    <SafeAreaView style={containerStyle}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.white }]}>
       <View style={styles.container}>
         <Header
           leftComponent={
@@ -93,7 +89,10 @@ const SeedRestore: React.FC<Props> = props => {
               <View style={styles.seedInputContainer}>
                 <GeneralTextInput
                   value={seedPhrase}
-                  customStyle={inputStyle}
+                  customStyle={[
+                    styles.seedInput,
+                    { backgroundColor: colors.card },
+                  ]}
                   onChangeText={setSeedPhrase}
                   disableCancel
                   multiline={true}

@@ -4,15 +4,14 @@ import Splash from '../screens/Splash';
 import Home from '../screens/Home';
 import Onboarding from '../screens/Onboarding';
 import WalletSetup from '../screens/WalletSetup';
-import SeedGeneration from '../screens/SeedGeneration';
 import SeedConfirmation from '../screens/SeedConfirmation';
 import CreatePassword from '../screens/CreatePassword';
 import SeedRestore from '../screens/SeedRestore';
 import OldPassword from '../screens/OldPassword';
 import Settings from '../screens/Settings';
 import ChangePassword from '../screens/ChangePassword';
-import EnterPassword from '../screens/EnterPassword';
 import ShowSeedPhrase from '../screens/ShowSeedPhrase';
+import RecoverSeedPhrase from '../screens/RecoverSeedPhrase';
 import { RootStackParamList } from './types';
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -39,11 +38,6 @@ export const Routes: React.FC = () => {
         options={{ headerShown: false }}
         name="WalletSetup"
         component={WalletSetup}
-      />
-      <Stack.Screen
-        options={{ headerShown: false }}
-        name="SeedGeneration"
-        component={SeedGeneration}
       />
       <Stack.Screen
         options={{ headerShown: false }}
@@ -77,13 +71,13 @@ export const Routes: React.FC = () => {
       />
       <Stack.Screen
         options={{ headerShown: false }}
-        name="EnterPassword"
-        component={EnterPassword}
+        name="ShowSeedPhrase"
+        component={ShowSeedPhrase}
       />
       <Stack.Screen
         options={{ headerShown: false }}
-        name="ShowSeedPhrase"
-        component={ShowSeedPhrase}
+        name="RecoverSeedPhrase"
+        component={RecoverSeedPhrase}
       />
     </Stack.Navigator>
   );

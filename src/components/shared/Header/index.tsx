@@ -5,15 +5,15 @@ import { ThemeContext } from '../../../contexts/theme';
 
 interface IProps {
   leftComponent: React.ReactNode;
-  leftComponentWidth?: number; // necessary when we have a left component and title without the right component to center the title
   title?: string;
+  titleColor?: string;
   rightComponent?: React.ReactNode;
 }
 
 const Header: React.FC<IProps> = ({
   title,
+  titleColor,
   leftComponent,
-  leftComponentWidth,
   rightComponent,
 }) => {
   const {
@@ -22,13 +22,15 @@ const Header: React.FC<IProps> = ({
 
   return (
     <View style={styles.headerContainer}>
-      {leftComponent}
+      <View style={styles.lateral}>{leftComponent}</View>
       {title && (
-        <Typography type="smallTitle" style={{ color: colors.primary100 }}>
+        <Typography
+          type="smallTitle"
+          style={{ color: titleColor || colors.primary100 }}>
           {title}
         </Typography>
       )}
-      {rightComponent || <View style={{ width: leftComponentWidth }} />}
+      <View style={[styles.lateral, styles.right]}>{rightComponent}</View>
     </View>
   );
 };
@@ -39,6 +41,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: '100%',
     alignItems: 'center',
+  },
+  lateral: {
+    flex: 1,
+  },
+  right: {
+    alignItems: 'flex-end',
   },
 });
 

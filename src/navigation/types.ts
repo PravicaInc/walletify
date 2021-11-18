@@ -8,18 +8,14 @@ export type RootStackParamList = {
   Home: undefined;
   Onboarding: undefined;
   WalletSetup: undefined;
-  SeedGeneration: { password: string };
   SeedConfirmation: undefined;
   CreatePassword: {
     flow: WalletSetupFlow;
   };
   SeedRestore: { password: string };
-  KeychainPOC: undefined;
   OldPassword: { seedPhrase: string } | undefined;
-  Settings: { password?: string };
+  Settings: undefined;
   ChangePassword: undefined;
-  EnterPassword: {
-    nextScreen: string;
-  };
-  ShowSeedPhrase: { seedPhrase?: string };
+  ShowSeedPhrase: { seedPhrase?: string; password?: string };
+  RecoverSeedPhrase: undefined;
 };

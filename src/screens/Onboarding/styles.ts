@@ -5,9 +5,8 @@ const styles = StyleSheet.create({
   container: { flex: 1, paddingVertical: PADDING_VERTICAL },
   slide: {
     flex: 1,
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
     alignItems: 'center',
-    paddingBottom: '25%',
     paddingHorizontal: PADDING_HORIZONTAL,
   },
   title: {

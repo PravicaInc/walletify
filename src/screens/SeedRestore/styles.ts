@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native';
 import { PADDING_HORIZONTAL, PADDING_VERTICAL } from '../../shared/layout';
 
 const styles = StyleSheet.create({
+  safeAreaContainer: { flex: 1 },
   container: {
     flex: 1,
     paddingHorizontal: PADDING_HORIZONTAL,

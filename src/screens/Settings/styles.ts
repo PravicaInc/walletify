@@ -62,4 +62,8 @@ export const styles = StyleSheet.create({
   bottomText: {
     marginLeft: 5,
   },
+  settingsLinkContainer: {
+    flexDirection: 'row',
+  },
+  settingsLinkText: { marginLeft: 5 },
 });

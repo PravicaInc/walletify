@@ -17,8 +17,6 @@ const SeedPhraseGrid = (props: IProps) => {
     theme: { colors },
   } = useContext(ThemeContext);
 
-  const containerStyle = [styles.container, { backgroundColor: colors.card }];
-
   const renderWords = () =>
     props.phrase.split(' ').map((word, i) => {
       const wordStyle: ViewStyle[] = [styles.word];
@@ -39,7 +37,7 @@ const SeedPhraseGrid = (props: IProps) => {
     });
 
   return (
-    <View style={containerStyle}>
+    <View style={[styles.container, { backgroundColor: colors.card }]}>
       {renderWords()}
       {props.isBlurred && (
         <BlurView style={styles.absolute} blurType="light" blurAmount={2} />
