@@ -8,9 +8,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: PADDING_HORIZONTAL,
     paddingBottom: PADDING_VERTICAL,
   },
-  header: {
-    shadowOpacity: 0,
-  },
   keyboardContainer: {
     flex: 1,
   },
@@ -21,29 +18,41 @@ const styles = StyleSheet.create({
     paddingTop: '15%',
   },
   title: { marginVertical: 10 },
-  description: { textAlign: 'center', marginBottom: 40 },
-
-  input: {
-    width: '99%',
-    marginTop: 8,
-    marginBottom: 0,
-    flex: undefined,
-    height: 60,
-  },
-
-  passwordStrength: {
-    flexDirection: 'row',
-    alignSelf: 'flex-start',
-    width: '40%',
-    alignItems: 'flex-end',
-    marginBottom: 10,
-  },
   inputContainer: {
     width: '100%',
     height: '60%',
     alignItems: 'center',
     justifyContent: 'space-between',
     marginTop: 20,
+  },
+  inputWrapper: {
+    width: '100%',
+    alignItems: 'center',
+  },
+  input: {
+    width: '99%',
+    marginTop: 8,
+    flex: undefined,
+    height: 60,
+  },
+  inputGuide: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  caution: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  passwordStrength: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+  confirmContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });
 

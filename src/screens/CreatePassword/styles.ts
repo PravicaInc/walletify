@@ -1,15 +1,12 @@
 import { StyleSheet } from 'react-native';
 
-import { PADDING_HORIZONTAL, PADDING_VERTICAL } from '../../shared/layout';
+import { PADDING_HORIZONTAL, MARGIN_VERTICAL } from '../../shared/layout';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginBottom: PADDING_VERTICAL,
+    marginBottom: MARGIN_VERTICAL,
     paddingHorizontal: PADDING_HORIZONTAL,
-  },
-  header: {
-    shadowOpacity: 0,
   },
   keyboardContainer: {
     flex: 1,
@@ -22,27 +19,31 @@ const styles = StyleSheet.create({
   },
   title: { marginVertical: 10 },
   description: { textAlign: 'center', marginBottom: 40 },
-
   input: {
     width: '99%',
     marginTop: 8,
-    marginBottom: 24,
     flex: undefined,
     height: 60,
   },
-  topInput: { marginBottom: 0 },
-
-  bottomInput: {
-    marginTop: 24,
+  inputGuide: {
     width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  caution: {
+    flexDirection: 'row',
     alignItems: 'center',
   },
   passwordStrength: {
     flexDirection: 'row',
-    alignSelf: 'flex-start',
-    width: '40%',
-    alignItems: 'flex-end',
-    marginTop: 10,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+  bottomInput: {
+    marginTop: 24,
+    width: '100%',
+    alignItems: 'center',
   },
   switchContainer: {
     flexDirection: 'row',

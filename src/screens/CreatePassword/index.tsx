@@ -1,9 +1,8 @@
-import React, { useContext, useEffect, useState, useRef } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   View,
   KeyboardAvoidingView,
   Platform,
-  TextInput,
   ScrollView,
   Switch,
 } from 'react-native';
@@ -24,6 +23,7 @@ import { GeneralTextInput } from '../../components/shared/GeneralTextInput';
 import { ThemeContext } from '../../contexts/theme';
 import PasswordShield from '../../assets/password-shield.svg';
 import FingerPrint from '../../assets/finger-print.svg';
+import WarningIcon from '../../assets/images/grey-warning.svg';
 import styles from './styles';
 import { validatePassword } from '../../components/shared/GeneralTextInput/validate-password';
 import { RootStackParamList, WalletSetupFlow } from '../../navigation/types';
@@ -50,8 +50,6 @@ const CreatePassword = observer((props: Props) => {
 
   // navigation
   const { dispatch } = useNavigation();
-  const flow = props.route.params?.flow;
-  const handleGoBack = () => dispatch(StackActions.pop());
 
   // biometrics
   const { uiStore } = useStores();
@@ -67,61 +65,84 @@ const CreatePassword = observer((props: Props) => {
   }, []);
 
   // password and its confirmation
-  const passwordRef = useRef<TextInput>(null);
-  const confirmPasswordRef = useRef<TextInput>(null);
+  const [password, setPassword] = useState<string>('');
+  const [confirmPassword, setConfirmPassword] = useState<string>('');
+
+  const [pwdErrorMsg, setPwdErrorMsg] = useState<string>('');
+  const [confirmPwdErrorMsg, setConfirmPwdErrorMsg] = useState<string>('');
+
+  const [pwdChanged, setPwdChanged] = useState(false);
+  const [confirmPwdChanged, setConfirmPwdChanged] = useState(false);
+
   const [strengthResult, setStrengthResult] = useState<
     StrengthResultType | undefined
   >(undefined);
-  const [password, setPassword] = useState<string>('');
-  const [confirmPassword, setConfirmPassword] = useState<string>('');
-  const [errorMessage, setErrorMessage] = useState<string>('');
-  const isPasswordFocused = passwordRef.current?.isFocused;
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (isPasswordFocused && isPasswordFocused()) {
-        const { meetsAllStrengthRequirements, meetsLengthRequirement, score } =
-          validatePassword(password);
-        let finished, barsColor, textResult;
-        if (meetsAllStrengthRequirements) {
-          finished = 3;
-          barsColor = colors.confirm100;
-          textResult = StrengthLevel.Powerful;
-        } else if (meetsLengthRequirement && score === 3) {
-          finished = 2;
-          barsColor = colors.warning100;
-          textResult = StrengthLevel.Neutral;
-        } else {
-          finished = 1;
-          barsColor = colors.failed100;
-          textResult = StrengthLevel.Weak;
-        }
 
-        setStrengthResult({ finished, barsColor, textResult });
-      }
-    }, 250);
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [password]);
-  const isConfirmPasswordFocused = confirmPasswordRef.current?.isFocused;
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (
-        isConfirmPasswordFocused &&
-        isConfirmPasswordFocused() &&
-        password !== confirmPassword
-      ) {
-        setErrorMessage("Password and confirm password fields don't match!");
+      if (pwdChanged) {
+        if (password.length < 12) {
+          setPwdErrorMsg('You need at least 12 characters');
+          setStrengthResult(undefined);
+        } else {
+          const {
+            meetsAllStrengthRequirements,
+            meetsLengthRequirement,
+            score,
+          } = validatePassword(password);
+          let finished, barsColor, textResult;
+          if (meetsAllStrengthRequirements) {
+            finished = 3;
+            barsColor = colors.confirm100;
+            textResult = StrengthLevel.Powerful;
+          } else if (meetsLengthRequirement && score === 3) {
+            finished = 2;
+            barsColor = colors.warning100;
+            textResult = StrengthLevel.Neutral;
+          } else {
+            finished = 1;
+            barsColor = colors.failed100;
+            textResult = StrengthLevel.Weak;
+          }
+          setStrengthResult({ finished, barsColor, textResult });
+          setPwdErrorMsg('');
+        }
       }
-    }, 250);
+    }, 1000);
     return () => {
       clearTimeout(timer);
     };
-  }, [confirmPassword]);
+  }, [
+    password,
+    colors.confirm100,
+    colors.failed100,
+    colors.warning100,
+    pwdChanged,
+  ]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (confirmPwdChanged) {
+        if (password !== confirmPassword) {
+          setConfirmPwdErrorMsg('The password does not match!');
+        } else {
+          setConfirmPwdErrorMsg('');
+        }
+      }
+    }, 1000);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [confirmPassword, password, pwdChanged, confirmPwdChanged]);
+
   const isValidInput =
+    password.length >= 12 &&
     confirmPassword === password &&
-    strengthResult?.textResult &&
-    ['Netural', 'Powerful'].includes(strengthResult?.textResult);
+    strengthResult?.textResult;
+  const flow = props.route.params?.flow;
+
+  // handlers
+  const handleGoBack = () => dispatch(StackActions.pop());
   const handlePressCreate = async () => {
     setIsBiometryEnabled(isBioSwitchOn);
     try {
@@ -133,11 +154,11 @@ const CreatePassword = observer((props: Props) => {
       }
       const nextPage =
         flow === WalletSetupFlow.CreateWallet
-          ? 'SeedGeneration'
+          ? 'ShowSeedPhrase'
           : 'SeedRestore';
       dispatch(StackActions.push(nextPage, { password }));
     } catch (e) {
-      console.warn(e);
+      console.log(e);
     }
   };
 
@@ -169,41 +190,61 @@ const CreatePassword = observer((props: Props) => {
             </View>
 
             <GeneralTextInput
-              customStyle={[styles.input, styles.topInput]}
+              autoFocus={true}
+              customStyle={styles.input}
               labelText="Enter a Password"
               secureTextEntry
-              onChangeText={setPassword}
+              selectTextOnFocus={false}
+              clearTextOnFocus={false}
+              onChangeText={txt => {
+                setPassword(txt);
+                setPwdChanged(true);
+              }}
               value={password}
               disableCancel
-              ref={passwordRef}
+              errorMessage={pwdErrorMsg}
+              guide={
+                <View style={styles.inputGuide}>
+                  <View style={styles.caution}>
+                    <WarningIcon />
+                    <Typography
+                      type="smallText"
+                      style={{ color: colors.primary40 }}>
+                      You need at least 12 characters
+                    </Typography>
+                  </View>
+                  {strengthResult && (
+                    <View style={styles.passwordStrength}>
+                      <ProgressBar
+                        currentBarIdx={strengthResult?.finished}
+                        total={3}
+                        barsColor={strengthResult?.barsColor}
+                        barIsCircle
+                      />
+                      <Typography
+                        type="smallText"
+                        style={{
+                          color: strengthResult?.barsColor,
+                        }}>
+                        {` ${strengthResult?.textResult}`}
+                      </Typography>
+                    </View>
+                  )}
+                </View>
+              }
             />
-            {strengthResult && (
-              <View style={styles.passwordStrength}>
-                <ProgressBar
-                  finished={strengthResult?.finished}
-                  total={3}
-                  barsColor={strengthResult?.barsColor}
-                />
-                <Typography
-                  type="smallText"
-                  style={{
-                    color: strengthResult?.barsColor,
-                  }}>
-                  {` ${strengthResult?.textResult}`}
-                </Typography>
-              </View>
-            )}
             <View style={styles.bottomInput}>
               <GeneralTextInput
-                ref={confirmPasswordRef}
                 customStyle={styles.input}
                 labelText="Re-enter a Password"
                 secureTextEntry
-                onChangeText={setConfirmPassword}
+                onChangeText={txt => {
+                  setConfirmPassword(txt);
+                  setConfirmPwdChanged(true);
+                }}
                 value={confirmPassword}
                 disableCancel
-                setErrorMessage={setErrorMessage}
-                errorMessage={errorMessage}
+                errorMessage={confirmPwdErrorMsg}
               />
             </View>
             <View style={styles.switchContainer}>
@@ -217,7 +258,6 @@ const CreatePassword = observer((props: Props) => {
                 disabled={!hasBioSetup}
               />
             </View>
-
             <GeneralButton
               style={styles.button}
               onPress={handlePressCreate}

@@ -15,6 +15,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import CloseIcon from '../../../assets/icon-reject-contact.svg';
 import HiddenEye from '../../../assets/hidden-eye.svg';
 import VisibleEye from '../../../assets/visible-eye.svg';
+import Warning from '../../../assets/images/red-warning.svg';
 import { Typography } from '../Typography';
 
 interface IProps extends TextInputProps {
@@ -24,6 +25,7 @@ interface IProps extends TextInputProps {
   normalInput?: boolean;
   labelText?: string;
   disableCancel?: boolean;
+  guide?: React.ReactNode;
 }
 export const GeneralTextInput = React.forwardRef<any, IProps>((props, ref) => {
   const {
@@ -148,10 +150,12 @@ export const GeneralTextInput = React.forwardRef<any, IProps>((props, ref) => {
           </TouchableOpacity>
         )}
       </View>
+      {props.guide && !(touched && hasError) && props.guide}
       {touched && hasError && (
         <View style={styles.errorContainer}>
+          <Warning />
           <Typography
-            type="commonText"
+            type="smallText"
             style={[styles.error, { color: colors.failed100 }]}>
             {errorMessage}
           </Typography>
@@ -204,8 +208,11 @@ const styles = StyleSheet.create({
   label: { marginBottom: 5 },
   errorContainer: {
     alignSelf: 'flex-start',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   error: {
     alignSelf: 'flex-start',
+    marginLeft: 2,
   },
 });

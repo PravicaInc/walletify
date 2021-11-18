@@ -5,37 +5,45 @@ import { ThemeContext } from '../../contexts/theme';
 import styles from './styles';
 
 interface IProps {
-  finished: number;
+  currentBarIdx: number;
   total: number;
   barsColor?: string;
+  barIsCircle?: boolean;
   customStyle?: StyleProp<ViewStyle>;
 }
 
-const ProgressBar = (props: IProps) => {
+const ProgressBar = ({
+  currentBarIdx,
+  total,
+  barsColor,
+  barIsCircle,
+  customStyle,
+}: IProps) => {
   const {
     theme: { colors },
   } = useContext(ThemeContext);
 
-  const renderProgressItems = () => {
-    const items = [];
-    for (let i = 0; i < props.total; i++) {
-      const itemStyle = [
-        styles.progressItem,
-        {
-          backgroundColor:
-            i + 1 <= props.finished
-              ? props.barsColor || colors.primary100
-              : colors.primary10,
-        },
-      ];
-      items.push(<View key={i} style={itemStyle} />);
-    }
-    return items;
-  };
-
   return (
-    <View style={[styles.container, props.customStyle]}>
-      {renderProgressItems()}
+    <View
+      style={[
+        styles.container,
+        barIsCircle && styles.roundedContainer,
+        customStyle,
+      ]}>
+      {Array.from(Array(total)).map((_, barIdx) => (
+        <View
+          key={barIdx}
+          style={[
+            barIsCircle ? styles.roundedProgressItem : styles.progressItem,
+            {
+              backgroundColor:
+                barIdx + 1 <= currentBarIdx
+                  ? barsColor || colors.primary100
+                  : colors.primary10,
+            },
+          ]}
+        />
+      ))}
     </View>
   );
 };
