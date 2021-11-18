@@ -2,14 +2,14 @@ import { ChainID } from '@stacks/transactions';
 import {
   DEFAULT_MAINNET_SERVER,
   DEFAULT_TESTNET_SERVER,
-} from '../../shared/constants';
+} from '../shared/constants';
 
 export enum AvailableNetworks {
   MAINNET = 'mainnet',
   TESTNET = 'testnet',
 }
 
-export class Network {
+export interface Network {
   url: string;
   name: AvailableNetworks;
   chainId: ChainID;
