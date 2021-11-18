@@ -8,35 +8,32 @@ import Onboarding2 from '../../assets/images/onboarding/onboarding2.svg';
 import Onboarding3 from '../../assets/images/onboarding/onboarding3.svg';
 import GeneralButton from '../../components/shared/GeneralButton';
 import { Typography } from '../../components/shared/Typography';
-import { ThemeContext } from '../../contexts/theme';
+import { ThemeContext } from '../../contexts/Theme/theme';
 import styles from './styles';
-import { useLocalization } from '../../hooks/useLocalization';
-import { observer } from 'mobx-react-lite';
-import { useStores } from '../../hooks/useStores';
+import { UserPreferenceContext } from '../../contexts/UserPreference/userPreferenceContext';
 
-const OnBoarding: React.FC = observer(() => {
+const OnBoarding: React.FC = () => {
   const slider = useRef<any>();
   const { dispatch } = useNavigation();
-  const { translate } = useLocalization();
-  const { uiStore } = useStores();
+  const { setViewedOnboarding } = useContext(UserPreferenceContext);
   const {
     theme: { colors },
   } = useContext(ThemeContext);
   const onboardingSteps = [
     {
       svg: Onboarding1,
-      title: translate('ONBOARDING_FIRST_SCREEN_TITLE'),
-      body: translate('ONBOARDING_FIRST_SCREEN_BODY'),
+      title: 'Manage Your Assets',
+      body: 'WISE is a mobile wallet that you can use anywhere anytime. Only you own your assets.',
     },
     {
       svg: Onboarding2,
-      title: translate('ONBOARDING_SECOND_SCREEN_TITLE'),
-      body: translate('ONBOARDING_SECOND_SCREEN_BODY'),
+      title: 'Manage Your Accounts',
+      body: 'To manage which account to authenticate or pay with. Each account could have its own identity.',
     },
     {
       svg: Onboarding3,
-      title: translate('ONBOARDING_THIRD_SCREEN_TITLE'),
-      body: translate('ONBOARDING_THIRD_SCREEN_BODY'),
+      title: 'Earn BTC',
+      body: 'You can stack your STX through WISE and earn rewards in BTC without any kind of fees.',
     },
   ];
 
@@ -66,7 +63,7 @@ const OnBoarding: React.FC = observer(() => {
       slider.current?.goToSlide(index, true);
 
     const handleDone = () => {
-      uiStore.setHasSeenOnBoarding(true);
+      setViewedOnboarding(true);
       dispatch(StackActions.replace('WalletSetup'));
     };
 
@@ -110,6 +107,6 @@ const OnBoarding: React.FC = observer(() => {
       </ScrollView>
     </SafeAreaView>
   );
-});
+};
 
 export default OnBoarding;
