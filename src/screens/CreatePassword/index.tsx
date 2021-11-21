@@ -9,18 +9,16 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { observer } from 'mobx-react-lite';
 import { BIOMETRY_TYPE, ACCESS_CONTROL } from 'react-native-keychain';
 import SecureKeychain from '../../shared/SecureKeychain';
-import { useStores } from '../../hooks/useStores';
 import GeneralButton from '../../components/shared/GeneralButton';
 import Header from '../../components/shared/Header';
 import HeaderBack from '../../components/shared/HeaderBack';
-
+import { UserPreferenceContext } from '../../contexts/UserPreference/userPreferenceContext';
 import { Typography } from '../../components/shared/Typography';
 import ProgressBar from '../../components/ProgressBar';
 import { GeneralTextInput } from '../../components/shared/GeneralTextInput';
-import { ThemeContext } from '../../contexts/theme';
+import { ThemeContext } from '../../contexts/Theme/theme';
 import PasswordShield from '../../assets/password-shield.svg';
 import FingerPrint from '../../assets/finger-print.svg';
 import WarningIcon from '../../assets/images/grey-warning.svg';
@@ -42,7 +40,7 @@ enum StrengthLevel {
   Weak = 'Weak',
 }
 
-const CreatePassword = observer((props: Props) => {
+const CreatePassword = (props: Props) => {
   // theme
   const {
     theme: { colors },
@@ -52,16 +50,20 @@ const CreatePassword = observer((props: Props) => {
   const { dispatch } = useNavigation();
 
   // biometrics
-  const { uiStore } = useStores();
-  const { setIsBiometryEnabled } = uiStore;
-  const [isBioSwitchOn, setisBioSwitchOn] = useState(false);
-  const [hasBioSetup, setHasBioSetup] = useState<BIOMETRY_TYPE | null>(null);
-  const getBioSetup = async () => {
+  const {
+    userPreference: { hasSetBiometric },
+    setHasEnabledBiometric,
+  } = useContext(UserPreferenceContext);
+  const [isBioSwitchOn, setisBioSwitchOn] = useState(hasSetBiometric);
+  const [hasBioSupported, setHasBioSupported] = useState<BIOMETRY_TYPE | null>(
+    null,
+  );
+  const getBioSupport = async () => {
     const type = await SecureKeychain.getSupportedBiometryType();
-    setHasBioSetup(type);
+    setHasBioSupported(type);
   };
   useEffect(() => {
-    getBioSetup();
+    getBioSupport();
   }, []);
 
   // password and its confirmation
@@ -144,7 +146,7 @@ const CreatePassword = observer((props: Props) => {
   // handlers
   const handleGoBack = () => dispatch(StackActions.pop());
   const handlePressCreate = async () => {
-    setIsBiometryEnabled(isBioSwitchOn);
+    setHasEnabledBiometric(isBioSwitchOn);
     try {
       if (isBioSwitchOn) {
         await SecureKeychain.setGenericPassword(
@@ -255,7 +257,7 @@ const CreatePassword = observer((props: Props) => {
               <Switch
                 onChange={() => setisBioSwitchOn(prevState => !prevState)}
                 value={isBioSwitchOn}
-                disabled={!hasBioSetup}
+                disabled={!hasBioSupported}
               />
             </View>
             <GeneralButton
@@ -269,6 +271,6 @@ const CreatePassword = observer((props: Props) => {
       </View>
     </SafeAreaView>
   );
-});
+};
 
 export default CreatePassword;

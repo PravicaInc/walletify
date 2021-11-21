@@ -7,7 +7,7 @@ import GeneralButton from '../../components/shared/GeneralButton';
 import Header from '../../components/shared/Header';
 import HeaderBack from '../../components/shared/HeaderBack';
 import { Typography } from '../../components/shared/Typography';
-import ProgressBar from '../../components/ProgressBar';
+// import ProgressBar from '../../components/ProgressBar';
 
 import { ThemeContext } from '../../contexts/Theme/theme';
 import LockedShield from '../../assets/locked-shield.svg';
@@ -37,7 +37,7 @@ const SeedConfirmation: React.FC = () => {
         }
       />
       <View style={styles.contentContainer}>
-        <ProgressBar finished={2} total={3} />
+        {/* <ProgressBar finished={2} total={3} /> */}
         <LockedShield />
         <Typography type="bigTitle">Seed Confirmation</Typography>
         <GeneralButton type="activePrimary" onPress={handleConfirm}>

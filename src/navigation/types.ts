@@ -15,9 +15,6 @@ export type RootStackParamList = {
   SeedRestore: { password: string };
   OldPassword: { seedPhrase: string } | undefined;
   Settings: undefined;
-  ChangePassword: undefined;
-  ShowSeedPhrase: { seedPhrase?: string; password?: string };
-  RecoverSeedPhrase: undefined;
   Login: undefined;
   ChangePassword: undefined;
   ShowSeedPhrase: { seedPhrase?: string; password?: string };

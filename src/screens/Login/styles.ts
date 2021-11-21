@@ -2,13 +2,16 @@ import { StyleSheet } from 'react-native';
 import { PADDING_HORIZONTAL } from '../../shared/layout';
 
 const loginStyles = StyleSheet.create({
-  container: {
+  safeAreaContainer: {
     flex: 1,
   },
+  container: { flex: 1, paddingHorizontal: PADDING_HORIZONTAL },
+
   contentViewContainer: {
     flex: 1,
     justifyContent: 'flex-start',
     alignItems: 'center',
+    paddingTop: '15%',
   },
   screenHeader: {
     shadowOpacity: 0,
@@ -25,7 +28,6 @@ const loginStyles = StyleSheet.create({
   },
   passwordInputFieldContainer: {
     width: '100%',
-    paddingHorizontal: PADDING_HORIZONTAL,
   },
   passwordInputFieldLabel: {
     alignSelf: 'center',
@@ -46,6 +48,10 @@ const loginStyles = StyleSheet.create({
   warningText: {
     textAlign: 'center',
     width: '80%',
+  },
+  confirmContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });
 export default loginStyles;

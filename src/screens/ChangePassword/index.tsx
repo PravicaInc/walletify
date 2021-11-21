@@ -9,17 +9,16 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackActions, useNavigation } from '@react-navigation/native';
-import { observer } from 'mobx-react-lite';
 import { ACCESS_CONTROL } from 'react-native-keychain';
 import { decryptMnemonic } from '@stacks/encryption';
 import SecureKeychain from '../../shared/SecureKeychain';
-import { useStores } from '../../hooks/useStores';
+import { UserPreferenceContext } from '../../contexts/UserPreference/userPreferenceContext';
 import Header from '../../components/shared/Header';
 import HeaderBack from '../../components/shared/HeaderBack';
 import { Typography } from '../../components/shared/Typography';
 import ProgressBar from '../../components/ProgressBar';
 import { GeneralTextInput } from '../../components/shared/GeneralTextInput';
-import { ThemeContext } from '../../contexts/theme';
+import { ThemeContext } from '../../contexts/Theme/theme';
 import PasswordShield from '../../assets/password-shield.svg';
 import WarningIcon from '../../assets/images/grey-warning.svg';
 import { validatePassword } from '../../components/shared/GeneralTextInput/validate-password';
@@ -37,7 +36,7 @@ enum StrengthLevel {
   Weak = 'Weak',
 }
 
-const ChangePassword = observer(() => {
+const ChangePassword = () => {
   // theme
   const {
     theme: { colors },
@@ -47,9 +46,9 @@ const ChangePassword = observer(() => {
   const { dispatch } = useNavigation();
 
   // store and keychain
-  const { walletStore, uiStore } = useStores();
-  const { encryptedSeedPhrase } = walletStore;
-  const { isBiometryEnabled } = uiStore;
+  const {
+    userPreference: { encryptedSeedPhrase, hasSetBiometric },
+  } = useContext(UserPreferenceContext);
 
   // passwords
   const [oldPassword, setOldPassword] = useState<string>('');
@@ -155,7 +154,7 @@ const ChangePassword = observer(() => {
 
     try {
       await decryptMnemonic(encryptedSeedPhrase, oldPassword);
-      if (isBiometryEnabled) {
+      if (hasSetBiometric) {
         await SecureKeychain.setGenericPassword(
           password,
           ACCESS_CONTROL.BIOMETRY_CURRENT_SET_OR_DEVICE_PASSCODE,
@@ -165,7 +164,6 @@ const ChangePassword = observer(() => {
     } catch (error: any) {
       setLoading(false);
       setOldPassword('');
-      // setOldPwdChanged(false);
       setPassword('');
       setPwdChanged(false);
       setConfirmPassword('');
@@ -296,6 +294,6 @@ const ChangePassword = observer(() => {
       </View>
     </SafeAreaView>
   );
-});
+};
 
 export default ChangePassword;

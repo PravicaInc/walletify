@@ -14,10 +14,10 @@ import Header from '../../components/shared/Header';
 import HeaderBack from '../../components/shared/HeaderBack';
 import { Typography } from '../../components/shared/Typography';
 import { GeneralTextInput } from '../../components/shared/GeneralTextInput';
-import { ThemeContext } from '../../contexts/theme';
+import { ThemeContext } from '../../contexts/Theme/theme';
+import { UserPreferenceContext } from '../../contexts/UserPreference/userPreferenceContext';
 import PasswordShield from '../../assets/password-shield.svg';
 import styles from './styles';
-import { useStores } from '../../hooks/useStores';
 
 type Props = {
   handleNextAction: (props: { password: string; seedPhrase: string }) => void;
@@ -30,8 +30,9 @@ const EnterPasswordModal = ({
   toggleEnterPassword,
   enterPasswordVisible,
 }: Props) => {
-  const { walletStore } = useStores();
-  const { encryptedSeedPhrase } = walletStore;
+  const {
+    userPreference: { encryptedSeedPhrase },
+  } = useContext(UserPreferenceContext);
 
   const {
     theme: { colors },

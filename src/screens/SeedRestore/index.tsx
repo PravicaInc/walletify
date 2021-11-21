@@ -17,7 +17,7 @@ import { RootStackParamList } from '../../navigation/types';
 import styles from './styles';
 import { useWallet } from '../../hooks/useWallet/useWallet';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'SeedGeneration'>;
+type Props = NativeStackScreenProps<RootStackParamList, 'SeedRestore'>;
 
 const SeedRestore: React.FC<Props> = props => {
   const { dispatch } = useNavigation();

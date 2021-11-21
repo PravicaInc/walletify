@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Typography } from '../Typography';
-import { ThemeContext } from '../../../contexts/theme';
+import { ThemeContext } from '../../../contexts/Theme/theme';
 
 interface IProps {
   leftComponent: React.ReactNode;

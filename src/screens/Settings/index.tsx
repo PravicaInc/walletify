@@ -7,12 +7,12 @@ import { Typography } from '../../components/shared/Typography';
 import AccountAvatar from '../../components/shared/AccountAvatar';
 import SettingsIcon from '../../assets/manage.svg';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useStores } from '../../hooks/useStores';
-import { observer } from 'mobx-react-lite';
+
 import Header from '../../components/shared/Header';
 import HeaderBack from '../../components/shared/HeaderBack';
 import EnterPasswordModal from '../../components/EnterPasswordModal';
-import { ThemeContext } from '../../contexts/theme';
+import { ThemeContext } from '../../contexts/Theme/theme';
+import { UserPreferenceContext } from '../../contexts/UserPreference/userPreferenceContext';
 
 import BugIcon from '../../assets/images/settings/bug.svg';
 import LockIcon from '../../assets/images/settings/lock.svg';
@@ -75,7 +75,7 @@ const bottomSettingsList = [
   { icon: BugIcon, text: 'Report a Bug' },
 ];
 
-const Settings = observer(() => {
+const Settings = () => {
   const {
     theme: { colors },
   } = useContext(ThemeContext);
@@ -85,8 +85,10 @@ const Settings = observer(() => {
   const [enterPasswordVisible, setEnterPasswordVisible] = useState(false);
 
   // biometrics
-  const { uiStore } = useStores();
-  const { isBiometryEnabled, setIsBiometryEnabled } = uiStore;
+  const {
+    userPreference: { hasSetBiometric },
+    setHasEnabledBiometric,
+  } = useContext(UserPreferenceContext);
   const [hasBioSetup, setHasBioSetup] = useState<BIOMETRY_TYPE | null>(null);
 
   useEffect(() => {
@@ -98,9 +100,9 @@ const Settings = observer(() => {
   }, []);
 
   const handleBiometricToggle = async () => {
-    if (isBiometryEnabled) {
+    if (hasSetBiometric) {
       await SecureKeychain.resetGenericPassword();
-      setIsBiometryEnabled(false);
+      setHasEnabledBiometric(false);
     } else {
       toggleEnterPassword();
     }
@@ -114,7 +116,7 @@ const Settings = observer(() => {
       password || '',
       ACCESS_CONTROL.BIOMETRY_CURRENT_SET_OR_DEVICE_PASSCODE,
     );
-    setIsBiometryEnabled(true);
+    setHasEnabledBiometric(true);
     toggleEnterPassword();
   };
 
@@ -122,7 +124,7 @@ const Settings = observer(() => {
     dispatch(StackActions.push('RecoverSeedPhrase'));
 
   // navigation handlers
-  const handleGoBack = () => dispatch(StackActions.replace('Home'));
+  const handleGoBack = () => dispatch(StackActions.pop());
   const handleChangePassword = () =>
     dispatch(StackActions.push('ChangePassword'));
 
@@ -174,7 +176,7 @@ const Settings = observer(() => {
               </View>
               <Switch
                 onChange={handleBiometricToggle}
-                value={isBiometryEnabled}
+                value={hasSetBiometric}
                 disabled={!hasBioSetup}
               />
               <EnterPasswordModal
@@ -214,6 +216,6 @@ const Settings = observer(() => {
       </ScrollView>
     </SafeAreaView>
   );
-});
+};
 
 export default Settings;

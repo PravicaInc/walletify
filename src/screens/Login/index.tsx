@@ -4,16 +4,18 @@ import {
   Platform,
   TouchableOpacity,
   View,
+  ActivityIndicator,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { decryptMnemonic } from '@stacks/encryption';
 import { UserCredentials } from 'react-native-keychain';
-import { CustomAppHeader } from '../../components/CustomAppHeader';
 import { Typography } from '../../components/shared/Typography';
 import { GeneralTextInput } from '../../components/shared/GeneralTextInput';
+import Header from '../../components/shared/Header';
+import HeaderBack from '../../components/shared/HeaderBack';
 import PasswordShield from '../../assets/password-shield.svg';
-import Warning from '../../assets/images/warning.svg';
+import Warning from '../../assets/images/grey-warning.svg';
 import SecureKeychain from '../../shared/SecureKeychain';
 import { UserPreferenceContext } from '../../contexts/UserPreference/userPreferenceContext';
 import { ThemeContext } from '../../contexts/Theme/theme';
@@ -27,6 +29,7 @@ const Login: React.FC = () => {
   const [passwordError, setPasswordError] = useState<boolean | undefined>(
     undefined,
   );
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const {
     userPreference: { encryptedSeedPhrase, hasSetBiometric },
   } = useContext(UserPreferenceContext);
@@ -55,6 +58,7 @@ const Login: React.FC = () => {
   }, [hasSetBiometric]);
 
   const handleConfirm = async () => {
+    setIsLoading(true);
     try {
       const seedDecrypted = await decryptMnemonic(
         encryptedSeedPhrase,
@@ -68,6 +72,7 @@ const Login: React.FC = () => {
       );
     } catch (err) {
       setPasswordError(true);
+      setIsLoading(false);
     }
   };
 
@@ -81,81 +86,106 @@ const Login: React.FC = () => {
   return (
     <SafeAreaView
       style={[
-        loginStyles.container,
+        loginStyles.safeAreaContainer,
         {
           backgroundColor: colors.white,
         },
       ]}>
-      <CustomAppHeader
-        containerStyle={loginStyles.screenHeader}
-        noBackText
-        isCancel
-        customNext={
-          <TouchableOpacity onPress={handleConfirm}>
+      <View style={loginStyles.container}>
+        <Header
+          leftComponent={
+            <HeaderBack
+              text="Reset"
+              customStyle={{ color: colors.failed100 }}
+              onPress={() => {
+                setPasswordValue('');
+                setPasswordError(false);
+              }}
+            />
+          }
+          title="Password"
+          rightComponent={
+            <TouchableOpacity
+              style={loginStyles.confirmContainer}
+              onPress={handleConfirm}
+              disabled={isLoading || passwordValue.length < 12}>
+              {isLoading ? (
+                <ActivityIndicator color={colors.primary40} />
+              ) : (
+                <Typography
+                  type="buttonText"
+                  style={[
+                    {
+                      color:
+                        passwordValue.length < 12
+                          ? colors.primary40
+                          : colors.secondary100,
+                    },
+                  ]}>
+                  Confirm
+                </Typography>
+              )}
+            </TouchableOpacity>
+          }
+        />
+
+        <KeyboardAvoidingView
+          style={loginStyles.contentViewContainer}
+          keyboardVerticalOffset={50}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+          <PasswordShield />
+          <Typography
+            type="bigTitle"
+            style={[loginStyles.contentHeader, { color: colors.primary100 }]}>
+            Enter Your Password
+          </Typography>
+          <Typography
+            style={[loginStyles.description, { color: colors.primary60 }]}
+            type="commonText">
+            Just to make sure it’s you! Enter your password to view your wallet.
+          </Typography>
+          <View style={loginStyles.passwordInputFieldContainer}>
             <Typography
-              type="buttonText"
-              style={{ color: colors.secondary100 }}>
-              Confirm
+              type="commonText"
+              style={[
+                loginStyles.passwordInputFieldLabel,
+                { color: colors.primary100 },
+              ]}>
+              Enter Password
             </Typography>
-          </TouchableOpacity>
-        }
-      />
-      <KeyboardAvoidingView
-        style={loginStyles.contentViewContainer}
-        keyboardVerticalOffset={50}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-        <PasswordShield />
-        <Typography
-          type="bigTitle"
-          style={[loginStyles.contentHeader, { color: colors.primary100 }]}>
-          Enter Your Password
-        </Typography>
-        <Typography
-          style={[loginStyles.description, { color: colors.primary60 }]}
-          type="commonText">
-          Just to make sure it’s you! Enter your password to view your wallet.
-        </Typography>
-        <View style={loginStyles.passwordInputFieldContainer}>
+            <GeneralTextInput
+              customStyle={loginStyles.passwordInputField}
+              secureTextEntry
+              onChangeText={handleOnChangePassword}
+              value={passwordValue}
+              disableCancel
+            />
+            {passwordError && (
+              <Typography
+                type="smallText"
+                style={[
+                  loginStyles.passwordErrorMessage,
+                  { color: colors.failed100 },
+                ]}>
+                This password seems incorrect! Try again.
+              </Typography>
+            )}
+          </View>
+        </KeyboardAvoidingView>
+        <View style={loginStyles.warningContainer}>
+          <Warning style={loginStyles.warningIcon} width={24} height={24} />
           <Typography
             type="commonText"
             style={[
-              loginStyles.passwordInputFieldLabel,
-              { color: colors.primary100 },
+              loginStyles.warningText,
+              {
+                color: colors.primary60,
+              },
             ]}>
-            Enter Password
+            Forgot password? We can’t recover what we don’t have, reset your
+            wallet and enter a new password. Your assets will be kept safe.
           </Typography>
-          <GeneralTextInput
-            customStyle={loginStyles.passwordInputField}
-            secureTextEntry
-            onChangeText={handleOnChangePassword}
-            value={passwordValue}
-            disableCancel
-          />
-          {passwordError && (
-            <Typography
-              type="smallText"
-              style={[
-                loginStyles.passwordErrorMessage,
-                { color: colors.failed100 },
-              ]}>
-              This password seems incorrect! Try again.
-            </Typography>
-          )}
         </View>
-      </KeyboardAvoidingView>
-      <View style={loginStyles.warningContainer}>
-        <Warning style={loginStyles.warningIcon} />
-        <Typography
-          type="commonText"
-          style={[
-            loginStyles.warningText,
-            {
-              color: colors.failed100,
-            },
-          ]}>
-          Forgot password? We can’t recover what we don’t have, reset your
-          wallet and enter a new password. Your assets will be kept safe.
-        </Typography>
       </View>
     </SafeAreaView>
   );

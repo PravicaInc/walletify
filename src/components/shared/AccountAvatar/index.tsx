@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { StyleSheet, View, ViewStyle } from 'react-native';
 import Avatar from 'react-native-boring-avatars';
 
-import { ThemeContext } from '../../../contexts/theme';
+import { ThemeContext } from '../../../contexts/Theme/theme';
 
 interface IProps {
   accountIndex: number;

@@ -6,7 +6,7 @@ import {
   LayoutChangeEvent,
 } from 'react-native';
 import { Typography, StylesTypes } from '../Typography';
-import { ThemeContext } from '../../../contexts/theme';
+import { ThemeContext } from '../../../contexts/Theme/theme';
 import Chevron from '../../../assets/chevron-right.svg';
 
 interface IProps {

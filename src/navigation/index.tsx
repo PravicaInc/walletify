@@ -80,6 +80,11 @@ export const Routes: React.FC = () => {
         name="RecoverSeedPhrase"
         component={RecoverSeedPhrase}
       />
+      <Stack.Screen
+        options={{ headerShown: false }}
+        name="Settings"
+        component={Settings}
+      />
     </Stack.Navigator>
   );
 };

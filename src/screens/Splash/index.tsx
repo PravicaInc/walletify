@@ -18,6 +18,7 @@ const Splash: React.FC = () => {
     } else {
       dispatch(StackActions.replace('WalletSetup'));
     }
+    SplashScreen.hide();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [viewedOnboarding, encryptedSeedPhrase]);
   return null;
