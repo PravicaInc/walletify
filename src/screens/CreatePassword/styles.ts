@@ -8,6 +8,7 @@ const styles = StyleSheet.create({
     marginBottom: MARGIN_VERTICAL,
     paddingHorizontal: PADDING_HORIZONTAL,
   },
+  progress: { marginTop: '5%' },
   keyboardContainer: {
     flex: 1,
   },
@@ -15,7 +16,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
     minHeight: '100%',
-    paddingTop: '20%',
+    paddingTop: '15%',
   },
   title: { marginVertical: 10 },
   description: { textAlign: 'center', marginBottom: 40 },

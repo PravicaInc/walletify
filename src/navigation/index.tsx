@@ -4,7 +4,7 @@ import Splash from '../screens/Splash';
 import Home from '../screens/Home';
 import Onboarding from '../screens/Onboarding';
 import WalletSetup from '../screens/WalletSetup';
-import SeedConfirmation from '../screens/SeedConfirmation';
+import ConfirmSeedPhrase from '../screens/ConfirmSeedPhrase';
 import CreatePassword from '../screens/CreatePassword';
 import SeedRestore from '../screens/SeedRestore';
 import OldPassword from '../screens/OldPassword';
@@ -42,8 +42,8 @@ export const Routes: React.FC = () => {
       />
       <Stack.Screen
         options={{ headerShown: false }}
-        name="SeedConfirmation"
-        component={SeedConfirmation}
+        name="ConfirmSeedPhrase"
+        component={ConfirmSeedPhrase}
       />
       <Stack.Screen
         options={{ headerShown: false }}

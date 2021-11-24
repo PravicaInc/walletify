@@ -172,6 +172,13 @@ const CreatePassword = (props: Props) => {
             <HeaderBack onPress={handleGoBack} text="Back" hasChevron />
           }
         />
+        {flow === WalletSetupFlow.CreateWallet && (
+          <ProgressBar
+            currentBarIdx={1}
+            total={3}
+            customStyle={styles.progress}
+          />
+        )}
         <KeyboardAvoidingView
           style={styles.keyboardContainer}
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}

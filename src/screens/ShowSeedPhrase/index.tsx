@@ -3,21 +3,18 @@ import { View, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import Clipboard from '@react-native-clipboard/clipboard';
+import { generateSecretKey } from '@stacks/wallet-sdk';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import GeneralButton from '../../components/shared/GeneralButton';
 import Header from '../../components/shared/Header';
 import HeaderBack from '../../components/shared/HeaderBack';
 import { Typography } from '../../components/shared/Typography';
-// import ProgressBar from '../../components/ProgressBar';
+import ProgressBar from '../../components/ProgressBar';
 import SeedPhraseGrid from '../../components/SeedPhraseGrid';
-
 import { ThemeContext } from '../../contexts/Theme/theme';
-
 import LockedShield from '../../assets/locked-shield.svg';
-import styles from './styles';
-import { useWallet } from '../../hooks/useWallet/useWallet';
-import { generateSecretKey } from '@stacks/wallet-sdk';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/types';
+import styles from './styles';
 
 enum Stage {
   Blurred = 'Blurred',
@@ -42,10 +39,6 @@ const ShowSeedPhrase: React.FC<Props> = props => {
     currentSeedPhrase ? Stage.Display : Stage.Blurred,
   );
 
-  const [isLoading, setIsloading] = useState(false);
-
-  const { createWallet } = useWallet();
-
   const handleView = () => setCurrentStage(Stage.ToCopy);
 
   const handleCopyGeneratedPhrase = () => {
@@ -57,11 +50,9 @@ const ShowSeedPhrase: React.FC<Props> = props => {
     Clipboard.setString(currentSeedPhrase);
   };
 
-  const handleConfirm = async () => {
-    setIsloading(true);
-    await createWallet(generatedSeedPhrase, password);
+  const handleConfirm = () => {
     dispatch(
-      StackActions.replace('Home', {
+      StackActions.push('ConfirmSeedPhrase', {
         seedPhrase: generatedSeedPhrase,
         password,
       }),
@@ -71,18 +62,14 @@ const ShowSeedPhrase: React.FC<Props> = props => {
   const handleGoBack = () => dispatch(StackActions.pop());
 
   let BottomButton = (
-    <GeneralButton
-      type={isLoading ? 'inactivePrimary' : 'activePrimary'}
-      onPress={handleView}>
+    <GeneralButton type={'activePrimary'} onPress={handleView}>
       View Seed Phrase
     </GeneralButton>
   );
 
   if (currentStage === Stage.ToCopy) {
     BottomButton = (
-      <GeneralButton
-        type={isLoading ? 'inactivePrimary' : 'activePrimary'}
-        onPress={handleCopyGeneratedPhrase}>
+      <GeneralButton type={'activePrimary'} onPress={handleCopyGeneratedPhrase}>
         Copy Seed Phrase
       </GeneralButton>
     );
@@ -90,9 +77,7 @@ const ShowSeedPhrase: React.FC<Props> = props => {
 
   if (currentStage === Stage.Display) {
     BottomButton = (
-      <GeneralButton
-        type={isLoading ? 'inactivePrimary' : 'activePrimary'}
-        onPress={handleCopyCurrentPhrase}>
+      <GeneralButton type={'activePrimary'} onPress={handleCopyCurrentPhrase}>
         Copy Seed Phrase
       </GeneralButton>
     );
@@ -100,9 +85,7 @@ const ShowSeedPhrase: React.FC<Props> = props => {
 
   if (currentStage === Stage.ToConfirm) {
     BottomButton = (
-      <GeneralButton
-        type={isLoading ? 'inactivePrimary' : 'activePrimary'}
-        onPress={handleConfirm}>
+      <GeneralButton type={'activePrimary'} onPress={handleConfirm}>
         Continue
       </GeneralButton>
     );
@@ -117,8 +100,15 @@ const ShowSeedPhrase: React.FC<Props> = props => {
               <HeaderBack onPress={handleGoBack} text="Back" hasChevron />
             }
           />
-          {/* <ProgressBar finished={2} total={3} /> */}
-
+          {[Stage.Blurred, Stage.ToCopy, Stage.ToConfirm].includes(
+            currentStage,
+          ) && (
+            <ProgressBar
+              currentBarIdx={2}
+              total={3}
+              customStyle={styles.progress}
+            />
+          )}
           <View style={styles.topContent}>
             <LockedShield />
             <Typography type="bigTitle" style={styles.title}>
