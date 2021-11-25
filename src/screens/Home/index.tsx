@@ -1,47 +1,48 @@
-import React from 'react';
-import { TouchableOpacity, View } from 'react-native';
-import { styles } from './styles';
-import { Typography } from '../../components/shared/Typography';
+import React, { useContext, useEffect } from 'react';
+import { TouchableOpacity, ScrollView } from 'react-native';
+import { StackActions, useNavigation } from '@react-navigation/native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import AccountAvatar from '../../components/shared/AccountAvatar';
+import { useWallet } from '../../hooks/useWallet/useWallet';
 import Wise from '../../assets/wise.svg';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useStores } from '../../hooks/useStores';
-import { observer } from 'mobx-react-lite';
-import { AvailableNetworks } from '../../stores/NetworkStore/types';
-import useNetwork from '../../hooks/useNetwork';
-import { useLocalization } from '../../hooks/useLocalization';
+import Header from '../../components/shared/Header';
+import { ThemeContext } from '../../contexts/Theme/theme';
+import { RootStackParamList } from '../../navigation/types';
+import { styles } from './styles';
 
-const Home: React.FC = observer(() => {
-  const { networkStore } = useStores();
+type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
+
+const Home = (props: Props) => {
+  const {
+    theme: { colors },
+  } = useContext(ThemeContext);
+
+  const { dispatch } = useNavigation();
+
+  const { restoreWallet } = useWallet();
+  const { password, seedPhrase } = props.route.params;
+
+  useEffect(() => {
+    restoreWallet(seedPhrase, password);
+  }, []);
+
+  const goToSettings = () => dispatch(StackActions.push('Settings'));
+
   return (
-    <SafeAreaView style={styles.container}>
-      <Wise />
-      <Typography type="bigTitle">
-        {networkStore.currentNetwork.name}
-      </Typography>
-      <ChangeNetworkButton />
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.white }]}>
+      <ScrollView contentContainerStyle={styles.contentContainer}>
+        <Header
+          leftComponent={<Wise />}
+          rightComponent={
+            <TouchableOpacity onPress={goToSettings}>
+              <AccountAvatar accountIndex={3} diameter={40} hasAura={true} />
+            </TouchableOpacity>
+          }
+        />
+      </ScrollView>
     </SafeAreaView>
   );
-});
-
-const ChangeNetworkButton: React.FC = observer(() => {
-  const { setActiveNetwork } = useNetwork();
-  const { translate } = useLocalization();
-  return (
-    <View>
-      <TouchableOpacity
-        onPress={() => setActiveNetwork(AvailableNetworks.TESTNET)}>
-        <Typography type="buttonText">
-          {translate('CHANGE_NETWORK_TESTNET_BUTTON')}
-        </Typography>
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => setActiveNetwork(AvailableNetworks.MAINNET)}>
-        <Typography type="buttonText">
-          {translate('CHANGE_NETWORK_MAINNET_BUTTON')}
-        </Typography>
-      </TouchableOpacity>
-    </View>
-  );
-});
+};
 
 export default Home;

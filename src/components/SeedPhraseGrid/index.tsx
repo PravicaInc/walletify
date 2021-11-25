@@ -4,7 +4,7 @@ import { BlurView } from '@react-native-community/blur';
 
 import { Typography } from '../../components/shared/Typography';
 
-import { ThemeContext } from '../../contexts/theme';
+import { ThemeContext } from '../../contexts/Theme/theme';
 import styles from './styles';
 
 interface IProps {
@@ -16,8 +16,6 @@ const SeedPhraseGrid = (props: IProps) => {
   const {
     theme: { colors },
   } = useContext(ThemeContext);
-
-  const containerStyle = [styles.container, { backgroundColor: colors.card }];
 
   const renderWords = () =>
     props.phrase.split(' ').map((word, i) => {
@@ -39,7 +37,7 @@ const SeedPhraseGrid = (props: IProps) => {
     });
 
   return (
-    <View style={containerStyle}>
+    <View style={[styles.container, { backgroundColor: colors.card }]}>
       {renderWords()}
       {props.isBlurred && (
         <BlurView style={styles.absolute} blurType="light" blurAmount={2} />

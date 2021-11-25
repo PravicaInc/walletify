@@ -10,10 +10,11 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import GeneralButton from '../../components/shared/GeneralButton';
-import { CustomAppHeader } from '../../components/CustomAppHeader';
+import Header from '../../components/shared/Header';
+import HeaderBack from '../../components/shared/HeaderBack';
 import { Typography } from '../../components/shared/Typography';
 import { GeneralTextInput } from '../../components/shared/GeneralTextInput';
-import { ThemeContext } from '../../contexts/theme';
+import { ThemeContext } from '../../contexts/Theme/theme';
 import PasswordShield from '../../assets/password-shield.svg';
 import styles from './styles';
 import { RootStackParamList } from '../../navigation/types';
@@ -69,11 +70,10 @@ const OldPassword = (props: Props) => {
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.white }]}>
-      <CustomAppHeader
-        noBackText={false}
-        handleGoBack={handleGoBack}
-        containerStyle={{ shadowOpacity: 0 }}
-        backColor={colors.primary100}
+      <Header
+        leftComponent={
+          <HeaderBack onPress={handleGoBack} text="Back" hasChevron />
+        }
       />
       <KeyboardAvoidingView
         style={styles.keyboardContainer}

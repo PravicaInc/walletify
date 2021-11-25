@@ -2,23 +2,26 @@ import React, { useState } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Routes } from './src/navigation';
 import { NavigationContainer } from '@react-navigation/native';
-import { Theme, ThemeContext } from './src/contexts/theme';
+import { Theme, ThemeContext } from './src/contexts/Theme/theme';
 import DefaultTheme from './src/themes/defaultTheme';
-import { StoresProvider } from './src/components/providers/storeProvider';
+import UserPreference from './src/contexts/UserPreference/userPreference';
 
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 
 export default function App() {
   const [theme, setTheme] = useState<Theme>(DefaultTheme);
 
   return (
-    <SafeAreaProvider>
-      <StoresProvider>
+    <UserPreference>
+      <SafeAreaProvider>
         <ThemeContext.Provider value={{ theme, setTheme }}>
           <NavigationContainer>
-            <Routes />
+            <BottomSheetModalProvider>
+              <Routes />
+            </BottomSheetModalProvider>
           </NavigationContainer>
         </ThemeContext.Provider>
-      </StoresProvider>
-    </SafeAreaProvider>
+      </SafeAreaProvider>
+    </UserPreference>
   );
 }

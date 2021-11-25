@@ -1,31 +1,27 @@
-import React, { useEffect } from 'react';
-import SplashScreen from 'react-native-splash-screen';
-import { observer } from 'mobx-react-lite';
 import { StackActions, useNavigation } from '@react-navigation/native';
-import { useLocalization } from '../../hooks/useLocalization';
-import { LANGUAGES } from '../../shared/constants';
-import { useStores } from '../../hooks/useStores';
+import React, { useContext, useEffect } from 'react';
+import SplashScreen from 'react-native-splash-screen';
+import { UserPreferenceContext } from '../../contexts/UserPreference/userPreferenceContext';
 
-const Splash: React.FC = observer(() => {
-  const { uiStore } = useStores();
-  const { hasSeenOnBoarding } = uiStore;
+const Splash: React.FC = () => {
+  const {
+    userPreference: { viewedOnboarding, encryptedSeedPhrase },
+  } = useContext(UserPreferenceContext);
+
   const { dispatch } = useNavigation();
-  const { changeLanguage } = useLocalization();
-  const initLocalization = async () => {
-    await changeLanguage(LANGUAGES[0]);
-  };
+
   useEffect(() => {
-    initLocalization();
-    if (hasSeenOnBoarding) {
-      dispatch(StackActions.replace('WalletSetup'));
-    } else {
+    if (encryptedSeedPhrase) {
+      dispatch(StackActions.replace('Login'));
+    } else if (!viewedOnboarding) {
       dispatch(StackActions.replace('Onboarding'));
+    } else {
+      dispatch(StackActions.replace('WalletSetup'));
     }
     SplashScreen.hide();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch]);
-
+  }, [viewedOnboarding, encryptedSeedPhrase]);
   return null;
-});
+};
 
 export default Splash;

@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
   container: { flex: 1, paddingVertical: PADDING_VERTICAL },
   slide: {
     flex: 1,
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: PADDING_HORIZONTAL,
   },
@@ -19,18 +19,15 @@ const styles = StyleSheet.create({
     width: '80%',
   },
   paginationContainer: {
-    paddingHorizontal: '2.5%',
-    flex: 0.7,
-    justifyContent: 'flex-end',
+    paddingHorizontal: PADDING_HORIZONTAL,
+    flex: 0.35,
+    justifyContent: 'space-between',
   },
   paginationDots: {
     height: 16,
-    margin: 16,
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 'auto',
-    marginBottom: 'auto',
+    alignItems: 'stretch',
   },
   dot: {
     width: 10,

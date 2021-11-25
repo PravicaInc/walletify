@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { TouchableOpacityProps, TouchableOpacity, View } from 'react-native';
 import { Typography } from '../Typography';
-import { ThemeContext } from '../../../contexts/theme';
+import { ThemeContext } from '../../../contexts/Theme/theme';
 import styles from './styles';
 
 export const ACTIVE_PRIMARY = 'activePrimary';

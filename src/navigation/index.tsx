@@ -4,12 +4,16 @@ import Splash from '../screens/Splash';
 import Home from '../screens/Home';
 import Onboarding from '../screens/Onboarding';
 import WalletSetup from '../screens/WalletSetup';
-import SeedGeneration from '../screens/SeedGeneration';
 import SeedConfirmation from '../screens/SeedConfirmation';
 import CreatePassword from '../screens/CreatePassword';
 import SeedRestore from '../screens/SeedRestore';
 import OldPassword from '../screens/OldPassword';
+import Settings from '../screens/Settings';
+import ChangePassword from '../screens/ChangePassword';
+import ShowSeedPhrase from '../screens/ShowSeedPhrase';
+import RecoverSeedPhrase from '../screens/RecoverSeedPhrase';
 import { RootStackParamList } from './types';
+import Login from '../screens/Login';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -38,11 +42,6 @@ export const Routes: React.FC = () => {
       />
       <Stack.Screen
         options={{ headerShown: false }}
-        name="SeedGeneration"
-        component={SeedGeneration}
-      />
-      <Stack.Screen
-        options={{ headerShown: false }}
         name="SeedConfirmation"
         component={SeedConfirmation}
       />
@@ -60,6 +59,31 @@ export const Routes: React.FC = () => {
         options={{ headerShown: false }}
         name="OldPassword"
         component={OldPassword}
+      />
+      <Stack.Screen
+        options={{ headerShown: false }}
+        name="Login"
+        component={Login}
+      />
+      <Stack.Screen
+        options={{ headerShown: false }}
+        name="ChangePassword"
+        component={ChangePassword}
+      />
+      <Stack.Screen
+        options={{ headerShown: false }}
+        name="ShowSeedPhrase"
+        component={ShowSeedPhrase}
+      />
+      <Stack.Screen
+        options={{ headerShown: false }}
+        name="RecoverSeedPhrase"
+        component={RecoverSeedPhrase}
+      />
+      <Stack.Screen
+        options={{ headerShown: false }}
+        name="Settings"
+        component={Settings}
       />
     </Stack.Navigator>
   );

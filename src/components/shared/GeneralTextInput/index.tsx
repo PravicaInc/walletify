@@ -9,9 +9,10 @@ import {
   ViewStyle,
 } from 'react-native';
 import { useCallback, useContext, useEffect, useState } from 'react';
-import { ThemeContext } from '../../../contexts/theme';
+import { ThemeContext } from '../../../contexts/Theme/theme';
 // import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import WarningIcon from '../WarningIcon';
 import CloseIcon from '../../../assets/icon-reject-contact.svg';
 import HiddenEye from '../../../assets/hidden-eye.svg';
 import VisibleEye from '../../../assets/visible-eye.svg';
@@ -24,11 +25,13 @@ interface IProps extends TextInputProps {
   normalInput?: boolean;
   labelText?: string;
   disableCancel?: boolean;
+  guide?: React.ReactNode;
 }
 export const GeneralTextInput = React.forwardRef<any, IProps>((props, ref) => {
   const {
     theme: { colors, fonts },
   } = useContext(ThemeContext);
+
   const [inputFocused, setInputFocused] = useState<boolean>(false);
   const [isEyeClosed, toggleEye] = useState<boolean>(true);
   const [touched, setTouched] = useState<boolean>(false);
@@ -51,6 +54,7 @@ export const GeneralTextInput = React.forwardRef<any, IProps>((props, ref) => {
   const handleToggleEye = useCallback(() => {
     toggleEye(prevState => !prevState);
   }, []);
+
   return (
     <>
       {props.labelText && (
@@ -71,11 +75,12 @@ export const GeneralTextInput = React.forwardRef<any, IProps>((props, ref) => {
           {
             shadowColor: hasError ? colors.failed100 : colors.primary100,
             shadowOpacity: inputFocused ? 0.9 : 0,
-            borderColor: hasError
-              ? colors.failed10
-              : inputFocused
-              ? colors.primary10
-              : colors.primary40,
+            borderColor:
+              hasError && touched
+                ? colors.failed10
+                : inputFocused
+                ? colors.primary10
+                : colors.primary40,
             backgroundColor: colors.white,
           },
           props.customStyle,
@@ -145,15 +150,13 @@ export const GeneralTextInput = React.forwardRef<any, IProps>((props, ref) => {
           </TouchableOpacity>
         )}
       </View>
+      {props.guide && !(touched && hasError) && props.guide}
       {touched && hasError && (
         <View style={styles.errorContainer}>
+          <WarningIcon />
           <Typography
-            type="commonText"
-            style={[
-              styles.error,
-              { color: colors.failed100 },
-              { marginLeft: '5%' },
-            ]}>
+            type="smallText"
+            style={[styles.error, { color: colors.failed100 }]}>
             {errorMessage}
           </Typography>
         </View>
@@ -173,7 +176,6 @@ const styles = StyleSheet.create({
     borderRadius: 13,
     marginTop: 12,
     marginBottom: 8,
-    marginHorizontal: '2.5%',
   },
   search: {
     width: '90%',
@@ -206,9 +208,11 @@ const styles = StyleSheet.create({
   label: { marginBottom: 5 },
   errorContainer: {
     alignSelf: 'flex-start',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   error: {
     alignSelf: 'flex-start',
-    marginLeft: '5%',
+    marginLeft: 2,
   },
 });
