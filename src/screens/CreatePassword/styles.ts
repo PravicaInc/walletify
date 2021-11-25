@@ -1,11 +1,11 @@
 import { StyleSheet } from 'react-native';
 
-import { PADDING_HORIZONTAL, MARGIN_VERTICAL } from '../../shared/layout';
+import { PADDING_HORIZONTAL, PADDING_VERTICAL } from '../../shared/layout';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginBottom: MARGIN_VERTICAL,
+    paddingBottom: PADDING_VERTICAL,
     paddingHorizontal: PADDING_HORIZONTAL,
   },
   keyboardContainer: {

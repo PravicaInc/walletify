@@ -20,7 +20,7 @@ import ProgressBar from '../../components/ProgressBar';
 import { GeneralTextInput } from '../../components/shared/GeneralTextInput';
 import { ThemeContext } from '../../contexts/Theme/theme';
 import PasswordShield from '../../assets/password-shield.svg';
-import WarningIcon from '../../assets/images/grey-warning.svg';
+import WarningIcon from '../../components/shared/WarningIcon';
 import { validatePassword } from '../../components/shared/GeneralTextInput/validate-password';
 import styles from './styles';
 
@@ -229,10 +229,12 @@ const ChangePassword = () => {
                   value={oldPassword}
                   disableCancel
                   errorMessage={oldPwdErrorMsg}
+                  normalInput={true}
                 />
               </View>
               <View style={styles.inputWrapper}>
                 <GeneralTextInput
+                  normalInput={true}
                   customStyle={styles.input}
                   labelText="Enter a Password"
                   secureTextEntry
@@ -246,7 +248,7 @@ const ChangePassword = () => {
                   guide={
                     <View style={styles.inputGuide}>
                       <View style={styles.caution}>
-                        <WarningIcon />
+                        <WarningIcon fill={colors.primary40} />
                         <Typography
                           type="smallText"
                           style={{ color: colors.primary40 }}>

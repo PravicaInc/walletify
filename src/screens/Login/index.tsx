@@ -15,7 +15,7 @@ import { GeneralTextInput } from '../../components/shared/GeneralTextInput';
 import Header from '../../components/shared/Header';
 import HeaderBack from '../../components/shared/HeaderBack';
 import PasswordShield from '../../assets/password-shield.svg';
-import Warning from '../../assets/images/grey-warning.svg';
+import WarningIcon from '../../components/shared/WarningIcon';
 import SecureKeychain from '../../shared/SecureKeychain';
 import { UserPreferenceContext } from '../../contexts/UserPreference/userPreferenceContext';
 import { ThemeContext } from '../../contexts/Theme/theme';
@@ -173,7 +173,12 @@ const Login: React.FC = () => {
           </View>
         </KeyboardAvoidingView>
         <View style={loginStyles.warningContainer}>
-          <Warning style={loginStyles.warningIcon} width={24} height={24} />
+          <WarningIcon
+            fill={colors.primary40}
+            style={loginStyles.warningIcon}
+            width={24}
+            height={24}
+          />
           <Typography
             type="commonText"
             style={[

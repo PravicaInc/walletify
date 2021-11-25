@@ -14,7 +14,6 @@ import { ThemeContext } from '../../contexts/Theme/theme';
 
 import LockedShield from '../../assets/locked-shield.svg';
 import styles from './styles';
-import { useWallet } from '../../hooks/useWallet/useWallet';
 import { generateSecretKey } from '@stacks/wallet-sdk';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/types';
@@ -44,8 +43,6 @@ const ShowSeedPhrase: React.FC<Props> = props => {
 
   const [isLoading, setIsloading] = useState(false);
 
-  const { createWallet } = useWallet();
-
   const handleView = () => setCurrentStage(Stage.ToCopy);
 
   const handleCopyGeneratedPhrase = () => {
@@ -59,7 +56,6 @@ const ShowSeedPhrase: React.FC<Props> = props => {
 
   const handleConfirm = async () => {
     setIsloading(true);
-    await createWallet(generatedSeedPhrase, password);
     dispatch(
       StackActions.replace('Home', {
         seedPhrase: generatedSeedPhrase,

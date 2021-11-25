@@ -12,10 +12,10 @@ import { useCallback, useContext, useEffect, useState } from 'react';
 import { ThemeContext } from '../../../contexts/Theme/theme';
 // import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import WarningIcon from '../WarningIcon';
 import CloseIcon from '../../../assets/icon-reject-contact.svg';
 import HiddenEye from '../../../assets/hidden-eye.svg';
 import VisibleEye from '../../../assets/visible-eye.svg';
-import Warning from '../../../assets/images/red-warning.svg';
 import { Typography } from '../Typography';
 
 interface IProps extends TextInputProps {
@@ -153,7 +153,7 @@ export const GeneralTextInput = React.forwardRef<any, IProps>((props, ref) => {
       {props.guide && !(touched && hasError) && props.guide}
       {touched && hasError && (
         <View style={styles.errorContainer}>
-          <Warning />
+          <WarningIcon />
           <Typography
             type="smallText"
             style={[styles.error, { color: colors.failed100 }]}>

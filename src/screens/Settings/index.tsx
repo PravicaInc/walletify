@@ -1,4 +1,10 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, {
+  useContext,
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+} from 'react';
 import { TouchableOpacity, View, ScrollView, Switch } from 'react-native';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { BIOMETRY_TYPE, ACCESS_CONTROL } from 'react-native-keychain';
@@ -7,7 +13,7 @@ import { Typography } from '../../components/shared/Typography';
 import AccountAvatar from '../../components/shared/AccountAvatar';
 import SettingsIcon from '../../assets/manage.svg';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import Header from '../../components/shared/Header';
 import HeaderBack from '../../components/shared/HeaderBack';
 import EnterPasswordModal from '../../components/EnterPasswordModal';
@@ -76,13 +82,20 @@ const bottomSettingsList = [
 ];
 
 const Settings = () => {
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+
   const {
     theme: { colors },
   } = useContext(ThemeContext);
 
-  const { dispatch } = useNavigation();
+  const [backdrop, setBackdrop] = useState(colors.white);
 
-  const [enterPasswordVisible, setEnterPasswordVisible] = useState(false);
+  const handlePresentEnterPassword = useCallback(() => {
+    setBackdrop(colors.primary40);
+    bottomSheetModalRef.current?.present();
+  }, [colors.primary40]);
+
+  const { dispatch } = useNavigation();
 
   // biometrics
   const {
@@ -104,12 +117,9 @@ const Settings = () => {
       await SecureKeychain.resetGenericPassword();
       setHasEnabledBiometric(false);
     } else {
-      toggleEnterPassword();
+      handlePresentEnterPassword();
     }
   };
-
-  const toggleEnterPassword = () =>
-    setEnterPasswordVisible(!enterPasswordVisible);
 
   const handleBioOn = async ({ password }: { password: string }) => {
     await SecureKeychain.setGenericPassword(
@@ -117,7 +127,6 @@ const Settings = () => {
       ACCESS_CONTROL.BIOMETRY_CURRENT_SET_OR_DEVICE_PASSCODE,
     );
     setHasEnabledBiometric(true);
-    toggleEnterPassword();
   };
 
   const handleRecoverSeedPhrase = () =>
@@ -129,7 +138,7 @@ const Settings = () => {
     dispatch(StackActions.push('ChangePassword'));
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: colors.white }]}>
+    <SafeAreaView style={[styles.container, { backgroundColor: backdrop }]}>
       <ScrollView contentContainerStyle={styles.contentContainer}>
         <View style={styles.topContent}>
           <Header
@@ -180,9 +189,9 @@ const Settings = () => {
                 disabled={!hasBioSetup}
               />
               <EnterPasswordModal
+                ref={bottomSheetModalRef}
                 handleNextAction={handleBioOn}
-                toggleEnterPassword={toggleEnterPassword}
-                enterPasswordVisible={enterPasswordVisible}
+                setBackdrop={setBackdrop}
               />
             </View>
             <TouchableSettingsItem
