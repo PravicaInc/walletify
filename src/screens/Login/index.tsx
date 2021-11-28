@@ -1,4 +1,10 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+  useRef,
+} from 'react';
 import {
   KeyboardAvoidingView,
   Platform,
@@ -10,8 +16,10 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { decryptMnemonic } from '@stacks/encryption';
 import { UserCredentials } from 'react-native-keychain';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { Typography } from '../../components/shared/Typography';
 import { GeneralTextInput } from '../../components/shared/GeneralTextInput';
+import ConfirmModal from '../../components/ConfirmModal';
 import Header from '../../components/shared/Header';
 import HeaderBack from '../../components/shared/HeaderBack';
 import PasswordShield from '../../assets/password-shield.svg';
@@ -22,9 +30,12 @@ import { ThemeContext } from '../../contexts/Theme/theme';
 import loginStyles from './styles';
 
 const Login: React.FC = () => {
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+
   const {
     theme: { colors },
   } = useContext(ThemeContext);
+
   const [passwordValue, setPasswordValue] = useState<string>('');
   const [passwordError, setPasswordError] = useState<boolean | undefined>(
     undefined,
@@ -32,6 +43,7 @@ const Login: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const {
     userPreference: { encryptedSeedPhrase, hasSetBiometric },
+    clearUserPreference,
   } = useContext(UserPreferenceContext);
   const { dispatch } = useNavigation();
 
@@ -56,6 +68,24 @@ const Login: React.FC = () => {
   useEffect(() => {
     validateUserCredentials();
   }, [hasSetBiometric]);
+
+  const confirmContinue = useCallback(
+    () => (
+      <Typography type="buttonText" style={{ color: colors.failed100 }}>
+        OK Reset
+      </Typography>
+    ),
+    [colors.failed100],
+  );
+
+  const confirmAbort = useCallback(
+    () => (
+      <Typography type="smallTitle" style={{ color: colors.secondary100 }}>
+        Cancel
+      </Typography>
+    ),
+    [colors.secondary100],
+  );
 
   const handleConfirm = async () => {
     setIsLoading(true);
@@ -83,6 +113,22 @@ const Login: React.FC = () => {
     }
   };
 
+  const handlePressReset = () => {
+    setPasswordValue('');
+    setPasswordError(false);
+    handlePresentResetWallet();
+  };
+
+  const handlePresentResetWallet = useCallback(() => {
+    bottomSheetModalRef.current?.present();
+  }, []);
+
+  const handleResetWallet = () => {
+    bottomSheetModalRef.current?.dismiss();
+    clearUserPreference();
+    dispatch(StackActions.replace('Onboarding'));
+  };
+
   return (
     <SafeAreaView
       style={[
@@ -91,16 +137,13 @@ const Login: React.FC = () => {
           backgroundColor: colors.white,
         },
       ]}>
-      <View style={loginStyles.container}>
+      <View style={[loginStyles.container]}>
         <Header
           leftComponent={
             <HeaderBack
               text="Reset"
               customStyle={{ color: colors.failed100 }}
-              onPress={() => {
-                setPasswordValue('');
-                setPasswordError(false);
-              }}
+              onPress={handlePressReset}
             />
           }
           title="Password"
@@ -128,7 +171,14 @@ const Login: React.FC = () => {
             </TouchableOpacity>
           }
         />
-
+        <ConfirmModal
+          ref={bottomSheetModalRef}
+          handleNextAction={handleResetWallet}
+          title="Reset Wallet"
+          description="Losing the password doesn't matter as much, because as long as you have the Secret Key you can restore your wallet and set up a new password."
+          renderContinueText={confirmContinue}
+          renderAbortText={confirmAbort}
+        />
         <KeyboardAvoidingView
           style={loginStyles.contentViewContainer}
           keyboardVerticalOffset={50}

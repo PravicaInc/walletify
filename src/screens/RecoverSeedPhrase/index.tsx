@@ -1,15 +1,19 @@
-import React, { useContext, useState, useRef, useCallback } from 'react';
+import React, { useContext, useRef, useCallback } from 'react';
 import { View, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { decryptMnemonic } from '@stacks/encryption';
+import { UserCredentials } from 'react-native-keychain';
 import GeneralButton from '../../components/shared/GeneralButton';
 import Header from '../../components/shared/Header';
 import HeaderBack from '../../components/shared/HeaderBack';
 import EnterPasswordModal from '../../components/EnterPasswordModal';
 import { Typography } from '../../components/shared/Typography';
+import SecureKeychain from '../../shared/SecureKeychain';
 
 import { ThemeContext } from '../../contexts/Theme/theme';
+import { UserPreferenceContext } from '../../contexts/UserPreference/userPreferenceContext';
 import LockedShield from '../../assets/locked-shield.svg';
 import styles from './styles';
 
@@ -22,26 +26,41 @@ const RecoverSeedPhrase: React.FC = () => {
     theme: { colors },
   } = useContext(ThemeContext);
 
-  const [backdrop, setBackdrop] = useState(colors.white);
+  const {
+    userPreference: { encryptedSeedPhrase, hasSetBiometric },
+  } = useContext(UserPreferenceContext);
 
   const handlePresentEnterPassword = useCallback(() => {
-    setBackdrop(colors.primary40);
     bottomSheetModalRef.current?.present();
-  }, [colors.primary40]);
+  }, []);
 
-  const handleNextAction = ({ seedPhrase }: { seedPhrase: string }) => {
+  const handlePasswordModalAction = ({
+    seedPhrase,
+  }: {
+    seedPhrase: string;
+  }) => {
     bottomSheetModalRef.current?.dismiss();
     dispatch(StackActions.replace('ShowSeedPhrase', { seedPhrase }));
+  };
+
+  const handleGetBiometricData = async () => {
+    const userCredentials = await SecureKeychain.getGenericPassword();
+    const seedDecrypted = await decryptMnemonic(
+      encryptedSeedPhrase,
+      (userCredentials as UserCredentials).password,
+    );
+    dispatch(
+      StackActions.replace('ShowSeedPhrase', { seedPhrase: seedDecrypted }),
+    );
   };
 
   const handleGoBack = () => dispatch(StackActions.replace('Settings'));
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: backdrop }]}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.white }]}>
       <EnterPasswordModal
         ref={bottomSheetModalRef}
-        handleNextAction={handleNextAction}
-        setBackdrop={setBackdrop}
+        handleNextAction={handlePasswordModalAction}
       />
       <ScrollView contentContainerStyle={styles.container}>
         <View style={styles.contentContainer}>
@@ -66,7 +85,11 @@ const RecoverSeedPhrase: React.FC = () => {
           <View style={styles.bottomContent}>
             <GeneralButton
               type={'activePrimary'}
-              onPress={handlePresentEnterPassword}
+              onPress={
+                hasSetBiometric
+                  ? handleGetBiometricData
+                  : handlePresentEnterPassword
+              }
               style={styles.actionButtonTop}>
               View Seed Phrase
             </GeneralButton>

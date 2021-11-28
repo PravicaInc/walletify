@@ -8,7 +8,7 @@ import React, {
 import { TouchableOpacity, View, ScrollView, Switch } from 'react-native';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { BIOMETRY_TYPE, ACCESS_CONTROL } from 'react-native-keychain';
-
+import ConfirmModal from '../../components/ConfirmModal';
 import { Typography } from '../../components/shared/Typography';
 import AccountAvatar from '../../components/shared/AccountAvatar';
 import SettingsIcon from '../../assets/manage.svg';
@@ -19,7 +19,6 @@ import HeaderBack from '../../components/shared/HeaderBack';
 import EnterPasswordModal from '../../components/EnterPasswordModal';
 import { ThemeContext } from '../../contexts/Theme/theme';
 import { UserPreferenceContext } from '../../contexts/UserPreference/userPreferenceContext';
-
 import BugIcon from '../../assets/images/settings/bug.svg';
 import LockIcon from '../../assets/images/settings/lock.svg';
 import PasswordIcon from '../../assets/images/settings/password.svg';
@@ -82,18 +81,20 @@ const bottomSettingsList = [
 ];
 
 const Settings = () => {
-  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+  const enterPasswordModalRef = useRef<BottomSheetModal>(null);
+  const confirmModalRef = useRef<BottomSheetModal>(null);
 
   const {
     theme: { colors },
   } = useContext(ThemeContext);
 
-  const [backdrop, setBackdrop] = useState(colors.white);
-
   const handlePresentEnterPassword = useCallback(() => {
-    setBackdrop(colors.primary40);
-    bottomSheetModalRef.current?.present();
-  }, [colors.primary40]);
+    enterPasswordModalRef.current?.present();
+  }, []);
+
+  const handlePresentResetWallet = useCallback(() => {
+    confirmModalRef.current?.present();
+  }, []);
 
   const { dispatch } = useNavigation();
 
@@ -101,6 +102,7 @@ const Settings = () => {
   const {
     userPreference: { hasSetBiometric },
     setHasEnabledBiometric,
+    clearUserPreference,
   } = useContext(UserPreferenceContext);
   const [hasBioSetup, setHasBioSetup] = useState<BIOMETRY_TYPE | null>(null);
 
@@ -121,6 +123,24 @@ const Settings = () => {
     }
   };
 
+  const confirmContinue = useCallback(
+    () => (
+      <Typography type="buttonText" style={{ color: colors.failed100 }}>
+        OK Reset
+      </Typography>
+    ),
+    [colors.failed100],
+  );
+
+  const confirmAbort = useCallback(
+    () => (
+      <Typography type="smallTitle" style={{ color: colors.secondary100 }}>
+        Cancel
+      </Typography>
+    ),
+    [colors.secondary100],
+  );
+
   const handleBioOn = async ({ password }: { password: string }) => {
     await SecureKeychain.setGenericPassword(
       password || '',
@@ -137,8 +157,14 @@ const Settings = () => {
   const handleChangePassword = () =>
     dispatch(StackActions.push('ChangePassword'));
 
+  const handleResetWallet = () => {
+    confirmModalRef.current?.dismiss();
+    clearUserPreference();
+    dispatch(StackActions.replace('Onboarding'));
+  };
+
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: backdrop }]}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.white }]}>
       <ScrollView contentContainerStyle={styles.contentContainer}>
         <View style={styles.topContent}>
           <Header
@@ -189,9 +215,8 @@ const Settings = () => {
                 disabled={!hasBioSetup}
               />
               <EnterPasswordModal
-                ref={bottomSheetModalRef}
+                ref={enterPasswordModalRef}
                 handleNextAction={handleBioOn}
-                setBackdrop={setBackdrop}
               />
             </View>
             <TouchableSettingsItem
@@ -214,14 +239,24 @@ const Settings = () => {
             ))}
           </View>
         </View>
-        <View style={styles.bottomContent}>
+        <TouchableOpacity
+          style={styles.bottomContent}
+          onPress={handlePresentResetWallet}>
           <ExitIcon />
           <Typography
             type="buttonText"
             style={[styles.bottomText, { color: colors.failed100 }]}>
             Reset Wallet
           </Typography>
-        </View>
+        </TouchableOpacity>
+        <ConfirmModal
+          ref={confirmModalRef}
+          handleNextAction={handleResetWallet}
+          title="Reset Wallet"
+          description="Losing the password doesn't matter as much, because as long as you have the Secret Key you can restore your wallet and set up a new password."
+          renderContinueText={confirmContinue}
+          renderAbortText={confirmAbort}
+        />
       </ScrollView>
     </SafeAreaView>
   );
