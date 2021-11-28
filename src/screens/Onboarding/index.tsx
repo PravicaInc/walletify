@@ -23,17 +23,17 @@ const OnBoarding: React.FC = () => {
     {
       svg: Onboarding1,
       title: 'Manage Your Assets',
-      body: 'WISE is a mobile wallet that you can use anywhere anytime. Only you own your assets.',
+      body: 'WISE is a mobile wallet for Stacks that can be used anywhere anytime. You are the sole owner of your assets.',
     },
     {
       svg: Onboarding2,
       title: 'Manage Your Accounts',
-      body: 'To manage which account to authenticate or pay with. Each account could have its own identity.',
+      body: 'Choose between your accounts for payments and authentication. Create unlimited accounts.',
     },
     {
       svg: Onboarding3,
       title: 'Earn BTC',
-      body: 'You can stack your STX through WISE and earn rewards in BTC without any kind of fees.',
+      body: 'With WISE you can stack your STX and earn rewards in BTC with zero fees.',
     },
   ];
 
@@ -45,7 +45,7 @@ const OnBoarding: React.FC = () => {
     const Img = item.svg;
     return (
       <View style={styles.slide}>
-        <Img width="300" />
+        <Img width="300" height="300" />
         <Typography type="bigTitle" style={styles.title}>
           {item.title}
         </Typography>
