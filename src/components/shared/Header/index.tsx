@@ -7,7 +7,7 @@ interface IProps {
   leftComponent: React.ReactNode;
   title?: string;
   titleColor?: string;
-  rightComponent?: React.ReactNode;
+  rightComponent?: React.ReactNode | (() => React.ReactNode);
 }
 
 const Header: React.FC<IProps> = ({
@@ -30,7 +30,11 @@ const Header: React.FC<IProps> = ({
           {title}
         </Typography>
       )}
-      <View style={[styles.lateral, styles.right]}>{rightComponent}</View>
+      <View style={[styles.lateral, styles.right]}>
+        {typeof rightComponent === 'function'
+          ? rightComponent()
+          : rightComponent}
+      </View>
     </View>
   );
 };

@@ -50,7 +50,6 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = wise/main.m; sourceTree = "<group>"; };
 		176DE1A33C7FBBB9D4D5BACC /* libPods-wise.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-wise.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		281378C8265FC331009C723D /* wise.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = wise.entitlements; path = wise/wise.entitlements; sourceTree = "<group>"; };
-		29203964272AC86900159F33 /* main.jsbundle */ = {isa = PBXFileReference; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* wise-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "wise-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* wise-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "wise-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		70FE2F4CF1432991D3D64626 /* Pods-wise.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wise.release.xcconfig"; path = "Target Support Files/Pods-wise/Pods-wise.release.xcconfig"; sourceTree = "<group>"; };
@@ -146,7 +145,6 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				29203964272AC86900159F33 /* main.jsbundle */,
 				13B07FAE1A68108700A75B9A /* wise */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				83CBBA001A601CBA00E9B192 /* Products */,

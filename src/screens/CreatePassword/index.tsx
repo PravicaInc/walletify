@@ -21,7 +21,7 @@ import { GeneralTextInput } from '../../components/shared/GeneralTextInput';
 import { ThemeContext } from '../../contexts/Theme/theme';
 import PasswordShield from '../../assets/password-shield.svg';
 import FingerPrint from '../../assets/finger-print.svg';
-import WarningIcon from '../../assets/images/grey-warning.svg';
+import WarningIcon from '../../components/shared/WarningIcon';
 import styles from './styles';
 import { validatePassword } from '../../components/shared/GeneralTextInput/validate-password';
 import { RootStackParamList, WalletSetupFlow } from '../../navigation/types';
@@ -215,7 +215,7 @@ const CreatePassword = (props: Props) => {
               guide={
                 <View style={styles.inputGuide}>
                   <View style={styles.caution}>
-                    <WarningIcon />
+                    <WarningIcon fill={colors.primary40} />
                     <Typography
                       type="smallText"
                       style={{ color: colors.primary40 }}>

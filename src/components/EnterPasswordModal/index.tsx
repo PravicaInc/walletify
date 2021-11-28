@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useCallback, useMemo } from 'react';
 import {
   View,
   KeyboardAvoidingView,
@@ -6,14 +6,13 @@ import {
   Platform,
   TouchableOpacity,
   ActivityIndicator,
-  Modal,
 } from 'react-native';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { decryptMnemonic } from '@stacks/encryption';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import Header from '../../components/shared/Header';
-import HeaderBack from '../../components/shared/HeaderBack';
-import { Typography } from '../../components/shared/Typography';
-import { GeneralTextInput } from '../../components/shared/GeneralTextInput';
+import Header from '../shared/Header';
+import HeaderBack from '../shared/HeaderBack';
+import { Typography } from '../shared/Typography';
+import { GeneralTextInput } from '../shared/GeneralTextInput';
 import { ThemeContext } from '../../contexts/Theme/theme';
 import { UserPreferenceContext } from '../../contexts/UserPreference/userPreferenceContext';
 import PasswordShield from '../../assets/password-shield.svg';
@@ -21,55 +20,88 @@ import styles from './styles';
 
 type Props = {
   handleNextAction: (props: { password: string; seedPhrase: string }) => void;
-  toggleEnterPassword: () => void;
-  enterPasswordVisible: boolean;
+  setBackdrop: React.Dispatch<React.SetStateAction<string>>;
 };
 
-const EnterPasswordModal = ({
-  handleNextAction,
-  toggleEnterPassword,
-  enterPasswordVisible,
-}: Props) => {
-  const {
-    userPreference: { encryptedSeedPhrase },
-  } = useContext(UserPreferenceContext);
+const EnterPasswordModal = React.forwardRef<any, Props>(
+  ({ handleNextAction, setBackdrop }, ref) => {
+    const {
+      userPreference: { encryptedSeedPhrase },
+    } = useContext(UserPreferenceContext);
 
-  const {
-    theme: { colors },
-  } = useContext(ThemeContext);
-  const [password, setPassword] = useState<string>('');
-  const [errorMessage, setErrorMessage] = useState<string>('');
-  const [isLoading, setIsLoading] = useState(false);
+    const {
+      theme: { colors },
+    } = useContext(ThemeContext);
+    const [password, setPassword] = useState<string>('');
+    const [errorMessage, setErrorMessage] = useState<string>('');
+    const [isLoading, setIsLoading] = useState(false);
 
-  const handleGoNext = async () => {
-    setIsLoading(true);
-    try {
-      const enteredPassword = password;
-      const seedPhrase = await decryptMnemonic(
-        encryptedSeedPhrase,
-        enteredPassword,
-      );
-      handleNextAction({ password: enteredPassword, seedPhrase });
-      setPassword('');
-      setIsLoading(false);
-    } catch (e) {
-      setPassword('');
-      setErrorMessage('The password is incorrect!');
-      setIsLoading(false);
-    }
-  };
+    const snapPoints = useMemo(() => ['95%'], []);
 
-  return (
-    <Modal
-      animationType="slide"
-      transparent={true}
-      visible={enterPasswordVisible}>
-      <SafeAreaView
-        style={[
-          styles.safeAreaContainer,
-          { backgroundColor: colors.primary40 },
-        ]}
-        edges={['right', 'top', 'left']}>
+    const handleDismissModal = useCallback(() => {
+      if (ref) {
+        setPassword('');
+        setIsLoading(false);
+        ref.current?.dismiss();
+        setBackdrop(colors.white);
+      }
+    }, [ref, setBackdrop, colors.white]);
+
+    const handleSheetChanges = useCallback((index: number) => {
+      if (index === -1) {
+        handleDismissModal();
+      }
+    }, []);
+
+    const handleGoNext = async () => {
+      setIsLoading(true);
+      try {
+        const seedPhrase = await decryptMnemonic(encryptedSeedPhrase, password);
+        handleNextAction({ password, seedPhrase });
+        setPassword('');
+        setIsLoading(false);
+        handleDismissModal();
+      } catch (e) {
+        setPassword('');
+        setErrorMessage('The password is incorrect!');
+        setIsLoading(false);
+      }
+    };
+
+    const rightComponent = useCallback(
+      () => (
+        <TouchableOpacity
+          style={styles.confirmContainer}
+          onPress={handleGoNext}
+          disabled={isLoading || password.length === 0}>
+          {isLoading ? (
+            <ActivityIndicator color={colors.primary40} />
+          ) : (
+            <Typography
+              type="buttonText"
+              style={[
+                {
+                  color:
+                    password.length === 0
+                      ? colors.primary40
+                      : colors.secondary100,
+                },
+              ]}>
+              Confirm
+            </Typography>
+          )}
+        </TouchableOpacity>
+      ),
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      [password, isLoading],
+    );
+
+    return (
+      <BottomSheetModal
+        snapPoints={snapPoints}
+        ref={ref}
+        index={0}
+        onChange={handleSheetChanges}>
         <View
           style={[
             styles.container,
@@ -82,33 +114,11 @@ const EnterPasswordModal = ({
               <HeaderBack
                 text="Cancel"
                 customStyle={{ color: colors.secondary100 }}
-                onPress={toggleEnterPassword}
+                onPress={handleDismissModal}
               />
             }
             title="Password"
-            rightComponent={
-              <TouchableOpacity
-                style={styles.confirmContainer}
-                onPress={handleGoNext}
-                disabled={isLoading || password.length === 0}>
-                {isLoading ? (
-                  <ActivityIndicator color={colors.primary40} />
-                ) : (
-                  <Typography
-                    type="buttonText"
-                    style={[
-                      {
-                        color:
-                          password.length === 0
-                            ? colors.primary40
-                            : colors.secondary100,
-                      },
-                    ]}>
-                    Confirm
-                  </Typography>
-                )}
-              </TouchableOpacity>
-            }
+            rightComponent={rightComponent}
           />
           <KeyboardAvoidingView
             style={styles.keyboardContainer}
@@ -136,13 +146,14 @@ const EnterPasswordModal = ({
                 value={password}
                 disableCancel
                 errorMessage={errorMessage}
+                normalInput={false}
               />
             </ScrollView>
           </KeyboardAvoidingView>
         </View>
-      </SafeAreaView>
-    </Modal>
-  );
-};
+      </BottomSheetModal>
+    );
+  },
+);
 
 export default EnterPasswordModal;

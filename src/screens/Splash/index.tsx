@@ -11,13 +11,14 @@ const Splash: React.FC = () => {
   const { dispatch } = useNavigation();
 
   useEffect(() => {
-    if (encryptedSeedPhrase) {
-      dispatch(StackActions.replace('Login'));
-    } else if (!viewedOnboarding) {
-      dispatch(StackActions.replace('Onboarding'));
-    } else {
-      dispatch(StackActions.replace('WalletSetup'));
-    }
+    // if (encryptedSeedPhrase) {
+    //   dispatch(StackActions.replace('Login'));
+    // } else if (!viewedOnboarding) {
+    //   dispatch(StackActions.replace('Onboarding'));
+    // } else {
+    //   dispatch(StackActions.replace('WalletSetup'));
+    // }
+    dispatch(StackActions.replace('WalletSetup'));
     SplashScreen.hide();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [viewedOnboarding, encryptedSeedPhrase]);

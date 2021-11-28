@@ -27,6 +27,8 @@ const SeedConfirmation: React.FC<Props> = props => {
     PuzzleStatus.Incomplete,
   );
 
+  const [puzzleKey, setPuzzleKey] = useState(1);
+
   const password = props.route.params?.password || '';
   const seedPhrase = props.route.params?.seedPhrase || '';
 
@@ -39,6 +41,31 @@ const SeedConfirmation: React.FC<Props> = props => {
     );
 
   const handleGoBack = () => dispatch(StackActions.pop());
+
+  const handleRetry = () => {
+    setPuzzleProgress(PuzzleStatus.Incomplete);
+    setPuzzleKey(puzzleKey + 1);
+  };
+
+  let actionButton = (
+    <GeneralButton type={'inactivePrimary'}>Continue</GeneralButton>
+  );
+
+  if (puzzleProgress === PuzzleStatus.Right) {
+    actionButton = (
+      <GeneralButton type={'activePrimary'} onPress={handleDone}>
+        Done
+      </GeneralButton>
+    );
+  }
+
+  if (puzzleProgress === PuzzleStatus.Wrong) {
+    actionButton = (
+      <GeneralButton type={'activePrimary'} onPress={handleRetry}>
+        Retry
+      </GeneralButton>
+    );
+  }
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.white }]}>
@@ -70,6 +97,7 @@ const SeedConfirmation: React.FC<Props> = props => {
 
           <View style={styles.bottomContent}>
             <DragAndDrop
+              key={String(puzzleKey)}
               seedPhrase={seedPhrase}
               customStyle={styles.dragNDrop}
               puzzleProgress={puzzleProgress}
@@ -77,9 +105,7 @@ const SeedConfirmation: React.FC<Props> = props => {
             />
           </View>
 
-          <GeneralButton type={'inactivePrimary'} onPress={handleDone}>
-            Continue
-          </GeneralButton>
+          {actionButton}
         </View>
       </ScrollView>
     </SafeAreaView>

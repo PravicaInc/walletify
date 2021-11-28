@@ -6,6 +6,7 @@ import { Theme, ThemeContext } from './src/contexts/Theme/theme';
 import DefaultTheme from './src/themes/defaultTheme';
 import UserPreference from './src/contexts/UserPreference/userPreference';
 
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 
 export default function App() {
   const [theme, setTheme] = useState<Theme>(DefaultTheme);
@@ -15,7 +16,9 @@ export default function App() {
       <SafeAreaProvider>
         <ThemeContext.Provider value={{ theme, setTheme }}>
           <NavigationContainer>
-            <Routes />
+            <BottomSheetModalProvider>
+              <Routes />
+            </BottomSheetModalProvider>
           </NavigationContainer>
         </ThemeContext.Provider>
       </SafeAreaProvider>
