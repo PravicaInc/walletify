@@ -13,7 +13,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: '100%',
   },
-
   header: {
     shadowOpacity: 0,
     height: 20,
@@ -31,8 +30,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flex: 1,
     width: '100%',
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
   },
+  dragNDrop: { flex: 0.75 },
   seedTitle: { marginBottom: 10 },
   actionButtonTop: { marginBottom: 'auto' },
   actionButtonBottom: { marginTop: 'auto' },
