@@ -36,6 +36,10 @@ const styles = StyleSheet.create({
   seedTitle: { marginBottom: 10 },
   actionButtonTop: { marginBottom: 'auto' },
   actionButtonBottom: { marginTop: 'auto' },
+  confirmContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
 });
 
 export default styles;

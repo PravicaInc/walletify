@@ -182,7 +182,7 @@ const CreatePassword = (props: Props) => {
         <KeyboardAvoidingView
           style={styles.keyboardContainer}
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          keyboardVerticalOffset={0}>
+          keyboardVerticalOffset={60}>
           <ScrollView contentContainerStyle={styles.scrollableContent}>
             <PasswordShield />
             <View>
@@ -194,7 +194,8 @@ const CreatePassword = (props: Props) => {
               <Typography
                 type="commonText"
                 style={[styles.description, { color: colors.primary60 }]}>
-                Create a password for inApp permissions
+                Your password encrypts your Secret Key and confirms all your
+                transactions.
               </Typography>
             </View>
 
@@ -256,16 +257,34 @@ const CreatePassword = (props: Props) => {
                 errorMessage={confirmPwdErrorMsg}
               />
             </View>
-            <View style={styles.switchContainer}>
-              <View style={styles.switchLabelContainer}>
-                <FingerPrint style={styles.switchLabelIcon} />
-                <Typography type="smallTitleR">Sign With Biometrics</Typography>
+
+            <View style={styles.switchGroupContainer}>
+              <View style={styles.switchTop}>
+                <View style={styles.fingerprintContainer}>
+                  <FingerPrint />
+                </View>
+                <View style={styles.switchLabel}>
+                  <Typography type="smallTitleR">Allow Biometrics</Typography>
+                </View>
+                <View style={styles.switch}>
+                  <Switch
+                    onChange={() => setisBioSwitchOn(prevState => !prevState)}
+                    value={isBioSwitchOn}
+                    disabled={!hasBioSupported}
+                  />
+                </View>
               </View>
-              <Switch
-                onChange={() => setisBioSwitchOn(prevState => !prevState)}
-                value={isBioSwitchOn}
-                disabled={!hasBioSupported}
-              />
+              <View style={styles.switchBottom}>
+                <View style={styles.fingerprintContainer} />
+                <View style={styles.switchLabel}>
+                  <Typography
+                    type="commonText"
+                    style={{ color: colors.primary40 }}>
+                    You can Authenticate and Sign transactions using your
+                    biometrics.
+                  </Typography>
+                </View>
+              </View>
             </View>
             <GeneralButton
               style={styles.button}

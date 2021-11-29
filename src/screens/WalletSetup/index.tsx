@@ -42,7 +42,7 @@ const WalletSetup: React.FC = () => {
           <LockAndStacks />
 
           <Typography type={'bigTitle'} style={styles.title}>
-            Seamless experience for your decentralized authentication
+            Seamless user experience, and Decentralized authentication
           </Typography>
           <View style={styles.buttonsContainer}>
             <GeneralButton type={'activePrimary'} onPress={handleCreate}>
@@ -55,12 +55,6 @@ const WalletSetup: React.FC = () => {
               Restore Wallet
             </GeneralButton>
           </View>
-          <Typography
-            type={'commonText'}
-            style={[styles.disclaimer, { color: colors.primary40 }]}>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industryLorem Ipsum has beenLorem Ipsum is simply dummy text of the.
-          </Typography>
         </View>
       </ScrollView>
     </SafeAreaView>

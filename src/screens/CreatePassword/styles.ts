@@ -19,7 +19,11 @@ const styles = StyleSheet.create({
     paddingTop: '15%',
   },
   title: { marginVertical: 10 },
-  description: { textAlign: 'center', marginBottom: 40 },
+  description: {
+    textAlign: 'center',
+    marginBottom: 40,
+    marginHorizontal: '6%',
+  },
   input: {
     width: '99%',
     marginTop: 8,
@@ -46,16 +50,24 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
   },
-  switchContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+  switchGroupContainer: { width: '100%', marginVertical: 20 },
+  switchTop: {
     width: '100%',
-    marginVertical: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
-  switchLabelContainer: {
+  switchLabel: { flex: 0.72 },
+  fingerprintContainer: {
+    flex: 0.08,
+  },
+  switch: { flex: 0.2, alignItems: 'flex-end' },
+  switchBottom: {
+    width: '100%',
     flexDirection: 'row',
   },
-  switchLabelIcon: { marginRight: 10 },
+  switchDescription: {
+    flex: 0.72,
+  },
   button: {
     marginTop: 'auto',
   },
