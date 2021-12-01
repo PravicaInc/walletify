@@ -14,10 +14,13 @@ import ShowSeedPhrase from '../screens/ShowSeedPhrase';
 import RecoverSeedPhrase from '../screens/RecoverSeedPhrase';
 import { RootStackParamList } from './types';
 import Login from '../screens/Login';
+import ManageAccounts from '../screens/ManageAccounts';
+import { useStxPrice } from '../hooks/useStxPrice/useStxPrice';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
 export const Routes: React.FC = () => {
+  useStxPrice();
   return (
     <Stack.Navigator initialRouteName="Splash">
       <Stack.Screen
@@ -84,6 +87,11 @@ export const Routes: React.FC = () => {
         options={{ headerShown: false }}
         name="Settings"
         component={Settings}
+      />
+      <Stack.Screen
+        options={{ headerShown: false }}
+        name="ManageAccounts"
+        component={ManageAccounts}
       />
     </Stack.Navigator>
   );
