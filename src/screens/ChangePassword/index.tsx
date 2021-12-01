@@ -180,7 +180,7 @@ const ChangePassword = () => {
           leftComponent={
             <HeaderBack
               text="Cancel"
-              customStyle={{ color: colors.secondary100 }}
+              textColor={colors.secondary100}
               onPress={handleGoBack}
             />
           }
