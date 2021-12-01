@@ -55,3 +55,7 @@ export const useAccounts = () => {
     switchAccount,
   };
 };
+
+export function useAccountAvailableStxBalance(address: string) {
+  return useAtomValue(accountAvailableStxBalanceState(address));
+}
