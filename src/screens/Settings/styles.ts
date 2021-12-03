@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
     shadowOpacity: 0,
   },
   contentContainer: {
-    paddingHorizontal: PADDING_HORIZONTAL,
+    paddingHorizontal: '2.5%',
     paddingVertical: PADDING_VERTICAL,
     flex: 1,
     justifyContent: 'space-between',
@@ -35,7 +35,7 @@ export const styles = StyleSheet.create({
   },
   settingsItemsContainer: {
     width: '100%',
-    paddingVertical: 10,
+    marginTop: 40,
     borderBottomWidth: 0.5,
   },
   settingsItem: {

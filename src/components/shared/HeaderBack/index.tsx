@@ -11,8 +11,9 @@ import Chevron from '../../../assets/chevron-right.svg';
 
 interface IProps {
   onPress: () => void;
-  text: string;
+  text?: string;
   textType?: StylesTypes;
+  textColor?: string;
   customStyle?: TextStyle;
   hasChevron?: boolean;
   chevronSize?: { height: number; width: number };
@@ -23,6 +24,7 @@ const HeaderBack: React.FC<IProps> = ({
   onPress,
   text,
   textType,
+  textColor,
   hasChevron,
   chevronSize,
   customStyle,
@@ -33,7 +35,7 @@ const HeaderBack: React.FC<IProps> = ({
   } = useContext(ThemeContext);
   return (
     <TouchableOpacity
-      style={styles.backContainer}
+      style={[styles.backContainer, customStyle]}
       onPress={onPress}
       onLayout={onLayout}>
       {hasChevron && (
@@ -44,11 +46,13 @@ const HeaderBack: React.FC<IProps> = ({
           fill={colors.primary100}
         />
       )}
-      <Typography
-        type={textType || 'buttonText'}
-        style={[{ color: colors.primary100 }, customStyle]}>
-        {text}
-      </Typography>
+      {text && (
+        <Typography
+          type={textType || 'buttonText'}
+          style={[{ color: textColor || colors.primary100 }, customStyle]}>
+          {text}
+        </Typography>
+      )}
     </TouchableOpacity>
   );
 };

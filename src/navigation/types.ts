@@ -16,6 +16,7 @@ export type RootStackParamList = {
   OldPassword: { seedPhrase: string } | undefined;
   Settings: undefined;
   Login: undefined;
+  ManageAccounts: undefined;
   ChangePassword: undefined;
   ShowSeedPhrase: { seedPhrase?: string; password?: string };
   RecoverSeedPhrase: undefined;

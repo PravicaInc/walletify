@@ -1,7 +1,4 @@
-import {
-  generateWallet,
-  restoreWalletAccounts,
-} from '@stacks/wallet-sdk/dist';
+import { generateWallet, restoreWalletAccounts } from '@stacks/wallet-sdk/dist';
 import { useCallback, useContext } from 'react';
 import { useAtom } from 'jotai';
 import { gaiaUrl } from '../../shared/constants';

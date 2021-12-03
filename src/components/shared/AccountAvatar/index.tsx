@@ -5,7 +5,7 @@ import Avatar from 'react-native-boring-avatars';
 import { ThemeContext } from '../../../contexts/Theme/theme';
 
 interface IProps {
-  accountIndex: number;
+  accountName: string | undefined;
   diameter: number;
   hasAura?: boolean;
   customStyle?: ViewStyle;
@@ -15,23 +15,23 @@ const AccountAvatar: React.FC<IProps> = props => {
   const {
     theme: { colors },
   } = useContext(ThemeContext);
-
+  const { hasAura, accountName, diameter, customStyle } = props;
   return (
     <View
       style={[
         styles.container,
         {
-          height: props.diameter + 6,
-          width: props.diameter + 6,
-          borderRadius: props.diameter / 2 + 4,
+          height: diameter + 6,
+          width: diameter + 6,
+          borderRadius: diameter / 2 + 4,
         },
-        props.hasAura && styles.aura,
-        props.hasAura && { borderColor: colors.confirm100 },
-        props.customStyle,
+        hasAura && styles.aura,
+        hasAura && { borderColor: colors.confirm100 },
+        customStyle,
       ]}>
       <Avatar
-        size={props.diameter}
-        name="Mary Baker"
+        size={diameter}
+        name={accountName}
         variant="sunset"
         colors={['#92A1C6', '#146A7C', '#F0AB3D', '#C271B4', '#C20D90']}
       />

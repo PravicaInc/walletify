@@ -10,8 +10,7 @@ import { StackActions, useNavigation } from '@react-navigation/native';
 import { BIOMETRY_TYPE, ACCESS_CONTROL } from 'react-native-keychain';
 import ConfirmModal from '../../components/ConfirmModal';
 import { Typography } from '../../components/shared/Typography';
-import AccountAvatar from '../../components/shared/AccountAvatar';
-import SettingsIcon from '../../assets/manage.svg';
+import Manage from '../../assets/images/settings/manage.svg';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import Header from '../../components/shared/Header';
@@ -27,32 +26,8 @@ import SpeakIcon from '../../assets/images/settings/speak.svg';
 import FingerPrintIcon from '../../assets/finger-print.svg';
 import ExitIcon from '../../assets/images/settings/exit.svg';
 import SecureKeychain from '../../shared/SecureKeychain';
-
 import { styles } from './styles';
-
-type SettingsLinkProps = {
-  text: string;
-  icon: React.FC;
-};
-
-const SettingsNextLink = (props: SettingsLinkProps) => {
-  const {
-    theme: { colors },
-  } = useContext(ThemeContext);
-
-  const Icon = props.icon;
-
-  return (
-    <View style={styles.settingsLinkContainer}>
-      <Icon />
-      <Typography
-        type="buttonText"
-        style={[styles.settingsLinkText, { color: colors.secondary100 }]}>
-        {props.text}
-      </Typography>
-    </View>
-  );
-};
+import { useAccounts } from '../../hooks/useAccounts/useAccounts';
 
 type TProps = {
   icon: React.FC;
@@ -98,7 +73,6 @@ const Settings = () => {
 
   const { dispatch } = useNavigation();
 
-  // biometrics
   const {
     userPreference: { hasSetBiometric },
     setHasEnabledBiometric,
@@ -149,8 +123,13 @@ const Settings = () => {
     setHasEnabledBiometric(true);
   };
 
-  const handleRecoverSeedPhrase = () =>
+  const handleRecoverSeedPhrase = () => {
     dispatch(StackActions.push('RecoverSeedPhrase'));
+  };
+
+  const handleOpenManageAccounts = () => {
+    dispatch(StackActions.push('ManageAccounts'));
+  };
 
   // navigation handlers
   const handleGoBack = () => dispatch(StackActions.pop());
@@ -177,26 +156,17 @@ const Settings = () => {
                 chevronSize={{ width: 9, height: 16.2 }}
               />
             }
-            rightComponent={
-              <SettingsNextLink text="Manage Accounts" icon={SettingsIcon} />
-            }
           />
-          <View style={[styles.card, { backgroundColor: colors.card }]}>
-            <AccountAvatar accountIndex={3} diameter={55} hasAura={true} />
-            <View style={styles.cardTextContainer}>
-              <Typography type="bigTitle">Account 1</Typography>
-              <Typography
-                type="smallTitleR"
-                style={{ color: colors.primary40 }}>
-                (SP6A....45G4)
-              </Typography>
-            </View>
-          </View>
           <View
             style={[
               styles.settingsItemsContainer,
               { borderBottomColor: colors.primary20 },
             ]}>
+            <TouchableSettingsItem
+              icon={Manage}
+              text="Manage Accounts"
+              onPress={handleOpenManageAccounts}
+            />
             <TouchableSettingsItem
               icon={PasswordIcon}
               text="Change Password"
@@ -226,10 +196,7 @@ const Settings = () => {
             />
           </View>
           <View
-            style={[
-              styles.settingsItemsContainer,
-              { borderBottomColor: colors.primary20 },
-            ]}>
+            style={[{ borderBottomColor: colors.primary20, width: '100%' }]}>
             {bottomSettingsList.map(item => (
               <TouchableSettingsItem
                 key={item.text}

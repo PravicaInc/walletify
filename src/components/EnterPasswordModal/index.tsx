@@ -116,7 +116,7 @@ const EnterPasswordModal = React.forwardRef<any, Props>(
             leftComponent={
               <HeaderBack
                 text="Cancel"
-                customStyle={{ color: colors.secondary100 }}
+                textColor={colors.secondary100}
                 onPress={handleDismissModal}
               />
             }

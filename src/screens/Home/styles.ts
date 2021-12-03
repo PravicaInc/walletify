@@ -1,18 +1,26 @@
 import { StyleSheet } from 'react-native';
-import { PADDING_HORIZONTAL, PADDING_VERTICAL } from '../../shared/layout';
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: 40,
   },
   header: {
     shadowOpacity: 0,
   },
   contentContainer: {
-    paddingHorizontal: PADDING_HORIZONTAL,
-    paddingVertical: PADDING_VERTICAL,
+    paddingHorizontal: '2.5%',
     flex: 1,
-    justifyContent: 'space-between',
-    alignItems: 'center',
+  },
+  settingsButton: {
+    width: '30%',
+    alignItems: 'flex-end',
+  },
+  pickAccountText: {
+    paddingVertical: 16,
+  },
+  walletOperationsTabs: {
+    marginTop: 30,
+    flex: 1,
   },
 });

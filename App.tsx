@@ -5,7 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { Theme, ThemeContext } from './src/contexts/Theme/theme';
 import DefaultTheme from './src/themes/defaultTheme';
 import UserPreference from './src/contexts/UserPreference/userPreference';
-
+import { PortalProvider } from '@gorhom/portal';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 
 export default function App() {
@@ -17,7 +17,9 @@ export default function App() {
         <ThemeContext.Provider value={{ theme, setTheme }}>
           <NavigationContainer>
             <BottomSheetModalProvider>
-              <Routes />
+              <PortalProvider>
+                <Routes />
+              </PortalProvider>
             </BottomSheetModalProvider>
           </NavigationContainer>
         </ThemeContext.Provider>

@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
   },
   passwordStrength: {
     flexDirection: 'row',
-    marginLeft: '5%',
+    marginLeft: '2.5%',
     alignSelf: 'flex-start',
     width: '40%',
     alignItems: 'flex-end',
