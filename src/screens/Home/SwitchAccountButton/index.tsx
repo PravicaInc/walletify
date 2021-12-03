@@ -1,6 +1,6 @@
 import { getAccountDisplayName } from '@stacks/wallet-sdk/dist';
 import React, { useContext } from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import AccountAvatar from '../../../components/shared/AccountAvatar';
 import { Typography } from '../../../components/shared/Typography';
 import { ThemeContext } from '../../../contexts/Theme/theme';
@@ -8,6 +8,7 @@ import { useAccounts } from '../../../hooks/useAccounts/useAccounts';
 import { truncateAddress } from '../../../shared/addressUtils';
 import Switch from '../../../assets/images/Home/switch.svg';
 import switchAccountButtonStyles from './styles';
+import { withSuspense } from '../../../components/shared/WithSuspense';
 
 interface SwitchAccountButtonProps {
   handlePressSwitchAccount: () => void;
@@ -52,4 +53,4 @@ const SwitchAccountButton: React.FC<SwitchAccountButtonProps> = props => {
   );
 };
 
-export default SwitchAccountButton;
+export default withSuspense(SwitchAccountButton, <Text>Loading</Text>);

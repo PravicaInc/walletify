@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
     shadowOpacity: 0,
   },
   contentContainer: {
-    paddingHorizontal: '5%',
+    paddingHorizontal: '2.5%',
     flex: 1,
   },
   settingsButton: {

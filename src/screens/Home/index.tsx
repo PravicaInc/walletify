@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useRef } from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ThemeContext } from '../../contexts/Theme/theme';
@@ -15,11 +15,7 @@ import { useAccounts } from '../../hooks/useAccounts/useAccounts';
 import { Typography } from '../../components/shared/Typography';
 import SwitchAccountBottomSheet from '../../components/Accounts/SwitchAccountBottomSheet';
 import BottomSheet from '@gorhom/bottom-sheet';
-import { useAtomValue } from 'jotai/utils';
-import { currentAnchoredAccountBalancesState } from '../../hooks/useAccounts/accountsStore';
-import { withSuspense } from '../../components/shared/WithSuspense';
 import SwitchAccountButton from './SwitchAccountButton';
-import { useStxPriceValue } from '../../hooks/useStxPrice/useStxPrice';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
@@ -31,8 +27,6 @@ const Home = (props: Props) => {
   const { dispatch } = useNavigation();
   const { switchAccount } = useAccounts();
   const bottomSheetModalRef = useRef<BottomSheet>(null);
-  const balances = useAtomValue(currentAnchoredAccountBalancesState);
-  const stxPrice = useStxPriceValue();
 
   const { password, seedPhrase } = props.route.params;
 
@@ -79,7 +73,7 @@ const Home = (props: Props) => {
         <SwitchAccountButton
           handlePressSwitchAccount={handlePressSwitchAccount}
         />
-        <AccountBalanceCard balance={balances?.stx.balance} price={stxPrice} />
+        <AccountBalanceCard />
         <View style={styles.walletOperationsTabs}>
           <HomeTabs />
         </View>
@@ -93,4 +87,4 @@ const Home = (props: Props) => {
   );
 };
 
-export default withSuspense(Home, <Text>"Loading..."</Text>);
+export default Home;

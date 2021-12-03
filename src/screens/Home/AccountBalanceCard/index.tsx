@@ -1,25 +1,29 @@
-import React, { useContext } from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import React, { Suspense, useContext, useMemo } from 'react';
+import { Text, TouchableOpacity, View } from 'react-native';
 import { Typography } from '../../../components/shared/Typography';
 import { ThemeContext } from '../../../contexts/Theme/theme';
 import UpArrow from '../../../assets/images/upArrow.svg';
 import DownArrow from '../../../assets/images/downArrow.svg';
 import AccountBalanceCardStyles from './styles';
-import BigNumber from 'bignumber.js';
 import { valueFromBalance } from '../../../shared/balanceUtils';
+import { withSuspense } from '../../../components/shared/WithSuspense';
+import { useAtomValue } from 'jotai/utils';
+import { currentAccountAvailableStxBalanceState } from '../../../hooks/useAccounts/accountsStore';
+import { useStxPriceValue } from '../../../hooks/useStxPrice/useStxPrice';
 
-interface AccountBalanceCardProps {
-  balance: BigNumber;
-  price: number;
-}
-
-const AccountBalanceCard: React.FC<AccountBalanceCardProps> = props => {
-  const { balance, price } = props;
+const AccountBalanceCard: React.FC = () => {
   const {
     theme: { colors },
   } = useContext(ThemeContext);
+  const balance = useAtomValue(currentAccountAvailableStxBalanceState);
+  const price = useStxPriceValue();
 
-  const amount = valueFromBalance(balance, 'stx');
+  const amount = useMemo(() => {
+    if (balance) {
+      return valueFromBalance(balance, 'stx');
+    }
+    return 0;
+  }, [balance]);
   const amountValue = (+amount * price).toFixed(2);
 
   return (
@@ -34,14 +38,16 @@ const AccountBalanceCard: React.FC<AccountBalanceCardProps> = props => {
         Your Account Balance:
       </Typography>
       <View style={AccountBalanceCardStyles.balanceContainer}>
-        <Typography
-          type="bigTitle"
-          style={[
-            AccountBalanceCardStyles.balance,
-            { color: colors.primary100 },
-          ]}>
-          {`$${amountValue}`}
-        </Typography>
+        <Suspense fallback={<Text>Loading</Text>}>
+          <Typography
+            type="bigTitle"
+            style={[
+              AccountBalanceCardStyles.balance,
+              { color: colors.primary100 },
+            ]}>
+            {`$${amountValue}`}
+          </Typography>
+        </Suspense>
         <Typography
           type="commonText"
           style={[
@@ -93,4 +99,4 @@ const AccountBalanceCard: React.FC<AccountBalanceCardProps> = props => {
     </View>
   );
 };
-export default AccountBalanceCard;
+export default withSuspense(AccountBalanceCard, <Text>Loading</Text>);

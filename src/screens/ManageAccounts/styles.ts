@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   screenContentContainer: {
-    paddingHorizontal: '5%',
+    paddingHorizontal: '2.5%',
   },
   createIdentityButton: {
     flexDirection: 'row',

@@ -4,7 +4,8 @@ const AccountBalanceCardStyles = StyleSheet.create({
   container: {
     height: 150,
     width: '100%',
-    padding: '5%',
+    paddingVertical: '5%',
+    paddingHorizontal: '2.5%',
     borderRadius: 24,
     position: 'relative',
   },
@@ -24,7 +25,7 @@ const AccountBalanceCardStyles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     position: 'absolute',
-    left: 20,
+    left: '2.5%',
     bottom: -10,
   },
   balanceActionButton: {
