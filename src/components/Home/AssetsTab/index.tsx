@@ -26,7 +26,7 @@ import {
   currentAccountAvailableStxBalanceState,
   currentAccountBalancesUnanchoredState,
 } from '../../../hooks/useAccounts/accountsStore';
-import { getAssetStringParts } from '../../../shared/assetsUtils';
+import { getAssetStringParts } from '../../../shared/balanceUtils';
 import {
   AccountToken,
   FungibleResponse,

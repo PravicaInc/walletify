@@ -72,3 +72,60 @@ export const ftDecimals = (
     .toNumber()
     .toLocaleString('en-US', { maximumFractionDigits: decimals });
 };
+
+const getContractName = (value: string) => {
+  if (value.includes('.')) {
+    var parts = value == null ? void 0 : value.split('.');
+
+    if (value.includes('::')) {
+      return parts[1].split('::')[0];
+    }
+
+    return parts[1];
+  }
+
+  console.warn(
+    'getContractName: does not contain a period, does not appear to be a contract_id.',
+    {
+      value: value,
+    },
+  );
+  return value;
+};
+const getAssetName = (fullyQualifiedName: string) => {
+  if (!fullyQualifiedName.includes('::')) {
+    console.warn(
+      'getAssetName: does not contain "::", does not appear to be a fully qualified name of an asset.',
+      {
+        fullyQualifiedName: fullyQualifiedName,
+      },
+    );
+    return fullyQualifiedName;
+  }
+
+  return fullyQualifiedName.split('::')[1];
+};
+export const getAssetStringParts = (fullyQualifiedName: string) => {
+  if (!fullyQualifiedName.includes('.') || !fullyQualifiedName.includes('::')) {
+    console.warn(
+      'getAssetStringParts: does not contain a period or "::", does not appear to be a fully qualified name of an asset.',
+      {
+        fullyQualifiedName: fullyQualifiedName,
+      },
+    );
+    return {
+      address: fullyQualifiedName,
+      contractName: fullyQualifiedName,
+      assetName: fullyQualifiedName,
+    };
+  }
+
+  var address = fullyQualifiedName.split('.')[0];
+  var contractName = getContractName(fullyQualifiedName);
+  var assetName = getAssetName(fullyQualifiedName);
+  return {
+    address: address,
+    contractName: contractName,
+    assetName: assetName,
+  };
+};
