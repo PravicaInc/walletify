@@ -16,84 +16,90 @@ import { RootStackParamList } from './types';
 import Login from '../screens/Login';
 import ManageAccounts from '../screens/ManageAccounts';
 import { useStxPrice } from '../hooks/useStxPrice/useStxPrice';
+import { useAuthenticationListener } from '../hooks/useAuthenticationListener/useAuthenticationListener';
+import AuthenticationBottomSheet from '../components/AuthenticationBottomSheet';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
 export const Routes: React.FC = () => {
   useStxPrice();
+  useAuthenticationListener();
   return (
-    <Stack.Navigator initialRouteName="Splash">
-      <Stack.Screen
-        options={{ headerShown: false }}
-        name="Splash"
-        component={Splash}
-      />
-      <Stack.Screen
-        options={{ headerShown: false }}
-        name="Home"
-        component={Home}
-      />
-      <Stack.Screen
-        options={{ headerShown: false }}
-        name="Onboarding"
-        component={Onboarding}
-      />
-      <Stack.Screen
-        options={{ headerShown: false }}
-        name="WalletSetup"
-        component={WalletSetup}
-      />
+    <>
+      <AuthenticationBottomSheet />
+      <Stack.Navigator initialRouteName="Splash">
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="Splash"
+          component={Splash}
+        />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="Home"
+          component={Home}
+        />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="Onboarding"
+          component={Onboarding}
+        />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="WalletSetup"
+          component={WalletSetup}
+        />
       <Stack.Screen
         options={{ headerShown: false }}
         name="ConfirmSeedPhrase"
         component={ConfirmSeedPhrase}
       />
-      <Stack.Screen
-        options={{ headerShown: false }}
-        name="CreatePassword"
-        component={CreatePassword}
-      />
-      <Stack.Screen
-        options={{ headerShown: false }}
-        name="SeedRestore"
-        component={SeedRestore}
-      />
-      <Stack.Screen
-        options={{ headerShown: false }}
-        name="OldPassword"
-        component={OldPassword}
-      />
-      <Stack.Screen
-        options={{ headerShown: false }}
-        name="Login"
-        component={Login}
-      />
-      <Stack.Screen
-        options={{ headerShown: false }}
-        name="ChangePassword"
-        component={ChangePassword}
-      />
-      <Stack.Screen
-        options={{ headerShown: false }}
-        name="ShowSeedPhrase"
-        component={ShowSeedPhrase}
-      />
-      <Stack.Screen
-        options={{ headerShown: false }}
-        name="RecoverSeedPhrase"
-        component={RecoverSeedPhrase}
-      />
-      <Stack.Screen
-        options={{ headerShown: false }}
-        name="Settings"
-        component={Settings}
-      />
-      <Stack.Screen
-        options={{ headerShown: false }}
-        name="ManageAccounts"
-        component={ManageAccounts}
-      />
-    </Stack.Navigator>
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="CreatePassword"
+          component={CreatePassword}
+        />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="SeedRestore"
+          component={SeedRestore}
+        />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="OldPassword"
+          component={OldPassword}
+        />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="Login"
+          component={Login}
+        />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="ChangePassword"
+          component={ChangePassword}
+        />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="ShowSeedPhrase"
+          component={ShowSeedPhrase}
+        />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="RecoverSeedPhrase"
+          component={RecoverSeedPhrase}
+        />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="Settings"
+          component={Settings}
+        />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="ManageAccounts"
+          component={ManageAccounts}
+        />
+      </Stack.Navigator>
+    </>
   );
 };
 
