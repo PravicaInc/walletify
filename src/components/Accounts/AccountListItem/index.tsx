@@ -11,10 +11,11 @@ import { truncateAddress } from '../../../shared/addressUtils';
 import { useAccountAvailableStxBalance } from '../../../hooks/useAccounts/useAccounts';
 import { valueFromBalance } from '../../../shared/balanceUtils';
 import { useStxPriceValue } from '../../../hooks/useStxPrice/useStxPrice';
+import BigNumber from 'bignumber.js';
 
 interface AccountProps {
   account: AccountWithAddress;
-  onPressAccount: (accountIndex: number) => void;
+  onPressAccount: () => void;
   isSelected: boolean;
 }
 
@@ -24,18 +25,14 @@ const AccountListItem: React.FC<AccountProps> = props => {
     theme: { colors },
   } = useContext(ThemeContext);
 
-  const handlePressAccount = () => {
-    onPressAccount(account.index);
-  };
-
   const accountStxBalance = useAccountAvailableStxBalance(account.address);
-  const amount = valueFromBalance(accountStxBalance, 'stx');
+  const amount = valueFromBalance(accountStxBalance as BigNumber, 'stx');
   const stxPrice = useStxPriceValue();
   const valueInUsd = (+amount * stxPrice).toFixed(2);
 
   return (
     <TouchableOpacity
-      onPress={handlePressAccount}
+      onPress={onPressAccount}
       style={[
         accountListItemStyles.container,
         {

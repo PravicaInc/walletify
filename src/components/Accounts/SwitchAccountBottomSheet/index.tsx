@@ -1,14 +1,15 @@
-import React, { useCallback, useContext } from 'react';
+import React, { Suspense, useCallback, useContext } from 'react';
 import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
 import { ThemeContext } from '../../../contexts/Theme/theme';
 import { useAccounts } from '../../../hooks/useAccounts/useAccounts';
 import Header from '../../shared/Header';
 import HeaderBack from '../../shared/HeaderBack';
-import { ListRenderItem, View } from 'react-native';
+import { ListRenderItem, Text, View } from 'react-native';
 import AccountListItem from '../AccountListItem';
 import { AccountWithAddress } from '../../../models/account';
 import { FlatList } from 'react-native-gesture-handler';
 import switchAccountBottomSheetStyles from './styles';
+import { withSuspense } from '../../shared/WithSuspense';
 
 interface SwitchAccountBottomSheetProps {
   bottomSheetRef: React.Ref<BottomSheet>;
@@ -28,12 +29,14 @@ const SwitchAccountBottomSheet: React.FC<SwitchAccountBottomSheetProps> =
     const renderAccount: ListRenderItem<AccountWithAddress> = useCallback(
       ({ item }) => {
         return (
-          <AccountListItem
-            account={item}
-            onPressAccount={() => onSwitch(item.index)}
-            isSelected={item.index === selectedAccountIndexState}
-            key={item.address}
-          />
+          <Suspense fallback={<Text>Loading</Text>}>
+            <AccountListItem
+              account={item}
+              onPressAccount={() => onSwitch(item.index)}
+              isSelected={item.index === selectedAccountIndexState}
+              key={item.address}
+            />
+          </Suspense>
         );
       },
       [selectedAccountIndexState, onSwitch],
@@ -80,4 +83,4 @@ const SwitchAccountBottomSheet: React.FC<SwitchAccountBottomSheetProps> =
     );
   };
 
-export default SwitchAccountBottomSheet;
+export default withSuspense(SwitchAccountBottomSheet, <Text>Loading</Text>);
