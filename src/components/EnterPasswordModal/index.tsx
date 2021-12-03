@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { BottomSheetModal, BottomSheetBackdrop } from '@gorhom/bottom-sheet';
 import { decryptMnemonic } from '@stacks/encryption';
 import Header from '../shared/Header';
 import HeaderBack from '../shared/HeaderBack';
@@ -20,11 +20,10 @@ import styles from './styles';
 
 type Props = {
   handleNextAction: (props: { password: string; seedPhrase: string }) => void;
-  setBackdrop: React.Dispatch<React.SetStateAction<string>>;
 };
 
 const EnterPasswordModal = React.forwardRef<any, Props>(
-  ({ handleNextAction, setBackdrop }, ref) => {
+  ({ handleNextAction }, ref) => {
     const {
       userPreference: { encryptedSeedPhrase },
     } = useContext(UserPreferenceContext);
@@ -43,15 +42,8 @@ const EnterPasswordModal = React.forwardRef<any, Props>(
         setPassword('');
         setIsLoading(false);
         ref.current?.dismiss();
-        setBackdrop(colors.white);
       }
-    }, [ref, setBackdrop, colors.white]);
-
-    const handleSheetChanges = useCallback((index: number) => {
-      if (index === -1) {
-        handleDismissModal();
-      }
-    }, []);
+    }, [ref]);
 
     const handleGoNext = async () => {
       setIsLoading(true);
@@ -96,12 +88,23 @@ const EnterPasswordModal = React.forwardRef<any, Props>(
       [password, isLoading],
     );
 
+    const renderBackdrop = useCallback(
+      props => (
+        <BottomSheetBackdrop
+          {...props}
+          disappearsOnIndex={-1}
+          appearsOnIndex={0}
+        />
+      ),
+      [],
+    );
+
     return (
       <BottomSheetModal
         snapPoints={snapPoints}
         ref={ref}
         index={0}
-        onChange={handleSheetChanges}>
+        backdropComponent={renderBackdrop}>
         <View
           style={[
             styles.container,

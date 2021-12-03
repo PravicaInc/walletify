@@ -14,9 +14,8 @@ const styles = StyleSheet.create({
     marginTop: 24,
   },
   title: { textAlign: 'center' },
-  buttonsContainer: { width: '100%' },
+  buttonsContainer: { width: '100%', marginBottom: '25%' },
   bottomButton: { marginTop: 12 },
-  disclaimer: { width: '80%', textAlign: 'center' },
 });
 
 export default styles;

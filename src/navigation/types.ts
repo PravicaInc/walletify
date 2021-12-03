@@ -8,7 +8,7 @@ export type RootStackParamList = {
   Home: { seedPhrase: string; password: string };
   Onboarding: undefined;
   WalletSetup: undefined;
-  SeedConfirmation: undefined;
+  ConfirmSeedPhrase: { seedPhrase: string; password: string };
   CreatePassword: {
     flow: WalletSetupFlow;
   };
