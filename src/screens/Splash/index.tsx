@@ -5,7 +5,7 @@ import { UserPreferenceContext } from '../../contexts/UserPreference/userPrefere
 
 const Splash: React.FC = () => {
   const {
-    userPreference: { viewedOnboarding, encryptedSeedPhrase },
+    userPreference: { viewedOnBoarding, encryptedSeedPhrase },
   } = useContext(UserPreferenceContext);
 
   const { dispatch } = useNavigation();
@@ -13,14 +13,13 @@ const Splash: React.FC = () => {
   useEffect(() => {
     if (encryptedSeedPhrase) {
       dispatch(StackActions.replace('Login'));
-    } else if (!viewedOnboarding) {
-      dispatch(StackActions.replace('Onboarding'));
+    } else if (!viewedOnBoarding) {
+      dispatch(StackActions.replace('OnBoarding'));
     } else {
       dispatch(StackActions.replace('WalletSetup'));
     }
     SplashScreen.hide();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [viewedOnboarding, encryptedSeedPhrase]);
+  }, [viewedOnBoarding, encryptedSeedPhrase]);
   return null;
 };
 

@@ -1,14 +1,14 @@
 export interface UserPreference {
   hasSetBiometric: boolean;
   encryptedSeedPhrase: string;
-  viewedOnboarding: boolean;
+  viewedOnBoarding: boolean;
 }
 
 export type UserPreferenceContextValue = {
   userPreference: UserPreference;
   setEncryptedSeed: (encryptedSeed: string) => void;
   setHasEnabledBiometric: (hasEnabledBiometric: boolean) => void;
-  setViewedOnboarding: (hasViewedOnboarding: boolean) => void;
+  setViewedOnBoarding: (hasViewedOnBoarding: boolean) => void;
   clearUserPreference: () => void;
   setUserPreference: (userPreference: UserPreference) => void;
 };

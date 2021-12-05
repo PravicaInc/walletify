@@ -34,7 +34,7 @@ const SeedConfirmation: React.FC<Props> = props => {
 
   const handleDone = () =>
     dispatch(
-      StackActions.push('Home', {
+      StackActions.replace('Home', {
         seedPhrase,
         password,
       }),

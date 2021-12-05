@@ -1,13 +1,12 @@
 import { StyleSheet } from 'react-native';
-import { PADDING_HORIZONTAL, PADDING_VERTICAL } from '../../shared/layout';
+import { PADDING_HORIZONTAL } from '../../shared/layout';
 
-const styles = StyleSheet.create({
-  container: { flex: 1, paddingVertical: PADDING_VERTICAL },
+export default StyleSheet.create({
+  container: { flex: 1 },
   slide: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: PADDING_HORIZONTAL,
   },
   title: {
     textAlign: 'center',
@@ -35,10 +34,11 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginHorizontal: 4,
   },
-  buttonContainer: {
-    flexDirection: 'row',
-    marginHorizontal: 24,
+  button: {
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 13,
+    height: 60,
   },
 });
-
-export default styles;

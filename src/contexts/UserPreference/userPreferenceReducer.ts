@@ -21,7 +21,7 @@ const userPreferenceReducer = (
     case USER_PREFERENCE_ACTIONS.SET_VIEWED_ONBOARDING:
       return {
         ...state,
-        viewedOnboarding: action.payload,
+        viewedOnBoarding: action.payload,
       };
     case USER_PREFERENCE_ACTIONS.SET_USER_PREFERENCE:
       return { ...action.payload };

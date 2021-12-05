@@ -2,7 +2,7 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import Splash from '../screens/Splash';
 import Home from '../screens/Home';
-import Onboarding from '../screens/Onboarding';
+import OnBoarding from '../screens/OnBoarding';
 import WalletSetup from '../screens/WalletSetup';
 import ConfirmSeedPhrase from '../screens/ConfirmSeedPhrase';
 import CreatePassword from '../screens/CreatePassword';
@@ -40,8 +40,8 @@ export const Routes: React.FC = () => {
         />
         <Stack.Screen
           options={{ headerShown: false }}
-          name="Onboarding"
-          component={Onboarding}
+          name="OnBoarding"
+          component={OnBoarding}
         />
         <Stack.Screen
           options={{ headerShown: false }}
