@@ -26,8 +26,7 @@ const styles = StyleSheet.create({
   title: { marginVertical: 10 },
   description: {
     textAlign: 'center',
-    marginBottom: 40,
-    marginHorizontal: '6%',
+    width: '80%',
   },
   input: {
     height: 60,
@@ -48,9 +47,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   bottomInput: {
-    marginTop: 24,
+    marginTop: 15,
   },
-  switchGroupContainer: { width: '100%', marginVertical: 20 },
+  switchGroupContainer: { width: '100%', marginTop: 10 },
   switchTop: {
     width: '100%',
     flexDirection: 'row',
