@@ -13,7 +13,7 @@ import ChangePassword from '../screens/ChangePassword';
 import ShowSeedPhrase from '../screens/ShowSeedPhrase';
 import RecoverSeedPhrase from '../screens/RecoverSeedPhrase';
 import { RootStackParamList } from './types';
-import Login from '../screens/Login';
+import WalletUnlock from '../screens/WalletUnlock';
 import ManageAccounts from '../screens/ManageAccounts';
 import { useStxPrice } from '../hooks/useStxPrice/useStxPrice';
 import { useAuthenticationListener } from '../hooks/useAuthenticationListener/useAuthenticationListener';
@@ -70,8 +70,8 @@ export const Routes: React.FC = () => {
         />
         <Stack.Screen
           options={{ headerShown: false }}
-          name="Login"
-          component={Login}
+          name="WalletUnlock"
+          component={WalletUnlock}
         />
         <Stack.Screen
           options={{ headerShown: false }}

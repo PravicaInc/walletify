@@ -6,11 +6,9 @@ import {
   TextInputProps,
   TextStyle,
   View,
-  ViewStyle,
 } from 'react-native';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { ThemeContext } from '../../../contexts/Theme/theme';
-// import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import WarningIcon from '../WarningIcon';
 import CloseIcon from '../../../assets/icon-reject-contact.svg';
@@ -19,10 +17,10 @@ import VisibleEye from '../../../assets/visible-eye.svg';
 import { Typography } from '../Typography';
 
 interface IProps extends TextInputProps {
+  outerWrapperStyle?: StyleProp<TextStyle>;
   customStyle?: StyleProp<TextStyle>;
   errorMessage?: string;
   setErrorMessage?: (val: string) => void;
-  normalInput?: boolean;
   labelText?: string;
   disableCancel?: boolean;
   guide?: React.ReactNode;
@@ -35,7 +33,7 @@ export const GeneralTextInput = React.forwardRef<any, IProps>((props, ref) => {
   const [inputFocused, setInputFocused] = useState<boolean>(false);
   const [isEyeClosed, toggleEye] = useState<boolean>(true);
   const [touched, setTouched] = useState<boolean>(false);
-  const { onChangeText, errorMessage, setErrorMessage, normalInput } = props;
+  const { onChangeText, errorMessage, setErrorMessage } = props;
   const hasError = Number(errorMessage?.length) > 0;
   useEffect(() => {
     setErrorMessage && setErrorMessage('');
@@ -56,7 +54,7 @@ export const GeneralTextInput = React.forwardRef<any, IProps>((props, ref) => {
   }, []);
 
   return (
-    <>
+    <View style={[styles.wrapper, props.outerWrapperStyle]}>
       {props.labelText && (
         <View>
           <Typography
@@ -100,39 +98,6 @@ export const GeneralTextInput = React.forwardRef<any, IProps>((props, ref) => {
           {...props}
           secureTextEntry={isEyeClosed}
         />
-        {/* {normalInput ? (
-          <TextInput
-            ref={ref}
-            onFocus={handleInputFocus}
-            onBlur={handleInputBlur}
-            placeholderTextColor={colors.primary40}
-            style={[
-              styles.search,
-              {
-                fontFamily: fonts.regular,
-                color: colors.primary100,
-              },
-            ]}
-            {...props}
-          />
-        ) : (
-          <BottomSheetTextInput
-            ref={ref}
-            style={[
-              styles.search,
-              {
-                fontFamily: fonts.regular,
-                color: colors.primary100,
-              },
-            ]}
-            accessibilityComponentType
-            accessibilityTraits
-            onFocus={handleInputFocus}
-            onBlur={handleInputBlur}
-            placeholderTextColor={colors.primary40}
-            {...props}
-          />
-        )} */}
         {Number(props.value?.length) > 0 && !props.disableCancel && (
           <TouchableOpacity
             onPress={handleClearInput}
@@ -161,11 +126,15 @@ export const GeneralTextInput = React.forwardRef<any, IProps>((props, ref) => {
           </Typography>
         </View>
       )}
-    </>
+    </View>
   );
 });
 
 const styles = StyleSheet.create({
+  wrapper: {
+    width: '100%',
+    alignItems: 'center',
+  },
   searchWrapper: {
     shadowOffset: {
       width: 0.2,
@@ -174,6 +143,7 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     shadowRadius: 1.5,
     borderRadius: 13,
+    width: '99%',
     marginTop: 12,
     marginBottom: 8,
   },

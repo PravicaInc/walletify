@@ -12,7 +12,7 @@ const Splash: React.FC = () => {
 
   useEffect(() => {
     if (encryptedSeedPhrase) {
-      dispatch(StackActions.replace('Login'));
+      dispatch(StackActions.replace('WalletUnlock'));
     } else if (!viewedOnBoarding) {
       dispatch(StackActions.replace('OnBoarding'));
     } else {

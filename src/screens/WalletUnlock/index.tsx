@@ -29,7 +29,7 @@ import { UserPreferenceContext } from '../../contexts/UserPreference/userPrefere
 import { ThemeContext } from '../../contexts/Theme/theme';
 import loginStyles from './styles';
 
-const Login: React.FC = () => {
+const WalletUnlock: React.FC = () => {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
   const {
@@ -62,7 +62,6 @@ const Login: React.FC = () => {
       );
     }
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [encryptedSeedPhrase]);
 
   useEffect(() => {
@@ -246,4 +245,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default WalletUnlock;
