@@ -75,7 +75,7 @@ export const GeneralTextInput = React.forwardRef<any, IProps>((props, ref) => {
             shadowOpacity: inputFocused ? 0.9 : 0,
             borderColor:
               hasError && touched
-                ? colors.failed10
+                ? colors.failed100
                 : inputFocused
                 ? colors.primary10
                 : colors.primary40,

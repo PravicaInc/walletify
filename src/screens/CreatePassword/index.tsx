@@ -189,7 +189,7 @@ const CreatePassword: React.FC<Props> = ({
       <KeyboardAvoidingView
         style={styles.keyboardContainer}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        keyboardVerticalOffset={5}>
+        keyboardVerticalOffset={10}>
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.scrollableContent}>
