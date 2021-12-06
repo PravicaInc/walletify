@@ -9,14 +9,29 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 18,
-    overflow: 'hidden',
+  },
+  wordInput: {
+    flex: 1,
+    height: '100%',
+    fontSize: 12,
   },
   word: {
     width: '25%',
+    height: 46,
+    justifyContent: 'center',
+    paddingLeft: 5,
+  },
+  innerWord: {
+    alignItems: 'center',
     flexDirection: 'row',
-    overflow: 'hidden',
-    paddingRight: 5,
-    paddingVertical: 15,
+    width: '100%',
+    height: 24,
+  },
+  bottomBorder: {
+    borderBottomWidth: 0.5,
+  },
+  rightBorder: {
+    borderRightWidth: 0.5,
   },
   absolute: {
     position: 'absolute',

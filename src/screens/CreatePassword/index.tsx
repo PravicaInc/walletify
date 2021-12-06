@@ -32,12 +32,8 @@ import styles from './styles';
 import { validatePassword } from '../../components/shared/GeneralTextInput/validate-password';
 import { RootStackParamList } from '../../navigation/types';
 import { usePasswordField } from '../../hooks/common/usePasswordField';
-import { useKeyboard } from '@react-native-community/hooks';
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withTiming,
-} from 'react-native-reanimated';
+import Animated from 'react-native-reanimated';
+import { useKeyboardWithAnimation } from '../../hooks/common/useKeyboardWithAnimation';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'CreatePassword'>;
 
@@ -56,30 +52,11 @@ const CreatePassword: React.FC<Props> = ({
     theme: { colors },
   } = useContext(ThemeContext);
   const { dispatch } = useNavigation();
-  const { keyboardShown } = useKeyboard();
-  const offset = useSharedValue(0);
-  const animatedStyles = useAnimatedStyle(() => {
-    return {
-      opacity: offset.value,
-      height: offset.value * 220,
-    };
-  });
   const {
     userPreference: { hasSetBiometric },
     setHasEnabledBiometric,
   } = useContext(UserPreferenceContext);
-
-  useEffect(() => {
-    if (!keyboardShown) {
-      offset.value = withTiming(1, {
-        duration: 150,
-      });
-    } else {
-      offset.value = withTiming(0, {
-        duration: 150,
-      });
-    }
-  }, [keyboardShown]);
+  const animatedStyles = useKeyboardWithAnimation();
   const [hasBioSupported, setHasBioSupported] = useState<BIOMETRY_TYPE | null>(
     null,
   );
@@ -191,6 +168,7 @@ const CreatePassword: React.FC<Props> = ({
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         keyboardVerticalOffset={10}>
         <ScrollView
+          scrollEnabled={false}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.scrollableContent}>
           <View style={styles.pusher}>

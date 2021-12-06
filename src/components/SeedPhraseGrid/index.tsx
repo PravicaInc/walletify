@@ -1,45 +1,99 @@
-import React, { useContext } from 'react';
-import { View, ViewStyle } from 'react-native';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { TextInput, View } from 'react-native';
 import { BlurView } from '@react-native-community/blur';
-
-import { Typography } from '../../components/shared/Typography';
-
+import { Typography } from '../shared/Typography';
 import { ThemeContext } from '../../contexts/Theme/theme';
 import styles from './styles';
 
 interface IProps {
-  phrase: string;
-  isBlurred: boolean;
+  phrase?: string;
+  setPhrase?: (val: string) => void;
+  isBlurred?: boolean;
+  isEditable?: boolean;
 }
 
-const SeedPhraseGrid = (props: IProps) => {
+const SeedPhraseGrid: React.FC<IProps> = ({
+  isBlurred,
+  isEditable,
+  phrase,
+  setPhrase,
+}) => {
   const {
-    theme: { colors },
+    theme: { colors, fonts },
   } = useContext(ThemeContext);
-
-  const renderWords = () =>
-    props.phrase.split(' ').map((word, i) => {
-      const wordStyle: ViewStyle[] = [styles.word];
-      if (i + 1 < 21) {
-        wordStyle.push({
-          borderBottomWidth: 0.5,
-          borderBottomColor: colors.primary20,
-        });
-      }
-      return (
-        <View style={wordStyle} key={`word${i}`}>
-          <Typography type="commonTextBold">{i + 1 + '. '}</Typography>
-          <Typography type="commonText" numberOfLines={1}>
-            {word}
-          </Typography>
-        </View>
-      );
-    });
-
+  const [phraseState, setPhraseState] = useState<any[]>(
+    new Array(24).fill(undefined).map((val, index) => {
+      const parsedPhrase = phrase?.split(' ') || [];
+      return parsedPhrase[index] || val;
+    }),
+  );
+  const wordsRef = useRef<TextInput[]>([]);
+  useEffect(() => {
+    if (setPhrase) {
+      setPhrase(phraseState.filter(word => !!word).join(' '));
+    }
+  }, [phraseState]);
   return (
     <View style={[styles.container, { backgroundColor: colors.card }]}>
-      {renderWords()}
-      {props.isBlurred && (
+      {phraseState.map((word, i) => {
+        const handleChange = (text: string) => {
+          if (text[text.length - 1] === ' ') {
+            wordsRef.current[i + 1].focus();
+          }
+          const newValueArray = text.trim().split(' ');
+          const inputToFocus = i + newValueArray.length;
+          if (newValueArray.length > 1) {
+            wordsRef.current[inputToFocus < 24 ? inputToFocus : 23].focus();
+          }
+          const start = i;
+          const end = newValueArray.length;
+          const prevPart = phraseState.slice(0, start);
+          const endPart = phraseState.slice(start + end);
+          setPhraseState(
+            [...prevPart, ...newValueArray, ...endPart].slice(0, 24),
+          );
+        };
+        return (
+          <View
+            style={[
+              styles.word,
+              i < 20 && {
+                ...styles.bottomBorder,
+                borderBottomColor: colors.primary20,
+              },
+            ]}
+            key={`word${i}`}>
+            <View
+              style={[
+                styles.innerWord,
+                isEditable &&
+                  (i + 1) % 4 !== 0 && {
+                    ...styles.rightBorder,
+                    borderRightColor: colors.primary20,
+                  },
+              ]}>
+              <Typography type="commonTextBold">{i + 1 + '. '}</Typography>
+              {isEditable ? (
+                <TextInput
+                  ref={el => {
+                    wordsRef.current[i] = el as TextInput;
+                  }}
+                  editable={true}
+                  value={word}
+                  onChangeText={handleChange}
+                  autoCorrect={false}
+                  style={[styles.wordInput, { fontFamily: fonts.regular }]}
+                />
+              ) : (
+                <Typography type="commonText" numberOfLines={1}>
+                  {word}
+                </Typography>
+              )}
+            </View>
+          </View>
+        );
+      })}
+      {isBlurred && (
         <BlurView style={styles.absolute} blurType="light" blurAmount={2} />
       )}
     </View>

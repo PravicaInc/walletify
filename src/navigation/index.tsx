@@ -7,7 +7,6 @@ import WalletSetup from '../screens/WalletSetup';
 import ConfirmSeedPhrase from '../screens/ConfirmSeedPhrase';
 import CreatePassword from '../screens/CreatePassword';
 import SeedRestore from '../screens/SeedRestore';
-import OldPassword from '../screens/OldPassword';
 import Settings from '../screens/Settings';
 import ChangePassword from '../screens/ChangePassword';
 import ShowSeedPhrase from '../screens/ShowSeedPhrase';
@@ -48,11 +47,11 @@ export const Routes: React.FC = () => {
           name="WalletSetup"
           component={WalletSetup}
         />
-      <Stack.Screen
-        options={{ headerShown: false }}
-        name="ConfirmSeedPhrase"
-        component={ConfirmSeedPhrase}
-      />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="ConfirmSeedPhrase"
+          component={ConfirmSeedPhrase}
+        />
         <Stack.Screen
           options={{ headerShown: false }}
           name="CreatePassword"
@@ -62,11 +61,6 @@ export const Routes: React.FC = () => {
           options={{ headerShown: false }}
           name="SeedRestore"
           component={SeedRestore}
-        />
-        <Stack.Screen
-          options={{ headerShown: false }}
-          name="OldPassword"
-          component={OldPassword}
         />
         <Stack.Screen
           options={{ headerShown: false }}

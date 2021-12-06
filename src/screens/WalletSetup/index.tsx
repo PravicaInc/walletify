@@ -1,5 +1,5 @@
 import React, { useCallback, useContext } from 'react';
-import { View, ScrollView, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import Logo from '../../assets/wise.svg';
@@ -36,41 +36,39 @@ const WalletSetup: React.FC = () => {
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.white }]}>
-      <ScrollView contentContainerStyle={styles.container}>
-        <View style={styles.contentContainer}>
-          <Logo style={styles.logo} />
-          <LockAndStacks />
-          <Typography type={'bigTitle'} style={styles.title}>
-            Seamless user experience, and Decentralized authentication
+      <View style={styles.contentContainer}>
+        <Logo style={styles.logo} />
+        <LockAndStacks />
+        <Typography type={'bigTitle'} style={styles.title}>
+          Seamless user experience, and Decentralized authentication
+        </Typography>
+        <TouchableOpacity
+          onPress={handleCreate}
+          style={[
+            styles.button,
+            {
+              backgroundColor: colors.primary100,
+            },
+          ]}>
+          <Typography type="buttonText" style={{ color: colors.white }}>
+            Create Wallet
           </Typography>
-          <TouchableOpacity
-            onPress={handleCreate}
-            style={[
-              styles.button,
-              {
-                backgroundColor: colors.primary100,
-              },
-            ]}>
-            <Typography type="buttonText" style={{ color: colors.white }}>
-              Create Wallet
-            </Typography>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={handleRestore}
-            style={[
-              styles.button,
-              styles.buttonBorder,
-              {
-                backgroundColor: colors.white,
-                borderColor: colors.primary100,
-              },
-            ]}>
-            <Typography type="buttonText" style={{ color: colors.primary100 }}>
-              Restore Wallet
-            </Typography>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={handleRestore}
+          style={[
+            styles.button,
+            styles.buttonBorder,
+            {
+              backgroundColor: colors.white,
+              borderColor: colors.primary100,
+            },
+          ]}>
+          <Typography type="buttonText" style={{ color: colors.primary100 }}>
+            Restore Wallet
+          </Typography>
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 };
