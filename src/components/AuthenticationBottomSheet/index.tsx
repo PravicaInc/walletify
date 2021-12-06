@@ -6,10 +6,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import BottomSheet, {
-  BottomSheetBackdrop,
-  BottomSheetFlatList,
-} from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetFlatList } from '@gorhom/bottom-sheet';
 import {
   ActivityIndicator,
   Image,
@@ -32,6 +29,7 @@ import { Portal } from '@gorhom/portal';
 import { useAuthRequest, finishSignIn } from '../../hooks/auth/useAuthRequest';
 import { useProgressState } from '../../hooks/useProgressState';
 import { useWallet } from '../../hooks/useWallet/useWallet';
+import { CustomBackdrop } from '../shared/customBackdrop';
 
 const AuthenticationBottomSheet: React.FC = () => {
   const snapPoints = React.useMemo(() => ['90%'], []);
@@ -137,23 +135,14 @@ const AuthenticationBottomSheet: React.FC = () => {
       />
     );
   };
-  const renderBackdrop = useCallback(
-    backDropProps => (
-      <BottomSheetBackdrop
-        {...backDropProps}
-        disappearsOnIndex={-1}
-        appearsOnIndex={0}
-      />
-    ),
-    [],
-  );
+
   return (
     <Portal>
       <BottomSheet
         onChange={handleSheetChanges}
         ref={bottomSheetRef}
         snapPoints={snapPoints}
-        backdropComponent={renderBackdrop}
+        backdropComponent={CustomBackdrop}
         enablePanDownToClose
         index={-1}>
         <View style={authenticationBottomSheetStyles.container}>

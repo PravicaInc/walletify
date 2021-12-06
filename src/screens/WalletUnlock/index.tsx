@@ -4,6 +4,7 @@ import React, {
   useEffect,
   useState,
   useRef,
+  useMemo,
 } from 'react';
 import {
   KeyboardAvoidingView,
@@ -19,7 +20,6 @@ import { UserCredentials } from 'react-native-keychain';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { Typography } from '../../components/shared/Typography';
 import { GeneralTextInput } from '../../components/shared/GeneralTextInput';
-import ConfirmModal from '../../components/ConfirmModal';
 import Header from '../../components/shared/Header';
 import HeaderBack from '../../components/shared/HeaderBack';
 import PasswordShield from '../../assets/password-shield.svg';
@@ -28,6 +28,7 @@ import SecureKeychain from '../../shared/SecureKeychain';
 import { UserPreferenceContext } from '../../contexts/UserPreference/userPreferenceContext';
 import { ThemeContext } from '../../contexts/Theme/theme';
 import loginStyles from './styles';
+import { OptionsPick } from '../../components/OptionsPick';
 
 const WalletUnlock: React.FC = () => {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
@@ -61,30 +62,11 @@ const WalletUnlock: React.FC = () => {
         }),
       );
     }
-
   }, [encryptedSeedPhrase]);
 
   useEffect(() => {
     validateUserCredentials();
   }, [hasSetBiometric]);
-
-  const confirmContinue = useCallback(
-    () => (
-      <Typography type="buttonText" style={{ color: colors.failed100 }}>
-        OK Reset
-      </Typography>
-    ),
-    [colors.failed100],
-  );
-
-  const confirmAbort = useCallback(
-    () => (
-      <Typography type="smallTitle" style={{ color: colors.secondary100 }}>
-        Cancel
-      </Typography>
-    ),
-    [colors.secondary100],
-  );
 
   const handleConfirm = async () => {
     setIsLoading(true);
@@ -128,6 +110,18 @@ const WalletUnlock: React.FC = () => {
     dispatch(StackActions.replace('Onboarding'));
   };
 
+  const options = useMemo(() => {
+    return [
+      {
+        label: 'OK Reset',
+        onClick: handleResetWallet,
+        optionTextStyle: {
+          color: colors.failed100,
+        },
+      },
+    ];
+  }, [colors, handleResetWallet]);
+
   return (
     <SafeAreaView
       style={[
@@ -170,13 +164,12 @@ const WalletUnlock: React.FC = () => {
             </TouchableOpacity>
           }
         />
-        <ConfirmModal
-          ref={bottomSheetModalRef}
-          handleNextAction={handleResetWallet}
+        <OptionsPick
+          options={options}
+          userIcon={<WarningIcon width={80} height={80} />}
           title="Reset Wallet"
-          description="Losing the password doesn't matter as much, because as long as you have the Secret Key you can restore your wallet and set up a new password."
-          renderContinueText={confirmContinue}
-          renderAbortText={confirmAbort}
+          subTitle="Losing the password doesn't matter as much, because as long as you have the Secret Key you can restore your wallet and set up a new password."
+          ref={bottomSheetModalRef}
         />
         <KeyboardAvoidingView
           style={loginStyles.contentViewContainer}

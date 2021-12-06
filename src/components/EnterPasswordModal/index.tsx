@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
-import { BottomSheetModal, BottomSheetBackdrop } from '@gorhom/bottom-sheet';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { decryptMnemonic } from '@stacks/encryption';
 import Header from '../shared/Header';
 import HeaderBack from '../shared/HeaderBack';
@@ -17,6 +17,7 @@ import { ThemeContext } from '../../contexts/Theme/theme';
 import { UserPreferenceContext } from '../../contexts/UserPreference/userPreferenceContext';
 import PasswordShield from '../../assets/password-shield.svg';
 import styles from './styles';
+import { CustomBackdrop } from '../shared/customBackdrop';
 
 type Props = {
   handleNextAction: (props: { password: string; seedPhrase: string }) => void;
@@ -84,19 +85,7 @@ const EnterPasswordModal = React.forwardRef<any, Props>(
           )}
         </TouchableOpacity>
       ),
-      // eslint-disable-next-line react-hooks/exhaustive-deps
       [password, isLoading],
-    );
-
-    const renderBackdrop = useCallback(
-      props => (
-        <BottomSheetBackdrop
-          {...props}
-          disappearsOnIndex={-1}
-          appearsOnIndex={0}
-        />
-      ),
-      [],
     );
 
     return (
@@ -104,7 +93,7 @@ const EnterPasswordModal = React.forwardRef<any, Props>(
         snapPoints={snapPoints}
         ref={ref}
         index={0}
-        backdropComponent={renderBackdrop}>
+        backdropComponent={CustomBackdrop}>
         <View
           style={[
             styles.container,

@@ -156,7 +156,7 @@ const CreatePassword: React.FC<Props> = ({
           />
         }
       />
-      {nextScreen === 'ShowSeedPhrase' && (
+      {nextScreen === 'CreateSeedPhrase' && (
         <ProgressBar
           currentBarIdx={1}
           total={3}

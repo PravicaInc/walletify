@@ -9,7 +9,7 @@ import CreatePassword from '../screens/CreatePassword';
 import SeedRestore from '../screens/SeedRestore';
 import Settings from '../screens/Settings';
 import ChangePassword from '../screens/ChangePassword';
-import ShowSeedPhrase from '../screens/ShowSeedPhrase';
+import CreateSeedPhrase from '../screens/CreateSeedPhrase';
 import RecoverSeedPhrase from '../screens/RecoverSeedPhrase';
 import { RootStackParamList } from './types';
 import WalletUnlock from '../screens/WalletUnlock';
@@ -74,8 +74,8 @@ export const Routes: React.FC = () => {
         />
         <Stack.Screen
           options={{ headerShown: false }}
-          name="ShowSeedPhrase"
-          component={ShowSeedPhrase}
+          name="CreateSeedPhrase"
+          component={CreateSeedPhrase}
         />
         <Stack.Screen
           options={{ headerShown: false }}

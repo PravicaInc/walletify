@@ -10,7 +10,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  progress: { marginTop: '5%' },
+  progress: {
+    marginTop: '5%',
+    marginHorizontal: PADDING_HORIZONTAL,
+    width: '95%',
+  },
   back: {
     marginLeft: PADDING_HORIZONTAL,
   },

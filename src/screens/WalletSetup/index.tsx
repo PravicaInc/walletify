@@ -18,7 +18,7 @@ const WalletSetup: React.FC = () => {
     () =>
       dispatch(
         StackActions.push('CreatePassword', {
-          nextScreen: 'ShowSeedPhrase',
+          nextScreen: 'CreateSeedPhrase',
         }),
       ),
     [],

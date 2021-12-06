@@ -13,6 +13,6 @@ export type RootStackParamList = {
   WalletUnlock: undefined;
   ManageAccounts: undefined;
   ChangePassword: undefined;
-  ShowSeedPhrase: { seedPhrase?: string; password?: string };
+  CreateSeedPhrase: { password: string };
   RecoverSeedPhrase: undefined;
 };

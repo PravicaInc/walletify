@@ -1,5 +1,5 @@
 import React, { Suspense, useCallback, useContext } from 'react';
-import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
+import BottomSheet from '@gorhom/bottom-sheet';
 import { ThemeContext } from '../../../contexts/Theme/theme';
 import { useAccounts } from '../../../hooks/useAccounts/useAccounts';
 import Header from '../../shared/Header';
@@ -10,6 +10,7 @@ import { AccountWithAddress } from '../../../models/account';
 import { FlatList } from 'react-native-gesture-handler';
 import switchAccountBottomSheetStyles from './styles';
 import { withSuspense } from '../../shared/WithSuspense';
+import { CustomBackdrop } from '../../shared/customBackdrop';
 
 interface SwitchAccountBottomSheetProps {
   bottomSheetRef: React.Ref<BottomSheet>;
@@ -42,22 +43,12 @@ const SwitchAccountBottomSheet: React.FC<SwitchAccountBottomSheetProps> =
       [selectedAccountIndexState, onSwitch],
     );
 
-    const renderBackdrop = useCallback(
-      backDropProps => (
-        <BottomSheetBackdrop
-          {...backDropProps}
-          disappearsOnIndex={-1}
-          appearsOnIndex={0}
-        />
-      ),
-      [],
-    );
     return (
       <BottomSheet
         ref={bottomSheetRef}
         snapPoints={snapPoints}
         index={-1}
-        backdropComponent={renderBackdrop}
+        backdropComponent={CustomBackdrop}
         enablePanDownToClose>
         <View style={switchAccountBottomSheetStyles.contentContainer}>
           <Header
