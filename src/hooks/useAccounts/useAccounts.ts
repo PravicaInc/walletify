@@ -40,6 +40,7 @@ export const useAccounts = () => {
         console.error('cant update wallet config', e);
       }
       setCurrentWallet(newWallet);
+      setSelectedAccountIndexState(newWallet.accounts.length - 1);
     }
   };
 
