@@ -1,6 +1,6 @@
 import { StackActions, useNavigation } from '@react-navigation/native';
-import React, { useCallback, useContext } from 'react';
-import { ListRenderItem, TouchableOpacity, View } from 'react-native';
+import React, { Suspense, useCallback, useContext } from 'react';
+import { ListRenderItem, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AccountListItem from '../../components/Accounts/AccountListItem';
 import Header from '../../components/shared/Header';
@@ -88,12 +88,14 @@ const ManageAccounts: React.FC = () => {
           ]}>
           Your Accounts
         </Typography>
-        <FlatList
-          data={walletAccounts}
-          keyExtractor={account => account.address}
-          renderItem={renderAccount}
-          contentContainerStyle={styles.accountsList}
-        />
+        <Suspense fallback={<Text>Loading</Text>}>
+          <FlatList
+            data={walletAccounts}
+            keyExtractor={account => account.address}
+            renderItem={renderAccount}
+            contentContainerStyle={styles.accountsList}
+          />
+        </Suspense>
       </View>
       <TouchableOpacity
         onPress={handleAddAccount}
