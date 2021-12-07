@@ -64,6 +64,7 @@ export const OptionsPick = React.forwardRef<BottomSheet, IProps>(
         });
         setSnapPoints([
           bottomDistance +
+            10 +
             (username ? usernameHeight + 5 : 0) +
             (userIcon ? 80 : 0) +
             (userIcon || username ? 40 : 0) +

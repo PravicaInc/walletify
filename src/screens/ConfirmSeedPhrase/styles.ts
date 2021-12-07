@@ -1,41 +1,45 @@
 import { StyleSheet } from 'react-native';
 
-import { PADDING_HORIZONTAL, PADDING_VERTICAL } from '../../shared/layout';
+import { PADDING_HORIZONTAL } from '../../shared/layout';
 
-const styles = StyleSheet.create({
+export default StyleSheet.create({
   container: {
     flex: 1,
   },
+  hiddenItems: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  progress: {
+    marginTop: '5%',
+    marginHorizontal: PADDING_HORIZONTAL,
+    width: '95%',
+  },
+  back: {
+    marginLeft: PADDING_HORIZONTAL,
+  },
   contentContainer: {
     paddingHorizontal: PADDING_HORIZONTAL,
-    paddingBottom: PADDING_VERTICAL,
-    justifyContent: 'flex-start',
     alignItems: 'center',
-    height: '100%',
+    paddingTop: 60,
+    flex: 1,
   },
   header: {
     shadowOpacity: 0,
     height: 20,
   },
-  progress: { marginTop: '5%' },
-  topContent: {
-    alignItems: 'center',
-    width: '90%',
-    flex: 0.7,
-    justifyContent: 'center',
-  },
-  title: { marginVertical: 10 },
-  description: { textAlign: 'center' },
-  bottomContent: {
-    alignItems: 'center',
-    flex: 1,
-    width: '100%',
-    justifyContent: 'center',
-  },
-  dragNDrop: { flex: 0.75 },
+  title: { marginVertical: 10, alignSelf: 'center' },
+  description: { textAlign: 'center', width: '80%', alignSelf: 'center' },
   seedTitle: { marginBottom: 10 },
-  actionButtonTop: { marginBottom: 'auto' },
-  actionButtonBottom: { marginTop: 'auto' },
+  pusher: {
+    marginTop: 'auto',
+  },
+  button: {
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 13,
+    height: 60,
+    marginBottom: 10,
+  },
 });
-
-export default styles;

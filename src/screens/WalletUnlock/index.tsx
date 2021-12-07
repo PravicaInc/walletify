@@ -101,13 +101,13 @@ const WalletUnlock: React.FC = () => {
   };
 
   const handlePresentResetWallet = useCallback(() => {
-    bottomSheetModalRef.current?.present();
+    bottomSheetModalRef.current?.snapToIndex(0);
   }, []);
 
   const handleResetWallet = () => {
-    bottomSheetModalRef.current?.dismiss();
+    bottomSheetModalRef.current?.collapse();
     clearUserPreference();
-    dispatch(StackActions.replace('Onboarding'));
+    dispatch(StackActions.replace('OnBoarding'));
   };
 
   const options = useMemo(() => {

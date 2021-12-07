@@ -70,7 +70,7 @@ const Settings = () => {
   }, []);
 
   const handlePresentResetWallet = useCallback(() => {
-    confirmModalRef.current?.present();
+    confirmModalRef.current?.snapToIndex(0);
   }, []);
 
   const { dispatch } = useNavigation();
@@ -121,9 +121,9 @@ const Settings = () => {
     dispatch(StackActions.push('ChangePassword'));
 
   const handleResetWallet = () => {
-    confirmModalRef.current?.dismiss();
+    confirmModalRef.current?.collapse();
     clearUserPreference();
-    dispatch(StackActions.replace('Onboarding'));
+    dispatch(StackActions.replace('OnBoarding'));
   };
 
   const options = useMemo(() => {

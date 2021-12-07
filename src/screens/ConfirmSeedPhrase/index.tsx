@@ -1,10 +1,9 @@
-import React, { useContext, useState } from 'react';
-import { View, ScrollView } from 'react-native';
+import React, { useCallback, useContext, useMemo, useState } from 'react';
+import { View, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import DragAndDrop from '../../components/DragAndDrop';
-import GeneralButton from '../../components/shared/GeneralButton';
 import Header from '../../components/shared/Header';
 import HeaderBack from '../../components/shared/HeaderBack';
 import { Typography } from '../../components/shared/Typography';
@@ -12,104 +11,113 @@ import ProgressBar from '../../components/ProgressBar';
 import { ThemeContext } from '../../contexts/Theme/theme';
 import LockedShield from '../../assets/locked-shield.svg';
 import { RootStackParamList } from '../../navigation/types';
-import { PuzzleStatus } from '../../components/DragAndDrop';
 import styles from './styles';
+import { shuffleArrayWithIndex } from '../../shared/helpers';
+import { PuzzleItem } from '../../shared/types';
+import { DraxProvider } from 'react-native-drax';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'ShowSeedPhrase'>;
+type Props = NativeStackScreenProps<RootStackParamList, 'ConfirmSeedPhrase'>;
 
-const SeedConfirmation: React.FC<Props> = props => {
+const ConfirmSeedPhrase: React.FC<Props> = ({
+  route: {
+    params: { password, seedPhrase },
+  },
+}) => {
   const { dispatch } = useNavigation();
   const {
     theme: { colors },
   } = useContext(ThemeContext);
-
-  const [puzzleProgress, setPuzzleProgress] = useState<PuzzleStatus>(
-    PuzzleStatus.Incomplete,
+  const [chosenPuzzle, setChosenPuzzle] = useState<PuzzleItem<string>[]>(() =>
+    shuffleArrayWithIndex(seedPhrase.split(' ')).slice(0, 4),
   );
 
-  const [puzzleKey, setPuzzleKey] = useState(1);
-
-  const password = props.route.params?.password || '';
-  const seedPhrase = props.route.params?.seedPhrase || '';
-
-  const handleDone = () =>
-    dispatch(
-      StackActions.replace('Home', {
-        seedPhrase,
-        password,
-      }),
-    );
-
-  const handleGoBack = () => dispatch(StackActions.pop());
-
-  const handleRetry = () => {
-    setPuzzleProgress(PuzzleStatus.Incomplete);
-    setPuzzleKey(puzzleKey + 1);
-  };
-
-  let actionButton = (
-    <GeneralButton type={'inactivePrimary'}>Continue</GeneralButton>
+  const [puzzleState, setPuzzleState] = useState<PuzzleItem<string>[]>([]);
+  const isCompleted = puzzleState.length === 4;
+  const isValid = useMemo(
+    () =>
+      puzzleState.reduce((acc, item) => {
+        return (
+          acc &&
+          item.index ===
+            chosenPuzzle.filter(chosen => chosen.value === item.value)[0].index
+        );
+      }, isCompleted),
+    [puzzleState, isCompleted],
   );
 
-  if (puzzleProgress === PuzzleStatus.Right) {
-    actionButton = (
-      <GeneralButton type={'activePrimary'} onPress={handleDone}>
-        Done
-      </GeneralButton>
-    );
-  }
+  const handleDone = useCallback(
+    () =>
+      dispatch(
+        StackActions.replace('Home', {
+          seedPhrase,
+          password,
+        }),
+      ),
+    [seedPhrase, password],
+  );
 
-  if (puzzleProgress === PuzzleStatus.Wrong) {
-    actionButton = (
-      <GeneralButton type={'activePrimary'} onPress={handleRetry}>
-        Retry
-      </GeneralButton>
+  const handleGoBack = useCallback(() => dispatch(StackActions.pop()), []);
+  const handleRetry = useCallback(() => {
+    const shuffledArray = shuffleArrayWithIndex(seedPhrase.split(' ')).slice(
+      0,
+      4,
     );
-  }
+    setChosenPuzzle(shuffledArray);
+    setPuzzleState([]);
+  }, [seedPhrase]);
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.white }]}>
-      <ScrollView contentContainerStyle={styles.container}>
+      <Header
+        leftComponent={
+          <HeaderBack
+            customStyle={styles.back}
+            onPress={handleGoBack}
+            text="Back"
+            hasChevron
+          />
+        }
+      />
+      <ProgressBar currentBarIdx={3} total={3} customStyle={styles.progress} />
+      <DraxProvider>
         <View style={styles.contentContainer}>
-          <Header
-            leftComponent={
-              <HeaderBack onPress={handleGoBack} text="Back" hasChevron />
-            }
+          <LockedShield />
+          <Typography type="bigTitle" style={styles.title}>
+            Confirm Secret Key
+          </Typography>
+          <Typography
+            type="commonText"
+            style={[styles.description, { color: colors.primary60 }]}>
+            Just to make sure you backed up your Secret Key, give it a try to
+            drag and drop the right word in its right place in your Secret Key.
+          </Typography>
+          <DragAndDrop
+            isCompleted={isCompleted}
+            isValid={isValid}
+            chosenPuzzle={chosenPuzzle}
+            puzzleState={puzzleState}
+            setPuzzleState={setPuzzleState}
           />
-          <ProgressBar
-            currentBarIdx={3}
-            total={3}
-            customStyle={styles.progress}
-          />
-          <View style={styles.topContent}>
-            <LockedShield />
-            <Typography type="bigTitle" style={styles.title}>
-              Confirm Secret Key
+          <TouchableOpacity
+            onPress={isValid ? handleDone : handleRetry}
+            disabled={!isCompleted}
+            style={[
+              styles.button,
+              styles.pusher,
+              {
+                backgroundColor: !isCompleted
+                  ? colors.primary20
+                  : colors.primary100,
+              },
+            ]}>
+            <Typography type="buttonText" style={{ color: colors.white }}>
+              {isValid || !isCompleted ? 'Done' : 'Retry'}
             </Typography>
-            <Typography
-              type="commonText"
-              style={[styles.description, { color: colors.primary60 }]}>
-              Just to make sure you backed up your Secret Key, give it a try to
-              drag and drop the right word in its right place in your Secret
-              Key.
-            </Typography>
-          </View>
-
-          <View style={styles.bottomContent}>
-            <DragAndDrop
-              key={String(puzzleKey)}
-              seedPhrase={seedPhrase}
-              customStyle={styles.dragNDrop}
-              puzzleProgress={puzzleProgress}
-              setPuzzleProgress={setPuzzleProgress}
-            />
-          </View>
-
-          {actionButton}
+          </TouchableOpacity>
         </View>
-      </ScrollView>
+      </DraxProvider>
     </SafeAreaView>
   );
 };
 
-export default SeedConfirmation;
+export default ConfirmSeedPhrase;
