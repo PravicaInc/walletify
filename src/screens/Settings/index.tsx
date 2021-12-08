@@ -27,9 +27,9 @@ import FingerPrintIcon from '../../assets/finger-print.svg';
 import ExitIcon from '../../assets/images/settings/exit.svg';
 import SecureKeychain from '../../shared/SecureKeychain';
 import { styles } from './styles';
-import { useAccounts } from '../../hooks/useAccounts/useAccounts';
 import { OptionsPick } from '../../components/OptionsPick';
 import WarningIcon from '../../assets/images/note-icon.svg';
+import { useUnlockWallet } from '../../hooks/useWallet/useUnlockWallet';
 
 type TProps = {
   icon: React.FC;
@@ -64,17 +64,7 @@ const Settings = () => {
   const {
     theme: { colors },
   } = useContext(ThemeContext);
-
-  const handlePresentEnterPassword = useCallback(() => {
-    enterPasswordModalRef.current?.present();
-  }, []);
-
-  const handlePresentResetWallet = useCallback(() => {
-    confirmModalRef.current?.snapToIndex(0);
-  }, []);
-
   const { dispatch } = useNavigation();
-
   const {
     userPreference: { hasSetBiometric },
     setHasEnabledBiometric,
@@ -82,12 +72,29 @@ const Settings = () => {
   } = useContext(UserPreferenceContext);
   const [hasBioSetup, setHasBioSetup] = useState<BIOMETRY_TYPE | null>(null);
 
+  const handleBioOn = async (password: string) => {
+    await SecureKeychain.setGenericPassword(
+      password || '',
+      ACCESS_CONTROL.BIOMETRY_CURRENT_SET_OR_DEVICE_PASSCODE,
+    );
+    setHasEnabledBiometric(true);
+    enterPasswordModalRef.current?.close();
+  };
+
+  const { validateUserCredentials } = useUnlockWallet(
+    handleBioOn,
+    enterPasswordModalRef,
+  );
   useEffect(() => {
     const getBioSetup = async () => {
       const type = await SecureKeychain.getSupportedBiometryType();
       setHasBioSetup(type);
     };
     getBioSetup();
+  }, []);
+
+  const handlePresentEnterPassword = useCallback(() => {
+    enterPasswordModalRef.current?.snapToIndex(0);
   }, []);
 
   const handleBiometricToggle = async () => {
@@ -99,14 +106,6 @@ const Settings = () => {
     }
   };
 
-  const handleBioOn = async ({ password }: { password: string }) => {
-    await SecureKeychain.setGenericPassword(
-      password || '',
-      ACCESS_CONTROL.BIOMETRY_CURRENT_SET_OR_DEVICE_PASSCODE,
-    );
-    setHasEnabledBiometric(true);
-  };
-
   const handleRecoverSeedPhrase = () => {
     dispatch(StackActions.push('RecoverSeedPhrase'));
   };
@@ -115,7 +114,6 @@ const Settings = () => {
     dispatch(StackActions.push('ManageAccounts'));
   };
 
-  // navigation handlers
   const handleGoBack = () => dispatch(StackActions.pop());
   const handleChangePassword = () =>
     dispatch(StackActions.push('ChangePassword'));
@@ -204,7 +202,7 @@ const Settings = () => {
         </View>
         <TouchableOpacity
           style={styles.bottomContent}
-          onPress={handlePresentResetWallet}>
+          onPress={validateUserCredentials}>
           <ExitIcon />
           <Typography
             type="buttonText"

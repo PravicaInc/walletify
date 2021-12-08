@@ -1,13 +1,15 @@
 import React, { useContext } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, ActivityIndicator } from 'react-native';
 import { Typography } from '../Typography';
 import { ThemeContext } from '../../../contexts/Theme/theme';
+import { PADDING_HORIZONTAL } from '../../../shared/layout';
 
 interface IProps {
   leftComponent: React.ReactNode;
   title?: string;
   titleColor?: string;
   rightComponent?: React.ReactNode;
+  isRightLoading?: boolean;
 }
 
 const Header: React.FC<IProps> = ({
@@ -15,6 +17,7 @@ const Header: React.FC<IProps> = ({
   titleColor,
   leftComponent,
   rightComponent,
+  isRightLoading,
 }) => {
   const {
     theme: { colors },
@@ -30,7 +33,13 @@ const Header: React.FC<IProps> = ({
           {title}
         </Typography>
       )}
-      <View style={[styles.lateral, styles.right]}>{rightComponent}</View>
+      <View style={[styles.lateral, styles.right]}>
+        {isRightLoading ? (
+          <ActivityIndicator color={colors.primary40} />
+        ) : (
+          rightComponent
+        )}
+      </View>
     </View>
   );
 };
@@ -42,6 +51,7 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     paddingTop: 15,
+    paddingHorizontal: PADDING_HORIZONTAL,
   },
   lateral: {
     flex: 1,

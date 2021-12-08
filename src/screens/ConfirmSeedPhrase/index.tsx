@@ -70,12 +70,7 @@ const ConfirmSeedPhrase: React.FC<Props> = ({
     <SafeAreaView style={[styles.container, { backgroundColor: colors.white }]}>
       <Header
         leftComponent={
-          <HeaderBack
-            customStyle={styles.back}
-            onPress={handleGoBack}
-            text="Back"
-            hasChevron
-          />
+          <HeaderBack onPress={handleGoBack} text="Back" hasChevron />
         }
       />
       <ProgressBar currentBarIdx={3} total={3} customStyle={styles.progress} />

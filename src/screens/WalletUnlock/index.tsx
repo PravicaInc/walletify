@@ -1,22 +1,13 @@
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-  useRef,
-  useMemo,
-} from 'react';
+import React, { useCallback, useContext, useRef, useMemo } from 'react';
 import {
   KeyboardAvoidingView,
   Platform,
+  ScrollView,
   TouchableOpacity,
   View,
-  ActivityIndicator,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { StackActions, useNavigation } from '@react-navigation/native';
 import { decryptMnemonic } from '@stacks/encryption';
-import { UserCredentials } from 'react-native-keychain';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { Typography } from '../../components/shared/Typography';
 import { GeneralTextInput } from '../../components/shared/GeneralTextInput';
@@ -24,91 +15,80 @@ import Header from '../../components/shared/Header';
 import HeaderBack from '../../components/shared/HeaderBack';
 import PasswordShield from '../../assets/password-shield.svg';
 import WarningIcon from '../../components/shared/WarningIcon';
-import SecureKeychain from '../../shared/SecureKeychain';
 import { UserPreferenceContext } from '../../contexts/UserPreference/userPreferenceContext';
 import { ThemeContext } from '../../contexts/Theme/theme';
-import loginStyles from './styles';
+import styles from './styles';
 import { OptionsPick } from '../../components/OptionsPick';
+import { usePasswordField } from '../../hooks/common/usePasswordField';
+import { useProgressState } from '../../hooks/useProgressState';
+import Animated from 'react-native-reanimated';
+import { useKeyboardWithAnimation } from '../../hooks/common/useKeyboardWithAnimation';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../navigation/types';
 
-const WalletUnlock: React.FC = () => {
+interface IProps {
+  nextAction: any;
+  resetAction?: any;
+  disableBack?: boolean;
+}
+
+export const WalletUnlockInner: React.FC<IProps> = ({
+  nextAction,
+  disableBack,
+  resetAction,
+}) => {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-
   const {
     theme: { colors },
   } = useContext(ThemeContext);
-
-  const [passwordValue, setPasswordValue] = useState<string>('');
-  const [passwordError, setPasswordError] = useState<boolean | undefined>(
-    undefined,
-  );
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const {
-    userPreference: { encryptedSeedPhrase, hasSetBiometric },
+    handleChangeText: handleChangePassword,
+    error: passwordError,
+    input: password,
+    touched: passwordTouched,
+    setError: setPasswordError,
+  } = usePasswordField();
+  const canGoNext = !passwordError && passwordTouched && password.length >= 12;
+  const { loading, setLoading, setSuccess, setFailure } = useProgressState();
+  const {
+    userPreference: { encryptedSeedPhrase },
     clearUserPreference,
   } = useContext(UserPreferenceContext);
-  const { dispatch } = useNavigation();
+  const animatedStyles = useKeyboardWithAnimation();
 
-  const validateUserCredentials = useCallback(async () => {
-    if (hasSetBiometric) {
-      const userCredentials = await SecureKeychain.getGenericPassword();
+  const decryptWallet = useCallback(
+    async (userPassword: string) => {
       const seedDecrypted = await decryptMnemonic(
         encryptedSeedPhrase,
-        (userCredentials as UserCredentials).password,
+        userPassword,
       );
-      dispatch(
-        StackActions.replace('Home', {
-          password: userCredentials?.password,
-          seedPhrase: seedDecrypted,
-        }),
-      );
-    }
-  }, [encryptedSeedPhrase]);
+      nextAction(userPassword, seedDecrypted);
+    },
+    [encryptedSeedPhrase, nextAction],
+  );
 
-  useEffect(() => {
-    validateUserCredentials();
-  }, [hasSetBiometric]);
-
-  const handleConfirm = async () => {
-    setIsLoading(true);
+  const handleConfirm = useCallback(async () => {
+    setLoading();
     try {
-      const seedDecrypted = await decryptMnemonic(
-        encryptedSeedPhrase,
-        passwordValue,
-      );
-      dispatch(
-        StackActions.replace('Home', {
-          password: passwordValue,
-          seedPhrase: seedDecrypted,
-        }),
-      );
+      await decryptWallet(password);
+      setSuccess();
     } catch (err) {
-      setPasswordError(true);
-      setIsLoading(false);
+      setPasswordError('This password seems incorrect! Try again.');
+      setFailure();
     }
-  };
-
-  const handleOnChangePassword = (pass: string) => {
-    setPasswordValue(pass);
-    if (passwordError) {
-      setPasswordError(undefined);
-    }
-  };
-
-  const handlePressReset = () => {
-    setPasswordValue('');
-    setPasswordError(false);
-    handlePresentResetWallet();
-  };
+  }, [password]);
 
   const handlePresentResetWallet = useCallback(() => {
     bottomSheetModalRef.current?.snapToIndex(0);
   }, []);
 
-  const handleResetWallet = () => {
+  const handleResetWallet = useCallback(() => {
     bottomSheetModalRef.current?.collapse();
     clearUserPreference();
-    dispatch(StackActions.replace('OnBoarding'));
-  };
+    if (resetAction) {
+      resetAction();
+    }
+  }, [resetAction]);
 
   const options = useMemo(() => {
     return [
@@ -124,117 +104,116 @@ const WalletUnlock: React.FC = () => {
 
   return (
     <SafeAreaView
+      edges={disableBack ? ['left', 'right'] : ['top', 'bottom']}
       style={[
-        loginStyles.safeAreaContainer,
+        styles.safeAreaContainer,
         {
           backgroundColor: colors.white,
         },
       ]}>
-      <View style={[loginStyles.container]}>
-        <Header
-          leftComponent={
+      <Header
+        leftComponent={
+          !disableBack && (
             <HeaderBack
               text="Reset"
               customStyle={{ color: colors.failed100 }}
-              onPress={handlePressReset}
+              onPress={handlePresentResetWallet}
             />
-          }
-          title="Password"
-          rightComponent={
-            <TouchableOpacity
-              style={loginStyles.confirmContainer}
-              onPress={handleConfirm}
-              disabled={isLoading || passwordValue.length < 12}>
-              {isLoading ? (
-                <ActivityIndicator color={colors.primary40} />
-              ) : (
-                <Typography
-                  type="buttonText"
-                  style={[
-                    {
-                      color:
-                        passwordValue.length < 12
-                          ? colors.primary40
-                          : colors.secondary100,
-                    },
-                  ]}>
-                  Confirm
-                </Typography>
-              )}
-            </TouchableOpacity>
-          }
-        />
-        <OptionsPick
-          options={options}
-          userIcon={<WarningIcon width={80} height={80} />}
-          title="Reset Wallet"
-          subTitle="Losing the password doesn't matter as much, because as long as you have the Secret Key you can restore your wallet and set up a new password."
-          ref={bottomSheetModalRef}
-        />
-        <KeyboardAvoidingView
-          style={loginStyles.contentViewContainer}
-          keyboardVerticalOffset={50}
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-          <PasswordShield />
-          <Typography
-            type="bigTitle"
-            style={[loginStyles.contentHeader, { color: colors.primary100 }]}>
-            Enter Your Password
-          </Typography>
-          <Typography
-            style={[loginStyles.description, { color: colors.primary60 }]}
-            type="commonText">
-            Just to make sure it’s you! Enter your password to view your wallet.
-          </Typography>
-          <View style={loginStyles.passwordInputFieldContainer}>
+          )
+        }
+        title="Password"
+        isRightLoading={loading}
+        rightComponent={
+          <TouchableOpacity
+            style={styles.confirm}
+            onPress={handleConfirm}
+            disabled={!canGoNext}>
+            <Typography
+              type="buttonText"
+              style={[
+                {
+                  color: canGoNext ? colors.primary100 : colors.secondary40,
+                },
+              ]}>
+              Confirm
+            </Typography>
+          </TouchableOpacity>
+        }
+      />
+      <OptionsPick
+        options={options}
+        userIcon={<WarningIcon width={80} height={80} />}
+        title="Reset Wallet"
+        subTitle="Losing the password doesn't matter as much, because as long as you have the Secret Key you can restore your wallet and set up a new password."
+        ref={bottomSheetModalRef}
+      />
+      <KeyboardAvoidingView
+        style={styles.contentViewContainer}
+        keyboardVerticalOffset={10}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        <ScrollView
+          scrollEnabled={false}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.scrollableContent}>
+          <View style={styles.fullWidth}>
+            <Animated.View style={[styles.hiddenItems, animatedStyles]}>
+              <PasswordShield />
+              <Typography
+                type="bigTitle"
+                style={[styles.contentHeader, { color: colors.primary100 }]}>
+                Enter Your Password
+              </Typography>
+              <Typography
+                style={[styles.description, { color: colors.primary60 }]}
+                type="commonText">
+                Just to make sure it’s you! Enter your password to view your
+                wallet.
+              </Typography>
+            </Animated.View>
+            <GeneralTextInput
+              customStyle={styles.input}
+              labelText="Enter Password"
+              secureTextEntry
+              onChangeText={handleChangePassword}
+              value={password}
+              disableCancel
+              errorMessage={passwordError}
+            />
+          </View>
+          <View style={styles.hiddenItems}>
+            <WarningIcon
+              fill={colors.primary40}
+              style={[styles.warningIcon]}
+              width={24}
+              height={24}
+            />
             <Typography
               type="commonText"
               style={[
-                loginStyles.passwordInputFieldLabel,
-                { color: colors.primary100 },
+                styles.warningText,
+                {
+                  color: colors.primary60,
+                },
               ]}>
-              Enter Password
+              Forgot password? We can’t recover what we don’t have, reset your
+              wallet and enter a new password. Your assets will be kept safe.
             </Typography>
-            <GeneralTextInput
-              customStyle={loginStyles.passwordInputField}
-              secureTextEntry
-              onChangeText={handleOnChangePassword}
-              value={passwordValue}
-              disableCancel
-            />
-            {passwordError && (
-              <Typography
-                type="smallText"
-                style={[
-                  loginStyles.passwordErrorMessage,
-                  { color: colors.failed100 },
-                ]}>
-                This password seems incorrect! Try again.
-              </Typography>
-            )}
           </View>
-        </KeyboardAvoidingView>
-        <View style={loginStyles.warningContainer}>
-          <WarningIcon
-            fill={colors.primary40}
-            style={loginStyles.warningIcon}
-            width={24}
-            height={24}
-          />
-          <Typography
-            type="commonText"
-            style={[
-              loginStyles.warningText,
-              {
-                color: colors.primary60,
-              },
-            ]}>
-            Forgot password? We can’t recover what we don’t have, reset your
-            wallet and enter a new password. Your assets will be kept safe.
-          </Typography>
-        </View>
-      </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
+  );
+};
+
+type Props = NativeStackScreenProps<RootStackParamList, 'WalletUnlock'>;
+
+const WalletUnlock: React.FC<Props> = ({
+  route: {
+    params: { nextAction, resetAction },
+  },
+}) => {
+  return (
+    <WalletUnlockInner resetAction={resetAction} nextAction={nextAction} />
   );
 };
 

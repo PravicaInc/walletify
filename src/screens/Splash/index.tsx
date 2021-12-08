@@ -12,13 +12,30 @@ const Splash: React.FC = () => {
 
   useEffect(() => {
     if (encryptedSeedPhrase) {
-      dispatch(StackActions.replace('WalletUnlock'));
+      dispatch(
+        StackActions.replace('WalletUnlock', {
+          resetAction: () => {
+            dispatch(StackActions.replace('OnBoarding'));
+          },
+          nextAction: (password: string, seedPhrase: string) => {
+            dispatch(
+              StackActions.replace('Home', {
+                password,
+                seedPhrase,
+              }),
+            );
+          },
+        }),
+      );
     } else if (!viewedOnBoarding) {
       dispatch(StackActions.replace('OnBoarding'));
     } else {
       dispatch(StackActions.replace('WalletSetup'));
     }
-    SplashScreen.hide();
+    const timer = setTimeout(SplashScreen.hide, 200);
+    return () => {
+      clearTimeout(timer);
+    };
   }, [viewedOnBoarding, encryptedSeedPhrase]);
   return null;
 };

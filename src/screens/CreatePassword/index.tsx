@@ -148,12 +148,7 @@ const CreatePassword: React.FC<Props> = ({
     <SafeAreaView style={[styles.container, { backgroundColor: colors.white }]}>
       <Header
         leftComponent={
-          <HeaderBack
-            customStyle={styles.back}
-            onPress={handleGoBack}
-            text="Back"
-            hasChevron
-          />
+          <HeaderBack onPress={handleGoBack} text="Back" hasChevron />
         }
       />
       {nextScreen === 'CreateSeedPhrase' && (
