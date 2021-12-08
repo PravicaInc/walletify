@@ -30,6 +30,8 @@ import { styles } from './styles';
 import { OptionsPick } from '../../components/OptionsPick';
 import WarningIcon from '../../assets/images/note-icon.svg';
 import { useUnlockWallet } from '../../hooks/useWallet/useUnlockWallet';
+import { decryptMnemonic } from '@stacks/encryption';
+import { encrypt } from '@stacks/wallet-sdk/dist';
 
 type TProps = {
   icon: React.FC;
@@ -60,15 +62,15 @@ const bottomSettingsList = [
 const Settings = () => {
   const enterPasswordModalRef = useRef<BottomSheetModal>(null);
   const confirmModalRef = useRef<BottomSheetModal>(null);
-
   const {
     theme: { colors },
   } = useContext(ThemeContext);
   const { dispatch } = useNavigation();
   const {
-    userPreference: { hasSetBiometric },
+    userPreference: { hasSetBiometric, encryptedSeedPhrase },
     setHasEnabledBiometric,
     clearUserPreference,
+    setEncryptedSeed,
   } = useContext(UserPreferenceContext);
   const [hasBioSetup, setHasBioSetup] = useState<BIOMETRY_TYPE | null>(null);
 
@@ -116,7 +118,37 @@ const Settings = () => {
 
   const handleGoBack = () => dispatch(StackActions.pop());
   const handleChangePassword = () =>
-    dispatch(StackActions.push('ChangePassword'));
+    dispatch(
+      StackActions.push('CreatePassword', {
+        handleEditPassword: async (
+          oldPassword: string,
+          newPassword: string,
+        ) => {
+          try {
+            const decryptedSeedPhrase = await decryptMnemonic(
+              encryptedSeedPhrase,
+              oldPassword,
+            );
+            if (hasSetBiometric) {
+              await SecureKeychain.setGenericPassword(
+                newPassword,
+                ACCESS_CONTROL.BIOMETRY_CURRENT_SET_OR_DEVICE_PASSCODE,
+              );
+            }
+            const newCipherEncryptedSeedPhrase = await encrypt(
+              decryptedSeedPhrase,
+              newPassword,
+            );
+            const newEncryptedSeedPhrase =
+              newCipherEncryptedSeedPhrase.toString('hex');
+            setEncryptedSeed(newEncryptedSeedPhrase);
+            dispatch(StackActions.pop());
+          } catch (e) {
+            throw Error('The password is incorrect!');
+          }
+        },
+      }),
+    );
 
   const handleResetWallet = () => {
     confirmModalRef.current?.collapse();

@@ -6,11 +6,15 @@ export type RootStackParamList = {
   ConfirmSeedPhrase: { seedPhrase: string; password: string };
   CreatePassword: {
     nextScreen: string;
+    handleEditPassword: (
+      oldPassword: string,
+      newPassword: string,
+    ) => Promise<any>;
   };
   SeedRestore: { password: string };
   OldPassword: { seedPhrase: string } | undefined;
   Settings: undefined;
-  WalletUnlock: { nextAction: any, resetAction: any };
+  WalletUnlock: { nextAction: any; resetAction: any };
   ManageAccounts: undefined;
   ChangePassword: undefined;
   CreateSeedPhrase: { password: string };

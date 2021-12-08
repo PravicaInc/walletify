@@ -13,7 +13,6 @@ export const usePasswordField = (
       if (touched && validation) {
         try {
           validation(input);
-          setError(undefined);
         } catch (e) {
           setError(e.message);
         }

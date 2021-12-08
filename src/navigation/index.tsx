@@ -8,7 +8,6 @@ import ConfirmSeedPhrase from '../screens/ConfirmSeedPhrase';
 import CreatePassword from '../screens/CreatePassword';
 import SeedRestore from '../screens/SeedRestore';
 import Settings from '../screens/Settings';
-import ChangePassword from '../screens/ChangePassword';
 import CreateSeedPhrase from '../screens/CreateSeedPhrase';
 import RecoverSeedPhrase from '../screens/RecoverSeedPhrase';
 import { RootStackParamList } from './types';
@@ -66,11 +65,6 @@ export const Routes: React.FC = () => {
           options={{ headerShown: false }}
           name="WalletUnlock"
           component={WalletUnlock}
-        />
-        <Stack.Screen
-          options={{ headerShown: false }}
-          name="ChangePassword"
-          component={ChangePassword}
         />
         <Stack.Screen
           options={{ headerShown: false }}

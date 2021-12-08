@@ -6,6 +6,7 @@ import React, {
   useState,
 } from 'react';
 import {
+  ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
@@ -34,6 +35,7 @@ import { RootStackParamList } from '../../navigation/types';
 import { usePasswordField } from '../../hooks/common/usePasswordField';
 import Animated from 'react-native-reanimated';
 import { useKeyboardWithAnimation } from '../../hooks/common/useKeyboardWithAnimation';
+import { useProgressState } from '../../hooks/useProgressState';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'CreatePassword'>;
 
@@ -45,13 +47,15 @@ enum StrengthLevel {
 
 const CreatePassword: React.FC<Props> = ({
   route: {
-    params: { nextScreen },
+    params: { nextScreen, handleEditPassword },
   },
 }) => {
+  const isEditPassword = !!handleEditPassword;
   const {
     theme: { colors },
   } = useContext(ThemeContext);
   const { dispatch } = useNavigation();
+  const { loading, setFailure, setSuccess, setLoading } = useProgressState();
   const {
     userPreference: { hasSetBiometric },
     setHasEnabledBiometric,
@@ -85,6 +89,16 @@ const CreatePassword: React.FC<Props> = ({
   );
 
   const {
+    handleChangeText: handleChangeOldPassword,
+    error: oldPasswordError,
+    setError: setOldPasswordError,
+    input: oldPassword,
+  } = usePasswordField((inputValue: string) => {
+    if (inputValue.length < 12) {
+      throw Error('You need at least 12 characters');
+    }
+  });
+  const {
     handleChangeText: handleChangePassword,
     error: passwordError,
     input: password,
@@ -116,6 +130,16 @@ const CreatePassword: React.FC<Props> = ({
     [password],
   );
 
+  const handleEditConfirm = useCallback(() => {
+    setLoading();
+    handleEditPassword(oldPassword, password)
+      .then(setSuccess)
+      .catch(e => {
+        setOldPasswordError(e);
+        setFailure();
+      });
+  }, [handleEditPassword, password, oldPassword]);
+
   useEffect(() => {
     SecureKeychain.getSupportedBiometryType().then(type =>
       setHasBioSupported(type),
@@ -123,6 +147,8 @@ const CreatePassword: React.FC<Props> = ({
   }, []);
 
   const canGoNext =
+    isEditPassword &&
+    oldPassword.length > 12 &&
     !confirmPasswordError &&
     !passwordError &&
     passwordTouched &&
@@ -150,6 +176,26 @@ const CreatePassword: React.FC<Props> = ({
         leftComponent={
           <HeaderBack onPress={handleGoBack} text="Back" hasChevron />
         }
+        title={isEditPassword ? 'Change Password' : ''}
+        rightComponent={
+          <TouchableOpacity
+            style={styles.confirmContainer}
+            onPress={handleEditConfirm}
+            disabled={!canGoNext || loading}>
+            {loading ? (
+              <ActivityIndicator color={colors.primary40} />
+            ) : (
+              <Typography
+                type="buttonText"
+                style={[
+                  { color: colors.secondary100 },
+                  !canGoNext && { color: colors.primary40 },
+                ]}>
+                Confirm
+              </Typography>
+            )}
+          </TouchableOpacity>
+        }
       />
       {nextScreen === 'CreateSeedPhrase' && (
         <ProgressBar
@@ -161,9 +207,9 @@ const CreatePassword: React.FC<Props> = ({
       <KeyboardAvoidingView
         style={styles.keyboardContainer}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        keyboardVerticalOffset={10}>
+        keyboardVerticalOffset={0}>
         <ScrollView
-          scrollEnabled={false}
+          scrollEnabled={isEditPassword}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.scrollableContent}>
           <View style={styles.pusher}>
@@ -180,9 +226,23 @@ const CreatePassword: React.FC<Props> = ({
               </Typography>
             </Animated.View>
           </View>
+          {isEditPassword && (
+            <GeneralTextInput
+              autoFocus={true}
+              customStyle={styles.input}
+              outerWrapperStyle={styles.bottomInput}
+              labelText="Enter Old Password"
+              secureTextEntry
+              onChangeText={handleChangeOldPassword}
+              value={oldPassword}
+              disableCancel
+              errorMessage={oldPasswordError}
+            />
+          )}
           <GeneralTextInput
-            autoFocus={true}
+            autoFocus={!isEditPassword && true}
             customStyle={styles.input}
+            outerWrapperStyle={isEditPassword && styles.bottomInput}
             labelText="Enter a Password"
             secureTextEntry
             onChangeText={handleChangePassword}
@@ -231,50 +291,56 @@ const CreatePassword: React.FC<Props> = ({
             disableCancel
             errorMessage={confirmPasswordError}
           />
-          <View style={styles.switchGroupContainer}>
-            <View style={styles.switchTop}>
-              <View style={styles.fingerprintContainer}>
-                <FingerPrint />
+          {isEditPassword ? (
+            <View style={styles.pusher} />
+          ) : (
+            <>
+              <View style={styles.switchGroupContainer}>
+                <View style={styles.switchTop}>
+                  <View style={styles.fingerprintContainer}>
+                    <FingerPrint />
+                  </View>
+                  <View style={styles.switchLabel}>
+                    <Typography type="smallTitleR">Allow Biometrics</Typography>
+                  </View>
+                  <View style={styles.switch}>
+                    <Switch
+                      onChange={event => setHasEnabledBiometric(event.value)}
+                      value={hasSetBiometric}
+                      disabled={!hasBioSupported}
+                    />
+                  </View>
+                </View>
+                <View style={styles.switchBottom}>
+                  <View style={styles.fingerprintContainer} />
+                  <View style={styles.switchLabel}>
+                    <Typography
+                      type="commonText"
+                      style={{ color: colors.primary40 }}>
+                      You can Authenticate and Sign transactions using your
+                      biometrics.
+                    </Typography>
+                  </View>
+                </View>
               </View>
-              <View style={styles.switchLabel}>
-                <Typography type="smallTitleR">Allow Biometrics</Typography>
-              </View>
-              <View style={styles.switch}>
-                <Switch
-                  onChange={event => setHasEnabledBiometric(event.value)}
-                  value={hasSetBiometric}
-                  disabled={!hasBioSupported}
-                />
-              </View>
-            </View>
-            <View style={styles.switchBottom}>
-              <View style={styles.fingerprintContainer} />
-              <View style={styles.switchLabel}>
-                <Typography
-                  type="commonText"
-                  style={{ color: colors.primary40 }}>
-                  You can Authenticate and Sign transactions using your
-                  biometrics.
+              <TouchableOpacity
+                onPress={handlePressCreate}
+                disabled={!canGoNext}
+                style={[
+                  styles.button,
+                  styles.pusher,
+                  {
+                    backgroundColor: canGoNext
+                      ? colors.primary100
+                      : colors.primary20,
+                  },
+                ]}>
+                <Typography type="buttonText" style={{ color: colors.white }}>
+                  Create
                 </Typography>
-              </View>
-            </View>
-          </View>
-          <TouchableOpacity
-            onPress={handlePressCreate}
-            disabled={!canGoNext}
-            style={[
-              styles.button,
-              styles.pusher,
-              {
-                backgroundColor: canGoNext
-                  ? colors.primary100
-                  : colors.primary20,
-              },
-            ]}>
-            <Typography type="buttonText" style={{ color: colors.white }}>
-              Create
-            </Typography>
-          </TouchableOpacity>
+              </TouchableOpacity>
+            </>
+          )}
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>

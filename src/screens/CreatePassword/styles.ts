@@ -82,6 +82,10 @@ const styles = StyleSheet.create({
     height: 60,
     marginBottom: 10,
   },
+  confirmContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
 });
 
 export default styles;
