@@ -41,10 +41,10 @@ export const useUserPreference = () => {
     });
   }, []);
 
-  const setViewedOnboarding = useCallback((viewedOnboarding: boolean) => {
+  const setViewedOnBoarding = useCallback((viewedOnBoarding: boolean) => {
     dispatch({
       type: USER_PREFERENCE_ACTIONS.SET_VIEWED_ONBOARDING,
-      payload: viewedOnboarding,
+      payload: viewedOnBoarding,
     });
   }, []);
 
@@ -65,7 +65,7 @@ export const useUserPreference = () => {
     userPreference,
     setEncryptedSeed,
     setHasEnabledBiometric,
-    setViewedOnboarding,
+    setViewedOnBoarding,
     setUserPreference,
     clearUserPreference,
   };

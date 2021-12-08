@@ -1,23 +1,22 @@
-export enum WalletSetupFlow {
-  CreateWallet = 'CreateWallet',
-  RestoreWallet = 'RestoreWallet',
-}
-
 export type RootStackParamList = {
   Splash: undefined;
   Home: { seedPhrase: string; password: string };
-  Onboarding: undefined;
+  OnBoarding: undefined;
   WalletSetup: undefined;
   ConfirmSeedPhrase: { seedPhrase: string; password: string };
   CreatePassword: {
-    flow: WalletSetupFlow;
+    nextScreen: string;
+    handleEditPassword: (
+      oldPassword: string,
+      newPassword: string,
+    ) => Promise<any>;
   };
   SeedRestore: { password: string };
   OldPassword: { seedPhrase: string } | undefined;
   Settings: undefined;
-  Login: undefined;
+  WalletUnlock: { nextAction: any; resetAction: any };
   ManageAccounts: undefined;
   ChangePassword: undefined;
-  ShowSeedPhrase: { seedPhrase?: string; password?: string };
+  CreateSeedPhrase: { password: string };
   RecoverSeedPhrase: undefined;
 };

@@ -7,14 +7,14 @@ import {
 export const DEFAULT_USER_PREFERENCE: UserPreference = {
   hasSetBiometric: false,
   encryptedSeedPhrase: '',
-  viewedOnboarding: false,
+  viewedOnBoarding: false,
 };
 
 export const UserPreferenceContext = createContext<UserPreferenceContextValue>({
   userPreference: DEFAULT_USER_PREFERENCE,
   setEncryptedSeed: () => null,
   setHasEnabledBiometric: () => null,
-  setViewedOnboarding: () => null,
+  setViewedOnBoarding: () => null,
   setUserPreference: () => null,
   clearUserPreference: () => null,
 });

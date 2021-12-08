@@ -4,11 +4,11 @@ import React, {
   useEffect,
   useRef,
   useCallback,
+  useMemo,
 } from 'react';
 import { TouchableOpacity, View, ScrollView, Switch } from 'react-native';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { BIOMETRY_TYPE, ACCESS_CONTROL } from 'react-native-keychain';
-import ConfirmModal from '../../components/ConfirmModal';
 import { Typography } from '../../components/shared/Typography';
 import Manage from '../../assets/images/settings/manage.svg';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -27,7 +27,11 @@ import FingerPrintIcon from '../../assets/finger-print.svg';
 import ExitIcon from '../../assets/images/settings/exit.svg';
 import SecureKeychain from '../../shared/SecureKeychain';
 import { styles } from './styles';
-import { useAccounts } from '../../hooks/useAccounts/useAccounts';
+import { OptionsPick } from '../../components/OptionsPick';
+import WarningIcon from '../../assets/images/note-icon.svg';
+import { useUnlockWallet } from '../../hooks/useWallet/useUnlockWallet';
+import { decryptMnemonic } from '@stacks/encryption';
+import { encrypt } from '@stacks/wallet-sdk/dist';
 
 type TProps = {
   icon: React.FC;
@@ -58,34 +62,41 @@ const bottomSettingsList = [
 const Settings = () => {
   const enterPasswordModalRef = useRef<BottomSheetModal>(null);
   const confirmModalRef = useRef<BottomSheetModal>(null);
-
   const {
     theme: { colors },
   } = useContext(ThemeContext);
-
-  const handlePresentEnterPassword = useCallback(() => {
-    enterPasswordModalRef.current?.present();
-  }, []);
-
-  const handlePresentResetWallet = useCallback(() => {
-    confirmModalRef.current?.present();
-  }, []);
-
   const { dispatch } = useNavigation();
-
   const {
-    userPreference: { hasSetBiometric },
+    userPreference: { hasSetBiometric, encryptedSeedPhrase },
     setHasEnabledBiometric,
     clearUserPreference,
+    setEncryptedSeed,
   } = useContext(UserPreferenceContext);
   const [hasBioSetup, setHasBioSetup] = useState<BIOMETRY_TYPE | null>(null);
 
+  const handleBioOn = async (password: string) => {
+    await SecureKeychain.setGenericPassword(
+      password || '',
+      ACCESS_CONTROL.BIOMETRY_CURRENT_SET_OR_DEVICE_PASSCODE,
+    );
+    setHasEnabledBiometric(true);
+    enterPasswordModalRef.current?.close();
+  };
+
+  const { validateUserCredentials } = useUnlockWallet(
+    handleBioOn,
+    enterPasswordModalRef,
+  );
   useEffect(() => {
     const getBioSetup = async () => {
       const type = await SecureKeychain.getSupportedBiometryType();
       setHasBioSetup(type);
     };
     getBioSetup();
+  }, []);
+
+  const handlePresentEnterPassword = useCallback(() => {
+    enterPasswordModalRef.current?.snapToIndex(0);
   }, []);
 
   const handleBiometricToggle = async () => {
@@ -97,32 +108,6 @@ const Settings = () => {
     }
   };
 
-  const confirmContinue = useCallback(
-    () => (
-      <Typography type="buttonText" style={{ color: colors.failed100 }}>
-        OK Reset
-      </Typography>
-    ),
-    [colors.failed100],
-  );
-
-  const confirmAbort = useCallback(
-    () => (
-      <Typography type="smallTitle" style={{ color: colors.secondary100 }}>
-        Cancel
-      </Typography>
-    ),
-    [colors.secondary100],
-  );
-
-  const handleBioOn = async ({ password }: { password: string }) => {
-    await SecureKeychain.setGenericPassword(
-      password || '',
-      ACCESS_CONTROL.BIOMETRY_CURRENT_SET_OR_DEVICE_PASSCODE,
-    );
-    setHasEnabledBiometric(true);
-  };
-
   const handleRecoverSeedPhrase = () => {
     dispatch(StackActions.push('RecoverSeedPhrase'));
   };
@@ -131,16 +116,57 @@ const Settings = () => {
     dispatch(StackActions.push('ManageAccounts'));
   };
 
-  // navigation handlers
   const handleGoBack = () => dispatch(StackActions.pop());
   const handleChangePassword = () =>
-    dispatch(StackActions.push('ChangePassword'));
+    dispatch(
+      StackActions.push('CreatePassword', {
+        handleEditPassword: async (
+          oldPassword: string,
+          newPassword: string,
+        ) => {
+          try {
+            const decryptedSeedPhrase = await decryptMnemonic(
+              encryptedSeedPhrase,
+              oldPassword,
+            );
+            if (hasSetBiometric) {
+              await SecureKeychain.setGenericPassword(
+                newPassword,
+                ACCESS_CONTROL.BIOMETRY_CURRENT_SET_OR_DEVICE_PASSCODE,
+              );
+            }
+            const newCipherEncryptedSeedPhrase = await encrypt(
+              decryptedSeedPhrase,
+              newPassword,
+            );
+            const newEncryptedSeedPhrase =
+              newCipherEncryptedSeedPhrase.toString('hex');
+            setEncryptedSeed(newEncryptedSeedPhrase);
+            dispatch(StackActions.pop());
+          } catch (e) {
+            throw Error('The password is incorrect!');
+          }
+        },
+      }),
+    );
 
   const handleResetWallet = () => {
-    confirmModalRef.current?.dismiss();
+    confirmModalRef.current?.collapse();
     clearUserPreference();
-    dispatch(StackActions.replace('Onboarding'));
+    dispatch(StackActions.replace('OnBoarding'));
   };
+
+  const options = useMemo(() => {
+    return [
+      {
+        label: 'OK Reset',
+        onClick: handleResetWallet,
+        optionTextStyle: {
+          color: colors.failed100,
+        },
+      },
+    ];
+  }, [colors, handleResetWallet]);
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.white }]}>
@@ -208,7 +234,7 @@ const Settings = () => {
         </View>
         <TouchableOpacity
           style={styles.bottomContent}
-          onPress={handlePresentResetWallet}>
+          onPress={validateUserCredentials}>
           <ExitIcon />
           <Typography
             type="buttonText"
@@ -216,13 +242,12 @@ const Settings = () => {
             Reset Wallet
           </Typography>
         </TouchableOpacity>
-        <ConfirmModal
-          ref={confirmModalRef}
-          handleNextAction={handleResetWallet}
+        <OptionsPick
+          options={options}
+          userIcon={<WarningIcon width={80} height={80} />}
           title="Reset Wallet"
-          description="Losing the password doesn't matter as much, because as long as you have the Secret Key you can restore your wallet and set up a new password."
-          renderContinueText={confirmContinue}
-          renderAbortText={confirmAbort}
+          subTitle="Losing the password doesn't matter as much, because as long as you have the Secret Key you can restore your wallet and set up a new password."
+          ref={confirmModalRef}
         />
       </ScrollView>
     </SafeAreaView>

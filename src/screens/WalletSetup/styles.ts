@@ -2,20 +2,27 @@ import { StyleSheet } from 'react-native';
 
 import { PADDING_HORIZONTAL } from '../../shared/layout';
 
-const styles = StyleSheet.create({
+export default StyleSheet.create({
   container: {
     flex: 1,
   },
   contentContainer: {
     paddingHorizontal: PADDING_HORIZONTAL,
     flex: 1,
-    justifyContent: 'space-around',
+    justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 24,
   },
-  title: { textAlign: 'center' },
-  buttonsContainer: { width: '100%', marginBottom: '25%' },
-  bottomButton: { marginTop: 12 },
+  logo: { marginBottom: 60 },
+  title: { textAlign: 'center', marginBottom: 45, marginTop: 40 },
+  button: {
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 13,
+    height: 60,
+    marginTop: 15,
+  },
+  buttonBorder: {
+    borderWidth: 1,
+  },
 });
-
-export default styles;

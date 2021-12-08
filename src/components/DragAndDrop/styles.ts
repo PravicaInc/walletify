@@ -1,27 +1,30 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
-  draxWrapper: { flex: 1, width: '100%' },
-  container: { flex: 1, width: '100%', justifyContent: 'space-between' },
-  pillsContainer: {
-    flexDirection: 'row',
-    width: '100%',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-  },
-  pillWrapper: {
-    height: 37,
+  puzzleItemWrapper: {
     width: '48%',
-    marginBottom: 28,
+    height: 37,
+    marginVertical: 14,
   },
-  pill: {
-    borderRadius: 13,
+  puzzleItem: {
     borderWidth: 1,
-    justifyContent: 'center',
     alignItems: 'center',
-    flex: 1,
+    justifyContent: 'center',
+    borderRadius: 13,
+    width: '100%',
+    height: '100%',
   },
-  dragging: { position: 'relative', top: '-100%' },
+  receivingZone: {
+    marginVertical: 20,
+    width: '100%',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  hidden: {
+    opacity: 0,
+  },
 });
 
 export default styles;

@@ -1,48 +1,42 @@
 import { StyleSheet } from 'react-native';
 
-import { PADDING_HORIZONTAL, PADDING_VERTICAL } from '../../shared/layout';
+import { PADDING_HORIZONTAL } from '../../shared/layout';
 
 const styles = StyleSheet.create({
-  safeAreaContainer: { flex: 1 },
   container: {
     flex: 1,
-    paddingHorizontal: PADDING_HORIZONTAL,
   },
   keyboardContainer: {
     flex: 1,
+    paddingHorizontal: PADDING_HORIZONTAL,
   },
-  scrollableContent: {
-    paddingBottom: PADDING_VERTICAL,
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    minHeight: '100%',
+  back: {
+    marginLeft: PADDING_HORIZONTAL,
   },
-  topContent: {
+  pusher: {
+    marginTop: 'auto',
+  },
+  hiddenItems: {
     alignItems: 'center',
-    flex: 0.75,
-    width: '100%',
     justifyContent: 'center',
   },
-  title: { marginVertical: 10 },
-  description: { textAlign: 'center' },
-  bottomContent: {
-    flex: 1,
+  scrollableContent: {
     alignItems: 'center',
-    justifyContent: 'flex-start',
-    width: '100%',
+    justifyContent: 'center',
+    flexGrow: 1,
   },
-  seedTitle: { marginVertical: 10 },
-  seedInputContainer: {
-    height: '50%',
-    width: '100%',
-  },
-  seedInput: {
-    paddingVertical: 10,
-    textAlignVertical: 'top',
-    flex: 1,
+  title: { marginVertical: 10 },
+  description: {
+    textAlign: 'center',
+    width: '80%',
   },
   button: {
-    marginTop: 'auto',
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 13,
+    height: 60,
+    marginBottom: 10,
   },
 });
 

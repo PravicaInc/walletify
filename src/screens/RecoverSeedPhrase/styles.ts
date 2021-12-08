@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import { PADDING_HORIZONTAL, PADDING_VERTICAL } from '../../shared/layout';
+import { PADDING_HORIZONTAL } from '../../shared/layout';
 
 const styles = StyleSheet.create({
   container: {
@@ -8,10 +8,9 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     paddingHorizontal: PADDING_HORIZONTAL,
-    paddingVertical: PADDING_VERTICAL,
-    justifyContent: 'flex-start',
+    justifyContent: 'flex-end',
     alignItems: 'center',
-    height: '100%',
+    flex: 0.4,
   },
   header: {
     shadowOpacity: 0,
@@ -25,15 +24,21 @@ const styles = StyleSheet.create({
   },
   title: { marginVertical: 10 },
   description: { textAlign: 'center' },
-  bottomContent: {
-    alignItems: 'center',
-    flex: 1,
-    width: '100%',
-    justifyContent: 'flex-start',
-  },
   seedTitle: { marginBottom: 10 },
-  actionButtonTop: { marginBottom: 'auto' },
-  actionButtonBottom: { marginTop: 'auto' },
+  button: {
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 13,
+    height: 60,
+  },
+  pusher: {
+    justifyContent: 'flex-start',
+    paddingHorizontal: PADDING_HORIZONTAL,
+    flex: 0.6,
+    marginTop: '30%',
+    width: '100%',
+  },
 });
 
 export default styles;

@@ -1,33 +1,38 @@
 import { StyleSheet } from 'react-native';
 
-import { PADDING_HORIZONTAL, PADDING_VERTICAL } from '../../shared/layout';
+import { PADDING_HORIZONTAL } from '../../shared/layout';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingBottom: PADDING_VERTICAL,
-    paddingHorizontal: PADDING_HORIZONTAL,
   },
-  progress: { marginTop: '5%' },
+  hiddenItems: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  progress: {
+    marginTop: '5%',
+    marginHorizontal: PADDING_HORIZONTAL,
+    width: '95%',
+  },
+  back: {
+    marginLeft: PADDING_HORIZONTAL,
+  },
   keyboardContainer: {
     flex: 1,
+    paddingHorizontal: PADDING_HORIZONTAL,
   },
   scrollableContent: {
     alignItems: 'center',
-    justifyContent: 'flex-start',
-    minHeight: '100%',
-    paddingTop: '15%',
+    justifyContent: 'center',
+    flexGrow: 1,
   },
   title: { marginVertical: 10 },
   description: {
     textAlign: 'center',
-    marginBottom: 40,
-    marginHorizontal: '6%',
+    width: '80%',
   },
   input: {
-    width: '99%',
-    marginTop: 8,
-    flex: undefined,
     height: 60,
   },
   inputGuide: {
@@ -46,11 +51,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   bottomInput: {
-    marginTop: 24,
-    width: '100%',
-    alignItems: 'center',
+    marginTop: 15,
   },
-  switchGroupContainer: { width: '100%', marginVertical: 20 },
+  switchGroupContainer: { width: '100%', marginTop: 10 },
   switchTop: {
     width: '100%',
     flexDirection: 'row',
@@ -68,8 +71,20 @@ const styles = StyleSheet.create({
   switchDescription: {
     flex: 0.72,
   },
-  button: {
+  pusher: {
     marginTop: 'auto',
+  },
+  button: {
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 13,
+    height: 60,
+    marginBottom: 10,
+  },
+  confirmContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });
 

@@ -2,18 +2,16 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import Splash from '../screens/Splash';
 import Home from '../screens/Home';
-import Onboarding from '../screens/Onboarding';
+import OnBoarding from '../screens/OnBoarding';
 import WalletSetup from '../screens/WalletSetup';
 import ConfirmSeedPhrase from '../screens/ConfirmSeedPhrase';
 import CreatePassword from '../screens/CreatePassword';
 import SeedRestore from '../screens/SeedRestore';
-import OldPassword from '../screens/OldPassword';
 import Settings from '../screens/Settings';
-import ChangePassword from '../screens/ChangePassword';
-import ShowSeedPhrase from '../screens/ShowSeedPhrase';
+import CreateSeedPhrase from '../screens/CreateSeedPhrase';
 import RecoverSeedPhrase from '../screens/RecoverSeedPhrase';
 import { RootStackParamList } from './types';
-import Login from '../screens/Login';
+import WalletUnlock from '../screens/WalletUnlock';
 import ManageAccounts from '../screens/ManageAccounts';
 import { useStxPrice } from '../hooks/useStxPrice/useStxPrice';
 import { useAuthenticationListener } from '../hooks/useAuthenticationListener/useAuthenticationListener';
@@ -40,19 +38,19 @@ export const Routes: React.FC = () => {
         />
         <Stack.Screen
           options={{ headerShown: false }}
-          name="Onboarding"
-          component={Onboarding}
+          name="OnBoarding"
+          component={OnBoarding}
         />
         <Stack.Screen
           options={{ headerShown: false }}
           name="WalletSetup"
           component={WalletSetup}
         />
-      <Stack.Screen
-        options={{ headerShown: false }}
-        name="ConfirmSeedPhrase"
-        component={ConfirmSeedPhrase}
-      />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="ConfirmSeedPhrase"
+          component={ConfirmSeedPhrase}
+        />
         <Stack.Screen
           options={{ headerShown: false }}
           name="CreatePassword"
@@ -65,23 +63,13 @@ export const Routes: React.FC = () => {
         />
         <Stack.Screen
           options={{ headerShown: false }}
-          name="OldPassword"
-          component={OldPassword}
+          name="WalletUnlock"
+          component={WalletUnlock}
         />
         <Stack.Screen
           options={{ headerShown: false }}
-          name="Login"
-          component={Login}
-        />
-        <Stack.Screen
-          options={{ headerShown: false }}
-          name="ChangePassword"
-          component={ChangePassword}
-        />
-        <Stack.Screen
-          options={{ headerShown: false }}
-          name="ShowSeedPhrase"
-          component={ShowSeedPhrase}
+          name="CreateSeedPhrase"
+          component={CreateSeedPhrase}
         />
         <Stack.Screen
           options={{ headerShown: false }}

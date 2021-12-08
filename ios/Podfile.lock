@@ -335,6 +335,8 @@ PODS:
     - React-Core
   - RNSVG (12.1.1):
     - React
+  - RNTextSize (4.0.0-rc.1):
+    - React
   - TcpSockets (3.3.2):
     - React
   - Yoga (1.14.0)
@@ -387,6 +389,7 @@ DEPENDENCIES:
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
+  - RNTextSize (from `../node_modules/react-native-text-size/ios`)
   - TcpSockets (from `../node_modules/react-native-tcp`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
@@ -487,6 +490,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-screens"
   RNSVG:
     :path: "../node_modules/react-native-svg"
+  RNTextSize:
+    :path: "../node_modules/react-native-text-size/ios"
   TcpSockets:
     :path: "../node_modules/react-native-tcp"
   Yoga:
@@ -541,6 +546,7 @@ SPEC CHECKSUMS:
   RNReanimated: f58d4f027fcea2197b63588138decdf5f8ac5e89
   RNScreens: f7ad633b2e0190b77b6a7aab7f914fad6f198d8d
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
+  RNTextSize: 7efa06531c6bb7ab6ed070b4ce0d1248cf06fcdf
   TcpSockets: 14306fb79f9750ea7d2ddd02d8bed182abb01797
   Yoga: aa0cb45287ebe1004c02a13f279c55a95f1572f4
 
