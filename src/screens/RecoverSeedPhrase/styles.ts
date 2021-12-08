@@ -8,9 +8,9 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     paddingHorizontal: PADDING_HORIZONTAL,
-    justifyContent: 'flex-start',
+    justifyContent: 'flex-end',
     alignItems: 'center',
-    flex: 1,
+    flex: 0.4,
   },
   header: {
     shadowOpacity: 0,
@@ -24,15 +24,21 @@ const styles = StyleSheet.create({
   },
   title: { marginVertical: 10 },
   description: { textAlign: 'center' },
-  bottomContent: {
-    alignItems: 'center',
-    flex: 1,
-    width: '100%',
-    justifyContent: 'flex-start',
-  },
   seedTitle: { marginBottom: 10 },
-  actionButtonTop: { marginBottom: 'auto' },
-  actionButtonBottom: { marginTop: 'auto' },
+  button: {
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 13,
+    height: 60,
+  },
+  pusher: {
+    justifyContent: 'flex-start',
+    paddingHorizontal: PADDING_HORIZONTAL,
+    flex: 0.6,
+    marginTop: '30%',
+    width: '100%',
+  },
 });
 
 export default styles;

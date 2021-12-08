@@ -1,5 +1,5 @@
 import React, { useContext, useRef, useState } from 'react';
-import { View } from 'react-native';
+import { ScrollView, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
@@ -48,31 +48,35 @@ const RecoverSeedPhrase: React.FC = () => {
         }
       />
       <View style={styles.contentContainer}>
-        <View style={styles.topContent}>
-          <LockedShield />
-          <Typography type="bigTitle" style={styles.title}>
-            Recover Your Seed Phrase
-          </Typography>
-          <Typography
-            type="commonText"
-            style={[styles.description, { color: colors.primary60 }]}>
-            This feature allows you to recover your seed phrase in case you need
-            it.
-          </Typography>
-        </View>
-        {decryptedSeedPhrase ? (
-          <SeedPhraseGrid phrase={decryptedSeedPhrase} />
-        ) : (
-          <View style={styles.bottomContent}>
-            <GeneralButton
-              type={'activePrimary'}
-              onPress={validateUserCredentials}
-              style={styles.actionButtonTop}>
-              View Seed Phrase
-            </GeneralButton>
-          </View>
-        )}
+        <LockedShield />
+        <Typography type="bigTitle" style={styles.title}>
+          Recover Your Seed Phrase
+        </Typography>
+        <Typography
+          type="commonText"
+          style={[styles.description, { color: colors.primary60 }]}>
+          This feature allows you to recover your seed phrase in case you need
+          it.
+        </Typography>
       </View>
+        <View style={styles.pusher}>
+            {decryptedSeedPhrase ? (
+                <SeedPhraseGrid phrase={decryptedSeedPhrase} />
+            ) : (
+                <TouchableOpacity
+                    onPress={validateUserCredentials}
+                    style={[
+                        styles.button,
+                        {
+                            backgroundColor: colors.primary100,
+                        },
+                    ]}>
+                    <Typography type="buttonText" style={{ color: colors.white }}>
+                        View Seed Phrase
+                    </Typography>
+                </TouchableOpacity>
+            )}
+        </View>
     </SafeAreaView>
   );
 };
