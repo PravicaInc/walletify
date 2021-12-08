@@ -9,15 +9,21 @@ export const usePasswordField = (
   const [touched, setTouched] = useState(false);
 
   useEffect(() => {
+    if (extraDeps) {
+      setInput('');
+    }
+  }, extraDeps);
+  useEffect(() => {
     const timer = setTimeout(() => {
       if (touched && validation) {
         try {
+          setError(undefined);
           validation(input);
         } catch (e) {
           setError(e.message);
         }
       }
-    }, 200);
+    }, 500);
 
     return () => {
       clearTimeout(timer);
@@ -26,7 +32,6 @@ export const usePasswordField = (
 
   const handleChangeText = useCallback(text => {
     setInput(text);
-    setError(undefined);
     setTouched(true);
   }, []);
 

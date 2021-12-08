@@ -31,7 +31,7 @@ export default {
 
   async setGenericPassword(password: string, type?: Keychain.ACCESS_CONTROL) {
     if (
-      type === Keychain.ACCESS_CONTROL.BIOMETRY_CURRENT_SET_OR_DEVICE_PASSCODE
+      type === Keychain.ACCESS_CONTROL.BIOMETRY_CURRENT_SET
     ) {
       const authOptions: Keychain.Options = {
         accessible: Keychain.ACCESSIBLE.WHEN_UNLOCKED_THIS_DEVICE_ONLY,

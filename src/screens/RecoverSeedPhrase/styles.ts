@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   title: { marginVertical: 10 },
-  description: { textAlign: 'center' },
+  description: { textAlign: 'center', width: '80%' },
   seedTitle: { marginBottom: 10 },
   button: {
     width: '100%',

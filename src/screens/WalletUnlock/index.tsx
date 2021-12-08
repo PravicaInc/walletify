@@ -28,15 +28,18 @@ import { RootStackParamList } from '../../navigation/types';
 
 interface IProps {
   nextAction: any;
+  cancelAction?: any;
   resetAction?: any;
-  disableBack?: boolean;
+  reset?: boolean;
 }
 
 export const WalletUnlockInner: React.FC<IProps> = ({
   nextAction,
-  disableBack,
   resetAction,
+  cancelAction,
+  reset,
 }) => {
+  const disableBack = !!cancelAction;
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const {
     theme: { colors },
@@ -47,7 +50,7 @@ export const WalletUnlockInner: React.FC<IProps> = ({
     input: password,
     touched: passwordTouched,
     setError: setPasswordError,
-  } = usePasswordField();
+  } = usePasswordField(undefined, [reset]);
   const canGoNext = !passwordError && passwordTouched && password.length >= 12;
   const { loading, setLoading, setSuccess, setFailure } = useProgressState();
   const {
@@ -113,7 +116,13 @@ export const WalletUnlockInner: React.FC<IProps> = ({
       ]}>
       <Header
         leftComponent={
-          !disableBack && (
+          cancelAction ? (
+            <HeaderBack
+              text="Cancel"
+              customStyle={{ color: colors.secondary100 }}
+              onPress={cancelAction}
+            />
+          ) : (
             <HeaderBack
               text="Reset"
               customStyle={{ color: colors.failed100 }}

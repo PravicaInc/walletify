@@ -77,7 +77,7 @@ const Settings = () => {
   const handleBioOn = async (password: string) => {
     await SecureKeychain.setGenericPassword(
       password || '',
-      ACCESS_CONTROL.BIOMETRY_CURRENT_SET_OR_DEVICE_PASSCODE,
+      ACCESS_CONTROL.BIOMETRY_CURRENT_SET,
     );
     setHasEnabledBiometric(true);
     enterPasswordModalRef.current?.close();
@@ -132,7 +132,7 @@ const Settings = () => {
             if (hasSetBiometric) {
               await SecureKeychain.setGenericPassword(
                 newPassword,
-                ACCESS_CONTROL.BIOMETRY_CURRENT_SET_OR_DEVICE_PASSCODE,
+                ACCESS_CONTROL.BIOMETRY_CURRENT_SET,
               );
             }
             const newCipherEncryptedSeedPhrase = await encrypt(
@@ -153,7 +153,7 @@ const Settings = () => {
   const handleResetWallet = () => {
     confirmModalRef.current?.collapse();
     clearUserPreference();
-    dispatch(StackActions.replace('OnBoarding'));
+    dispatch(StackActions.replace('WalletSetup'));
   };
 
   const options = useMemo(() => {
