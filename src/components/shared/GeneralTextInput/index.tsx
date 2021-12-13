@@ -10,7 +10,7 @@ import {
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { ThemeContext } from '../../../contexts/Theme/theme';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import WarningIcon from '../WarningIcon';
+import WarningIcon from '../../../assets/icon-warning.svg';
 import CloseIcon from '../../../assets/icon-reject-contact.svg';
 import HiddenEye from '../../../assets/hidden-eye.svg';
 import VisibleEye from '../../../assets/visible-eye.svg';
@@ -118,7 +118,7 @@ export const GeneralTextInput = React.forwardRef<any, IProps>((props, ref) => {
       {props.guide && !(touched && hasError) && props.guide}
       {touched && hasError && (
         <View style={styles.errorContainer}>
-          <WarningIcon />
+          <WarningIcon width={12} height={12} fill={colors.failed100} />
           <Typography
             type="smallText"
             style={[styles.error, { color: colors.failed100 }]}>
