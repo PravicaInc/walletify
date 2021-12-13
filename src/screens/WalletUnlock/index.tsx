@@ -23,8 +23,10 @@ import { usePasswordField } from '../../hooks/common/usePasswordField';
 import { useProgressState } from '../../hooks/useProgressState';
 import Animated from 'react-native-reanimated';
 import { useKeyboardWithAnimation } from '../../hooks/common/useKeyboardWithAnimation';
+import { useWallet } from '../../hooks/useWallet/useWallet';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/types';
+import SecureKeychain from '../../shared/SecureKeychain';
 
 interface IProps {
   nextAction: any;
@@ -56,6 +58,8 @@ export const WalletUnlockInner: React.FC<IProps> = ({
   } = useContext(UserPreferenceContext);
   const animatedStyles = useKeyboardWithAnimation();
 
+  const { resetWallet } = useWallet();
+
   const decryptWallet = useCallback(
     async (userPassword: string) => {
       const seedDecrypted = await decryptMnemonic(
@@ -83,11 +87,14 @@ export const WalletUnlockInner: React.FC<IProps> = ({
   }, []);
 
   const handleResetWallet = useCallback(() => {
-    bottomSheetModalRef.current?.collapse();
-    clearUserPreference();
-    if (resetAction) {
-      resetAction();
-    }
+    SecureKeychain.resetGenericPassword().then(() => {
+      bottomSheetModalRef.current?.collapse();
+      resetWallet();
+      clearUserPreference();
+      if (resetAction) {
+        resetAction();
+      }
+    });
   }, [resetAction]);
 
   const options = useMemo(() => {

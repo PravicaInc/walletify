@@ -39,11 +39,17 @@ export const useWallet = () => {
     },
     [],
   );
+
+  const resetWallet = useCallback(() => {
+    setWalletState(undefined);
+  }, []);
+
   return {
     walletState,
     encryptedSeedPhrase,
     createWallet,
     restoreWallet,
+    resetWallet,
     setEncryptedSeed,
   };
 };

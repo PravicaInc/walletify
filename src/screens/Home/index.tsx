@@ -35,7 +35,14 @@ const Home = (props: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const goToSettings = () => dispatch(StackActions.push('Settings'));
+  const goToSettings = () =>
+    dispatch(
+      StackActions.push('Settings', {
+        resetAction: () => {
+          dispatch(StackActions.replace('OnBoarding'));
+        },
+      }),
+    );
 
   const handlePressSwitchAccount = useCallback(() => {
     bottomSheetModalRef.current?.snapToIndex(0);

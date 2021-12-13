@@ -32,6 +32,9 @@ import WarningIcon from '../../assets/images/note-icon.svg';
 import { useUnlockWallet } from '../../hooks/useWallet/useUnlockWallet';
 import { decryptMnemonic } from '@stacks/encryption';
 import { encrypt } from '@stacks/wallet-sdk/dist';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../navigation/types';
+import { useWallet } from '../../hooks/useWallet/useWallet';
 
 type TProps = {
   icon: React.FC;
@@ -59,7 +62,11 @@ const bottomSettingsList = [
   { icon: BugIcon, text: 'Report a Bug' },
 ];
 
-const Settings = () => {
+interface IProps {
+  resetAction?: any;
+}
+
+export const SettingsInner: React.FC<IProps> = ({ resetAction }) => {
   const enterPasswordModalRef = useRef<BottomSheetModal>(null);
   const confirmModalRef = useRef<BottomSheetModal>(null);
   const {
@@ -82,7 +89,7 @@ const Settings = () => {
     setHasEnabledBiometric(true);
     enterPasswordModalRef.current?.close();
   };
-
+  const { resetWallet } = useWallet();
   const { validateUserCredentials } = useUnlockWallet(
     handleBioOn,
     enterPasswordModalRef,
@@ -97,6 +104,10 @@ const Settings = () => {
 
   const handlePresentEnterPassword = useCallback(() => {
     enterPasswordModalRef.current?.snapToIndex(0);
+  }, []);
+
+  const handlePresentResetWallet = useCallback(() => {
+    confirmModalRef.current?.snapToIndex(0);
   }, []);
 
   const handleBiometricToggle = async () => {
@@ -150,11 +161,16 @@ const Settings = () => {
       }),
     );
 
-  const handleResetWallet = () => {
-    confirmModalRef.current?.collapse();
-    clearUserPreference();
-    dispatch(StackActions.replace('OnBoarding'));
-  };
+  const handleResetWallet = useCallback(() => {
+    SecureKeychain.resetGenericPassword().then(() => {
+      confirmModalRef.current?.collapse();
+      resetWallet();
+      clearUserPreference();
+      if (resetAction) {
+        resetAction();
+      }
+    });
+  }, [resetAction]);
 
   const options = useMemo(() => {
     return [
@@ -234,7 +250,7 @@ const Settings = () => {
         </View>
         <TouchableOpacity
           style={styles.bottomContent}
-          onPress={validateUserCredentials}>
+          onPress={handlePresentResetWallet}>
           <ExitIcon />
           <Typography
             type="buttonText"
@@ -252,6 +268,16 @@ const Settings = () => {
       </ScrollView>
     </SafeAreaView>
   );
+};
+
+type Props = NativeStackScreenProps<RootStackParamList, 'Settings'>;
+
+const Settings: React.FC<Props> = ({
+  route: {
+    params: { resetAction },
+  },
+}) => {
+  return <SettingsInner resetAction={resetAction} />;
 };
 
 export default Settings;
