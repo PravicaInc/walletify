@@ -1,4 +1,10 @@
-import React, { Suspense, useContext, useMemo } from 'react';
+import React, {
+  Suspense,
+  useContext,
+  useMemo,
+  useRef,
+  useCallback,
+} from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 import { Typography } from '../../../components/shared/Typography';
 import { ThemeContext } from '../../../contexts/Theme/theme';
@@ -10,6 +16,8 @@ import { withSuspense } from '../../../components/shared/WithSuspense';
 import { useAtomValue } from 'jotai/utils';
 import { currentAccountAvailableStxBalanceState } from '../../../hooks/useAccounts/accountsStore';
 import { useStxPriceValue } from '../../../hooks/useStxPrice/useStxPrice';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import SendBottomSheet from '../../../components/SendBottomSheet';
 
 const AccountBalanceCard: React.FC = () => {
   const {
@@ -17,6 +25,12 @@ const AccountBalanceCard: React.FC = () => {
   } = useContext(ThemeContext);
   const balance = useAtomValue(currentAccountAvailableStxBalanceState);
   const price = useStxPriceValue();
+
+  const sendRef = useRef<BottomSheetModal>(null);
+
+  const handlePresentSend = useCallback(() => {
+    sendRef.current?.snapToIndex(0);
+  }, []);
 
   const amount = useMemo(() => {
     if (balance) {
@@ -59,6 +73,7 @@ const AccountBalanceCard: React.FC = () => {
       </View>
       <View style={AccountBalanceCardStyles.balanceActionsContainer}>
         <TouchableOpacity
+          onPress={handlePresentSend}
           activeOpacity={0.9}
           style={[
             AccountBalanceCardStyles.balanceActionButton,
@@ -77,6 +92,12 @@ const AccountBalanceCard: React.FC = () => {
             Send
           </Typography>
         </TouchableOpacity>
+        <SendBottomSheet
+          ref={sendRef}
+          handleNextAction={() => {}}
+          fullBalance={amountValue}
+          price={price}
+        />
         <TouchableOpacity
           activeOpacity={0.9}
           style={[
