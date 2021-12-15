@@ -17,7 +17,6 @@ type Props = {
 const ScanQrBottomSheet = React.forwardRef<any, Props>(
   ({ setRecipient }, ref) => {
     const snapPoints = useMemo(() => ['99%'], []);
-    console.log('qqqqqqq');
 
     const {
       theme: { colors },

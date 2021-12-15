@@ -1,6 +1,7 @@
 import React, {
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useRef,
   useState,
@@ -20,6 +21,12 @@ import SimpleTextInput from './SimpleTextInput';
 import ScanQr from '../../assets/images/scanQr.svg';
 import GeneralButton from '../shared/GeneralButton';
 import ScanQrBottomSheet from '../ScanQrBottomSheet';
+import { selectedAccount } from '../../hooks/useAccounts/accountsStore';
+import { useAtomValue } from 'jotai/utils';
+import { truncateAddress } from '../../shared/addressUtils';
+import { apiClientState } from '../../hooks/apiClients/apiClients';
+import useNetwok from '../../hooks/useNetwork/useNetwork';
+import WarningIcon from '../shared/WarningIcon';
 
 type Props = {
   handleNextAction: (password: string, seedPhrase: string) => void;
@@ -30,6 +37,12 @@ type Props = {
 const SendBottomSheet = React.forwardRef<any, Props>(
   ({ handleNextAction, fullBalance, price }, ref) => {
     const qrScanRef = useRef<BottomSheetModal>(null);
+
+    const account = useAtomValue(selectedAccount);
+
+    const { feesApi } = useAtomValue(apiClientState);
+
+    const { currentNetwork } = useNetwok();
 
     const handlePresentQrScan = useCallback(() => {
       qrScanRef.current?.snapToIndex(0);
@@ -45,11 +58,27 @@ const SendBottomSheet = React.forwardRef<any, Props>(
     const [recipient, setRecipient] = useState('');
     const [memo, setMemo] = useState('');
     const [preview, setPreview] = useState(false);
+    const [fees, setFees] = useState(null);
+
+    useEffect(() => {
+      const fetchFees = async () => {
+        const feeTransfer = await feesApi.getFeeTransfer();
+        setFees(feeTransfer);
+      };
+      if (preview) {
+        fetchFees();
+      }
+    }, [preview]);
 
     const dismissBottomSheet = useCallback(() => {
       ref.current?.close();
     }, []);
     const isReadyForPreview = amount && recipient;
+
+    const truncatedRecipient = truncateAddress(recipient, 11);
+
+    const truncatedSender = truncateAddress(account?.address, 11);
+
     return (
       <Portal>
         <BottomSheet
@@ -69,43 +98,137 @@ const SendBottomSheet = React.forwardRef<any, Props>(
                       textColor={colors.secondary100}
                       text="Back"
                       hasChevron
-                      onPress={dismissBottomSheet}
+                      onPress={() => setPreview(false)}
                     />
                   }
                 />
                 <View style={styles.inputsContainer}>
-                  <View
-                    style={{
-                      backgroundColor: colors.card,
-                      borderRadius: 24,
-                      width: '100%',
-                      paddingHorizontal: 21,
-                      paddingVertical: 14,
-                    }}>
-                    <Typography
-                      type="commonText"
-                      style={{ color: colors.primary40 }}>
-                      You Will Send
-                    </Typography>
+                  <View style={{ width: '100%' }}>
                     <View
                       style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
+                        backgroundColor: colors.card,
+                        borderRadius: 24,
+                        width: '100%',
+                        paddingHorizontal: 21,
+                        paddingVertical: 14,
                       }}>
-                      <View style={{ flexDirection: 'row' }}>
-                        <TokenAvatar
-                          CustomIcon={<Stx />}
-                          customStyle={{ backgroundColor: colors.primary100 }}
-                          tokenName={'STX'}
-                        />
-                        <Typography type="bigTitle">{amount}</Typography>
+                      <Typography
+                        type="commonText"
+                        style={{ color: colors.primary40 }}>
+                        You Will Send
+                      </Typography>
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                        }}>
+                        <View style={{ flexDirection: 'row' }}>
+                          <TokenAvatar
+                            CustomIcon={<Stx />}
+                            customStyle={{ backgroundColor: colors.primary100 }}
+                            tokenName={'STX'}
+                          />
+                          <Typography type="bigTitle">{amount}</Typography>
+                        </View>
+                        <Typography
+                          type="buttonText"
+                          style={{ color: colors.primary40 }}>
+                          STX
+                        </Typography>
+                      </View>
+                      <Typography type="smallTitleR">Stacks Coin</Typography>
+                      <View
+                        style={{
+                          width: '100%',
+                          borderBottomWidth: 0.5,
+                          borderTopWidth: 0.5,
+                          borderTopColor: colors.primary20,
+                          borderBottomColor: colors.primary20,
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                          paddingVertical: 20,
+                        }}>
+                        <View>
+                          <Typography
+                            type="commonText"
+                            style={{ color: colors.primary40 }}>
+                            From
+                          </Typography>
+                          <Typography type="smallTitleR">
+                            {`(${truncatedSender})`}
+                          </Typography>
+                        </View>
+                        <View>
+                          <Typography
+                            type="commonText"
+                            style={{ color: colors.primary40 }}>
+                            To
+                          </Typography>
+                          <Typography type="smallTitleR">
+                            {`(${truncatedRecipient})`}
+                          </Typography>
+                        </View>
                       </View>
                       <Typography
-                        type="buttonText"
+                        type="commonText"
                         style={{ color: colors.primary40 }}>
-                        STX
+                        Memo
                       </Typography>
+                      <Typography type="commonText">{memo}</Typography>
                     </View>
+                    <View style={{ width: '100%' }}>
+                      <View
+                        style={{
+                          width: '100%',
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                          paddingHorizontal: 21,
+                        }}>
+                        <Typography
+                          type="commonText"
+                          style={{ color: colors.primary40 }}>
+                          Fees
+                        </Typography>
+                        <Typography
+                          type="commonText"
+                          style={{ color: colors.primary40 }}>
+                          {`${fees} STX`}
+                        </Typography>
+                      </View>
+                      <View
+                        style={{
+                          width: '100%',
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                          paddingHorizontal: 21,
+                        }}>
+                        <Typography
+                          type="commonText"
+                          style={{ color: colors.primary40 }}>
+                          Network
+                        </Typography>
+                        <Typography
+                          type="commonText"
+                          style={{ color: colors.primary40 }}>
+                          {currentNetwork.name}
+                        </Typography>
+                      </View>
+                    </View>
+                  </View>
+                  <View style={{ width: '100%', alignItems: 'center' }}>
+                    <WarningIcon fill={colors.primary60} />
+                    <Typography
+                      type="commonText"
+                      style={{ color: colors.primary60, textAlign: 'center' }}>
+                      If you confirm this transaction it is not reversable. Make
+                      sure all arguments are correct.
+                    </Typography>
+                    <GeneralButton
+                      type="activePrimary"
+                      // onPress={() => setPreview(true)}
+                    >
+                      Send
+                    </GeneralButton>
                   </View>
                 </View>
               </>
