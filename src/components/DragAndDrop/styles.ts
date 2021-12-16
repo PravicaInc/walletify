@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   receivingZone: {
-    marginVertical: 20,
+    marginVertical: 10,
     width: '100%',
     justifyContent: 'space-between',
     alignItems: 'center',

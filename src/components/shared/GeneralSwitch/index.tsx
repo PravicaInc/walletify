@@ -5,6 +5,7 @@ import { Switch } from 'react-native-switch';
 interface IProps {
   isLocked: boolean;
   toggleLock: (val: boolean) => void;
+  disabled?: boolean;
   backgroundActive?: string;
   backgroundInactive?: string;
   barHeight?: number;
@@ -24,10 +25,12 @@ export const GeneralSwitch: React.FC<IProps> = ({
   icon,
   barHeight,
   circleSize,
+  disabled,
   switchPx,
 }) => {
   return (
     <Switch
+      disabled={disabled}
       value={isLocked}
       onValueChange={toggleLock}
       circleSize={circleSize}

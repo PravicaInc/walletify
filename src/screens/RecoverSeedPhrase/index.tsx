@@ -1,5 +1,5 @@
 import React, { useContext, useRef, useState } from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { Keyboard, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
@@ -24,6 +24,7 @@ const RecoverSeedPhrase: React.FC = () => {
   } = useContext(ThemeContext);
 
   const handlePasswordModalAction = (password: string, seedPhrase: string) => {
+    Keyboard.dismiss();
     bottomSheetModalRef.current?.close();
     setDecryptedSeedPhrase(seedPhrase);
   };

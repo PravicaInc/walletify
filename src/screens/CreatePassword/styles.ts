@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   progress: {
-    marginTop: '5%',
+    marginTop: '2%',
     marginHorizontal: PADDING_HORIZONTAL,
     width: '95%',
   },
@@ -85,6 +85,18 @@ const styles = StyleSheet.create({
   confirmContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  shadow: {
+    width: 27,
+    height: 27,
+    borderRadius: 13.5,
+    shadowOffset: {
+      width: 0,
+      height: 7,
+    },
+    shadowOpacity: 0.43,
+    shadowRadius: 9.51,
+    elevation: 15,
   },
 });
 

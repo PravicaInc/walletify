@@ -14,7 +14,7 @@ import { GeneralTextInput } from '../../components/shared/GeneralTextInput';
 import Header from '../../components/shared/Header';
 import HeaderBack from '../../components/shared/HeaderBack';
 import PasswordShield from '../../assets/password-shield.svg';
-import WarningIcon from '../../components/shared/WarningIcon';
+import WarningIcon from '../../assets/icon-warning.svg';
 import { UserPreferenceContext } from '../../contexts/UserPreference/userPreferenceContext';
 import { ThemeContext } from '../../contexts/Theme/theme';
 import styles from './styles';
@@ -28,15 +28,18 @@ import { RootStackParamList } from '../../navigation/types';
 
 interface IProps {
   nextAction: any;
+  cancelAction?: any;
   resetAction?: any;
-  disableBack?: boolean;
+  reset?: boolean;
 }
 
 export const WalletUnlockInner: React.FC<IProps> = ({
   nextAction,
-  disableBack,
   resetAction,
+  cancelAction,
+  reset,
 }) => {
+  const disableBack = !!cancelAction;
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const {
     theme: { colors },
@@ -47,7 +50,7 @@ export const WalletUnlockInner: React.FC<IProps> = ({
     input: password,
     touched: passwordTouched,
     setError: setPasswordError,
-  } = usePasswordField();
+  } = usePasswordField(undefined, [reset]);
   const canGoNext = !passwordError && passwordTouched && password.length >= 12;
   const { loading, setLoading, setSuccess, setFailure } = useProgressState();
   const {
@@ -113,7 +116,13 @@ export const WalletUnlockInner: React.FC<IProps> = ({
       ]}>
       <Header
         leftComponent={
-          !disableBack && (
+          cancelAction ? (
+            <HeaderBack
+              text="Cancel"
+              customStyle={{ color: colors.secondary100 }}
+              onPress={cancelAction}
+            />
+          ) : (
             <HeaderBack
               text="Reset"
               customStyle={{ color: colors.failed100 }}
@@ -142,7 +151,9 @@ export const WalletUnlockInner: React.FC<IProps> = ({
       />
       <OptionsPick
         options={options}
-        userIcon={<WarningIcon width={80} height={80} />}
+        userIcon={
+          <WarningIcon fill={colors.failed100} width={80} height={80} />
+        }
         title="Reset Wallet"
         subTitle="Losing the password doesn't matter as much, because as long as you have the Secret Key you can restore your wallet and set up a new password."
         ref={bottomSheetModalRef}
@@ -182,7 +193,7 @@ export const WalletUnlockInner: React.FC<IProps> = ({
           </View>
           <View style={styles.hiddenItems}>
             <WarningIcon
-              fill={colors.primary40}
+              fill={colors.primary60}
               style={[styles.warningIcon]}
               width={24}
               height={24}

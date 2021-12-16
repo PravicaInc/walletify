@@ -15,7 +15,7 @@ const Splash: React.FC = () => {
       dispatch(
         StackActions.replace('WalletUnlock', {
           resetAction: () => {
-            dispatch(StackActions.replace('OnBoarding'));
+            dispatch(StackActions.replace('WalletSetup'));
           },
           nextAction: (password: string, seedPhrase: string) => {
             dispatch(
@@ -32,10 +32,7 @@ const Splash: React.FC = () => {
     } else {
       dispatch(StackActions.replace('WalletSetup'));
     }
-    const timer = setTimeout(SplashScreen.hide, 200);
-    return () => {
-      clearTimeout(timer);
-    };
+    SplashScreen.hide();
   }, [viewedOnBoarding, encryptedSeedPhrase]);
   return null;
 };

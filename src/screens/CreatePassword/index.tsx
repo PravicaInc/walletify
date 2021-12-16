@@ -6,11 +6,9 @@ import React, {
   useState,
 } from 'react';
 import {
-  ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
-  Switch,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -28,7 +26,7 @@ import { GeneralTextInput } from '../../components/shared/GeneralTextInput';
 import { ThemeContext } from '../../contexts/Theme/theme';
 import PasswordShield from '../../assets/password-shield.svg';
 import FingerPrint from '../../assets/finger-print.svg';
-import WarningIcon from '../../components/shared/WarningIcon';
+import WarningIcon from '../../assets/icon-warning.svg';
 import styles from './styles';
 import { validatePassword } from '../../components/shared/GeneralTextInput/validate-password';
 import { RootStackParamList } from '../../navigation/types';
@@ -36,6 +34,7 @@ import { usePasswordField } from '../../hooks/common/usePasswordField';
 import Animated from 'react-native-reanimated';
 import { useKeyboardWithAnimation } from '../../hooks/common/useKeyboardWithAnimation';
 import { useProgressState } from '../../hooks/useProgressState';
+import { GeneralSwitch } from '../../components/shared/GeneralSwitch';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'CreatePassword'>;
 
@@ -147,8 +146,7 @@ const CreatePassword: React.FC<Props> = ({
   }, []);
 
   const canGoNext =
-    isEditPassword &&
-    oldPassword.length > 12 &&
+    (isEditPassword ? oldPassword.length >= 12 : true) &&
     !confirmPasswordError &&
     !passwordError &&
     passwordTouched &&
@@ -161,7 +159,7 @@ const CreatePassword: React.FC<Props> = ({
       if (hasSetBiometric) {
         await SecureKeychain.setGenericPassword(
           password,
-          ACCESS_CONTROL.BIOMETRY_CURRENT_SET_OR_DEVICE_PASSCODE,
+          ACCESS_CONTROL.BIOMETRY_CURRENT_SET,
         );
       }
       dispatch(StackActions.push(nextScreen, { password }));
@@ -176,15 +174,14 @@ const CreatePassword: React.FC<Props> = ({
         leftComponent={
           <HeaderBack onPress={handleGoBack} text="Back" hasChevron />
         }
-        title={isEditPassword ? 'Change Password' : ''}
+        title={isEditPassword && 'Change Password'}
+        isRightLoading={loading}
         rightComponent={
-          <TouchableOpacity
-            style={styles.confirmContainer}
-            onPress={handleEditConfirm}
-            disabled={!canGoNext || loading}>
-            {loading ? (
-              <ActivityIndicator color={colors.primary40} />
-            ) : (
+          isEditPassword && (
+            <TouchableOpacity
+              style={styles.confirmContainer}
+              onPress={handleEditConfirm}
+              disabled={!canGoNext || loading}>
               <Typography
                 type="buttonText"
                 style={[
@@ -193,8 +190,8 @@ const CreatePassword: React.FC<Props> = ({
                 ]}>
                 Confirm
               </Typography>
-            )}
-          </TouchableOpacity>
+            </TouchableOpacity>
+          )
         }
       />
       {nextScreen === 'CreateSeedPhrase' && (
@@ -252,7 +249,7 @@ const CreatePassword: React.FC<Props> = ({
             guide={
               <View style={styles.inputGuide}>
                 <View style={styles.caution}>
-                  <WarningIcon fill={colors.primary40} />
+                  <WarningIcon width={12} height={12} fill={colors.primary40} />
                   <Typography
                     type="smallText"
                     style={{ color: colors.primary40 }}>
@@ -304,10 +301,22 @@ const CreatePassword: React.FC<Props> = ({
                     <Typography type="smallTitleR">Allow Biometrics</Typography>
                   </View>
                   <View style={styles.switch}>
-                    <Switch
-                      onChange={event => setHasEnabledBiometric(event.value)}
-                      value={hasSetBiometric}
+                    <GeneralSwitch
+                      toggleLock={event => setHasEnabledBiometric(event)}
+                      isLocked={hasSetBiometric}
                       disabled={!hasBioSupported}
+                      switchPx={2.5}
+                      backgroundInactive={colors.card}
+                      backgroundActive={colors.confirm100}
+                      switchCircleStyle={[
+                        styles.shadow,
+                        {
+                          shadowColor: colors.primary20,
+                          backgroundColor: colors.white,
+                        },
+                      ]}
+                      barHeight={31}
+                      circleSize={27}
                     />
                   </View>
                 </View>

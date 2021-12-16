@@ -21,7 +21,7 @@ export default StyleSheet.create({
   contentContainer: {
     paddingHorizontal: PADDING_HORIZONTAL,
     alignItems: 'center',
-    paddingTop: 60,
+    paddingTop: 40,
     flex: 1,
   },
   header: {
