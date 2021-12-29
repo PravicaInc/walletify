@@ -9,7 +9,7 @@ import { Portal } from '@gorhom/portal';
 import rnTextSize, { TSFontSpecs } from 'react-native-text-size';
 import { Fonts } from '../../assets/fonts';
 import { ThemeContext } from '../../contexts/Theme/theme';
-import { CARD_ITEM_WIDTH, useGetBottomTabsHeight } from '../../shared/layout';
+import { CARD_ITEM_WIDTH } from '../../shared/layout';
 
 export interface IPickerOption {
   label: string;
@@ -31,7 +31,6 @@ export const OptionsPick = React.forwardRef<BottomSheet, IProps>(
     const {
       theme: { colors },
     } = useContext(ThemeContext);
-    const bottomDistance = useGetBottomTabsHeight();
     const [snapPoints, setSnapPoints] = useState<number[]>([1]);
     useEffect(() => {
       const calculate = async () => {
@@ -63,8 +62,7 @@ export const OptionsPick = React.forwardRef<BottomSheet, IProps>(
           ...usernameFontSpecs,
         });
         setSnapPoints([
-          bottomDistance +
-            10 +
+          70 +
             (username ? usernameHeight + 5 : 0) +
             (userIcon ? 80 : 0) +
             (userIcon || username ? 40 : 0) +
@@ -74,7 +72,7 @@ export const OptionsPick = React.forwardRef<BottomSheet, IProps>(
         ]);
       };
       calculate();
-    }, [options.length, bottomDistance, subTitle, title, userIcon, username]);
+    }, [options.length, subTitle, title, userIcon, username]);
     const handleClose = useCallback(() => {
       (ref as any).current.close();
     }, []);
