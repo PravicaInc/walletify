@@ -22,12 +22,14 @@ export function useAuthenticationListener() {
 
   useEffect(() => {
     const subscription = Linking.addListener('url', ({ url }) => {
-      Linking.canOpenURL(url).then(supported => {
-        const token = getParameterByName('token', url);
-        if (supported && token) {
-          setAuthRequestToken(token);
-        }
-      });
+      if (url) {
+        Linking.canOpenURL(url).then(supported => {
+          const token = getParameterByName('token', url);
+          if (supported && token) {
+            setAuthRequestToken(token);
+          }
+        });
+      }
     });
     return () => {
       subscription.remove();
@@ -37,12 +39,14 @@ export function useAuthenticationListener() {
   useEffect(() => {
     const getUrlAsync = async () => {
       const initialUrl = await Linking.getInitialURL();
-      Linking.canOpenURL(initialUrl || '').then(supported => {
-        const token = getParameterByName('token', initialUrl || '');
-        if (supported && token) {
-          setAuthRequestToken(token);
-        }
-      });
+      if (initialUrl) {
+        Linking.canOpenURL(initialUrl || '').then(supported => {
+          const token = getParameterByName('token', initialUrl || '');
+          if (supported && token) {
+            setAuthRequestToken(token);
+          }
+        });
+      }
     };
     getUrlAsync();
   }, []);
