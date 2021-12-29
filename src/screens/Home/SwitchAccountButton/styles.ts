@@ -11,10 +11,18 @@ const switchAccountButtonStyles = StyleSheet.create({
     borderRadius: 13,
   },
   switchIconContainer: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
     flex: 1,
+    alignItems: 'flex-end',
+  },
+  accountInfo: {
+    width: '70%',
+    marginLeft: 6,
+  },
+  accountName: {
+    width: '100%',
+  },
+  address: {
+    paddingTop: 6,
   },
 });
 export default switchAccountButtonStyles;
