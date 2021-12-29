@@ -5,7 +5,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   screenContentContainer: {
+    flexShrink: 1,
     paddingHorizontal: '2.5%',
+    paddingBottom: 12,
   },
   createIdentityButton: {
     flexDirection: 'row',
@@ -15,17 +17,17 @@ const styles = StyleSheet.create({
     paddingStart: 5,
   },
   accountsListTitle: {
-    paddingVertical: 12,
+    marginTop: 22,
+    marginBottom: 12,
   },
   accountsList: {
-    paddingVertical: 10,
+    paddingBottom: 10,
   },
   addAccountButton: {
     flexDirection: 'row',
     alignItems: 'center',
     width: '100%',
     justifyContent: 'center',
-    marginVertical: 20,
   },
   addAccountButtonText: {
     paddingStart: 5,
