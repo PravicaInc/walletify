@@ -26,7 +26,7 @@ import { GeneralTextInput } from '../../components/shared/GeneralTextInput';
 import { ThemeContext } from '../../contexts/Theme/theme';
 import PasswordShield from '../../assets/password-shield.svg';
 import FingerPrint from '../../assets/finger-print.svg';
-import WarningIcon from '../../assets/icon-warning.svg';
+import WarningIcon from '../../components/shared/WarningIcon';
 import styles from './styles';
 import { validatePassword } from '../../components/shared/GeneralTextInput/validate-password';
 import { RootStackParamList } from '../../navigation/types';
@@ -249,7 +249,7 @@ const CreatePassword: React.FC<Props> = ({
             guide={
               <View style={styles.inputGuide}>
                 <View style={styles.caution}>
-                  <WarningIcon width={12} height={12} fill={colors.primary40} />
+                  <WarningIcon fill={colors.primary40} />
                   <Typography
                     type="smallText"
                     style={{ color: colors.primary40 }}>

@@ -11,7 +11,7 @@ import { StackActions, useNavigation } from '@react-navigation/native';
 import { generateSecretKey } from '@stacks/wallet-sdk';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
-import NoteIcon from '../../assets/images/note-icon.svg';
+import WarningIcon from '../../assets/images/note-icon.svg';
 import Header from '../../components/shared/Header';
 import HeaderBack from '../../components/shared/HeaderBack';
 import { Typography } from '../../components/shared/Typography';
@@ -126,7 +126,7 @@ const CreateSeedPhrase: React.FC<Props> = ({
         </TouchableOpacity>
         <OptionsPick
           options={options}
-          userIcon={<NoteIcon width={80} height={80} />}
+          userIcon={<WarningIcon width={80} height={80} />}
           title="Backed up your Secret Key?"
           subTitle="You have to back up your Secret Key in safe place, theres NOTHING we can do if somebody finds it."
           ref={confirmModalRef}
