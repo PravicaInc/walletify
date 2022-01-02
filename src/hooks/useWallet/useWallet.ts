@@ -5,7 +5,6 @@ import { gaiaUrl } from '../../shared/constants';
 import { UserPreferenceContext } from '../../contexts/UserPreference/userPreferenceContext';
 import { wallet } from './walletStore';
 import logger from '../../shared/logger';
-import useNetwork from '../useNetwork/useNetwork';
 
 export const useWallet = () => {
   const [walletState, setWalletState] = useAtom(wallet);
@@ -13,7 +12,6 @@ export const useWallet = () => {
     userPreference: { encryptedSeedPhrase },
     setEncryptedSeed,
   } = useContext(UserPreferenceContext);
-  const { currentNetworkInstance } = useNetwork();
 
   const createWallet = useCallback(
     async (secretKey: string, password: string) => {
@@ -37,9 +35,7 @@ export const useWallet = () => {
         generatedWallet = await restoreWalletAccounts({
           wallet: generatedWallet,
           gaiaHubUrl: gaiaUrl,
-          network: currentNetworkInstance,
         });
-        logger.info(generatedWallet);
         setEncryptedSeed(generatedWallet.encryptedSecretKey);
         setWalletState(generatedWallet);
       } catch (err) {
@@ -50,6 +46,7 @@ export const useWallet = () => {
   );
   return {
     walletState,
+    setWalletState,
     encryptedSeedPhrase,
     createWallet,
     restoreWallet,

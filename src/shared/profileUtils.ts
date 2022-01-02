@@ -7,6 +7,7 @@ import {
 import { uploadToGaiaHub, GaiaHubConfig } from '@stacks/storage';
 import { AccountWithAddress } from '../models/account';
 import { registrars, Subdomains } from './constants';
+import logger from './logger';
 
 export enum IdentityNameValidityError {
   MINIMUM_LENGTH = 'Name must be At Least 8 Characters',
@@ -53,7 +54,7 @@ const sendUsernameToRegistrar = async ({
       status: response.status,
     });
   }
-  console.log('Registrar Response');
+  logger.info(response);
   return response.json();
 };
 
@@ -85,9 +86,9 @@ export const registerSubdomain = async ({
       accountAddress: account.address,
       subdomain: Subdomains.STACKS,
     });
-    console.log(nameResponse);
+    logger.info(nameResponse);
   } catch (err) {
-    console.log('registrarError', err);
+    logger.error(err);
   }
 };
 
