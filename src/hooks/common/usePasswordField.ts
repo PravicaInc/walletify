@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 
 export const usePasswordField = (
-  validation?: Function,
+  validation: (val: string) => void = () => null,
   extraDeps: any[] = [],
 ) => {
   const [input, setInput] = useState<string>('');
@@ -9,7 +9,7 @@ export const usePasswordField = (
   const [touched, setTouched] = useState(false);
 
   useEffect(() => {
-    if (extraDeps) {
+    if (extraDeps.length > 0) {
       setInput('');
     }
   }, extraDeps);
