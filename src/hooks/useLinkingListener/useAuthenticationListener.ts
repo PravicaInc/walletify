@@ -5,31 +5,13 @@ import { useWallet } from '../useWallet/useWallet';
 import { decodeToken } from 'jsontokens';
 import { Linking } from 'react-native';
 import { JSONSchemaForWebApplicationManifestFiles } from '@schemastore/web-manifest';
+import { getParameterByName, loadManifest } from './utils';
 
 export interface AppManifest extends JSONSchemaForWebApplicationManifestFiles {
   appURLScheme?: string;
   bundleID?: string;
   packageName?: string;
 }
-
-const getParameterByName = (name: string, url: string) => {
-  name = name.replace(/[\[\]]/g, '\\$&');
-  const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
-    results = regex.exec(url);
-  if (!results) {
-    return null;
-  }
-  if (!results[2]) {
-    return '';
-  }
-  return decodeURIComponent(results[2].replace(/\+/g, ' '));
-};
-
-const loadManifest = async (decodedAuthRequest: DecodedAuthRequest) => {
-  const res = await fetch(decodedAuthRequest.manifest_uri);
-  const json: AppManifest = await res.json();
-  return json;
-};
 
 export function useAuthenticationListener() {
   const { walletState } = useWallet();
