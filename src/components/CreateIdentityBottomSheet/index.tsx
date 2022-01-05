@@ -1,10 +1,4 @@
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import React, { useCallback, useContext, useMemo, useState } from 'react';
 import BottomSheet from '@gorhom/bottom-sheet';
 import { ThemeContext } from '../../contexts/Theme/theme';
 import Header from '../shared/Header';
@@ -16,13 +10,14 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import styles from './styles';
+import logger from '../../shared/logger';
 import { withSuspense } from '../shared/WithSuspense';
 import { Typography } from '../shared/Typography';
-import User from '../../assets/images/manageAccounts/user.svg';
 import { CustomBackdrop } from '../shared/customBackdrop';
 import { useBns } from '../../hooks/bns/useBns';
-import { useProgressState } from '../../hooks/useProgressState';
+import User from '../../assets/images/manageAccounts/user.svg';
+import WarningIcon from '../../assets/icon-warning.svg';
+import styles from './styles';
 
 interface CreateIdentityBottomSheetProps {
   bottomSheetRef: React.Ref<BottomSheet>;
@@ -38,21 +33,36 @@ const CreateIdentityBottomSheet: React.FC<CreateIdentityBottomSheetProps> = ({
   const {
     theme: { colors },
   } = useContext(ThemeContext);
-  const { registerUserSubdomain, isRegistering, registrationError } = useBns();
+  const {
+    registerUserSubdomain,
+    isRegistering,
+    registrationError,
+    setRegistrationError,
+    registrationSuccessful,
+  } = useBns();
 
   const isCreateDisabled = useMemo(() => userName.length === 0, [userName]);
 
   const handleCreateName = useCallback(async () => {
-    await registerUserSubdomain(userName);
+    try {
+      await registerUserSubdomain(userName);
+      if (registrationSuccessful) {
+        handleCancelCreateIdentity();
+      }
+    } catch (err) {
+      logger.error(err);
+    }
   }, [userName]);
 
   const handleCancelCreateIdentity = () => {
     setUserName('');
+    setRegistrationError('');
     onCancel();
   };
 
   const onUserNameChange = useCallback((name: string) => {
     setUserName(name);
+    setRegistrationError('');
   }, []);
 
   return (
@@ -118,13 +128,17 @@ const CreateIdentityBottomSheet: React.FC<CreateIdentityBottomSheetProps> = ({
               {
                 borderColor: isCreateDisabled
                   ? colors.primary20
+                  : registrationError
+                  ? colors.failed100
                   : colors.primary100,
               },
             ]}>
             <TextInput
               autoCapitalize="none"
+              editable={!isRegistering}
               autoFocus={true}
               autoCompleteType="off"
+              autoCorrect={false}
               value={userName}
               onChangeText={onUserNameChange}
               style={styles.usernameInput}
@@ -135,12 +149,20 @@ const CreateIdentityBottomSheet: React.FC<CreateIdentityBottomSheetProps> = ({
               .id.stx
             </Typography>
           </View>
-          {registrationError.length > 0 && (
-            <Typography
-              type="commonTextBold"
-              style={[styles.userNameError, { color: colors.failed100 }]}>
-              {registrationError}
-            </Typography>
+          {registrationError.length > 0 && userName.length > 0 && (
+            <View style={styles.userNameErrorContainer}>
+              <WarningIcon
+                fill={colors.failed100}
+                width={10}
+                height={10}
+                style={styles.userNameErrorIcon}
+              />
+              <Typography
+                type="smallText"
+                style={[{ color: colors.failed100 }]}>
+                {registrationError}
+              </Typography>
+            </View>
           )}
         </View>
       </View>

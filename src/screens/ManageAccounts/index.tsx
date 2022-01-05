@@ -15,7 +15,6 @@ import { FlatList } from 'react-native-gesture-handler';
 import { AccountWithAddress } from '../../models/account';
 import BottomSheet from '@gorhom/bottom-sheet';
 import CreateIdentityBottomSheet from '../../components/CreateIdentityBottomSheet';
-import AsyncStorage from '@react-native-community/async-storage';
 import { OptionsPick } from '../../components/OptionsPick';
 import WarningIcon from '../../assets/icon-warning.svg';
 import AccountAvatar from '../../components/shared/AccountAvatar';
@@ -74,7 +73,6 @@ const ManageAccounts: React.FC = () => {
         />
       );
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [selectedAccountIndexState],
   );
 
@@ -141,7 +139,7 @@ const ManageAccounts: React.FC = () => {
       <OptionsPick
         ref={confirmIdentityCreationModal}
         title="Create Unique Username"
-        subTitle="Make sure you want to create a name for this account, because it is not reversible process."
+        subTitle="Make sure you want to create a name for this account, because it is not a reversible process."
         userIcon={
           <AccountAvatar
             diameter={65}
@@ -163,7 +161,7 @@ const ManageAccounts: React.FC = () => {
         }
         username="Warning"
         title="Account already Have a Username"
-        subTitle="The Account you have Choose has registered a name already you can choose another one which doesn't have a name yet"
+        subTitle="The Account you chose has registered a name already you can choose another one which doesn't have a name yet"
         options={[
           {
             label: 'ok',

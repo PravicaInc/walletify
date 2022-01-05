@@ -39,7 +39,15 @@ export default StyleSheet.create({
   userNameInputSuffix: {
     marginEnd: 16,
   },
-  userNameError: {
+  userNameErrorContainer: {
+    paddingHorizontal: 5,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    width: '100%',
     marginTop: 10,
+  },
+  userNameErrorIcon: {
+    marginEnd: 3,
   },
 });

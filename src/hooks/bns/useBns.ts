@@ -23,15 +23,15 @@ export const useBns = () => {
     setRegistrationError('');
     try {
       setLoading();
-      const isSubdomainInvalid = await validateSubdomain(
+      const subdomainError = await validateSubdomain(
         subdomain,
         Subdomains.STACKS,
       );
       if (walletState && selectedAccountState) {
-        if (isSubdomainInvalid) {
-          setRegistrationError(isSubdomainInvalid);
+        if (subdomainError) {
+          setRegistrationError(subdomainError);
           setFailure();
-          return isSubdomainInvalid;
+          return;
         } else {
           const gaiaHubConfig = await createWalletGaiaConfig({
             gaiaHubUrl: gaiaUrl,
@@ -61,7 +61,9 @@ export const useBns = () => {
       }
       setSuccess();
     } catch (err) {
-      setRegistrationError(err as string);
+      setRegistrationError(
+        err ? (err as string) : 'sorry Something went wrong, Try Again',
+      );
       setFailure();
     }
   };
@@ -72,5 +74,6 @@ export const useBns = () => {
     registrationSuccessful: success,
     registrationFailure: failure,
     registrationError,
+    setRegistrationError,
   };
 };

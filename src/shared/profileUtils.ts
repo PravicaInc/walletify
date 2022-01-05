@@ -49,10 +49,7 @@ const sendUsernameToRegistrar = async ({
     body: registrationRequestBody,
   });
   if (!response.ok) {
-    return Promise.reject({
-      error: 'Failed to register username',
-      status: response.status,
-    });
+    return Promise.reject('Failed to register username');
   }
   logger.info(response);
   return response.json();
@@ -89,6 +86,7 @@ export const registerSubdomain = async ({
     logger.info(nameResponse);
   } catch (err) {
     logger.error(err);
+    return Promise.reject(err);
   }
 };
 
@@ -110,7 +108,6 @@ export const validateSubdomainFormat = (
   if (!containsLegalCharacters(identityName)) {
     return IdentityNameValidityError.ILLEGAL_CHARACTER;
   }
-
   return null;
 };
 
