@@ -1,8 +1,9 @@
 import {
   Configuration,
   AccountsApi,
-  TokensApi,
-  BNSApi,
+  FungibleTokensApi,
+  NonFungibleTokensApi,
+  NamesApi,
   FaucetsApi,
   TransactionsApi,
   FeesApi,
@@ -24,17 +25,19 @@ const apiClients = (config: Configuration) => {
   const accountsApi = new AccountsApi(config);
   const transactionsApi = new TransactionsApi(config);
   const faucetsApi = new FaucetsApi(config);
-  const bnsApi = new BNSApi(config);
+  const namesApi = new NamesApi(config);
   const feesApi = new FeesApi(config);
-  const tokensApi = new TokensApi(config);
+  const fungibleTokensApi = new FungibleTokensApi(config);
+  const nonFungibleTokensApi = new NonFungibleTokensApi(config);
 
   return {
     accountsApi,
     transactionsApi,
     faucetsApi,
-    bnsApi,
+    namesApi,
     feesApi,
-    tokensApi,
+    fungibleTokensApi,
+    nonFungibleTokensApi,
   };
 };
 

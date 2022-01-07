@@ -92,12 +92,13 @@ const AccountBalanceCard: React.FC = () => {
             Send
           </Typography>
         </TouchableOpacity>
-        <SendBottomSheet
-          ref={sendRef}
-          handleNextAction={() => {}}
-          fullBalance={amountValue}
-          price={price}
-        />
+        <Suspense fallback={<Text>Loading...</Text>}>
+          <SendBottomSheet
+            ref={sendRef}
+            fullBalance={amountValue}
+            price={price}
+          />
+        </Suspense>
         <TouchableOpacity
           activeOpacity={0.9}
           style={[
