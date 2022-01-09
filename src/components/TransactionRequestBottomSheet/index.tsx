@@ -6,12 +6,19 @@ import React, {
   useRef,
 } from 'react';
 import BottomSheet from '@gorhom/bottom-sheet';
-import { Image, Text, View } from 'react-native';
+import {
+  Alert,
+  Image,
+  Linking,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { ThemeContext } from '../../contexts/Theme/theme';
 import Header from '../shared/Header';
 import HeaderBack from '../shared/HeaderBack';
 import { Typography } from '../shared/Typography';
-import authenticationBottomSheetStyles from './styles';
+import styles from './styles';
 import { useAtomValue } from 'jotai/utils';
 import { withSuspense } from '../shared/WithSuspense';
 import { Portal } from '@gorhom/portal';
@@ -19,6 +26,7 @@ import { CustomBackdrop } from '../shared/customBackdrop';
 import { transactionRequestTokenPayloadState } from '../../hooks/transactions/requests';
 import { useTransactionRequest } from '../../hooks/transactions/useTransactionRequest';
 import { STXTransferPayload } from '@stacks/connect';
+import { isValidUrl } from '../../hooks/auth/useAuthRequest';
 
 const TransactionRequestBottomSheet: React.FC = () => {
   const snapPoints = React.useMemo(() => ['90%'], []);
@@ -46,6 +54,23 @@ const TransactionRequestBottomSheet: React.FC = () => {
     },
     [dismissBottomSheet],
   );
+  const handleConfirm = useCallback(() => {
+    if (!transactionRequest) {
+      return;
+    }
+    const dangerousUri = transactionRequest.redirect_uri;
+    if (!isValidUrl(dangerousUri) || dangerousUri.includes('javascript')) {
+      Alert.alert('Cannot proceed auth with malformed url');
+    }
+    const requestResult = {
+      ...(transactionRequest?.metadata || {}),
+      txid: '0xee8ac43d56e2e86d25a84bdc78c2bec36eeacce4904966711ff0641af5e38eb5',
+    };
+    const redirect = `${dangerousUri}?txResult=${JSON.stringify(
+      requestResult,
+    )}`;
+    Linking.openURL(redirect);
+  }, [transactionRequest]);
   return (
     <Portal>
       <BottomSheet
@@ -55,7 +80,7 @@ const TransactionRequestBottomSheet: React.FC = () => {
         backdropComponent={CustomBackdrop}
         enablePanDownToClose
         index={-1}>
-        <View style={authenticationBottomSheetStyles.container}>
+        <View style={styles.container}>
           <Header
             title="Transaction Signing"
             leftComponent={
@@ -69,18 +94,16 @@ const TransactionRequestBottomSheet: React.FC = () => {
           <Suspense fallback={<Text>Loading</Text>}>
             <View
               style={[
-                authenticationBottomSheetStyles.headerContainer,
+                styles.headerContainer,
                 {
                   backgroundColor: colors.card,
                 },
               ]}>
               <Image
-                style={authenticationBottomSheetStyles.appIcon}
+                style={styles.appIcon}
                 source={{ uri: transactionRequest?.appDetails?.icon }}
               />
-              <Typography
-                type={'commonText'}
-                style={authenticationBottomSheetStyles.warning}>
+              <Typography type={'commonText'} style={styles.warning}>
                 {`Allow ${transactionRequest?.appDetails?.name} to proceed with the decentralized authentication
             process.`}
               </Typography>
@@ -94,7 +117,18 @@ const TransactionRequestBottomSheet: React.FC = () => {
             <Typography type="bigTitle">{`amount: ${
               (transactionRequest as STXTransferPayload)?.amount
             }`}</Typography>
+            {transactionRequest?.metadata && (
+              <Typography type="bigTitle">{`metadata: ${JSON.stringify(
+                transactionRequest?.metadata,
+              )}`}</Typography>
+            )}
           </Suspense>
+          <TouchableOpacity
+            style={styles.btn}
+            activeOpacity={0.6}
+            onPress={handleConfirm}>
+            <Typography type="buttonText">Confirm</Typography>
+          </TouchableOpacity>
         </View>
       </BottomSheet>
     </Portal>
