@@ -3,7 +3,6 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
   transactionCard: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
     borderRadius: 13,
     paddingVertical: 12,
@@ -12,7 +11,14 @@ export default StyleSheet.create({
     marginVertical: 10,
   },
   transactionInformationContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: 'column',
+  },
+  tokenIconContainer: {
+    position: 'relative',
+  },
+  transactionIndicator: {
+    position: 'absolute',
+    bottom: 0,
+    right: 6,
   },
 });

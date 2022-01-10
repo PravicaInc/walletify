@@ -5,6 +5,8 @@ import {
   TransactionEventFungibleAsset,
   CoinbaseTransaction,
 } from '@stacks/stacks-blockchain-api-types';
+import { AddressTransactionWithTransfers } from '@stacks/blockchain-api-client';
+import { truncateAddress } from './addressUtils';
 
 const getAssetTransfer = (tx: Tx): TransactionEventFungibleAsset | null => {
   if (tx.tx_type !== 'contract_call') {
@@ -41,15 +43,14 @@ export const getTxValue = (
 
 const getContractName = (value: string) => {
   if (value.includes('.')) {
-    var parts = value == null ? void 0 : value.split('.');
-
-    if (value.includes('::')) {
-      return parts[1].split('::')[0];
+    const parts = value == null ? [] : value.split('.');
+    if (parts) {
+      if (value.includes('::')) {
+        return parts[1].split('::')[0];
+      }
+      return parts[1];
     }
-
-    return parts[1];
   }
-
   console.warn(
     'getContractName: does not contain a period, does not appear to be a contract_id.',
     {
@@ -73,3 +74,31 @@ export const getTxTitle = (tx: Tx) => {
       return 'Poison Microblock';
   }
 };
+
+export const txHasTime = (tx: Tx) => {
+  return !!(
+    ('burn_block_time_iso' in tx && tx.burn_block_time_iso) ||
+    ('parent_burn_block_time_iso' in tx && tx.parent_burn_block_time_iso)
+  );
+};
+
+export const getTxCaption = (transaction: Tx) => {
+  switch (transaction.tx_type) {
+    case 'smart_contract':
+      return truncateAddress(transaction.smart_contract.contract_id, 11);
+    case 'contract_call':
+      return transaction.contract_call.contract_id.split('.')[1];
+    case 'token_transfer':
+    case 'coinbase':
+    case 'poison_microblock':
+      return truncateAddress(transaction.tx_id, 11);
+    default:
+      return null;
+  }
+};
+
+export function isAddressTransactionWithTransfers(
+  transaction: AddressTransactionWithTransfers | Tx,
+): transaction is AddressTransactionWithTransfers {
+  return 'tx' in transaction;
+}
