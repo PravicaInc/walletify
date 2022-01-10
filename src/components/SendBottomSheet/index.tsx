@@ -21,14 +21,13 @@ import SimpleTextInput from './SimpleTextInput';
 import ScanQrIcon from '../../assets/images/scanQr.svg';
 import GeneralButton from '../shared/GeneralButton';
 import ScanQrBottomSheet from '../ScanQrBottomSheet';
-import { truncateAddress } from '../../shared/addressUtils';
-import useNetwork from '../../hooks/useNetwork/useNetwork';
 import WarningIcon from '../shared/WarningIcon';
 import { useAccounts } from '../../hooks/useAccounts/useAccounts';
 import { AccountToken } from '../../models/account';
 import AccountAsset from '../Home/AccountAsset';
 import { useAssets } from '../../hooks/useAssets/useAssets';
 import { titleCase } from '../../shared/helpers';
+import PreviewTransfer from '../PreviewTransfer';
 
 type Props = {
   fullBalance: any;
@@ -48,8 +47,6 @@ const SendBottomSheet = React.forwardRef<any, Props>(
     const [selectedAsset, setSelectedAsset] = useState<
       AccountToken | undefined
     >(undefined);
-
-    const { currentNetwork } = useNetwork();
 
     const handlePresentQrScan = useCallback(() => {
       qrScanRef.current?.snapToIndex(0);
@@ -80,8 +77,8 @@ const SendBottomSheet = React.forwardRef<any, Props>(
         const response = await sendTransaction(
           recipient,
           Number(amount),
-          memo,
           Number(fees),
+          memo,
         );
 
         setIsLoading(false);
@@ -91,7 +88,7 @@ const SendBottomSheet = React.forwardRef<any, Props>(
             titleCase(response.error),
             `Failure reason: ${response.reason}`,
           );
-        } else if (response?.error === undefined) {
+        } else if (response && response?.error === undefined) {
           (ref as RefObject<BottomSheetModal>)?.current?.close();
         }
       }
@@ -102,7 +99,7 @@ const SendBottomSheet = React.forwardRef<any, Props>(
 
     useEffect(() => {
       if (assets !== undefined && assets.length > 0) {
-        setSelectedAsset(assets[0]);
+        setSelectedAsset(assets.find(a => a.name === 'STX'));
       }
     }, [assets]);
 
@@ -153,20 +150,21 @@ const SendBottomSheet = React.forwardRef<any, Props>(
         );
         setFees(transactionFees);
       };
-      if (preview) {
+      if (amount && recipient) {
         fetchFees();
       }
-    }, [preview]);
+    }, [amount, recipient, memo]);
 
     const dismissBottomSheet = useCallback(() => {
       (ref as RefObject<BottomSheetModal>)?.current?.close();
     }, []);
 
     const isReadyForPreview =
-      amount && recipient && !errorMessages.amount && !errorMessages.recipient;
-
-    const truncatedRecipient = truncateAddress(recipient, 11);
-    const truncatedSender = truncateAddress(account?.address, 11);
+      amount &&
+      recipient &&
+      fees &&
+      !errorMessages.amount &&
+      !errorMessages.recipient;
 
     function RenderCreateTransaction() {
       return (
@@ -290,99 +288,26 @@ const SendBottomSheet = React.forwardRef<any, Props>(
             }
           />
           <View style={styles.inputsContainer}>
-            <View style={styles.horizontalFill}>
-              <View
-                style={
-                  (styles.previewCard,
-                  {
-                    backgroundColor: colors.card,
-                  })
-                }>
-                <Typography
-                  type="commonText"
-                  style={{ color: colors.primary40 }}>
-                  You Will Send
-                </Typography>
-                {selectedAsset && (
-                  <AccountAsset
-                    item={selectedAsset}
-                    showCustomAmount
-                    customAmount={`${amount}`}
-                  />
-                )}
-                <View
-                  style={
-                    (styles.transactionDetails,
-                    {
-                      borderTopColor: colors.primary20,
-                      borderBottomColor: colors.primary20,
-                    })
-                  }>
-                  <View>
-                    <Typography
-                      type="commonText"
-                      style={{ color: colors.primary40 }}>
-                      From
-                    </Typography>
-                    <Typography type="smallTitleR">
-                      {`(${truncatedSender})`}
-                    </Typography>
-                  </View>
-                  <View>
-                    <Typography
-                      type="commonText"
-                      style={{ color: colors.primary40 }}>
-                      To
-                    </Typography>
-                    <Typography type="smallTitleR">
-                      {`(${truncatedRecipient})`}
-                    </Typography>
-                  </View>
-                </View>
-                <Typography
-                  type="commonText"
-                  style={{ color: colors.primary40 }}>
-                  Memo
-                </Typography>
-                <Typography type="commonText">{memo}</Typography>
-              </View>
-              <View style={styles.horizontalFill}>
-                <View style={styles.transactionMetadataItem}>
-                  <Typography
-                    type="commonText"
-                    style={{ color: colors.primary40 }}>
-                    Fees
-                  </Typography>
-                  <Typography
-                    type="commonText"
-                    style={{ color: colors.primary40 }}>
-                    {`${fees} STX`}
-                  </Typography>
-                </View>
-                <View style={styles.transactionMetadataItem}>
-                  <Typography
-                    type="commonText"
-                    style={{ color: colors.primary40 }}>
-                    Network
-                  </Typography>
-                  <Typography
-                    type="commonText"
-                    style={{ color: colors.primary40 }}>
-                    {currentNetwork.name}
-                  </Typography>
-                </View>
-              </View>
-            </View>
-            <View style={(styles.horizontalFill, styles.centerItems)}>
+            {account && selectedAsset && (
+              <PreviewTransfer
+                sender={account?.address}
+                recipient={recipient}
+                memo={memo}
+                amount={Number(amount)}
+                fees={Number(fees)}
+                selectedAsset={selectedAsset}
+              />
+            )}
+            <View style={[styles.horizontalFill, styles.centerItems]}>
               <WarningIcon fill={colors.primary60} />
               <Typography
                 type="commonText"
-                style={
-                  (styles.warningText,
+                style={[
+                  styles.warningText,
                   {
                     color: colors.primary60,
-                  })
-                }>
+                  },
+                ]}>
                 If you confirm this transaction it is not reversible. Make sure
                 all arguments are correct.
               </Typography>

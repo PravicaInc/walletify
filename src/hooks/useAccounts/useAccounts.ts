@@ -60,7 +60,7 @@ export const useAccounts = () => {
   const estimateTransactionFees = async (
     recipientAddress: string,
     amount: number,
-    memo: string,
+    memo?: string,
   ) => {
     const txOptions = {
       recipient: recipientAddress,
@@ -80,8 +80,8 @@ export const useAccounts = () => {
   const sendTransaction = async (
     recipientAddress: string,
     amount: number,
-    memo: string,
     fee: number,
+    memo?: string,
   ) => {
     if (selectedAccountState?.address === undefined) {
       return;

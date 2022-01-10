@@ -4,16 +4,10 @@ import React, {
   useContext,
   useEffect,
   useRef,
+  useState,
 } from 'react';
 import BottomSheet from '@gorhom/bottom-sheet';
-import {
-  Alert,
-  Image,
-  Linking,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { Alert, Image, Linking, Text, View } from 'react-native';
 import { ThemeContext } from '../../contexts/Theme/theme';
 import Header from '../shared/Header';
 import HeaderBack from '../shared/HeaderBack';
@@ -25,8 +19,15 @@ import { Portal } from '@gorhom/portal';
 import { CustomBackdrop } from '../shared/customBackdrop';
 import { transactionRequestTokenPayloadState } from '../../hooks/transactions/requests';
 import { useTransactionRequest } from '../../hooks/transactions/useTransactionRequest';
-import { STXTransferPayload } from '@stacks/connect';
+import { STXTransferPayload, TransactionTypes } from '@stacks/connect';
 import { isValidUrl } from '../../hooks/auth/useAuthRequest';
+import PreviewTransfer from '../PreviewTransfer';
+import { useAccounts } from '../../hooks/useAccounts/useAccounts';
+import { useAssets } from '../../hooks/useAssets/useAssets';
+import { AccountToken } from '../../models/account';
+import GeneralButton from '../shared/GeneralButton';
+import WarningIcon from '../shared/WarningIcon';
+import { titleCase } from '../../shared/helpers';
 
 const TransactionRequestBottomSheet: React.FC = () => {
   const snapPoints = React.useMemo(() => ['90%'], []);
@@ -34,13 +35,32 @@ const TransactionRequestBottomSheet: React.FC = () => {
     theme: { colors },
   } = useContext(ThemeContext);
   const transactionRequest = useAtomValue(transactionRequestTokenPayloadState);
+  const transferPayload = transactionRequest as STXTransferPayload;
   const setTransactionRequest = useTransactionRequest();
+
+  const {
+    selectedAccountState: account,
+    estimateTransactionFees,
+    sendTransaction,
+  } = useAccounts();
+  const { selectedAccountAssets: assets } = useAssets();
+  const [selectedAsset, setSelectedAsset] = useState<AccountToken | undefined>(
+    undefined,
+  );
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [fees, setFees] = useState<Number>(NaN);
   const bottomSheetRef = useRef<BottomSheet>(null);
+
   useEffect(() => {
-    if (transactionRequest) {
+    if (
+      transactionRequest &&
+      transactionRequest.txType === TransactionTypes.STXTransfer
+    ) {
       bottomSheetRef.current?.snapToIndex(0);
     }
   }, [transactionRequest]);
+
   const dismissBottomSheet = useCallback(() => {
     setTransactionRequest(undefined);
     bottomSheetRef.current?.close();
@@ -54,23 +74,72 @@ const TransactionRequestBottomSheet: React.FC = () => {
     },
     [dismissBottomSheet],
   );
-  const handleConfirm = useCallback(() => {
-    if (!transactionRequest) {
-      return;
+
+  useEffect(() => {
+    if (assets !== undefined && assets.length > 0) {
+      setSelectedAsset(assets.find(a => a.name === 'STX'));
     }
-    const dangerousUri = transactionRequest.redirect_uri;
-    if (!isValidUrl(dangerousUri) || dangerousUri.includes('javascript')) {
-      Alert.alert('Cannot proceed auth with malformed url');
-    }
-    const requestResult = {
-      ...(transactionRequest?.metadata || {}),
-      txid: '0xee8ac43d56e2e86d25a84bdc78c2bec36eeacce4904966711ff0641af5e38eb5',
+  }, [assets]);
+
+  useEffect(() => {
+    const fetchFees = async () => {
+      const transactionFees = await estimateTransactionFees(
+        transferPayload?.recipient,
+        Number(transferPayload?.amount) / 1000000,
+        transferPayload.memo,
+      );
+      setFees(transactionFees);
     };
-    const redirect = `${dangerousUri}?txResult=${JSON.stringify(
-      requestResult,
-    )}`;
-    Linking.openURL(redirect);
+    if (transactionRequest) {
+      fetchFees();
+    }
   }, [transactionRequest]);
+
+  const handSendPress = useCallback(() => {
+    async function handleTransfer() {
+      if (!transactionRequest || !transferPayload) {
+        return;
+      }
+
+      const dangerousUri = transactionRequest.redirect_uri;
+      if (!isValidUrl(dangerousUri) || dangerousUri.includes('javascript')) {
+        Alert.alert('Cannot proceed auth with malformed url');
+      }
+
+      setIsLoading(true);
+
+      const response = await sendTransaction(
+        transferPayload.recipient,
+        Number(transferPayload.amount) / 1000000,
+        Number(fees),
+        transferPayload.memo,
+      );
+
+      setIsLoading(false);
+
+      if (response?.error !== undefined) {
+        Alert.alert(
+          titleCase(response.error),
+          `Failure reason: ${response.reason}`,
+        );
+      } else if (response && response?.error === undefined) {
+        const requestResult = {
+          ...(transactionRequest.metadata || {}),
+          txid: response?.txid,
+        };
+        const redirect = `${dangerousUri}?txResult=${JSON.stringify(
+          requestResult,
+        )}`;
+        Linking.openURL(redirect);
+        dismissBottomSheet();
+      }
+    }
+
+    if (transactionRequest) {
+      handleTransfer();
+    }
+  }, [transactionRequest]);
+
   return (
     <Portal>
       <BottomSheet
@@ -104,31 +173,40 @@ const TransactionRequestBottomSheet: React.FC = () => {
                 source={{ uri: transactionRequest?.appDetails?.icon }}
               />
               <Typography type={'commonText'} style={styles.warning}>
-                {`Allow ${transactionRequest?.appDetails?.name} to proceed with the decentralized authentication
-            process.`}
+                {`Allow ${transactionRequest?.appDetails?.name} to proceed with the decentralized authentication process.`}
               </Typography>
             </View>
-            <Typography type="bigTitle">{`type: ${
-              (transactionRequest as STXTransferPayload)?.txType
-            }`}</Typography>
-            <Typography type="bigTitle">{`recipient: ${
-              (transactionRequest as STXTransferPayload)?.recipient
-            }`}</Typography>
-            <Typography type="bigTitle">{`amount: ${
-              (transactionRequest as STXTransferPayload)?.amount
-            }`}</Typography>
-            {transactionRequest?.metadata && (
-              <Typography type="bigTitle">{`metadata: ${JSON.stringify(
-                transactionRequest?.metadata,
-              )}`}</Typography>
+            {transferPayload && selectedAsset && account && (
+              <PreviewTransfer
+                sender={account.address}
+                recipient={transferPayload.recipient}
+                amount={Number(transferPayload.amount) / 1000000}
+                fees={Number(fees)}
+                selectedAsset={selectedAsset}
+                style={styles.previewPanel}
+              />
             )}
           </Suspense>
-          <TouchableOpacity
-            style={styles.btn}
-            activeOpacity={0.6}
-            onPress={handleConfirm}>
-            <Typography type="buttonText">Confirm</Typography>
-          </TouchableOpacity>
+          <View style={[styles.horizontalFill, styles.centerItems]}>
+            <WarningIcon fill={colors.primary60} />
+            <Typography
+              type="commonText"
+              style={[
+                styles.warningText,
+                {
+                  color: colors.primary60,
+                },
+              ]}>
+              If you confirm this transaction it is not reversible. Make sure
+              all arguments are correct.
+            </Typography>
+            <GeneralButton
+              type="Primary"
+              disabled={isLoading}
+              onPress={handSendPress}>
+              {isLoading ? 'Sending...' : 'Send'}
+            </GeneralButton>
+          </View>
         </View>
       </BottomSheet>
     </Portal>

@@ -32,15 +32,16 @@ const authenticationBottomSheetStyles = StyleSheet.create({
   },
   title: { textAlign: 'center' },
   titleSpace: { marginVertical: 12 },
-  btn: {
-    width: '100%',
-    height: 60,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'red',
-    marginTop: 'auto',
-    marginBottom: 100,
-    borderRadius: 13,
+  previewPanel: {
+    marginTop: '5%',
+  },
+  horizontalFill: { width: '100%' },
+  alignRight: { alignSelf: 'flex-end' },
+  centerItems: { alignItems: 'center' },
+  warningText: {
+    textAlign: 'center',
+    padding: 10,
+    marginBottom: 20,
   },
 });
 export default authenticationBottomSheetStyles;
