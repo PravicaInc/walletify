@@ -16,7 +16,7 @@ import InTransaction from '../../../assets/images/Home/inTransaction.svg';
 import OutTransaction from '../../../assets/images/Home/outTransaction.svg';
 import TransactionStatus from './TransactionStatus';
 
-export const StxTransfer: React.FC<{
+export const StxTransferTransaction: React.FC<{
   transaction: Tx;
 }> = ({ transaction }) => {
   const {
@@ -76,6 +76,61 @@ export const StxTransfer: React.FC<{
         <View style={{ marginTop: 7, alignSelf: 'flex-end' }}>
           <TransactionStatus status={transaction.tx_status} />
         </View>
+      </View>
+    </View>
+  );
+};
+
+export const TransactionItem: React.FC<{
+  title: string;
+  caption: string;
+  value: string;
+  isOriginator: boolean;
+}> = ({ title, caption, value, isOriginator }) => {
+  const {
+    theme: { colors },
+  } = useContext(ThemeContext);
+  return (
+    <View
+      style={[
+        styles.transactionCard,
+        {
+          backgroundColor: colors.card,
+        },
+      ]}>
+      <View style={styles.tokenIconContainer}>
+        <TokenAvatar
+          CustomIcon={<Stx />}
+          tokenName="STX"
+          customStyle={{ backgroundColor: colors.primary100 }}
+        />
+        <View style={styles.transactionIndicator}>
+          {isOriginator ? <OutTransaction /> : <InTransaction />}
+        </View>
+      </View>
+      <View style={styles.transactionInformationContainer}>
+        <Typography style={{ color: colors.primary100 }} type="smallTitleR">
+          {title}
+        </Typography>
+        <Typography
+          style={{ color: colors.primary40, marginTop: 7 }}
+          type="commonText">
+          {caption}
+        </Typography>
+      </View>
+      <View
+        style={{
+          flex: 1,
+          alignItems: 'flex-end',
+          justifyContent: 'space-between',
+        }}>
+        {value ? (
+          <Typography style={{ color: colors.primary100 }} type="smallTitleR">
+            {value}
+          </Typography>
+        ) : (
+          <View />
+        )}
       </View>
     </View>
   );
