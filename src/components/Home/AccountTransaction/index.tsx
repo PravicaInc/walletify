@@ -3,7 +3,6 @@ import {
   AddressTransactionWithTransfers,
   TokensApi,
 } from '@stacks/blockchain-api-client';
-import { View } from 'react-native';
 import { FtTransfer, StxTransfer, Tx } from '../../../models/transactions';
 import {
   getTxCaption,
@@ -15,9 +14,10 @@ import { useAccounts } from '../../../hooks/useAccounts/useAccounts';
 import { Typography } from '../../shared/Typography';
 import { useAtomValue } from 'jotai/utils';
 import BigNumber from 'bignumber.js';
-import { AssetWithMeta } from '../../../models/assets';
 import { withSuspense } from '../../shared/WithSuspense';
 import { apiClientState } from '../../../hooks/apiClients/apiClients';
+import useNetwork from '../../../hooks/useNetwork/useNetwork';
+import { Linking } from 'react-native';
 
 interface StxTransferItemProps {
   stxTransfer: StxTransfer;
@@ -29,6 +29,12 @@ const StxTransferItem = ({ stxTransfer, parentTx }: StxTransferItemProps) => {
   const title = 'STX Transfer';
   const caption = getTxCaption(parentTx.tx) ?? '';
   const isOriginator = stxTransfer.sender === selectedAccountState?.address;
+  const { currentNetwork } = useNetwork();
+  const link = `https://explorer.stacks.co/txid/${parentTx.tx.tx_id}?chain=${currentNetwork.name}`;
+
+  const openTransactionInExplorer = () => {
+    Linking.openURL(link);
+  };
 
   const value = `${isOriginator ? '-' : ''}${stacksValue({
     value: stxTransfer.amount,
@@ -38,6 +44,7 @@ const StxTransferItem = ({ stxTransfer, parentTx }: StxTransferItemProps) => {
   return (
     <TransactionItem
       title={title}
+      onClickTransaction={openTransactionInExplorer}
       caption={caption}
       value={value}
       isOriginator={isOriginator}
@@ -69,8 +76,15 @@ export const calculateTokenTransferAmount = (
 const FtTransferItem = ({ ftTransfer, parentTx }: FtTransferItemProps) => {
   const { selectedAccountState } = useAccounts();
   const { tokensApi } = useAtomValue(apiClientState);
+  const { currentNetwork } = useNetwork();
   const [ftTitle, setFtTitle] = useState<string>('');
   const [ftValue, setFtValue] = useState<BigNumber>();
+
+  const link = `https://explorer.stacks.co/txid/${parentTx.tx.tx_id}?chain=${currentNetwork.name}`;
+
+  const openTransactionInExplorer = () => {
+    Linking.openURL(link);
+  };
 
   const getFtDisplayAmount = async () => {
     const assetMetaData = await getAssetMeta(
@@ -100,6 +114,7 @@ const FtTransferItem = ({ ftTransfer, parentTx }: FtTransferItemProps) => {
 
   return (
     <TransactionItem
+      onClickTransaction={openTransactionInExplorer}
       title={ftTitle}
       caption={caption}
       value={value}

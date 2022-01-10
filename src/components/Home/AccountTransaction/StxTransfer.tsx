@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { View } from 'react-native';
+import { Linking, View } from 'react-native';
 import { ThemeContext } from '../../../contexts/Theme/theme';
 import { useAccounts } from '../../../hooks/useAccounts/useAccounts';
 import { Tx } from '../../../models/transactions';
@@ -15,6 +15,8 @@ import styles from './styles';
 import InTransaction from '../../../assets/images/Home/inTransaction.svg';
 import OutTransaction from '../../../assets/images/Home/outTransaction.svg';
 import TransactionStatus from './TransactionStatus';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import useNetwork from '../../../hooks/useNetwork/useNetwork';
 
 export const StxTransferTransaction: React.FC<{
   transaction: Tx;
@@ -26,11 +28,19 @@ export const StxTransferTransaction: React.FC<{
   const isOriginator =
     transaction.sender_address === selectedAccountState?.address;
   const value = getTxValue(transaction, isOriginator);
+  const { currentNetwork } = useNetwork();
   if (!transaction) {
     return null;
   }
+
+  const link = `https://explorer.stacks.co/txid/${transaction.tx_id}?chain=${currentNetwork.name}`;
+
+  const openTransactionInExplorer = () => {
+    Linking.openURL(link);
+  };
   return (
-    <View
+    <TouchableOpacity
+      onPress={openTransactionInExplorer}
       key={transaction.tx_id}
       style={[
         styles.transactionCard,
@@ -77,7 +87,7 @@ export const StxTransferTransaction: React.FC<{
           <TransactionStatus status={transaction.tx_status} />
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
@@ -86,12 +96,15 @@ export const TransactionItem: React.FC<{
   caption: string;
   value: string;
   isOriginator: boolean;
-}> = ({ title, caption, value, isOriginator }) => {
+  onClickTransaction: () => void;
+}> = ({ title, caption, value, isOriginator, onClickTransaction }) => {
   const {
     theme: { colors },
   } = useContext(ThemeContext);
   return (
-    <View
+    <TouchableOpacity
+      onPress={onClickTransaction}
+      activeOpacity={0.9}
       style={[
         styles.transactionCard,
         {
@@ -131,7 +144,10 @@ export const TransactionItem: React.FC<{
         ) : (
           <View />
         )}
+        <View style={{ marginTop: 7, alignSelf: 'flex-end' }}>
+          <TransactionStatus status={'success'} />
+        </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
