@@ -125,7 +125,7 @@ const TransactionRequestBottomSheet: React.FC = () => {
       } else if (response && response?.error === undefined) {
         const requestResult = {
           ...(transactionRequest.metadata || {}),
-          txid: response?.txid,
+          txid: `0x${response?.txid}`,
         };
         const redirect = `${dangerousUri}?txResult=${JSON.stringify(
           requestResult,
@@ -138,7 +138,7 @@ const TransactionRequestBottomSheet: React.FC = () => {
     if (transactionRequest) {
       handleTransfer();
     }
-  }, [transactionRequest]);
+  }, [transactionRequest, fees]);
 
   return (
     <Portal>
