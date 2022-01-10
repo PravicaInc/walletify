@@ -26,6 +26,7 @@
     "@react-navigation/stack": "^5.14.5",
     "@schemastore/web-manifest": "^0.0.5",
     "@stacks/blockchain-api-client": "^1.0.4",
+    "@stacks/connect": "^6.4.0",
     "@stacks/keychain": "^2.0.1",
     "@stacks/network": "^3.0.0",
     "@stacks/transactions": "^3.1.0",
