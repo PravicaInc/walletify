@@ -1,5 +1,8 @@
-import React from 'react';
-import { AddressTransactionWithTransfers } from '@stacks/blockchain-api-client';
+import React, { useEffect, useState } from 'react';
+import {
+  AddressTransactionWithTransfers,
+  TokensApi,
+} from '@stacks/blockchain-api-client';
 import { View } from 'react-native';
 import { FtTransfer, StxTransfer, Tx } from '../../../models/transactions';
 import {
@@ -7,14 +10,14 @@ import {
   isAddressTransactionWithTransfers,
 } from '../../../shared/transactionUtils';
 import { StxTransferTransaction, TransactionItem } from './StxTransfer';
-import { stacksValue } from '../../../shared/balanceUtils';
+import { getAssetStringParts, stacksValue } from '../../../shared/balanceUtils';
 import { useAccounts } from '../../../hooks/useAccounts/useAccounts';
 import { Typography } from '../../shared/Typography';
 import { useAtomValue } from 'jotai/utils';
 import BigNumber from 'bignumber.js';
 import { AssetWithMeta } from '../../../models/assets';
-import { currentAccountBalancesUnanchoredState } from '../../../hooks/useAccounts/accountsStore';
 import { withSuspense } from '../../shared/WithSuspense';
+import { apiClientState } from '../../../hooks/apiClients/apiClients';
 
 interface StxTransferItemProps {
   stxTransfer: StxTransfer;
@@ -23,7 +26,7 @@ interface StxTransferItemProps {
 
 const StxTransferItem = ({ stxTransfer, parentTx }: StxTransferItemProps) => {
   const { selectedAccountState } = useAccounts();
-  const title = 'Stacks Token Transfer';
+  const title = 'STX Transfer';
   const caption = getTxCaption(parentTx.tx) ?? '';
   const isOriginator = stxTransfer.sender === selectedAccountState?.address;
 
@@ -47,37 +50,57 @@ interface FtTransferItemProps {
   parentTx: AddressTransactionWithTransfers;
 }
 
-export function useAssetByIdentifier(identifier: string) {
-  console.log(identifier);
-  return null;
-}
+const getAssetMeta = async (identifier: string, tokenApi: TokensApi) => {
+  const { contractName, address } = getAssetStringParts(identifier);
+  const contractId = `${address}.${contractName}`;
+  const assetMeta = await tokenApi.getContractFtMetadata({
+    contractId,
+  });
+  return assetMeta;
+};
 
 export const calculateTokenTransferAmount = (
-  asset: AssetWithMeta | undefined,
+  decimals: number,
   amount: number | string | BigNumber,
 ) => {
-  if (!asset || !asset.meta) {
-    return;
-  }
-  return new BigNumber(amount).shiftedBy(-asset.meta.decimals);
+  return new BigNumber(amount).shiftedBy(-decimals);
 };
 
 const FtTransferItem = ({ ftTransfer, parentTx }: FtTransferItemProps) => {
   const { selectedAccountState } = useAccounts();
-  const asset = useAssetByIdentifier(ftTransfer.asset_identifier);
-  const title = `${asset?.meta?.name || 'Token'} Transfer`;
+  const { tokensApi } = useAtomValue(apiClientState);
+  const [ftTitle, setFtTitle] = useState<string>('');
+  const [ftValue, setFtValue] = useState<BigNumber>();
+
+  const getFtDisplayAmount = async () => {
+    const assetMetaData = await getAssetMeta(
+      ftTransfer.asset_identifier,
+      tokensApi,
+    );
+    const title = `${assetMetaData?.name || 'Token'} Transfer`;
+    setFtTitle(title);
+    const displayAmount = calculateTokenTransferAmount(
+      assetMetaData.decimals,
+      ftTransfer.amount,
+    );
+    setFtValue(displayAmount);
+  };
+
+  useEffect(() => {
+    getFtDisplayAmount();
+  }, []);
+
   const caption = getTxCaption(parentTx.tx) ?? '';
   const isOriginator = ftTransfer.sender === selectedAccountState?.address;
 
-  const displayAmount = calculateTokenTransferAmount(asset, ftTransfer.amount);
-  if (typeof displayAmount === 'undefined') {
+  if (typeof ftValue === 'undefined') {
     return null;
   }
-  const value = `${isOriginator ? '-' : ''}${displayAmount.toFormat()}`;
+  const value = `${isOriginator ? '-' : ''}${ftValue.toFormat()}`;
 
   return (
     <TransactionItem
-      title={title}
+      title={ftTitle}
       caption={caption}
       value={value}
       isOriginator={isOriginator}

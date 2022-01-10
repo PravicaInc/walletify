@@ -110,7 +110,7 @@ export const TransactionItem: React.FC<{
       </View>
       <View style={styles.transactionInformationContainer}>
         <Typography style={{ color: colors.primary100 }} type="smallTitleR">
-          {title}
+          {title === 'Stacks Token' ? 'Stx Transfer' : title}
         </Typography>
         <Typography
           style={{ color: colors.primary40, marginTop: 7 }}
