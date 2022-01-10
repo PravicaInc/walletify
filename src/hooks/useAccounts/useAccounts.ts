@@ -10,8 +10,6 @@ import {
   AnchorMode,
   SignedTokenTransferOptions,
   estimateTransfer,
-  getNonce,
-  setNonce,
 } from '@stacks/transactions/dist';
 import {
   accountAvailableStxBalanceState,
@@ -31,7 +29,6 @@ export const useAccounts = () => {
   const [selectedAccountIndexState, setSelectedAccountIndexState] =
     useAtom(selectedAccountIndex);
   const selectedAccountState = useAtomValue(selectedAccount);
-  // const selectedAccountAssets = useAtomValue(assets);
 
   const createAccount = async () => {
     if (currentWallet) {
@@ -100,18 +97,12 @@ export const useAccounts = () => {
       fee: fee * 1000000, // To convert from micro STX to STX,
     } as SignedTokenTransferOptions;
 
-    console.log(txOptions);
-
     const transaction = await makeSTXTokenTransfer(txOptions);
-
-    console.log(transaction);
 
     const broadcastResponse = await broadcastTransaction(
       transaction,
       network.stacksNetwork,
     );
-
-    console.log(broadcastResponse);
 
     return broadcastResponse;
   };

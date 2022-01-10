@@ -18,6 +18,7 @@ import { currentAccountAvailableStxBalanceState } from '../../../hooks/useAccoun
 import { useStxPriceValue } from '../../../hooks/useStxPrice/useStxPrice';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import SendBottomSheet from '../../../components/SendBottomSheet';
+import ReceiveBottomSheet from '../../../components/ReceiveBottomSheet';
 
 const AccountBalanceCard: React.FC = () => {
   const {
@@ -27,9 +28,14 @@ const AccountBalanceCard: React.FC = () => {
   const price = useStxPriceValue();
 
   const sendRef = useRef<BottomSheetModal>(null);
+  const receiveRef = useRef<BottomSheetModal>(null);
 
   const handlePresentSend = useCallback(() => {
     sendRef.current?.snapToIndex(0);
+  }, []);
+
+  const handlePresentReceive = useCallback(() => {
+    receiveRef.current?.snapToIndex(0);
   }, []);
 
   const amount = useMemo(() => {
@@ -100,6 +106,7 @@ const AccountBalanceCard: React.FC = () => {
           />
         </Suspense>
         <TouchableOpacity
+          onPress={handlePresentReceive}
           activeOpacity={0.9}
           style={[
             AccountBalanceCardStyles.balanceActionButton,
@@ -117,6 +124,9 @@ const AccountBalanceCard: React.FC = () => {
             Receive
           </Typography>
         </TouchableOpacity>
+        <Suspense fallback={<Text>Loading...</Text>}>
+          <ReceiveBottomSheet ref={receiveRef} />
+        </Suspense>
       </View>
     </View>
   );
