@@ -9,9 +9,9 @@ import {
   broadcastTransaction,
   AnchorMode,
   SignedTokenTransferOptions,
-  estimateTransfer,
   getNonce,
   setNonce,
+  estimateTransaction,
 } from '@stacks/transactions/dist';
 import {
   accountAvailableStxBalanceState,
@@ -23,6 +23,7 @@ import { useAtom } from 'jotai';
 import { wallet } from '../useWallet/walletStore';
 import { gaiaUrl } from '../../shared/constants';
 import { selectedNetwork } from '../useNetwork/networkStore';
+import { createTokenTransferPayload } from '@stacks/transactions/dist/payload';
 
 export const useAccounts = () => {
   const network = useAtomValue(selectedNetwork);
@@ -74,9 +75,20 @@ export const useAccounts = () => {
     } as SignedTokenTransferOptions;
 
     const transaction = await makeSTXTokenTransfer(txOptions);
-    const fees = await estimateTransfer(transaction, network.stacksNetwork);
 
-    return Number(fees) / 1000000;
+    const estimatedLen = transaction.serialize().byteLength;
+    const payload = createTokenTransferPayload(
+      txOptions.recipient,
+      txOptions.amount,
+      txOptions.memo,
+    );
+    const txFee = await estimateTransaction(
+      payload,
+      estimatedLen,
+      network.stacksNetwork,
+    );
+
+    return Number(txFee[1].fee) / 1000000;
   };
 
   const sendTransaction = async (
