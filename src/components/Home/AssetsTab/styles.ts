@@ -3,9 +3,11 @@ import { StyleSheet } from 'react-native';
 const assetsTabStyles = StyleSheet.create({
   assetsList: {
     flex: 1,
+    paddingTop: 20,
   },
   assetsListContent: {
     flexGrow: 1,
+    paddingBottom: 40,
   },
   emptyContainer: {
     flex: 1,

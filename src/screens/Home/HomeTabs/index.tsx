@@ -51,22 +51,18 @@ const TabsHeader = props => {
 };
 
 const HomeTabs: React.FC = () => {
-  const {
-    theme: { colors },
-  } = useContext(ThemeContext);
   const layout = useWindowDimensions();
-
-  const [index, setIndex] = React.useState(0);
-  const [routes] = React.useState([
+  const [currentTabIndex, setCurrentTabIndex] = React.useState(0);
+  const [homeTabRoutes] = React.useState([
     { key: 'Assets', title: 'Assets' },
     { key: 'Activity', title: 'Activity' },
   ]);
 
   return (
     <TabView
-      navigationState={{ index, routes }}
+      navigationState={{ index: currentTabIndex, routes: homeTabRoutes }}
       renderScene={renderScene}
-      onIndexChange={setIndex}
+      onIndexChange={setCurrentTabIndex}
       initialLayout={{ width: layout.width }}
       renderTabBar={TabsHeader}
     />

@@ -2,10 +2,10 @@ import { StyleSheet } from 'react-native';
 
 const AccountBalanceCardStyles = StyleSheet.create({
   container: {
-    height: 150,
+    height: 147,
     width: '100%',
     paddingVertical: '5%',
-    paddingHorizontal: '2.5%',
+    paddingHorizontal: 16,
     borderRadius: 24,
     position: 'relative',
   },
@@ -15,11 +15,11 @@ const AccountBalanceCardStyles = StyleSheet.create({
     alignItems: 'center',
   },
   balance: {
-    fontSize: 40,
+    fontSize: 35,
     marginTop: 10,
   },
   currency: {
-    fontSize: 40,
+    fontSize: 22,
   },
   balanceActionsContainer: {
     flexDirection: 'row',

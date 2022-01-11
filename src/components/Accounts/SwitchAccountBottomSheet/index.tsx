@@ -1,5 +1,5 @@
 import React, { Suspense, useCallback, useContext } from 'react';
-import BottomSheet from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetFlatList } from '@gorhom/bottom-sheet';
 import { ThemeContext } from '../../../contexts/Theme/theme';
 import { useAccounts } from '../../../hooks/useAccounts/useAccounts';
 import Header from '../../shared/Header';
