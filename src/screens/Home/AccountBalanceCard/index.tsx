@@ -35,7 +35,7 @@ const AccountBalanceCard: React.FC = () => {
         },
       ]}>
       <Typography type="commonText" style={{ color: colors.primary40 }}>
-        Your Account Balance:
+        Total STX Balance:
       </Typography>
       <View style={AccountBalanceCardStyles.balanceContainer}>
         <Suspense fallback={<Text>Loading</Text>}>

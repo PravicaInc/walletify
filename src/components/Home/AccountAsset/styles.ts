@@ -9,7 +9,7 @@ const fungibleTokenStyles = StyleSheet.create({
     paddingVertical: 12,
     paddingLeft: 8,
     paddingRight: 12,
-    marginVertical: 10,
+    marginBottom: 10,
   },
   tokenInformationContainer: {
     flexDirection: 'row',
