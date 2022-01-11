@@ -16,7 +16,7 @@ import { Typography } from '../shared/Typography';
 import { CustomBackdrop } from '../shared/customBackdrop';
 import { useBns } from '../../hooks/bns/useBns';
 import User from '../../assets/images/manageAccounts/user.svg';
-import WarningIcon from '../../assets/icon-warning.svg';
+import WarningIcon from '../../components/shared/WarningIcon';
 import styles from './styles';
 
 interface CreateIdentityBottomSheetProps {

@@ -28,7 +28,7 @@ import ExitIcon from '../../assets/images/settings/exit.svg';
 import SecureKeychain from '../../shared/SecureKeychain';
 import { styles } from './styles';
 import { OptionsPick } from '../../components/OptionsPick';
-import WarningIcon from '../../assets/images/note-icon.svg';
+import WarningIcon from '../../components/shared/WarningIcon';
 import { useUnlockWallet } from '../../hooks/useWallet/useUnlockWallet';
 import { decryptMnemonic } from '@stacks/encryption';
 import { encrypt } from '@stacks/wallet-sdk/dist';

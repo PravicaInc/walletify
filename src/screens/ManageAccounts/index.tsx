@@ -16,7 +16,7 @@ import { AccountWithAddress } from '../../models/account';
 import BottomSheet from '@gorhom/bottom-sheet';
 import CreateIdentityBottomSheet from '../../components/CreateIdentityBottomSheet';
 import { OptionsPick } from '../../components/OptionsPick';
-import WarningIcon from '../../assets/icon-warning.svg';
+import WarningIcon from '../../components/shared/WarningIcon';
 import AccountAvatar from '../../components/shared/AccountAvatar';
 
 const ManageAccounts: React.FC = () => {
