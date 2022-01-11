@@ -7,6 +7,7 @@ const assetsTabStyles = StyleSheet.create({
   },
   assetsListContent: {
     flexGrow: 1,
+    paddingBottom: 40,
   },
   emptyContainer: {
     flex: 1,

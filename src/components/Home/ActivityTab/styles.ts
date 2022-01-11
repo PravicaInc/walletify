@@ -7,6 +7,7 @@ const activityTabStyles = StyleSheet.create({
   },
   activityListContent: {
     flexGrow: 1,
+    paddingBottom: 40,
   },
   emptyContainer: {
     flex: 1,
