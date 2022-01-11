@@ -3,7 +3,6 @@ import {
   ActivityIndicator,
   FlatList,
   ListRenderItem,
-  SectionList,
   View,
 } from 'react-native';
 import NoActivity from '../../../assets/images/Home/noActivity.svg';
@@ -14,38 +13,18 @@ import { useTransactions } from '../../../hooks/useTransactions/useTransactions'
 import { AddressTransactionWithTransfers } from '@stacks/blockchain-api-client';
 import type { MempoolTransaction } from '@stacks/stacks-blockchain-api-types';
 import AccountTransaction from '../AccountTransaction';
-import { Tx } from '../../../models/transactions';
-import { isAddressTransactionWithTransfers, txHasTime } from '../../../shared/transactionUtils';
 
 const ActivityTab: React.FC = () => {
   const {
     theme: { colors },
   } = useContext(ThemeContext);
-  const { accountTransactionsWithTransfers, mempoolTransactions, loading } =
-    useTransactions();
-
-  // function groupTxsByDateMap(
-  //   txs: (AddressTransactionWithTransfers | MempoolTransaction)[],
-  // ) {
-  //   return txs.reduce((txsByDate, atx) => {
-  //     const tx = isAddressTransactionWithTransfers(atx) ? atx.tx : atx;
-  //     const time =
-  //       ('burn_block_time_iso' in tx && tx.burn_block_time_iso) ||
-  //       ('parent_burn_block_time_iso' in tx && tx.parent_burn_block_time_iso);
-  //     const date = time ? time.format('YYYY:MM:DD') : undefined;
-  //     if (date && txHasTime(tx)) {
-  //       if (!txsByDate.has(date)) {
-  //         txsByDate.set(date, []);
-  //       }
-  //       txsByDate.set(date, [...(txsByDate.get(date) || []), atx]);
-  //     }
-  //     if (!txHasTime(tx)) {
-  //       const today = new Date().toISOString().split('T')[0];
-  //       txsByDate.set(today, [...(txsByDate.get(today) || []), atx]);
-  //     }
-  //     return txsByDate;
-  //   }, new Map<string,(AddressTransactionWithTransfers | MempoolTransaction)[]>());
-  // }
+  const {
+    accountTransactionsWithTransfers,
+    mempoolTransactions,
+    loading,
+    isRefreshing,
+    refreshTransactionsList,
+  } = useTransactions();
 
   const EmptyActivity = useCallback(() => {
     return (
@@ -77,6 +56,8 @@ const ActivityTab: React.FC = () => {
 
   return (
     <FlatList
+      onRefresh={refreshTransactionsList}
+      refreshing={isRefreshing}
       data={[...mempoolTransactions, ...accountTransactionsWithTransfers]}
       showsHorizontalScrollIndicator={false}
       showsVerticalScrollIndicator={false}

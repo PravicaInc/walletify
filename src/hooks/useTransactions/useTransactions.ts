@@ -1,6 +1,6 @@
 import { useAtom } from 'jotai';
 import { useAtomValue } from 'jotai/utils';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { apiClientState } from '../apiClients/apiClients';
 import { useAccounts } from '../useAccounts/useAccounts';
 import { useProgressState } from '../useProgressState';
@@ -22,6 +22,7 @@ export const useTransactions = () => {
   const { selectedAccountState, selectedAccountIndexState } = useAccounts();
   const api = useAtomValue(apiClientState);
   const { loading, setLoading, setFailure, setSuccess } = useProgressState();
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const fetchAccountTransactions = async () => {
     if (selectedAccountState && selectedAccountState.address) {
@@ -29,7 +30,6 @@ export const useTransactions = () => {
         principal: selectedAccountState?.address,
         limit: DEFAULT_LIST_LIMIT,
       });
-      console.log(data);
       setAccountTransactionsWithTransfers(data.results);
     }
   };
@@ -44,24 +44,32 @@ export const useTransactions = () => {
     }
   };
 
+  const fetchAccountPendingTransactions = async () => {
+    try {
+      setLoading();
+      await fetchAccountTransactions();
+      await fetchAccountMempoolTransactions();
+      setSuccess();
+    } catch (err) {
+      setFailure();
+    }
+  };
+
   useEffect(() => {
-    const fetchAccountPendingTransactions = async () => {
-      try {
-        setLoading();
-        await fetchAccountTransactions();
-        await fetchAccountMempoolTransactions();
-        setSuccess();
-      } catch (err) {
-        console.log('fdd', err);
-        setFailure();
-      }
-    };
     fetchAccountPendingTransactions();
   }, [selectedAccountIndexState, selectedAccountState]);
+
+  const refreshTransactionsList = async () => {
+    setIsRefreshing(true);
+    await fetchAccountPendingTransactions();
+    setIsRefreshing(false);
+  };
 
   return {
     accountTransactionsWithTransfers,
     mempoolTransactions,
+    refreshTransactionsList,
+    isRefreshing,
     loading,
   };
 };
