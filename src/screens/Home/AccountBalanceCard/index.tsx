@@ -1,4 +1,10 @@
-import React, { Suspense, useContext, useMemo } from 'react';
+import React, {
+  Suspense,
+  useContext,
+  useMemo,
+  useRef,
+  useCallback,
+} from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 import { Typography } from '../../../components/shared/Typography';
 import { ThemeContext } from '../../../contexts/Theme/theme';
@@ -10,6 +16,9 @@ import { withSuspense } from '../../../components/shared/WithSuspense';
 import { useAtomValue } from 'jotai/utils';
 import { currentAccountAvailableStxBalanceState } from '../../../hooks/useAccounts/accountsStore';
 import { useStxPriceValue } from '../../../hooks/useStxPrice/useStxPrice';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import SendBottomSheet from '../../../components/SendBottomSheet';
+import ReceiveBottomSheet from '../../../components/ReceiveBottomSheet';
 
 const AccountBalanceCard: React.FC = () => {
   const {
@@ -17,6 +26,17 @@ const AccountBalanceCard: React.FC = () => {
   } = useContext(ThemeContext);
   const balance = useAtomValue(currentAccountAvailableStxBalanceState);
   const price = useStxPriceValue();
+
+  const sendRef = useRef<BottomSheetModal>(null);
+  const receiveRef = useRef<BottomSheetModal>(null);
+
+  const handlePresentSend = useCallback(() => {
+    sendRef.current?.snapToIndex(0);
+  }, []);
+
+  const handlePresentReceive = useCallback(() => {
+    receiveRef.current?.snapToIndex(0);
+  }, []);
 
   const amount = useMemo(() => {
     if (balance) {
@@ -59,6 +79,7 @@ const AccountBalanceCard: React.FC = () => {
       </View>
       <View style={AccountBalanceCardStyles.balanceActionsContainer}>
         <TouchableOpacity
+          onPress={handlePresentSend}
           activeOpacity={0.9}
           style={[
             AccountBalanceCardStyles.balanceActionButton,
@@ -77,7 +98,15 @@ const AccountBalanceCard: React.FC = () => {
             Send
           </Typography>
         </TouchableOpacity>
+        <Suspense fallback={<Text>Loading...</Text>}>
+          <SendBottomSheet
+            ref={sendRef}
+            fullBalance={amountValue}
+            price={price}
+          />
+        </Suspense>
         <TouchableOpacity
+          onPress={handlePresentReceive}
           activeOpacity={0.9}
           style={[
             AccountBalanceCardStyles.balanceActionButton,
@@ -95,6 +124,9 @@ const AccountBalanceCard: React.FC = () => {
             Receive
           </Typography>
         </TouchableOpacity>
+        <Suspense fallback={<Text>Loading...</Text>}>
+          <ReceiveBottomSheet ref={receiveRef} />
+        </Suspense>
       </View>
     </View>
   );

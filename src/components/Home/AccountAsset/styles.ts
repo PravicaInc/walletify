@@ -23,6 +23,7 @@ const fungibleTokenStyles = StyleSheet.create({
     alignItems: 'center',
     marginRight: 10,
   },
+  alignRight: { alignSelf: 'flex-end' },
 });
 
 export default fungibleTokenStyles;

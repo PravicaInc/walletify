@@ -1,3 +1,4 @@
+import { StacksMainnet, StacksNetwork, StacksTestnet } from '@stacks/network';
 import { ChainID } from '@stacks/transactions';
 
 export enum AvailableNetworks {
@@ -16,6 +17,7 @@ export interface Network {
   url: string;
   name: AvailableNetworks;
   chainId: ChainID;
+  stacksNetwork: StacksNetwork;
 }
 
 export type Networks = Record<string, Network>;
@@ -25,10 +27,12 @@ export const defaultNetworks: Networks = {
     url: DEFAULT_MAINNET_SERVER,
     name: AvailableNetworks.MAINNET,
     chainId: ChainID.Mainnet,
+    stacksNetwork: new StacksMainnet({ url: DEFAULT_MAINNET_SERVER }),
   },
   testnet: {
     url: DEFAULT_TESTNET_SERVER,
     name: AvailableNetworks.TESTNET,
     chainId: ChainID.Testnet,
+    stacksNetwork: new StacksTestnet({ url: DEFAULT_TESTNET_SERVER }),
   },
 } as const;

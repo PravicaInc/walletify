@@ -7,6 +7,9 @@ module.exports = {
       rules: {
         'react-hooks/exhaustive-deps': 'off',
       },
+      env: {
+        es2020: true,
+      },
     },
   ],
 };

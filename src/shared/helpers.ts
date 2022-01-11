@@ -31,3 +31,13 @@ export const ordinalSuffixOf = (i: number) => {
   }
   return i + 'th';
 };
+
+export function titleCase(str: string) {
+  return str
+    .toLowerCase()
+    .split(' ')
+    .map(function (word: string) {
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    })
+    .join(' ');
+}

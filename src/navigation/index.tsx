@@ -14,17 +14,21 @@ import { RootStackParamList } from './types';
 import WalletUnlock from '../screens/WalletUnlock';
 import ManageAccounts from '../screens/ManageAccounts';
 import { useStxPrice } from '../hooks/useStxPrice/useStxPrice';
-import { useAuthenticationListener } from '../hooks/useAuthenticationListener/useAuthenticationListener';
+import { useAuthenticationListener } from '../hooks/useLinkingListener/useAuthenticationListener';
 import AuthenticationBottomSheet from '../components/AuthenticationBottomSheet';
+import { useTransactionRequestListener } from '../hooks/useLinkingListener/useTransactionRequestsListener';
+import TransactionRequestBottomSheet from '../components/TransactionRequestBottomSheet';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
 export const Routes: React.FC = () => {
   useStxPrice();
   useAuthenticationListener();
+  useTransactionRequestListener();
   return (
     <>
       <AuthenticationBottomSheet />
+      <TransactionRequestBottomSheet />
       <Stack.Navigator initialRouteName="Splash">
         <Stack.Screen
           options={{ headerShown: false }}
