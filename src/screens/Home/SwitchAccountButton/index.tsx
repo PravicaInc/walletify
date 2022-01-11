@@ -1,4 +1,3 @@
-import { getAccountDisplayName } from '@stacks/wallet-sdk/dist';
 import React, { useContext } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 import AccountAvatar from '../../../components/shared/AccountAvatar';
@@ -32,18 +31,37 @@ const SwitchAccountButton: React.FC<SwitchAccountButtonProps> = props => {
       ]}>
       <AccountAvatar
         accountName={
-          selectedAccountState && getAccountDisplayName(selectedAccountState)
+          selectedAccountState?.username ||
+          `Account ${
+            selectedAccountState ? selectedAccountState?.index + 1 : 0
+          }`
         }
         diameter={45}
       />
-      <View>
-        <Typography type="smallTitle" style={{ color: colors.primary100 }}>
-          {selectedAccountState && getAccountDisplayName(selectedAccountState)}
+      <View style={switchAccountButtonStyles.accountInfo}>
+        <Typography
+          numberOfLines={1}
+          type="smallTitle"
+          style={[
+            switchAccountButtonStyles.accountName,
+            { color: colors.primary100 },
+          ]}>
+          {selectedAccountState?.username ||
+            `Account ${
+              selectedAccountState ? selectedAccountState?.index + 1 : 0
+            }`}
         </Typography>
         <Typography
           type="commonText"
-          style={{ color: colors.primary40, paddingTop: 6 }}>
-          {`(${truncateAddress(selectedAccountState?.address, 11)})`}
+          style={[
+            switchAccountButtonStyles.address,
+            { color: colors.primary40 },
+          ]}>
+          {`(${
+            selectedAccountState?.address
+              ? truncateAddress(selectedAccountState?.address, 11)
+              : '....'
+          })`}
         </Typography>
       </View>
       <View style={switchAccountButtonStyles.switchIconContainer}>

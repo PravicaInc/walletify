@@ -21,9 +21,9 @@ const AccountAvatar: React.FC<IProps> = props => {
       style={[
         styles.container,
         {
-          height: diameter + 6,
-          width: diameter + 6,
-          borderRadius: diameter / 2 + 4,
+          height: diameter,
+          width: diameter,
+          borderRadius: diameter / 2,
         },
         hasAura && styles.aura,
         hasAura && { borderColor: colors.confirm100 },

@@ -4,6 +4,7 @@ import { useAtom } from 'jotai';
 import { gaiaUrl } from '../../shared/constants';
 import { UserPreferenceContext } from '../../contexts/UserPreference/userPreferenceContext';
 import { wallet } from './walletStore';
+import logger from '../../shared/logger';
 
 export const useWallet = () => {
   const [walletState, setWalletState] = useAtom(wallet);
@@ -30,17 +31,22 @@ export const useWallet = () => {
         secretKey,
         password,
       });
-      generatedWallet = await restoreWalletAccounts({
-        wallet: generatedWallet,
-        gaiaHubUrl: gaiaUrl,
-      });
-      setEncryptedSeed(generatedWallet.encryptedSecretKey);
-      setWalletState(generatedWallet);
+      try {
+        generatedWallet = await restoreWalletAccounts({
+          wallet: generatedWallet,
+          gaiaHubUrl: gaiaUrl,
+        });
+        setEncryptedSeed(generatedWallet.encryptedSecretKey);
+        setWalletState(generatedWallet);
+      } catch (err) {
+        logger.error(`Error Restoring Wallet Accounts, ${err}`);
+      }
     },
     [],
   );
   return {
     walletState,
+    setWalletState,
     encryptedSeedPhrase,
     createWallet,
     restoreWallet,

@@ -2,27 +2,29 @@ import { StyleSheet } from 'react-native';
 
 const accountListItemStyles = StyleSheet.create({
   container: {
-    height: 60,
     borderRadius: 13,
     flexDirection: 'row',
-    alignItems: 'center',
     marginVertical: 10,
-    paddingLeft: 10,
+    height: 60,
+    padding: 7.5,
   },
   accountDetails: {
-    flex: 1,
-  },
-  accountNameWithAddress: {
+    paddingVertical: 2,
     flexDirection: 'row',
     alignItems: 'center',
+    alignSelf: 'flex-start',
+    flex: 1,
+    height: '100%',
+  },
+  accountNameWithAddress: {
+    height: '100%',
+    maxWidth: '50%',
+    justifyContent: 'space-between',
+    marginHorizontal: 6,
   },
   accountAddress: {
-    marginStart: 10,
-  },
-  accountSelectedIconContainer: {
-    flex: 1,
-    alignItems: 'flex-end',
-    paddingEnd: 10,
+    marginRight: 'auto',
+    alignSelf: 'flex-start',
   },
 });
 

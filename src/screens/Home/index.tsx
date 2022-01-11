@@ -32,7 +32,6 @@ const Home = (props: Props) => {
 
   useEffect(() => {
     restoreWallet(seedPhrase, password);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const goToSettings = () => dispatch(StackActions.push('Settings'));
@@ -48,7 +47,6 @@ const Home = (props: Props) => {
   const handleSwitchAccount = useCallback((accountIndex: number) => {
     switchAccount(accountIndex);
     handleCancelSwitchAccount();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
