@@ -14,6 +14,7 @@ import Stx from '../../../assets/images/stx.svg';
 import styles from './styles';
 import InTransaction from '../../../assets/images/Home/inTransaction.svg';
 import OutTransaction from '../../../assets/images/Home/outTransaction.svg';
+import FunctionCall from '../../../assets/images/Home/functionCall.svg';
 import TransactionStatus from './TransactionStatus';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import useNetwork from '../../../hooks/useNetwork/useNetwork';
@@ -32,6 +33,18 @@ export const StxTransferTransaction: React.FC<{
   if (!transaction) {
     return null;
   }
+
+  const renderTransactionTypeIcon = () => {
+    if (transaction.tx_type === 'contract_call') {
+      return <FunctionCall />;
+    } else {
+      if (isOriginator) {
+        return <OutTransaction />;
+      } else {
+        return <InTransaction />;
+      }
+    }
+  };
 
   const link = `https://explorer.stacks.co/txid/${transaction.tx_id}?chain=${currentNetwork.name}`;
 
@@ -55,7 +68,7 @@ export const StxTransferTransaction: React.FC<{
           customStyle={{ backgroundColor: colors.primary100 }}
         />
         <View style={styles.transactionIndicator}>
-          {isOriginator ? <OutTransaction /> : <InTransaction />}
+          {renderTransactionTypeIcon()}
         </View>
       </View>
       <View style={styles.transactionInformationContainer}>
@@ -84,7 +97,7 @@ export const StxTransferTransaction: React.FC<{
           <View />
         )}
         <View style={{ marginTop: 7, alignSelf: 'flex-end' }}>
-          <TransactionStatus status={transaction.tx_status} />
+          <TransactionStatus transaction={transaction} />
         </View>
       </View>
     </TouchableOpacity>
@@ -122,7 +135,11 @@ export const TransactionItem: React.FC<{
         </View>
       </View>
       <View style={styles.transactionInformationContainer}>
-        <Typography style={{ color: colors.primary100 }} type="smallTitleR">
+        <Typography
+          style={{ color: colors.primary100 }}
+          type="smallTitleR"
+          numberOfLines={1}
+          ellipsizeMode="tail">
           {title === 'Stacks Token' ? 'Stx Transfer' : title}
         </Typography>
         <Typography
@@ -145,7 +162,13 @@ export const TransactionItem: React.FC<{
           <View />
         )}
         <View style={{ marginTop: 7, alignSelf: 'flex-end' }}>
-          <TransactionStatus status={'success'} />
+          <TransactionStatus
+            transaction={{
+              tx_status: 'success',
+              anchor_mode: 'on_chain_only',
+              is_unanchored: false,
+            }}
+          />
         </View>
       </View>
     </TouchableOpacity>
