@@ -30,12 +30,14 @@ import { useAuthRequest, finishSignIn } from '../../hooks/auth/useAuthRequest';
 import { useProgressState } from '../../hooks/useProgressState';
 import { useWallet } from '../../hooks/useWallet/useWallet';
 import { CustomBackdrop } from '../shared/customBackdrop';
+import { selectedNetwork } from '../../hooks/useNetwork/networkStore';
 
 const AuthenticationBottomSheet: React.FC = () => {
   const snapPoints = React.useMemo(() => ['95%'], []);
   const {
     theme: { colors },
   } = useContext(ThemeContext);
+  const network = useAtomValue(selectedNetwork);
   const { walletAccounts, switchAccount } = useAccounts();
   const { walletState } = useWallet();
   const [selectedAccountIndex, setSelectedAccountIndex] = useState<
@@ -70,6 +72,7 @@ const AuthenticationBottomSheet: React.FC = () => {
         authRequest,
         walletState as any,
         index,
+        network,
         dismissBottomSheet,
       ).catch(setFailure);
       setSuccess();
