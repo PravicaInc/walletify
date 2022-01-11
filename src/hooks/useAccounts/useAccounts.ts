@@ -10,6 +10,8 @@ import {
   AnchorMode,
   SignedTokenTransferOptions,
   estimateTransfer,
+  getNonce,
+  setNonce,
 } from '@stacks/transactions/dist';
 import {
   accountAvailableStxBalanceState,
@@ -87,6 +89,10 @@ export const useAccounts = () => {
       return;
     }
 
+    const nonce =
+      (await getNonce(selectedAccountState.address, network.stacksNetwork)) +
+      BigInt(1);
+
     const txOptions = {
       recipient: recipientAddress,
       amount: amount * 1000000, // To convert from micro STX to STX
@@ -95,6 +101,7 @@ export const useAccounts = () => {
       anchorMode: AnchorMode.Any,
       network: network.stacksNetwork,
       fee: fee * 1000000, // To convert from micro STX to STX,
+      nonce,
     } as SignedTokenTransferOptions;
 
     const transaction = await makeSTXTokenTransfer(txOptions);
@@ -103,6 +110,8 @@ export const useAccounts = () => {
       transaction,
       network.stacksNetwork,
     );
+
+    await setNonce(transaction.auth, nonce);
 
     return broadcastResponse;
   };

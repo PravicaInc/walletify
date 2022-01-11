@@ -7,7 +7,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { View, TouchableOpacity, Alert } from 'react-native';
+import { View, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import BottomSheet, { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { Portal } from '@gorhom/portal';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -89,7 +89,7 @@ const SendBottomSheet = React.forwardRef<any, Props>(
             `Failure reason: ${response.reason}`,
           );
         } else if (response && response?.error === undefined) {
-          (ref as RefObject<BottomSheetModal>)?.current?.close();
+          dismissBottomSheet();
         }
       }
       if (preview) {
@@ -143,12 +143,14 @@ const SendBottomSheet = React.forwardRef<any, Props>(
 
     useEffect(() => {
       const fetchFees = async () => {
+        setIsLoading(true);
         const transactionFees = await estimateTransactionFees(
           recipient,
           Number(amount),
           memo,
         );
         setFees(transactionFees);
+        setIsLoading(false);
       };
       if (amount && recipient) {
         fetchFees();
@@ -156,6 +158,12 @@ const SendBottomSheet = React.forwardRef<any, Props>(
     }, [amount, recipient, memo]);
 
     const dismissBottomSheet = useCallback(() => {
+      setAmount('');
+      setRecipient('');
+      setMemo('');
+      setPreview(false);
+      setFees(NaN);
+      setErrorMessages({ amount: '', recipient: '' });
       (ref as RefObject<BottomSheetModal>)?.current?.close();
     }, []);
 
@@ -264,9 +272,9 @@ const SendBottomSheet = React.forwardRef<any, Props>(
             </View>
             <GeneralButton
               type="Primary"
-              disabled={!isReadyForPreview}
+              disabled={isLoading || !isReadyForPreview}
               onPress={() => setPreview(true)}>
-              Preview
+              {isLoading ? 'Loading...' : 'Preview'}
             </GeneralButton>
           </KeyboardAwareScrollView>
         </>

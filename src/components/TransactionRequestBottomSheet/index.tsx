@@ -63,6 +63,7 @@ const TransactionRequestBottomSheet: React.FC = () => {
 
   const dismissBottomSheet = useCallback(() => {
     setTransactionRequest(undefined);
+    setFees(NaN);
     bottomSheetRef.current?.close();
   }, []);
 
@@ -202,7 +203,7 @@ const TransactionRequestBottomSheet: React.FC = () => {
             </Typography>
             <GeneralButton
               type="Primary"
-              disabled={isLoading}
+              disabled={isNaN(Number(fees)) || isLoading}
               onPress={handSendPress}>
               {isLoading ? 'Sending...' : 'Send'}
             </GeneralButton>
