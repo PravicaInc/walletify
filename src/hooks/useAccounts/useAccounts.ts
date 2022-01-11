@@ -9,8 +9,6 @@ import {
   broadcastTransaction,
   AnchorMode,
   SignedTokenTransferOptions,
-  getNonce,
-  setNonce,
   estimateTransaction,
 } from '@stacks/transactions/dist';
 import {
@@ -24,6 +22,9 @@ import { wallet } from '../useWallet/walletStore';
 import { gaiaUrl } from '../../shared/constants';
 import { selectedNetwork } from '../useNetwork/networkStore';
 import { createTokenTransferPayload } from '@stacks/transactions/dist/payload';
+import { TxBroadcastResult } from '@stacks/wallet-sdk/node_modules/@stacks/transactions';
+
+const MAX_NONCE_INCREMENT_RETRIES = 5;
 
 export const useAccounts = () => {
   const network = useAtomValue(selectedNetwork);
@@ -101,31 +102,35 @@ export const useAccounts = () => {
       return;
     }
 
-    const nonce =
-      (await getNonce(selectedAccountState.address, network.stacksNetwork)) +
-      BigInt(1);
+    let nextNonce: bigint | undefined;
+    let txSendResult: TxBroadcastResult | undefined;
+    for (let i = 0; i < MAX_NONCE_INCREMENT_RETRIES; i++) {
+      const txOpts: SignedTokenTransferOptions = {
+        recipient: recipientAddress,
+        amount: BigInt((amount * 1000000).toString()), // To convert from STX to micro STX
+        senderKey: selectedAccountState.stxPrivateKey,
+        network: network.stacksNetwork,
+        anchorMode: AnchorMode.Any,
+        memo,
+        fee: fee * 1000000, // To convert from STX to micro STX
+      };
+      if (nextNonce !== undefined) {
+        txOpts.nonce = nextNonce;
+      }
+      const tx = await makeSTXTokenTransfer(txOpts);
+      txSendResult = await broadcastTransaction(tx, network.stacksNetwork);
 
-    const txOptions = {
-      recipient: recipientAddress,
-      amount: amount * 1000000, // To convert from micro STX to STX
-      senderKey: selectedAccountState?.stxPrivateKey,
-      memo: memo,
-      anchorMode: AnchorMode.Any,
-      network: network.stacksNetwork,
-      fee: fee * 1000000, // To convert from micro STX to STX,
-      nonce,
-    } as SignedTokenTransferOptions;
+      if (txSendResult.error) {
+        const errMsg = txSendResult.reason?.toString();
+        if (errMsg?.includes('ConflictingNonceInMempool')) {
+          nextNonce = tx.auth.spendingCondition.nonce + BigInt(1);
+        } else if (errMsg?.includes('BadNonce')) {
+          nextNonce = undefined;
+        }
+      }
+    }
 
-    const transaction = await makeSTXTokenTransfer(txOptions);
-
-    const broadcastResponse = await broadcastTransaction(
-      transaction,
-      network.stacksNetwork,
-    );
-
-    await setNonce(transaction.auth, nonce);
-
-    return broadcastResponse;
+    return txSendResult;
   };
 
   return {
