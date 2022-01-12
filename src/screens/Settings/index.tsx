@@ -32,6 +32,7 @@ import WarningIcon from '../../components/shared/WarningIcon';
 import { useUnlockWallet } from '../../hooks/useWallet/useUnlockWallet';
 import { decryptMnemonic } from '@stacks/encryption';
 import { encrypt } from '@stacks/wallet-sdk/dist';
+import { useWallet } from '../../hooks/useWallet/useWallet';
 
 type TProps = {
   icon: React.FC;
@@ -73,14 +74,16 @@ const Settings = () => {
     setEncryptedSeed,
   } = useContext(UserPreferenceContext);
   const [hasBioSetup, setHasBioSetup] = useState<BIOMETRY_TYPE | null>(null);
+  const { resetWallet } = useWallet();
 
-  const handleBioOn = async (password: string) => {
-    await SecureKeychain.setGenericPassword(
-      password || '',
-      ACCESS_CONTROL.BIOMETRY_CURRENT_SET,
-    );
-    setHasEnabledBiometric(true);
+  const handleBioOn = async () => {
+    if (hasBioSetup !== null) {
+      await SecureKeychain.resetGenericPassword();
+    }
+    resetWallet();
+    clearUserPreference();
     enterPasswordModalRef.current?.close();
+    dispatch(StackActions.replace('WalletSetup'));
   };
 
   const { validateUserCredentials } = useUnlockWallet(
