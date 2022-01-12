@@ -3,6 +3,7 @@ import React, {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from 'react';
@@ -25,19 +26,32 @@ import PreviewTransfer from '../PreviewTransfer';
 import { useAccounts } from '../../hooks/useAccounts/useAccounts';
 import { useAssets } from '../../hooks/useAssets/useAssets';
 import { AccountToken } from '../../models/account';
-import GeneralButton from '../shared/GeneralButton';
 import WarningIcon from '../shared/WarningIcon';
 import { titleCase } from '../../shared/helpers';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { valueFromBalance } from '../../shared/balanceUtils';
+import { currentAccountAvailableStxBalanceState } from '../../hooks/useAccounts/accountsStore';
 
 const TransactionRequestBottomSheet: React.FC = () => {
-  const snapPoints = React.useMemo(() => ['90%'], []);
+  const snapPoints = React.useMemo(() => ['95%'], []);
   const {
     theme: { colors },
   } = useContext(ThemeContext);
+  const { bottom } = useSafeAreaInsets();
   const transactionRequest = useAtomValue(transactionRequestTokenPayloadState);
   const transferPayload = transactionRequest as STXTransferPayload;
   const setTransactionRequest = useTransactionRequest();
-
+  const balance = useAtomValue(currentAccountAvailableStxBalanceState);
+  const amount = useMemo(() => {
+    if (balance) {
+      return valueFromBalance(balance, 'stx');
+    }
+    return 0;
+  }, [balance]);
+  const [fees, setFees] = useState<Number>(NaN);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const isEnoughBalance =
+    Number(transferPayload?.amount || 0) / 1000000 + Number(fees) <= amount;
   const {
     selectedAccountState: account,
     estimateTransactionFees,
@@ -48,8 +62,6 @@ const TransactionRequestBottomSheet: React.FC = () => {
     undefined,
   );
 
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [fees, setFees] = useState<Number>(NaN);
   const bottomSheetRef = useRef<BottomSheet>(null);
 
   useEffect(() => {
@@ -140,24 +152,38 @@ const TransactionRequestBottomSheet: React.FC = () => {
       handleTransfer();
     }
   }, [transactionRequest, fees]);
-
   return (
     <Portal>
       <BottomSheet
         onChange={handleSheetChanges}
         ref={bottomSheetRef}
         snapPoints={snapPoints}
+        handleComponent={null}
         backdropComponent={CustomBackdrop}
         enablePanDownToClose
         index={-1}>
-        <View style={styles.container}>
+        <View style={[styles.container, { paddingBottom: bottom + 10 }]}>
           <Header
+            containerStyles={styles.header}
             title="Transaction Signing"
             leftComponent={
               <HeaderBack
                 textColor={colors.secondary100}
                 text="Cancel"
                 onPress={dismissBottomSheet}
+              />
+            }
+            isRightLoading={isLoading}
+            rightComponent={
+              <HeaderBack
+                disabled={Number(fees) === null || !isEnoughBalance}
+                textColor={
+                  Number(fees) === null || !isEnoughBalance
+                    ? colors.primary40
+                    : colors.secondary100
+                }
+                text="Confirm"
+                onPress={handSendPress}
               />
             }
           />
@@ -169,17 +195,53 @@ const TransactionRequestBottomSheet: React.FC = () => {
                   backgroundColor: colors.card,
                 },
               ]}>
-              <Image
-                style={styles.appIcon}
-                source={{ uri: transactionRequest?.appDetails?.icon }}
-              />
+              <View
+                style={[
+                  styles.appIconWrapper,
+                  { backgroundColor: colors.white },
+                ]}>
+                <Image
+                  style={styles.appIcon}
+                  source={{ uri: transactionRequest?.appDetails?.icon }}
+                />
+              </View>
               <Typography type={'commonText'} style={styles.warning}>
-                {`Allow ${transactionRequest?.appDetails?.name} to proceed with the decentralized authentication process.`}
+                {`${transactionRequest?.appDetails?.name} asks for your signature to proceed with this transaction, Please make sure transaction parameters are correct.`}
               </Typography>
             </View>
+            {!isEnoughBalance && (
+              <View
+                style={[
+                  styles.noBalanceCard,
+                  { backgroundColor: colors.failed10 },
+                ]}>
+                <WarningIcon width={24} height={24} fill={colors.failed100} />
+                <Typography
+                  type="smallTitle"
+                  style={[
+                    styles.noBalanceTitle,
+                    {
+                      color: colors.failed100,
+                    },
+                  ]}>
+                  No Enough Balance
+                </Typography>
+                <Typography
+                  type="commonText"
+                  style={[
+                    styles.noBalanceDesc,
+                    {
+                      color: colors.failed100,
+                    },
+                  ]}>
+                  {`You have not enough balance to proceed this transaction, Available Balance: ${amount} STX`}{' '}
+                </Typography>
+              </View>
+            )}
             {transferPayload && selectedAsset && account && (
               <PreviewTransfer
                 sender={account.address}
+                memo={transferPayload.memo}
                 recipient={transferPayload.recipient}
                 amount={Number(transferPayload.amount) / 1000000}
                 fees={Number(fees)}
@@ -189,7 +251,7 @@ const TransactionRequestBottomSheet: React.FC = () => {
             )}
           </Suspense>
           <View style={[styles.horizontalFill, styles.centerItems]}>
-            <WarningIcon fill={colors.primary60} />
+            <WarningIcon width={24} height={24} fill={colors.primary60} />
             <Typography
               type="commonText"
               style={[
@@ -199,14 +261,8 @@ const TransactionRequestBottomSheet: React.FC = () => {
                 },
               ]}>
               If you confirm this transaction it is not reversible. Make sure
-              all arguments are correct.
+              all inputs are correct.
             </Typography>
-            <GeneralButton
-              type="Primary"
-              disabled={isNaN(Number(fees)) || isLoading}
-              onPress={handSendPress}>
-              {isLoading ? 'Sending...' : 'Send'}
-            </GeneralButton>
           </View>
         </View>
       </BottomSheet>

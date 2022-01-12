@@ -14,15 +14,17 @@ import { ThemeContext } from '../../../contexts/Theme/theme';
 import NoAssets from '../../../assets/images/Home/noAssets.svg';
 import Copy from '../../../assets/images/copy.svg';
 import Clipboard from '@react-native-clipboard/clipboard';
-import assetsTabStyles from './styles';
+import styles from './styles';
 import { AccountToken } from '../../../models/account';
 import { withSuspense } from '../../shared/WithSuspense';
 import { useAssets } from '../../../hooks/useAssets/useAssets';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const AssetsTab: React.FC = () => {
   const {
     theme: { colors },
   } = useContext(ThemeContext);
+  const { bottom } = useSafeAreaInsets();
   const { selectedAccountState: account } = useAccounts();
   const { selectedAccountAssets } = useAssets();
   const [assets, setAssets] = useState<AccountToken[]>([]);
@@ -45,24 +47,21 @@ const AssetsTab: React.FC = () => {
 
   const EmptyAsset = useCallback(() => {
     return (
-      <View style={assetsTabStyles.emptyContainer}>
+      <View style={styles.emptyContainer}>
         <NoAssets />
         <Typography
           type="commonText"
-          style={[assetsTabStyles.emptyMessage, { color: colors.primary40 }]}>
+          style={[styles.emptyMessage, { color: colors.primary40 }]}>
           No Assets Yet
         </Typography>
         <TouchableOpacity
           activeOpacity={0.5}
           onPress={handleCopyAccountAddress}
-          style={assetsTabStyles.copyAddressButton}>
+          style={styles.copyAddressButton}>
           <Copy />
           <Typography
             type="commonText"
-            style={[
-              assetsTabStyles.copyAddressIcon,
-              { color: colors.secondary100 },
-            ]}>
+            style={[styles.copyAddressIcon, { color: colors.secondary100 }]}>
             Copy Address
           </Typography>
         </TouchableOpacity>
@@ -80,8 +79,8 @@ const AssetsTab: React.FC = () => {
       showsHorizontalScrollIndicator={false}
       showsVerticalScrollIndicator={false}
       renderItem={renderAsset}
-      style={assetsTabStyles.assetsList}
-      contentContainerStyle={assetsTabStyles.assetsListContent}
+      style={[styles.assetsList, { marginBottom: bottom + 10 }]}
+      contentContainerStyle={styles.assetsListContent}
       ListEmptyComponent={EmptyAsset}
     />
   );

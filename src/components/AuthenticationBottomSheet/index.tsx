@@ -32,7 +32,7 @@ import { useWallet } from '../../hooks/useWallet/useWallet';
 import { CustomBackdrop } from '../shared/customBackdrop';
 
 const AuthenticationBottomSheet: React.FC = () => {
-  const snapPoints = React.useMemo(() => ['90%'], []);
+  const snapPoints = React.useMemo(() => ['95%'], []);
   const {
     theme: { colors },
   } = useContext(ThemeContext);

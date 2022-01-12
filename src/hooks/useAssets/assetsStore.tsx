@@ -1,4 +1,3 @@
-import React from 'react';
 import { atom } from 'jotai';
 import BigNumber from 'bignumber.js';
 import {
@@ -13,8 +12,6 @@ import {
 } from '../../shared/balanceUtils';
 import { FtMeta } from '../../models/assets';
 import AsyncStorage from '@react-native-community/async-storage';
-import { useContext } from 'react';
-import { ThemeContext } from '../../contexts/Theme/theme';
 import StxTokenIcon from '../../assets/images/stx.svg';
 import {
   FungibleTokensApi,
@@ -86,7 +83,7 @@ export const assets = atom(async get => {
       defaultStyles: {
         backgroundColor: 'black',
       },
-      icon: <StxTokenIcon />,
+      icon: StxTokenIcon,
       amount: valueFromBalance(stxBalance as BigNumber, 'stx'),
     };
     results.push(stxToken);

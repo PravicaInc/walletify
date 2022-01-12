@@ -1,22 +1,18 @@
 import { StyleSheet } from 'react-native';
 
-const AccountBalanceCardStyles = StyleSheet.create({
+export default StyleSheet.create({
   container: {
-    height: 147,
+    height: 136,
     width: '100%',
-    paddingVertical: '5%',
-    paddingHorizontal: 16,
-    borderRadius: 24,
-    position: 'relative',
+    padding: 16,
+    borderRadius: 13,
+    marginBottom: 15.5,
   },
   balanceContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-  },
-  balance: {
-    fontSize: 35,
-    marginTop: 10,
+    marginTop: 15,
   },
   currency: {
     fontSize: 22,
@@ -24,9 +20,7 @@ const AccountBalanceCardStyles = StyleSheet.create({
   balanceActionsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    position: 'absolute',
-    left: '2.5%',
-    bottom: -10,
+    bottom: -16.5,
   },
   balanceActionButton: {
     height: 53,
@@ -43,5 +37,3 @@ const AccountBalanceCardStyles = StyleSheet.create({
     marginLeft: 5,
   },
 });
-
-export default AccountBalanceCardStyles;

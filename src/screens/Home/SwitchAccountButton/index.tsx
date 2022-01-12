@@ -6,7 +6,7 @@ import { ThemeContext } from '../../../contexts/Theme/theme';
 import { useAccounts } from '../../../hooks/useAccounts/useAccounts';
 import { truncateAddress } from '../../../shared/addressUtils';
 import Switch from '../../../assets/images/Home/switch.svg';
-import switchAccountButtonStyles from './styles';
+import styles from './styles';
 import { withSuspense } from '../../../components/shared/WithSuspense';
 
 interface SwitchAccountButtonProps {
@@ -15,48 +15,34 @@ interface SwitchAccountButtonProps {
 
 const SwitchAccountButton: React.FC<SwitchAccountButtonProps> = props => {
   const { handlePressSwitchAccount } = props;
-  const { selectedAccountState } = useAccounts();
+  const { selectedAccountState, walletAccounts } = useAccounts();
   const {
     theme: { colors },
   } = useContext(ThemeContext);
+  const accountName =
+    selectedAccountState?.username ||
+    `Account ${selectedAccountState ? selectedAccountState?.index + 1 : 0}`;
   return (
     <TouchableOpacity
       onPress={handlePressSwitchAccount}
       activeOpacity={0.5}
       style={[
-        switchAccountButtonStyles.buttonContainer,
+        styles.buttonContainer,
         {
           backgroundColor: colors.card,
         },
       ]}>
-      <AccountAvatar
-        accountName={
-          selectedAccountState?.username ||
-          `Account ${
-            selectedAccountState ? selectedAccountState?.index + 1 : 0
-          }`
-        }
-        diameter={45}
-      />
-      <View style={switchAccountButtonStyles.accountInfo}>
+      <AccountAvatar accountName={accountName} diameter={45} />
+      <View style={styles.accountInfo}>
         <Typography
           numberOfLines={1}
           type="smallTitle"
-          style={[
-            switchAccountButtonStyles.accountName,
-            { color: colors.primary100 },
-          ]}>
-          {selectedAccountState?.username ||
-            `Account ${
-              selectedAccountState ? selectedAccountState?.index + 1 : 0
-            }`}
+          style={[styles.accountName, { color: colors.primary100 }]}>
+          {accountName}
         </Typography>
         <Typography
           type="commonText"
-          style={[
-            switchAccountButtonStyles.address,
-            { color: colors.primary40 },
-          ]}>
+          style={[styles.address, { color: colors.primary40 }]}>
           {`(${
             selectedAccountState?.address
               ? truncateAddress(selectedAccountState?.address, 11)
@@ -64,9 +50,16 @@ const SwitchAccountButton: React.FC<SwitchAccountButtonProps> = props => {
           })`}
         </Typography>
       </View>
-      <View style={switchAccountButtonStyles.switchIconContainer}>
-        <Switch />
-      </View>
+      {(walletAccounts?.length || 0) > 1 && (
+        <View style={styles.switchIconContainer}>
+          <Typography
+            type="commonText"
+            style={[styles.switchText, { color: colors.secondary100 }]}>
+            Switch
+          </Typography>
+          <Switch />
+        </View>
+      )}
     </TouchableOpacity>
   );
 };

@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-const fungibleTokenStyles = StyleSheet.create({
+export default StyleSheet.create({
   tokenCard: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -25,5 +25,3 @@ const fungibleTokenStyles = StyleSheet.create({
   },
   alignRight: { alignSelf: 'flex-end' },
 });
-
-export default fungibleTokenStyles;

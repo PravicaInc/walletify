@@ -1,21 +1,24 @@
 import { StyleSheet } from 'react-native';
 
-const switchAccountButtonStyles = StyleSheet.create({
+export default StyleSheet.create({
   buttonContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     height: 60,
-    paddingEnd: 23,
-    paddingStart: 7,
-    marginBottom: 10,
+    paddingHorizontal: 7,
+    marginBottom: 20,
     borderRadius: 13,
   },
   switchIconContainer: {
-    flex: 1,
-    alignItems: 'flex-end',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  switchText: {
+    marginRight: 3,
   },
   accountInfo: {
-    width: '70%',
+    flex: 1,
     marginLeft: 6,
   },
   accountName: {
@@ -25,4 +28,3 @@ const switchAccountButtonStyles = StyleSheet.create({
     paddingTop: 6,
   },
 });
-export default switchAccountButtonStyles;

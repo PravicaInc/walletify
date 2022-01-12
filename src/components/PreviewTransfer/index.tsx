@@ -1,12 +1,13 @@
 import React, { useContext } from 'react';
-import { StyleProp, View, ViewStyle } from 'react-native';
+import { ActivityIndicator, StyleProp, View, ViewStyle } from 'react-native';
 import styles from './styles';
 import { ThemeContext } from '../../contexts/Theme/theme';
 import { Typography } from '../shared/Typography';
 import { truncateAddress } from '../../shared/addressUtils';
 import useNetwork from '../../hooks/useNetwork/useNetwork';
-import AccountAsset from '../Home/AccountAsset';
 import { AccountToken } from '../../models/account';
+import TokenAvatar from '../Home/TokenAvatar';
+import { capitalizeFirstLetter } from '../../shared/helpers';
 
 type Props = {
   sender: string;
@@ -37,12 +38,7 @@ const PreviewTransfer = ({
   const truncatedSender = truncateAddress(sender, 11);
 
   return (
-    <View
-      style={
-        externalStyle
-          ? [styles.horizontalFill, externalStyle]
-          : [styles.horizontalFill]
-      }>
+    <View style={[styles.horizontalFill, externalStyle]}>
       <View
         style={[
           styles.previewCard,
@@ -53,27 +49,45 @@ const PreviewTransfer = ({
         <Typography type="commonText" style={{ color: colors.primary40 }}>
           You Will Send
         </Typography>
-        <AccountAsset
-          item={selectedAsset}
-          showCustomAmount
-          customAmount={`${amount}`}
-        />
+        <View style={styles.assetPreview}>
+          <View style={styles.row}>
+            <TokenAvatar
+              iconDimension={10.5}
+              CustomIcon={selectedAsset.icon}
+              customStyle={{ ...selectedAsset.defaultStyles, ...styles.avatar }}
+              tokenName={selectedAsset.name}
+            />
+            <Typography style={{ color: colors.primary100 }} type="bigTitle">
+              {amount}
+            </Typography>
+            <Typography
+              style={[styles.assetName, { color: colors.primary40 }]}
+              type="bigTitleR">
+              {selectedAsset.name}
+            </Typography>
+          </View>
+          {selectedAsset.name === 'STX' && (
+            <Typography style={{ color: colors.primary100 }} type="commonText">
+              Stacks Coin
+            </Typography>
+          )}
+        </View>
         <View
-          style={[
-            styles.transactionDetails,
-            {
-              borderTopColor: colors.primary20,
-              borderBottomColor: colors.primary20,
-            },
-          ]}>
+          style={[styles.separator, { backgroundColor: colors.primary20 }]}
+        />
+        <View style={styles.transactionDetails}>
           <View>
-            <Typography type="commonText" style={{ color: colors.primary40 }}>
+            <Typography
+              type="commonText"
+              style={[styles.detailText, { color: colors.primary40 }]}>
               From
             </Typography>
             <Typography type="smallTitleR">{`(${truncatedSender})`}</Typography>
           </View>
           <View>
-            <Typography type="commonText" style={{ color: colors.primary40 }}>
+            <Typography
+              type="commonText"
+              style={[styles.detailText, { color: colors.primary40 }]}>
               To
             </Typography>
             <Typography type="smallTitleR">
@@ -81,26 +95,39 @@ const PreviewTransfer = ({
             </Typography>
           </View>
         </View>
-        <Typography type="commonText" style={{ color: colors.primary40 }}>
-          Memo
-        </Typography>
-        <Typography type="commonText">{memo ? memo : ''}</Typography>
+        {memo && (
+          <>
+            <View
+              style={[styles.separator, { backgroundColor: colors.primary20 }]}
+            />
+            <Typography
+              type="commonText"
+              style={[styles.detailText, { color: colors.primary40 }]}>
+              Memo
+            </Typography>
+            <Typography type="commonText">{memo ? memo : ''}</Typography>
+          </>
+        )}
       </View>
       <View style={styles.horizontalFill}>
         <View style={styles.transactionMetadataItem}>
           <Typography type="commonText" style={{ color: colors.primary40 }}>
             Fees
           </Typography>
-          <Typography type="commonText" style={{ color: colors.primary40 }}>
-            {`${fees} STX`}
-          </Typography>
+          {!fees ? (
+            <ActivityIndicator color={colors.secondary100} />
+          ) : (
+            <Typography type="commonText" style={{ color: colors.primary40 }}>
+              {`${fees} STX`}
+            </Typography>
+          )}
         </View>
         <View style={styles.transactionMetadataItem}>
           <Typography type="commonText" style={{ color: colors.primary40 }}>
             Network
           </Typography>
           <Typography type="commonText" style={{ color: colors.primary40 }}>
-            {currentNetwork.name}
+            {capitalizeFirstLetter(currentNetwork.name)}
           </Typography>
         </View>
       </View>

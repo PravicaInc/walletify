@@ -10,7 +10,7 @@ import { Typography } from '../../../components/shared/Typography';
 import { ThemeContext } from '../../../contexts/Theme/theme';
 import UpArrow from '../../../assets/images/upArrow.svg';
 import DownArrow from '../../../assets/images/downArrow.svg';
-import AccountBalanceCardStyles from './styles';
+import styles from './styles';
 import { valueFromBalance } from '../../../shared/balanceUtils';
 import { withSuspense } from '../../../components/shared/WithSuspense';
 import { useAtomValue } from 'jotai/utils';
@@ -49,7 +49,7 @@ const AccountBalanceCard: React.FC = () => {
   return (
     <View
       style={[
-        AccountBalanceCardStyles.container,
+        styles.container,
         {
           backgroundColor: colors.card,
         },
@@ -57,33 +57,25 @@ const AccountBalanceCard: React.FC = () => {
       <Typography type="commonText" style={{ color: colors.primary40 }}>
         Total STX Balance:
       </Typography>
-      <View style={AccountBalanceCardStyles.balanceContainer}>
+      <View style={styles.balanceContainer}>
         <Suspense fallback={<Text>Loading</Text>}>
-          <Typography
-            type="bigTitle"
-            style={[
-              AccountBalanceCardStyles.balance,
-              { color: colors.primary100 },
-            ]}>
+          <Typography type="hugeText" style={{ color: colors.primary100 }}>
             {`$${amountValue}`}
           </Typography>
         </Suspense>
         <Typography
-          type="commonText"
-          style={[
-            AccountBalanceCardStyles.currency,
-            { color: colors.primary40 },
-          ]}>
+          type="bigTitleR"
+          style={[styles.currency, { color: colors.primary40 }]}>
           USD
         </Typography>
       </View>
-      <View style={AccountBalanceCardStyles.balanceActionsContainer}>
+      <View style={styles.balanceActionsContainer}>
         <TouchableOpacity
           onPress={handlePresentSend}
           activeOpacity={0.9}
           style={[
-            AccountBalanceCardStyles.balanceActionButton,
-            AccountBalanceCardStyles.sendButton,
+            styles.balanceActionButton,
+            styles.sendButton,
             {
               backgroundColor: colors.primary100,
             },
@@ -91,10 +83,7 @@ const AccountBalanceCard: React.FC = () => {
           <UpArrow />
           <Typography
             type="buttonText"
-            style={[
-              AccountBalanceCardStyles.balanceActionButtonText,
-              { color: colors.white },
-            ]}>
+            style={[styles.balanceActionButtonText, { color: colors.white }]}>
             Send
           </Typography>
         </TouchableOpacity>
@@ -109,7 +98,7 @@ const AccountBalanceCard: React.FC = () => {
           onPress={handlePresentReceive}
           activeOpacity={0.9}
           style={[
-            AccountBalanceCardStyles.balanceActionButton,
+            styles.balanceActionButton,
             {
               backgroundColor: colors.primary100,
             },
@@ -117,10 +106,7 @@ const AccountBalanceCard: React.FC = () => {
           <DownArrow />
           <Typography
             type="buttonText"
-            style={[
-              AccountBalanceCardStyles.balanceActionButtonText,
-              { color: colors.white },
-            ]}>
+            style={[styles.balanceActionButtonText, { color: colors.white }]}>
             Receive
           </Typography>
         </TouchableOpacity>

@@ -1,8 +1,25 @@
 import { StyleSheet } from 'react-native';
 
-const authenticationBottomSheetStyles = StyleSheet.create({
+export default StyleSheet.create({
   accountsList: {
     paddingVertical: 10,
+  },
+  noBalanceCard: {
+    marginTop: 10,
+    paddingVertical: 20,
+    alignItems: 'center',
+    borderRadius: 13,
+  },
+  noBalanceTitle: {
+    marginVertical: 5,
+  },
+  noBalanceDesc: {
+    textAlign: 'center',
+    width: '85%',
+  },
+  header: {
+    paddingHorizontal: 0,
+    marginBottom: 30,
   },
   headerContainer: {
     height: 106,
@@ -17,7 +34,7 @@ const authenticationBottomSheetStyles = StyleSheet.create({
     paddingHorizontal: 12,
     marginTop: 12,
   },
-  appIcon: {
+  appIconWrapper: {
     position: 'absolute',
     width: 60,
     height: 60,
@@ -25,23 +42,29 @@ const authenticationBottomSheetStyles = StyleSheet.create({
     top: -30,
     left: 'auto',
     right: 'auto',
+    zIndex: 12,
+  },
+  appIcon: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
   },
   container: {
     flex: 1,
     paddingHorizontal: '2.5%',
+    paddingTop: 5,
   },
   title: { textAlign: 'center' },
   titleSpace: { marginVertical: 12 },
   previewPanel: {
-    marginTop: '5%',
+    marginVertical: 10,
   },
   horizontalFill: { width: '100%' },
   alignRight: { alignSelf: 'flex-end' },
-  centerItems: { alignItems: 'center' },
+  centerItems: { alignItems: 'center', marginTop: 'auto' },
   warningText: {
     textAlign: 'center',
-    padding: 10,
-    marginBottom: 20,
+    marginTop: 5,
+    width: '90%',
   },
 });
-export default authenticationBottomSheetStyles;

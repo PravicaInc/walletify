@@ -7,7 +7,8 @@ import styles from './styles';
 interface TokenAvatarProps {
   tokenName: string;
   customStyle?: ViewStyle;
-  CustomIcon?: SVGElement;
+  CustomIcon?: any;
+  iconDimension?: number;
 }
 
 const backgrounds = ['#7DADF9', '#FFB662', '#9694FF', '#FF9494', '#9FF2A8'];
@@ -16,6 +17,7 @@ const TokenAvatar: React.FC<TokenAvatarProps> = ({
   customStyle,
   tokenName,
   CustomIcon,
+  iconDimension,
 }) => {
   const {
     theme: { colors },
@@ -33,7 +35,9 @@ const TokenAvatar: React.FC<TokenAvatarProps> = ({
         },
         customStyle,
       ]}>
-      {CustomIcon || (
+      {CustomIcon ? (
+        <CustomIcon with={iconDimension || 18} height={iconDimension || 18} />
+      ) : (
         <Typography
           type="smallTitle"
           style={[styles.avatarInitial, { color: colors.white }]}>

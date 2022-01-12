@@ -5,7 +5,7 @@ import { Typography } from '../../../components/shared/Typography';
 import { ThemeContext } from '../../../contexts/Theme/theme';
 import ActivityTab from '../../../components/Home/ActivityTab';
 import AssetsTab from '../../../components/Home/AssetsTab';
-import homeTabsStyles from './styles';
+import styles from './styles';
 
 const renderScene = SceneMap({
   Assets: AssetsTab,
@@ -20,10 +20,9 @@ const TabsHeader = props => {
     <TabBar
       indicatorStyle={{ backgroundColor: colors.primary100 }}
       style={[
-        homeTabsStyles.tabsHeaderContainer,
+        styles.tabsHeaderContainer,
         {
           backgroundColor: colors.white,
-          borderBottomColor: colors.primary100,
         },
       ]}
       renderTabBarItem={tabProps => (
@@ -31,7 +30,7 @@ const TabsHeader = props => {
           key={tabProps.key}
           activeOpacity={0.9}
           onPress={tabProps.onPress}
-          style={homeTabsStyles.tabHeaderItem}>
+          style={styles.tabHeaderItem}>
           <Typography
             type="smallTitleR"
             style={{
