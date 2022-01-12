@@ -64,13 +64,14 @@ const AuthenticationBottomSheet: React.FC = () => {
     setSelectedAccountIndex(undefined);
   }, []);
   const handleSelectAccount = async (index: number) => {
-    if (!loading) {
+    if (!loading && walletAccounts?.length) {
       setLoading();
       setSelectedAccountIndex(index);
       switchAccount(index);
       await finishSignIn(
         authRequest,
         walletState as any,
+        walletAccounts,
         index,
         network,
         dismissBottomSheet,

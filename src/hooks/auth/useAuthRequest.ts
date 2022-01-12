@@ -18,6 +18,7 @@ import { BIP32Interface } from 'bip32';
 import { assertIsTruthy } from '@stacks/wallet-sdk/dist/utils';
 import { ECPair } from 'bitcoinjs-lib';
 import { Network } from '../../models/network';
+import { AccountWithAddress } from '../../models/account';
 
 export function useAuthRequest() {
   return useUpdateAtom(authRequestState);
@@ -185,12 +186,13 @@ export const selectStxDerivation = async ({
 export const finishSignIn = async (
   { decodedAuthRequest, authRequest, appName, appIcon }: AuthRequestState,
   currentWallet: Wallet,
+  walletAccounts: AccountWithAddress[],
   accountIndex: number,
   network: Network,
   cb: Function,
 ) => {
   const rootNode = getRootNode(currentWallet);
-  const account = currentWallet?.accounts[accountIndex];
+  const account = walletAccounts[accountIndex];
   if (!decodedAuthRequest || !authRequest || !account || !currentWallet) {
     return;
   }
