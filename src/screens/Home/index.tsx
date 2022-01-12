@@ -15,6 +15,8 @@ import { useAccounts } from '../../hooks/useAccounts/useAccounts';
 import SwitchAccountBottomSheet from '../../components/Accounts/SwitchAccountBottomSheet';
 import BottomSheet from '@gorhom/bottom-sheet';
 import SwitchAccountButton from './SwitchAccountButton';
+import { withSuspense } from '../../components/shared/WithSuspense';
+import { Text } from 'react-native-svg';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
@@ -82,4 +84,4 @@ const Home = (props: Props) => {
   );
 };
 
-export default Home;
+export default withSuspense(Home, <Text>Loading</Text>);

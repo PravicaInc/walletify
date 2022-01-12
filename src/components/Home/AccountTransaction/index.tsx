@@ -75,7 +75,7 @@ export const calculateTokenTransferAmount = (
 
 const FtTransferItem = ({ ftTransfer, parentTx }: FtTransferItemProps) => {
   const { selectedAccountState } = useAccounts();
-  const { tokensApi } = useAtomValue(apiClientState);
+  const { fungibleTokensApi } = useAtomValue(apiClientState);
   const { currentNetwork } = useNetwork();
   const [ftTitle, setFtTitle] = useState<string>('');
   const [ftValue, setFtValue] = useState<BigNumber>();
@@ -89,7 +89,7 @@ const FtTransferItem = ({ ftTransfer, parentTx }: FtTransferItemProps) => {
   const getFtDisplayAmount = async () => {
     const assetMetaData = await getAssetMeta(
       ftTransfer.asset_identifier,
-      tokensApi,
+      fungibleTokensApi,
     );
     const title = `${assetMetaData?.name || 'Token'} Transfer`;
     setFtTitle(title);
