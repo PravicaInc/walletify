@@ -97,14 +97,14 @@ export const assets = atom(async get => {
       fungibleTokensApi,
       true,
     );
-    results.concat(...fungibleTokens);
+    results = [...results, ...fungibleTokens];
   }
   if (nonFungibleResponse !== undefined) {
     const nonFungibleTokens: AccountToken[] = await mapAssetResponseToToken(
       nonFungibleResponse,
       nonFungibleTokensApi,
     );
-    results.concat(...nonFungibleTokens);
+    results = [...results, ...nonFungibleTokens];
   }
   return results;
 });
