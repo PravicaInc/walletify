@@ -19,23 +19,44 @@ import {
 import {
   accountBalancesAnchoredClient,
   accountBalancesUnanchoredClient,
+  apiClientState,
 } from '../apiClients/apiClients';
 import { PrincipalWithNetworkUrl } from '../../models/apiClient';
 
-export const accounts = atom<AccountWithAddress[] | undefined>(get => {
+export const accounts = atom<AccountWithAddress[] | undefined>(async get => {
   const currentWallet = get(wallet);
+  const { namesApi } = get(apiClientState);
   const currentWalletAccounts = currentWallet?.accounts;
   const transactionVersion = get(transactionNetworkVersionState);
   if (!currentWalletAccounts) {
     return undefined;
   }
-  return currentWalletAccounts?.map(account => {
-    const address = getStxAddress({ account, transactionVersion });
-    return {
-      ...account,
-      address,
-    };
-  });
+  return Promise.all(
+    currentWalletAccounts?.map(async account => {
+      const address = getStxAddress({ account, transactionVersion });
+      let username = '';
+      if (!account.username) {
+        const nameResponse = await namesApi.getNamesOwnedByAddress({
+          address: address,
+          blockchain: 'stacks',
+        });
+        if (
+          nameResponse &&
+          nameResponse.names &&
+          nameResponse.names.length > 0
+        ) {
+          username = nameResponse.names[0];
+        }
+      } else {
+        username = account.username;
+      }
+      return {
+        ...account,
+        username,
+        address,
+      };
+    }),
+  );
 });
 
 export const selectedAccountIndex = atomWithAsyncStorage(
