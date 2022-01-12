@@ -32,6 +32,7 @@ import WarningIcon from '../../components/shared/WarningIcon';
 import { useUnlockWallet } from '../../hooks/useWallet/useUnlockWallet';
 import { decryptMnemonic } from '@stacks/encryption';
 import { encrypt } from '@stacks/wallet-sdk/dist';
+import { useWallet } from '../../hooks/useWallet/useWallet';
 
 type TProps = {
   icon: React.FC;
@@ -73,6 +74,7 @@ const Settings = () => {
     setEncryptedSeed,
   } = useContext(UserPreferenceContext);
   const [hasBioSetup, setHasBioSetup] = useState<BIOMETRY_TYPE | null>(null);
+  const { resetWallet } = useWallet();
 
   const handleBioOn = async (password: string) => {
     await SecureKeychain.setGenericPassword(
@@ -83,8 +85,23 @@ const Settings = () => {
     enterPasswordModalRef.current?.close();
   };
 
+  const handleResetWallet = async () => {
+    confirmModalRef.current?.close();
+    if (hasBioSetup !== null) {
+      await SecureKeychain.resetGenericPassword();
+    }
+    resetWallet();
+    clearUserPreference();
+    enterPasswordModalRef.current?.close();
+    dispatch(StackActions.replace('WalletSetup'));
+  };
+
+  const onConfirmResetWallet = () => {
+    confirmModalRef.current?.expand();
+  };
+
   const { validateUserCredentials } = useUnlockWallet(
-    handleBioOn,
+    handleResetWallet,
     enterPasswordModalRef,
   );
   useEffect(() => {
@@ -150,23 +167,17 @@ const Settings = () => {
       }),
     );
 
-  const handleResetWallet = () => {
-    confirmModalRef.current?.collapse();
-    clearUserPreference();
-    dispatch(StackActions.replace('WalletSetup'));
-  };
-
   const options = useMemo(() => {
     return [
       {
         label: 'OK Reset',
-        onClick: handleResetWallet,
+        onClick: validateUserCredentials,
         optionTextStyle: {
           color: colors.failed100,
         },
       },
     ];
-  }, [colors, handleResetWallet]);
+  }, [colors, validateUserCredentials]);
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.white }]}>
@@ -234,7 +245,7 @@ const Settings = () => {
         </View>
         <TouchableOpacity
           style={styles.bottomContent}
-          onPress={validateUserCredentials}>
+          onPress={onConfirmResetWallet}>
           <ExitIcon />
           <Typography
             type="buttonText"

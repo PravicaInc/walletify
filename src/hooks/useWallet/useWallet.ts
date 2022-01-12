@@ -44,8 +44,14 @@ export const useWallet = () => {
     },
     [],
   );
+
+  const resetWallet = () => {
+    setWalletState(undefined);
+  };
+
   return {
     walletState,
+    resetWallet,
     setWalletState,
     encryptedSeedPhrase,
     createWallet,
