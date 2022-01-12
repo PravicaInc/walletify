@@ -241,6 +241,7 @@ const TransactionRequestBottomSheet: React.FC = () => {
             {transferPayload && selectedAsset && account && (
               <PreviewTransfer
                 sender={account.address}
+                memo={transferPayload.memo}
                 recipient={transferPayload.recipient}
                 amount={Number(transferPayload.amount) / 1000000}
                 fees={Number(fees)}
