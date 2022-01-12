@@ -1,12 +1,11 @@
 import { StyleSheet } from 'react-native';
 
-const homeTabsStyles = StyleSheet.create({
+export default StyleSheet.create({
   tabsHeaderContainer: {
     width: '100%',
     height: 32,
     justifyContent: 'center',
-    paddingHorizontal: 1,
-    elevation: 0,
+    shadowOpacity: 0,
   },
   tabHeaderItem: {
     flex: 1,
@@ -14,4 +13,3 @@ const homeTabsStyles = StyleSheet.create({
     alignItems: 'center',
   },
 });
-export default homeTabsStyles;

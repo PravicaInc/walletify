@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { View, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, ActivityIndicator, ViewStyle } from 'react-native';
 import { Typography } from '../Typography';
 import { ThemeContext } from '../../../contexts/Theme/theme';
 import { PADDING_HORIZONTAL } from '../../../shared/layout';
@@ -10,6 +10,7 @@ interface IProps {
   titleColor?: string;
   rightComponent?: React.ReactNode;
   isRightLoading?: boolean;
+  containerStyles?: ViewStyle;
 }
 
 const Header: React.FC<IProps> = ({
@@ -18,13 +19,14 @@ const Header: React.FC<IProps> = ({
   leftComponent,
   rightComponent,
   isRightLoading,
+  containerStyles,
 }) => {
   const {
     theme: { colors },
   } = useContext(ThemeContext);
 
   return (
-    <View style={styles.headerContainer}>
+    <View style={[styles.headerContainer, containerStyles]}>
       <View style={styles.lateral}>{leftComponent}</View>
       {title && (
         <Typography

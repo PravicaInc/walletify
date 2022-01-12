@@ -21,6 +21,7 @@ import {
   isYesterday,
   isToday,
 } from 'date-fns';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const formatDate = (date: number) => {
   if (isToday(date)) {
@@ -43,6 +44,7 @@ const ActivityTab: React.FC = () => {
     isRefreshing,
     refreshTransactionsList,
   } = useTransactions();
+  const { bottom } = useSafeAreaInsets();
 
   const EmptyActivity = useCallback(() => {
     return (
@@ -120,7 +122,7 @@ const ActivityTab: React.FC = () => {
       showsHorizontalScrollIndicator={false}
       showsVerticalScrollIndicator={false}
       renderItem={renderTransaction}
-      style={activityTabStyles.activityList}
+      style={[activityTabStyles.activityList, { marginBottom: bottom + 10 }]}
       contentContainerStyle={activityTabStyles.activityListContent}
       ListEmptyComponent={EmptyActivity}
       stickySectionHeadersEnabled={false}

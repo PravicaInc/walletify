@@ -1,11 +1,8 @@
 import { StyleSheet } from 'react-native';
 
-const switchAccountBottomSheetStyles = StyleSheet.create({
-  contentContainer: {
-    paddingHorizontal: '2.5%',
-  },
+export default StyleSheet.create({
   accountsList: {
     paddingVertical: 10,
+    paddingHorizontal: '2.5%',
   },
 });
-export default switchAccountBottomSheetStyles;

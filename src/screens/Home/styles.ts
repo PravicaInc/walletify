@@ -7,6 +7,8 @@ export const styles = StyleSheet.create({
   },
   header: {
     shadowOpacity: 0,
+    paddingHorizontal: 0,
+    marginBottom: 20,
   },
   contentContainer: {
     paddingHorizontal: '2.5%',
@@ -16,11 +18,8 @@ export const styles = StyleSheet.create({
     width: '30%',
     alignItems: 'flex-end',
   },
-  pickAccountText: {
-    paddingVertical: 16,
-  },
   walletOperationsTabs: {
-    marginTop: 30,
+    marginTop: 25,
     flex: 1,
   },
 });

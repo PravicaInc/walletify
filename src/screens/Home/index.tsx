@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useRef } from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ThemeContext } from '../../contexts/Theme/theme';
@@ -12,7 +12,6 @@ import Wise from '../../assets/wise.svg';
 import Settings from '../../assets/images/settings/settings.svg';
 import { styles } from './styles';
 import { useAccounts } from '../../hooks/useAccounts/useAccounts';
-import { Typography } from '../../components/shared/Typography';
 import SwitchAccountBottomSheet from '../../components/Accounts/SwitchAccountBottomSheet';
 import BottomSheet from '@gorhom/bottom-sheet';
 import SwitchAccountButton from './SwitchAccountButton';
@@ -25,7 +24,7 @@ const Home = (props: Props) => {
   } = useContext(ThemeContext);
   const { restoreWallet } = useWallet();
   const { dispatch } = useNavigation();
-  const { switchAccount } = useAccounts();
+  const { switchAccount, walletAccounts } = useAccounts();
   const bottomSheetModalRef = useRef<BottomSheet>(null);
 
   const { password, seedPhrase } = props.route.params;
@@ -37,8 +36,10 @@ const Home = (props: Props) => {
   const goToSettings = () => dispatch(StackActions.push('Settings'));
 
   const handlePressSwitchAccount = useCallback(() => {
-    bottomSheetModalRef.current?.snapToIndex(0);
-  }, []);
+    bottomSheetModalRef.current?.snapToIndex(
+      (walletAccounts?.length || 0) > 5 ? 1 : 0,
+    );
+  }, [walletAccounts]);
 
   const handleCancelSwitchAccount = useCallback(() => {
     bottomSheetModalRef.current?.close();
@@ -53,6 +54,7 @@ const Home = (props: Props) => {
     <View style={[styles.container, { backgroundColor: colors.white }]}>
       <View style={styles.contentContainer}>
         <Header
+          containerStyles={styles.header}
           leftComponent={<Wise width={92} height={36} />}
           rightComponent={
             <TouchableOpacity
@@ -63,11 +65,6 @@ const Home = (props: Props) => {
             </TouchableOpacity>
           }
         />
-        <Typography
-          type="commonText"
-          style={[styles.pickAccountText, { color: colors.primary40 }]}>
-          Pick an Account
-        </Typography>
         <SwitchAccountButton
           handlePressSwitchAccount={handlePressSwitchAccount}
         />

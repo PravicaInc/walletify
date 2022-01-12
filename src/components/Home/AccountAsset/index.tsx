@@ -1,11 +1,10 @@
 import React, { useContext } from 'react';
 import { View } from 'react-native';
-import { Typography } from '../../../components/shared/Typography';
+import { Typography } from '../../shared/Typography';
 import { ThemeContext } from '../../../contexts/Theme/theme';
 import { AccountToken } from '../../../models/account';
 import TokenAvatar from '../TokenAvatar';
 import styles from './styles';
-import fungibleTokenStyles from './styles';
 
 interface AccountAssetProps {
   item: AccountToken;
@@ -27,12 +26,12 @@ const AccountAsset: React.FC<AccountAssetProps> = props => {
     <View
       key={name}
       style={[
-        fungibleTokenStyles.tokenCard,
+        styles.tokenCard,
         {
           backgroundColor: colors.card,
         },
       ]}>
-      <View style={fungibleTokenStyles.tokenInformationContainer}>
+      <View style={styles.tokenInformationContainer}>
         <TokenAvatar
           CustomIcon={icon}
           customStyle={defaultStyles}

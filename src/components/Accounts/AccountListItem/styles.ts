@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-const accountListItemStyles = StyleSheet.create({
+export default StyleSheet.create({
   container: {
     borderRadius: 13,
     flexDirection: 'row',
@@ -27,5 +27,3 @@ const accountListItemStyles = StyleSheet.create({
     alignSelf: 'flex-start',
   },
 });
-
-export default accountListItemStyles;

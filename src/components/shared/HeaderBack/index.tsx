@@ -15,6 +15,7 @@ interface IProps {
   textType?: StylesTypes;
   textColor?: string;
   customStyle?: TextStyle;
+  disabled?: boolean;
   hasChevron?: boolean;
   chevronSize?: { height: number; width: number };
   onLayout?: (nativeEvent: LayoutChangeEvent) => void;
@@ -29,6 +30,7 @@ const HeaderBack: React.FC<IProps> = ({
   chevronSize,
   customStyle,
   onLayout,
+  disabled,
 }) => {
   const {
     theme: { colors },
@@ -37,6 +39,7 @@ const HeaderBack: React.FC<IProps> = ({
     <TouchableOpacity
       style={[styles.backContainer, customStyle]}
       onPress={onPress}
+      disabled={disabled}
       onLayout={onLayout}>
       {hasChevron && (
         <Chevron

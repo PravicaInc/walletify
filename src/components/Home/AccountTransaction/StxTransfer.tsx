@@ -63,7 +63,7 @@ export const StxTransferTransaction: React.FC<{
       ]}>
       <View style={styles.tokenIconContainer}>
         <TokenAvatar
-          CustomIcon={<Stx />}
+          CustomIcon={Stx}
           tokenName="STX"
           customStyle={{ backgroundColor: colors.primary100 }}
         />
@@ -126,7 +126,7 @@ export const TransactionItem: React.FC<{
       ]}>
       <View style={styles.tokenIconContainer}>
         <TokenAvatar
-          CustomIcon={<Stx />}
+          CustomIcon={Stx}
           tokenName="STX"
           customStyle={{ backgroundColor: colors.primary100 }}
         />

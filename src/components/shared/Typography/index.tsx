@@ -6,6 +6,8 @@ import { ThemeContext } from '../../../contexts/Theme/theme';
 
 export const BIG_TITLE = 'bigTitle';
 export type bigTitleType = typeof BIG_TITLE;
+export const BIG_TITLE_R = 'bigTitleR';
+export type bigTitleRType = typeof BIG_TITLE_R;
 export const MID_TITLE = 'midTitle';
 export type midTitleType = typeof MID_TITLE;
 export const SMALL_TITLE = 'smallTitle';
@@ -20,6 +22,8 @@ export const COMMON_TEXT_BOLD = 'commonTextBold';
 export type commonTextBoldType = typeof COMMON_TEXT_BOLD;
 export const SMALL_TEXT = 'smallText';
 export type smallTextType = typeof SMALL_TEXT;
+export const HUGE_TEXT = 'hugeText';
+export type hugeTextType = typeof HUGE_TEXT;
 export const SMALL_TEXT_BOLD = 'smallTextBold';
 export type smallTextBoldType = typeof SMALL_TEXT_BOLD;
 export const LINK = 'link';
@@ -27,12 +31,14 @@ export type linkType = typeof LINK;
 
 export type StylesTypes =
   | bigTitleType
+  | bigTitleRType
   | midTitleType
   | smallTitleType
   | smallTitleRType
   | buttonTextType
   | commonTextType
   | smallTextType
+  | hugeTextType
   | smallTextBoldType
   | commonTextBoldType
   | linkType;
@@ -66,6 +72,10 @@ export const Typography: React.FC<IProps> = props => {
         fontFamily: fonts.bold,
         fontSize: 22,
       },
+      bigTitleR: {
+        fontFamily: fonts.regular,
+        fontSize: 22,
+      },
       midTitle: {
         fontFamily: fonts.bold,
         fontSize: 18,
@@ -93,6 +103,10 @@ export const Typography: React.FC<IProps> = props => {
       smallText: {
         fontFamily: fonts.regular,
         fontSize: 10,
+      },
+      hugeText: {
+        fontFamily: fonts.bold,
+        fontSize: 35,
       },
       smallTextBold: {
         fontFamily: fonts.bold,
