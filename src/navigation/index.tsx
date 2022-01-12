@@ -18,11 +18,13 @@ import { useAuthenticationListener } from '../hooks/useLinkingListener/useAuthen
 import AuthenticationBottomSheet from '../components/AuthenticationBottomSheet';
 import { useTransactionRequestListener } from '../hooks/useLinkingListener/useTransactionRequestsListener';
 import TransactionRequestBottomSheet from '../components/TransactionRequestBottomSheet';
+import { useInternetConnection } from '../hooks/useInternetConnnection';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
 export const Routes: React.FC = () => {
   useStxPrice();
+  useInternetConnection();
   useAuthenticationListener();
   useTransactionRequestListener();
   return (
