@@ -16,6 +16,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ACCESS_CONTROL, BIOMETRY_TYPE } from 'react-native-keychain';
+import { request, PERMISSIONS } from 'react-native-permissions';
 import SecureKeychain from '../../shared/SecureKeychain';
 import Header from '../../components/shared/Header';
 import HeaderBack from '../../components/shared/HeaderBack';
@@ -168,6 +169,17 @@ const CreatePassword: React.FC<Props> = ({
     }
   }, [hasSetBiometric, nextScreen, password]);
 
+  const handleToggleBiometric = (value: boolean) => {
+    setHasEnabledBiometric(value);
+    if (hasSetBiometric) {
+      request(PERMISSIONS.IOS.FACE_ID).then(result => {
+        if (result === 'denied') {
+          setHasEnabledBiometric(false);
+        }
+      });
+    }
+  };
+
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.white }]}>
       <Header
@@ -302,7 +314,7 @@ const CreatePassword: React.FC<Props> = ({
                   </View>
                   <View style={styles.switch}>
                     <GeneralSwitch
-                      toggleLock={event => setHasEnabledBiometric(event)}
+                      toggleLock={handleToggleBiometric}
                       isLocked={hasSetBiometric}
                       disabled={!hasBioSupported}
                       switchPx={2.5}
