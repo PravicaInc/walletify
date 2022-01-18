@@ -225,7 +225,6 @@ const CreatePassword: React.FC<Props> = ({
           </View>
           {isEditPassword && (
             <GeneralTextInput
-              autoFocus={true}
               customStyle={styles.input}
               outerWrapperStyle={styles.bottomInput}
               labelText="Enter Old Password"
