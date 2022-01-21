@@ -10,6 +10,7 @@ import {
   AnchorMode,
   SignedTokenTransferOptions,
   estimateTransaction,
+  TxBroadcastResult,
 } from '@stacks/transactions/dist';
 import {
   accountAvailableStxBalanceState,
@@ -22,7 +23,6 @@ import { wallet } from '../useWallet/walletStore';
 import { gaiaUrl } from '../../shared/constants';
 import { selectedNetwork } from '../useNetwork/networkStore';
 import { createTokenTransferPayload } from '@stacks/transactions/dist/payload';
-import { TxBroadcastResult } from '@stacks/wallet-sdk/node_modules/@stacks/transactions';
 
 const MAX_NONCE_INCREMENT_RETRIES = 5;
 
