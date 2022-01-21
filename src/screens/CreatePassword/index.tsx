@@ -46,10 +46,10 @@ enum StrengthLevel {
 
 const CreatePassword: React.FC<Props> = ({
   route: {
-    params: { nextScreen, handleEditPassword },
+    params: { nextScreen, handleEditPassword, handleCheckPassword },
   },
 }) => {
-  const isEditPassword = !!handleEditPassword;
+  const isEditPassword = !!handleEditPassword && !!handleCheckPassword;
   const {
     theme: { colors },
   } = useContext(ThemeContext);
@@ -92,9 +92,11 @@ const CreatePassword: React.FC<Props> = ({
     error: oldPasswordError,
     setError: setOldPasswordError,
     input: oldPassword,
-  } = usePasswordField((inputValue: string) => {
+  } = usePasswordField(async (inputValue: string) => {
     if (inputValue.length < 12) {
       throw Error('You need at least 12 characters');
+    } else {
+      await handleCheckPassword(oldPassword);
     }
   });
   const {

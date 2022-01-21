@@ -137,6 +137,13 @@ const Settings = () => {
   const handleChangePassword = () =>
     dispatch(
       StackActions.push('CreatePassword', {
+        handleCheckPassword: async (password: string) => {
+          try {
+            await decryptMnemonic(encryptedSeedPhrase, password);
+          } catch (e) {
+            throw Error('The password is incorrect!');
+          }
+        },
         handleEditPassword: async (
           oldPassword: string,
           newPassword: string,

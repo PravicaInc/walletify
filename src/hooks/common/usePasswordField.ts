@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 
 export const usePasswordField = (
-  validation: (val: string) => void = () => null,
+  validation: ((val: string) => void) | ((val: string) => Promise<any>) = () =>
+    null,
   extraDeps: any[] = [],
 ) => {
   const [input, setInput] = useState<string>('');
@@ -18,8 +19,11 @@ export const usePasswordField = (
       if (touched && validation) {
         try {
           setError(undefined);
-          validation(input);
-        } catch (e) {
+          const result = validation(input);
+          if (result instanceof Promise) {
+            result.catch(e => setError(e.message));
+          }
+        } catch (e: any) {
           setError(e.message);
         }
       }
