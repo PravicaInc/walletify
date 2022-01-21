@@ -6,7 +6,13 @@ import React, {
   useCallback,
   useMemo,
 } from 'react';
-import { TouchableOpacity, View, ScrollView, Switch } from 'react-native';
+import {
+  TouchableOpacity,
+  View,
+  ScrollView,
+  Switch,
+  Linking,
+} from 'react-native';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { BIOMETRY_TYPE, ACCESS_CONTROL } from 'react-native-keychain';
 import { Typography } from '../../components/shared/Typography';
@@ -55,9 +61,28 @@ const TouchableSettingsItem = (props: TProps) => {
 };
 
 const bottomSettingsList = [
-  { icon: SpeakIcon, text: 'Request a Feature' },
-  { icon: QuestionMarkIcon, text: 'Ask a Question' },
-  { icon: BugIcon, text: 'Report a Bug' },
+  {
+    icon: SpeakIcon,
+    text: 'Request a Feature',
+    onPress: () =>
+      Linking.openURL(
+        'https://pravicasupport.freshdesk.com/support/tickets/new',
+      ),
+  },
+  {
+    icon: QuestionMarkIcon,
+    text: 'Ask a Question',
+    onPress: () =>
+      Linking.openURL(
+        'https://pravicasupport.freshdesk.com/support/tickets/new',
+      ),
+  },
+  {
+    icon: BugIcon,
+    text: 'Report a Bug',
+    onPress: () =>
+      Linking.openURL('https://github.com/PravicaInc/Wise/issues/new/choose'),
+  },
 ];
 
 const Settings = () => {
@@ -239,6 +264,7 @@ const Settings = () => {
                 key={item.text}
                 icon={item.icon}
                 text={item.text}
+                onPress={item.onPress}
               />
             ))}
           </View>
