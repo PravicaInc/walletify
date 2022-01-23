@@ -32,5 +32,8 @@ const authenticationBottomSheetStyles = StyleSheet.create({
   },
   title: { textAlign: 'center' },
   titleSpace: { marginVertical: 12 },
+  confirmButton: {
+    marginBottom: 50,
+  },
 });
 export default authenticationBottomSheetStyles;

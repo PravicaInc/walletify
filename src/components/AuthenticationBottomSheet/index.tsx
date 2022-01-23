@@ -7,13 +7,7 @@ import React, {
   useState,
 } from 'react';
 import BottomSheet, { BottomSheetFlatList } from '@gorhom/bottom-sheet';
-import {
-  ActivityIndicator,
-  Image,
-  ListRenderItem,
-  Text,
-  View,
-} from 'react-native';
+import { Image, ListRenderItem, Text, View } from 'react-native';
 import { ThemeContext } from '../../contexts/Theme/theme';
 import { useAccounts } from '../../hooks/useAccounts/useAccounts';
 import Header from '../shared/Header';
@@ -21,7 +15,7 @@ import HeaderBack from '../shared/HeaderBack';
 import { AccountWithAddress } from '../../models/account';
 import AccountListItem from '../Accounts/AccountListItem';
 import { Typography } from '../shared/Typography';
-import authenticationBottomSheetStyles from './styles';
+import styles from './styles';
 import { useAtomValue } from 'jotai/utils';
 import { authRequestState } from '../../hooks/auth/authStore';
 import { withSuspense } from '../shared/WithSuspense';
@@ -31,6 +25,7 @@ import { useProgressState } from '../../hooks/useProgressState';
 import { useWallet } from '../../hooks/useWallet/useWallet';
 import { CustomBackdrop } from '../shared/customBackdrop';
 import { selectedNetwork } from '../../hooks/useNetwork/networkStore';
+import GeneralButton from '../shared/GeneralButton';
 
 const AuthenticationBottomSheet: React.FC = () => {
   const snapPoints = React.useMemo(() => ['95%'], []);
@@ -63,16 +58,24 @@ const AuthenticationBottomSheet: React.FC = () => {
     bottomSheetRef.current?.close();
     setSelectedAccountIndex(undefined);
   }, []);
-  const handleSelectAccount = async (index: number) => {
+  const handleSelectAccount = (index: number) => {
     if (!loading && walletAccounts?.length) {
-      setLoading();
       setSelectedAccountIndex(index);
-      switchAccount(index);
+    }
+  };
+  const handleConfirmAuth = async () => {
+    if (
+      !loading &&
+      selectedAccountIndex !== undefined &&
+      walletAccounts?.length
+    ) {
+      setLoading();
+      switchAccount(selectedAccountIndex);
       await finishSignIn(
         authRequest,
         walletState as any,
         walletAccounts,
-        index,
+        selectedAccountIndex,
         network,
         dismissBottomSheet,
       ).catch(setFailure);
@@ -94,37 +97,25 @@ const AuthenticationBottomSheet: React.FC = () => {
       <>
         <View
           style={[
-            authenticationBottomSheetStyles.headerContainer,
+            styles.headerContainer,
             {
               backgroundColor: colors.card,
             },
           ]}>
           <Image
-            style={authenticationBottomSheetStyles.appIcon}
+            style={styles.appIcon}
             source={{ uri: authRequest?.appIcon }}
           />
-          <Typography
-            type={'commonText'}
-            style={authenticationBottomSheetStyles.warning}>
+          <Typography type={'commonText'} style={styles.warning}>
             {`Allow ${authRequest?.appName} to proceed with the decentralized authentication
             process.`}
           </Typography>
         </View>
-        {loading ? (
-          <ActivityIndicator
-            style={authenticationBottomSheetStyles.titleSpace}
-            color={colors.secondary100}
-          />
-        ) : (
-          <Typography
-            type={'commonText'}
-            style={[
-              authenticationBottomSheetStyles.title,
-              authenticationBottomSheetStyles.titleSpace,
-            ]}>
-            Choose an account
-          </Typography>
-        )}
+        <Typography
+          type={'commonText'}
+          style={[styles.title, styles.titleSpace]}>
+          Choose an account
+        </Typography>
       </>
     );
   }, [loading, colors, authRequest?.appName, authRequest?.appIcon]);
@@ -149,7 +140,7 @@ const AuthenticationBottomSheet: React.FC = () => {
         backdropComponent={CustomBackdrop}
         enablePanDownToClose
         index={-1}>
-        <View style={authenticationBottomSheetStyles.container}>
+        <View style={styles.container}>
           <Header
             title="Authentication"
             leftComponent={
@@ -166,11 +157,16 @@ const AuthenticationBottomSheet: React.FC = () => {
               keyExtractor={account => account.address}
               renderItem={renderAccount}
               ListHeaderComponent={renderAccountsListHeader}
-              contentContainerStyle={
-                authenticationBottomSheetStyles.accountsList
-              }
+              contentContainerStyle={styles.accountsList}
             />
           </Suspense>
+          <GeneralButton
+            style={styles.confirmButton}
+            type="Primary"
+            disabled={loading || selectedAccountIndex === undefined}
+            onPress={() => handleConfirmAuth()}>
+            {loading ? 'Loading...' : 'Confirm'}
+          </GeneralButton>
         </View>
       </BottomSheet>
     </Portal>
