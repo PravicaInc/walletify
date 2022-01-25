@@ -1,10 +1,4 @@
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import React, { useCallback, useContext, useMemo, useState } from 'react';
 import {
   KeyboardAvoidingView,
   Platform,
@@ -15,8 +9,14 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { ACCESS_CONTROL, BIOMETRY_TYPE } from 'react-native-keychain';
-import { request, PERMISSIONS } from 'react-native-permissions';
+import { ACCESS_CONTROL } from 'react-native-keychain';
+import {
+  request,
+  PERMISSIONS,
+  check,
+  openSettings,
+  RESULTS,
+} from 'react-native-permissions';
 import SecureKeychain from '../../shared/SecureKeychain';
 import Header from '../../components/shared/Header';
 import HeaderBack from '../../components/shared/HeaderBack';
@@ -61,9 +61,7 @@ const CreatePassword: React.FC<Props> = ({
     setHasEnabledBiometric,
   } = useContext(UserPreferenceContext);
   const animatedStyles = useKeyboardWithAnimation();
-  const [hasBioSupported, setHasBioSupported] = useState<BIOMETRY_TYPE | null>(
-    null,
-  );
+  const [biometricEnabled, setBiometricEnabled] = useState<boolean>(false);
   const [strengthLevel, setStrengthLevel] = useState<
     StrengthLevel | undefined
   >();
@@ -87,7 +85,6 @@ const CreatePassword: React.FC<Props> = ({
     }),
     [colors],
   );
-
   const {
     handleChangeText: handleChangeOldPassword,
     error: oldPasswordError,
@@ -140,12 +137,6 @@ const CreatePassword: React.FC<Props> = ({
       });
   }, [handleEditPassword, password, oldPassword]);
 
-  useEffect(() => {
-    SecureKeychain.getSupportedBiometryType().then(type =>
-      setHasBioSupported(type),
-    );
-  }, []);
-
   const canGoNext =
     (isEditPassword ? oldPassword.length >= 12 : true) &&
     !confirmPasswordError &&
@@ -157,11 +148,12 @@ const CreatePassword: React.FC<Props> = ({
 
   const handlePressCreate = useCallback(async () => {
     try {
-      if (hasSetBiometric) {
+      if (biometricEnabled) {
         await SecureKeychain.setGenericPassword(
           password,
           ACCESS_CONTROL.BIOMETRY_CURRENT_SET,
         );
+        setHasEnabledBiometric(biometricEnabled);
       }
       dispatch(StackActions.push(nextScreen, { password }));
     } catch (e) {
@@ -170,13 +162,34 @@ const CreatePassword: React.FC<Props> = ({
   }, [hasSetBiometric, nextScreen, password]);
 
   const handleToggleBiometric = (value: boolean) => {
-    setHasEnabledBiometric(value);
-    if (hasSetBiometric) {
-      request(PERMISSIONS.IOS.FACE_ID).then(result => {
-        if (result === 'denied') {
-          setHasEnabledBiometric(false);
+    setBiometricEnabled(value);
+    if (value) {
+      check(PERMISSIONS.IOS.FACE_ID).then(result => {
+        switch (result) {
+          case RESULTS.UNAVAILABLE:
+            break;
+          case RESULTS.DENIED:
+            request(PERMISSIONS.IOS.FACE_ID).then(requestResult => {
+              if (requestResult !== 'granted') {
+                setBiometricEnabled(false);
+              } else {
+                setBiometricEnabled(true);
+              }
+            });
+            break;
+          case RESULTS.LIMITED:
+            setBiometricEnabled(true);
+            break;
+          case RESULTS.GRANTED:
+            setBiometricEnabled(true);
+            break;
+          case RESULTS.BLOCKED:
+            openSettings();
+            break;
         }
       });
+    } else {
+      setBiometricEnabled(false);
     }
   };
 
@@ -315,8 +328,7 @@ const CreatePassword: React.FC<Props> = ({
                   <View style={styles.switch}>
                     <GeneralSwitch
                       toggleLock={handleToggleBiometric}
-                      isLocked={hasSetBiometric}
-                      disabled={!hasBioSupported}
+                      isLocked={biometricEnabled}
                       switchPx={2.5}
                       backgroundInactive={colors.card}
                       backgroundActive={colors.confirm100}
