@@ -31,12 +31,12 @@ const ScanQrBottomSheet = React.forwardRef<any, Props>(
     } = useContext(ThemeContext);
 
     const handleGoBack = useCallback(() => {
-      (ref as RefObject<BottomSheetModal>)?.current?.close();
+      (ref as RefObject<BottomSheet>)?.current?.close();
     }, []);
 
     const onSuccess = (e: { data: string }) => {
       setRecipient(e.data);
-      (ref as RefObject<BottomSheetModal>)?.current?.close();
+      (ref as RefObject<BottomSheet>)?.current?.close();
     };
 
     const handleSheetChanges = useCallback((index: number) => {
