@@ -1,6 +1,12 @@
-import React, { useCallback, useContext, useMemo } from 'react';
+import React, {
+  RefObject,
+  useCallback,
+  useContext,
+  useMemo,
+  useState,
+} from 'react';
 import { StatusBar, View } from 'react-native';
-import BottomSheet from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { Portal } from '@gorhom/portal';
 import { CustomBackdrop } from '../shared/customBackdrop';
 import styles from './styles';
@@ -17,6 +23,7 @@ type Props = {
 
 const ScanQrBottomSheet = React.forwardRef<any, Props>(
   ({ setRecipient }, ref) => {
+    const [isOpen, setIsOpen] = useState<boolean>(false);
     const snapPoints = useMemo(() => ['99.99%'], []);
 
     const {
@@ -24,13 +31,21 @@ const ScanQrBottomSheet = React.forwardRef<any, Props>(
     } = useContext(ThemeContext);
 
     const handleGoBack = useCallback(() => {
-      ref.current?.close();
+      (ref as RefObject<BottomSheet>)?.current?.close();
     }, []);
 
-    const onSuccess = e => {
+    const onSuccess = (e: { data: string }) => {
       setRecipient(e.data);
-      ref.current?.close();
+      (ref as RefObject<BottomSheet>)?.current?.close();
     };
+
+    const handleSheetChanges = useCallback((index: number) => {
+      if (index === 0) {
+        setIsOpen(true);
+      } else {
+        setIsOpen(false);
+      }
+    }, []);
 
     return (
       <Portal>
@@ -40,7 +55,8 @@ const ScanQrBottomSheet = React.forwardRef<any, Props>(
           index={-1}
           handleComponent={null}
           enablePanDownToClose
-          backdropComponent={CustomBackdrop}>
+          backdropComponent={CustomBackdrop}
+          onChange={handleSheetChanges}>
           <SafeAreaView style={styles.container}>
             <SafeAreaView style={styles.headerContainer}>
               <StatusBar barStyle={'light-content'} />
@@ -58,7 +74,9 @@ const ScanQrBottomSheet = React.forwardRef<any, Props>(
             </SafeAreaView>
             <View style={styles.itemsContainer}>
               <View style={styles.scanner}>
-                <QRCodeScanner showMarker={true} onRead={onSuccess} />
+                {isOpen && (
+                  <QRCodeScanner showMarker={true} onRead={onSuccess} />
+                )}
               </View>
               <View style={styles.footer}>
                 <Typography type="commonText" style={{ color: colors.white }}>
