@@ -136,7 +136,6 @@ const CreateIdentityBottomSheet: React.FC<CreateIdentityBottomSheetProps> = ({
             <TextInput
               autoCapitalize="none"
               editable={!isRegistering}
-              autoFocus={true}
               autoCompleteType="off"
               autoCorrect={false}
               value={userName}
