@@ -10,7 +10,6 @@ export type RootStackParamList = {
       oldPassword: string,
       newPassword: string,
     ) => Promise<any>;
-    handleCheckPassword: (password: string) => Promise<any>;
   };
   SeedRestore: { password: string };
   OldPassword: { seedPhrase: string } | undefined;

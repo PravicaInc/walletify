@@ -1,8 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 
 export const usePasswordField = (
-  validation: ((val: string) => void) | ((val: string) => Promise<any>) = () =>
-    null,
+  validation: (val: string) => Promise<any> = () => Promise.resolve(),
   extraDeps: any[] = [],
 ) => {
   const [input, setInput] = useState<string>('');
