@@ -36,6 +36,7 @@ import Animated from 'react-native-reanimated';
 import { useKeyboardWithAnimation } from '../../hooks/common/useKeyboardWithAnimation';
 import { useProgressState } from '../../hooks/useProgressState';
 import { GeneralSwitch } from '../../components/shared/GeneralSwitch';
+import { decryptMnemonic } from '@stacks/encryption';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'CreatePassword'>;
 
@@ -57,7 +58,7 @@ const CreatePassword: React.FC<Props> = ({
   const { dispatch } = useNavigation();
   const { loading, setFailure, setSuccess, setLoading } = useProgressState();
   const {
-    userPreference: { hasSetBiometric },
+    userPreference: { hasSetBiometric, encryptedSeedPhrase },
     setHasEnabledBiometric,
   } = useContext(UserPreferenceContext);
   const animatedStyles = useKeyboardWithAnimation();
@@ -90,9 +91,15 @@ const CreatePassword: React.FC<Props> = ({
     error: oldPasswordError,
     setError: setOldPasswordError,
     input: oldPassword,
-  } = usePasswordField((inputValue: string) => {
+  } = usePasswordField(async (inputValue: string) => {
     if (inputValue.length < 12) {
       throw Error('You need at least 12 characters');
+    } else {
+      try {
+        await decryptMnemonic(encryptedSeedPhrase, password);
+      } catch (e) {
+        throw Error('The password is incorrect!');
+      }
     }
   });
   const {
@@ -112,6 +119,8 @@ const CreatePassword: React.FC<Props> = ({
     } else {
       setStrengthLevel(StrengthLevel.Weak);
     }
+
+    return Promise.resolve();
   });
   const {
     handleChangeText: handleChangeConfirmPassword,
@@ -123,6 +132,8 @@ const CreatePassword: React.FC<Props> = ({
       if (password !== inputValue) {
         throw Error('The password does not match!');
       }
+
+      return Promise.resolve();
     },
     [password],
   );
