@@ -12,8 +12,17 @@ export default StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  logo: { marginBottom: 60 },
   title: { textAlign: 'center', marginBottom: 45, marginTop: 40 },
+  stacksIllustrationContainer: {
+    width: '50%',
+    height: '26%',
+    marginTop: 85,
+  },
+  stacksIllustration: {
+    resizeMode: 'contain',
+    width: '100%',
+    height: '100%',
+  },
   button: {
     width: '100%',
     alignItems: 'center',
