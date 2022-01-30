@@ -77,85 +77,90 @@ export const OptionsPick = React.forwardRef<BottomSheet, IProps>(
       (ref as any).current.close();
     }, []);
     return (
-      <BottomSheet
-        backdropComponent={CustomBackdrop}
-        backgroundComponent={CustomBackground}
-        ref={ref}
-        snapPoints={snapPoints}
-        index={-1}
-        style={styles.container}
-        handleComponent={null}>
-        <View
-          style={[styles.contentContainer, { backgroundColor: colors.white }]}>
-          {(username || userIcon) && (
-            <>
-              <View style={styles.user}>
-                {userIcon}
-                {username && (
-                  <Typography type="smallTitle" style={styles.username}>
-                    {username}
+      <Portal>
+        <BottomSheet
+          backdropComponent={CustomBackdrop}
+          backgroundComponent={CustomBackground}
+          ref={ref}
+          snapPoints={snapPoints}
+          index={-1}
+          style={styles.container}
+          handleComponent={null}>
+          <View
+            style={[
+              styles.contentContainer,
+              { backgroundColor: colors.white },
+            ]}>
+            {(username || userIcon) && (
+              <>
+                <View style={styles.user}>
+                  {userIcon}
+                  {username && (
+                    <Typography type="smallTitle" style={styles.username}>
+                      {username}
+                    </Typography>
+                  )}
+                </View>
+                <View
+                  style={[
+                    styles.separator,
+                    { backgroundColor: colors.primary20 },
+                  ]}
+                />
+              </>
+            )}
+            {subTitle && (
+              <>
+                {title && (
+                  <Typography
+                    type="midTitle"
+                    style={[styles.title, { color: colors.primary100 }]}>
+                    {title}
                   </Typography>
                 )}
-              </View>
-              <View
-                style={[
-                  styles.separator,
-                  { backgroundColor: colors.primary20 },
-                ]}
-              />
-            </>
-          )}
-          {subTitle && (
-            <>
-              {title && (
                 <Typography
-                  type="midTitle"
-                  style={[styles.title, { color: colors.primary100 }]}>
-                  {title}
+                  type="commonText"
+                  style={[styles.subTitle, { color: colors.primary40 }]}>
+                  {subTitle}
                 </Typography>
-              )}
+                <View
+                  style={[
+                    styles.separator,
+                    { backgroundColor: colors.primary20 },
+                  ]}
+                />
+              </>
+            )}
+            {options.map((option, index) => {
+              return (
+                <Option
+                  key={option.label}
+                  isLast={index === options.length - 1}
+                  option={option}
+                />
+              );
+            })}
+          </View>
+          <View
+            style={[
+              styles.cancelWrapper,
+              {
+                backgroundColor: colors.white,
+              },
+            ]}>
+            <TouchableHighlight
+              underlayColor={colors.primary10}
+              onPress={handleClose}
+              style={styles.cancel}>
               <Typography
-                type="commonText"
-                style={[styles.subTitle, { color: colors.primary40 }]}>
-                {subTitle}
+                style={{ color: colors.secondary100 }}
+                type="smallTitle">
+                Cancel
               </Typography>
-              <View
-                style={[
-                  styles.separator,
-                  { backgroundColor: colors.primary20 },
-                ]}
-              />
-            </>
-          )}
-          {options.map((option, index) => {
-            return (
-              <Option
-                key={option.label}
-                isLast={index === options.length - 1}
-                option={option}
-              />
-            );
-          })}
-        </View>
-        <View
-          style={[
-            styles.cancelWrapper,
-            {
-              backgroundColor: colors.white,
-            },
-          ]}>
-          <TouchableHighlight
-            underlayColor={colors.primary10}
-            onPress={handleClose}
-            style={styles.cancel}>
-            <Typography
-              style={{ color: colors.secondary100 }}
-              type="smallTitle">
-              Cancel
-            </Typography>
-          </TouchableHighlight>
-        </View>
-      </BottomSheet>
+            </TouchableHighlight>
+          </View>
+        </BottomSheet>
+      </Portal>
     );
   },
 );
