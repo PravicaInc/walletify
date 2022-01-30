@@ -42,6 +42,8 @@ const AssetsTab: React.FC = () => {
       selectedAccountAssets.length > 0
     ) {
       setAssets(selectedAccountAssets);
+    } else {
+      setAssets([]);
     }
   }, [selectedAccountAssets]);
 

@@ -22,47 +22,63 @@ import {
   currentAccountBalancesUnanchoredState,
 } from '../useAccounts/accountsStore';
 
-export const assets = atom(async get => {
-  const mapAssetResponseToToken = async (
-    assets: { [x: string]: FungibleResponse | NonFungibleResponse },
-    tokensApi?: FungibleTokensApi | NonFungibleTokensApi,
-    isFungible = false,
-  ) => {
-    return Promise.all(
-      Object.keys(assets).map(async fungibleKey => {
-        const assetToken = assets[fungibleKey] as FungibleResponse &
-          NonFungibleResponse;
-        const { contractName, assetName, address } =
-          getAssetStringParts(fungibleKey);
-        const amount = assetToken.balance || assetToken.count;
-        const contractId = `${address}.${contractName}`;
-        let localAsset: FtMeta = isFungible
-          ? JSON.parse((await AsyncStorage.getItem(contractId)) || '{}')
-          : {};
-        if (!localAsset.name && isFungible && tokensApi) {
-          localAsset = await (
-            tokensApi as FungibleTokensApi
-          ).getContractFtMetadata({
-            contractId,
-          });
-          await AsyncStorage.setItem(contractId, JSON.stringify(localAsset));
-        }
-        const calculatedAmount = valueFromBalance(
-          amount,
-          isFungible ? 'ft' : 'nft',
-          localAsset,
-        );
-        return Promise.resolve({
-          name: isFungible ? assetName.toUpperCase() : assetName,
-          amount: calculatedAmount,
-          contractName,
-          contractAddress: address,
-          isFungible,
-          metaData: localAsset,
-        });
+const emptyBalance = new BigNumber(0);
+
+const mapAssetResponseToToken = async (
+  assets: { [x: string]: FungibleResponse | NonFungibleResponse },
+  tokensApi?: FungibleTokensApi | NonFungibleTokensApi,
+  isFungible = false,
+) => {
+  const results: Promise<any>[] = [];
+
+  Object.keys(assets).forEach(async fungibleKey => {
+    const assetToken = assets[fungibleKey] as FungibleResponse &
+      NonFungibleResponse;
+    const amount = assetToken.balance || assetToken.count;
+
+    if (amount === emptyBalance) {
+      return;
+    }
+
+    const { contractName, assetName, address } =
+      getAssetStringParts(fungibleKey);
+    const contractId = `${address}.${contractName}`;
+
+    let localAsset: FtMeta = isFungible
+      ? JSON.parse((await AsyncStorage.getItem(contractId)) || '{}')
+      : {};
+
+    if (!localAsset.name && isFungible && tokensApi) {
+      localAsset = await (tokensApi as FungibleTokensApi).getContractFtMetadata(
+        {
+          contractId,
+        },
+      );
+      await AsyncStorage.setItem(contractId, JSON.stringify(localAsset));
+    }
+
+    const calculatedAmount = valueFromBalance(
+      amount,
+      isFungible ? 'ft' : 'nft',
+      localAsset,
+    );
+
+    results.push(
+      Promise.resolve({
+        name: isFungible ? assetName.toUpperCase() : assetName,
+        amount: calculatedAmount,
+        contractName,
+        contractAddress: address,
+        isFungible,
+        metaData: localAsset,
       }),
     );
-  };
+  });
+
+  return Promise.all(results);
+};
+
+export const assets = atom(async get => {
   const { fungibleTokensApi, nonFungibleTokensApi } = get(apiClientState);
 
   const fungibleResponse = get(currentAccountBalancesUnanchoredState)
@@ -86,7 +102,9 @@ export const assets = atom(async get => {
       icon: StxTokenIcon,
       amount: valueFromBalance(stxBalance as BigNumber, 'stx'),
     };
-    results.push(stxToken);
+    if (stxBalance > emptyBalance) {
+      results.push(stxToken);
+    }
   }
   if (fungibleResponse !== undefined) {
     const fungibleTokens: AccountToken[] = await mapAssetResponseToToken(
@@ -103,5 +121,6 @@ export const assets = atom(async get => {
     );
     results = [...results, ...nonFungibleTokens];
   }
+
   return results;
 });
