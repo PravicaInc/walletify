@@ -170,7 +170,7 @@ const CreatePassword: React.FC<Props> = ({
     } catch (e) {
       console.log(e);
     }
-  }, [hasSetBiometric, nextScreen, password]);
+  }, [biometricEnabled, nextScreen, password]);
 
   const handleToggleBiometric = (value: boolean) => {
     setBiometricEnabled(value);
