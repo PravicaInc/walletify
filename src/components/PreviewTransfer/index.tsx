@@ -95,7 +95,7 @@ const PreviewTransfer = ({
             </Typography>
           </View>
         </View>
-        {memo && (
+        {!!memo && (
           <>
             <View
               style={[styles.separator, { backgroundColor: colors.primary20 }]}
