@@ -9,22 +9,20 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { decryptMnemonic } from '@stacks/encryption';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
-import { Typography } from '../../components/shared/Typography';
-import { GeneralTextInput } from '../../components/shared/GeneralTextInput';
-import Header from '../../components/shared/Header';
-import HeaderBack from '../../components/shared/HeaderBack';
-import PasswordShield from '../../assets/password-shield.svg';
-import WarningIcon from '../../components/shared/WarningIcon';
-import { UserPreferenceContext } from '../../contexts/UserPreference/userPreferenceContext';
-import { ThemeContext } from '../../contexts/Theme/theme';
+import { Typography } from '../../shared/Typography';
+import { GeneralTextInput } from '../../shared/GeneralTextInput';
+import Header from '../../shared/Header';
+import HeaderBack from '../../shared/HeaderBack';
+import PasswordShield from '../../../assets/password-shield.svg';
+import WarningIcon from '../../shared/WarningIcon';
+import { UserPreferenceContext } from '../../../contexts/UserPreference/userPreferenceContext';
+import { ThemeContext } from '../../../contexts/Theme/theme';
 import styles from './styles';
-import { OptionsPick } from '../../components/OptionsPick';
-import { usePasswordField } from '../../hooks/common/usePasswordField';
-import { useProgressState } from '../../hooks/useProgressState';
+import { OptionsPick } from '../../OptionsPick';
+import { usePasswordField } from '../../../hooks/common/usePasswordField';
+import { useProgressState } from '../../../hooks/useProgressState';
 import Animated from 'react-native-reanimated';
-import { useKeyboardWithAnimation } from '../../hooks/common/useKeyboardWithAnimation';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../navigation/types';
+import { useKeyboardWithAnimation } from '../../../hooks/common/useKeyboardWithAnimation';
 
 interface IProps {
   nextAction: any;
@@ -213,17 +211,4 @@ export const WalletUnlockInner: React.FC<IProps> = ({
     </SafeAreaView>
   );
 };
-
-type Props = NativeStackScreenProps<RootStackParamList, 'WalletUnlock'>;
-
-const WalletUnlock: React.FC<Props> = ({
-  route: {
-    params: { nextAction, resetAction },
-  },
-}) => {
-  return (
-    <WalletUnlockInner resetAction={resetAction} nextAction={nextAction} />
-  );
-};
-
-export default WalletUnlock;
+export default WalletUnlockInner;

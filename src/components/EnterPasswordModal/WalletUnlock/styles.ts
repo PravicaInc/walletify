@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { PADDING_HORIZONTAL } from '../../shared/layout';
+import { PADDING_HORIZONTAL } from '../../../shared/layout';
 
 export default StyleSheet.create({
   safeAreaContainer: {
