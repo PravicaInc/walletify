@@ -8,6 +8,7 @@ export const DEFAULT_USER_PREFERENCE: UserPreference = {
   hasSetBiometric: false,
   encryptedSeedPhrase: '',
   viewedOnBoarding: false,
+  hasLoaded: false,
 };
 
 export const UserPreferenceContext = createContext<UserPreferenceContextValue>({

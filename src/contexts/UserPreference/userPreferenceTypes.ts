@@ -2,6 +2,7 @@ export interface UserPreference {
   hasSetBiometric: boolean;
   encryptedSeedPhrase: string;
   viewedOnBoarding: boolean;
+  hasLoaded: boolean;
 }
 
 export type UserPreferenceContextValue = {
