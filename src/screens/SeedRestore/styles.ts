@@ -28,7 +28,6 @@ const styles = StyleSheet.create({
   title: { marginVertical: 10 },
   description: {
     textAlign: 'center',
-    width: '80%',
   },
   button: {
     width: '100%',
