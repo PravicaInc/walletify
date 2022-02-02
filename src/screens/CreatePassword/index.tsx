@@ -58,7 +58,7 @@ const CreatePassword: React.FC<Props> = ({
   const { dispatch } = useNavigation();
   const { loading, setFailure, setSuccess, setLoading } = useProgressState();
   const {
-    userPreference: { hasSetBiometric, encryptedSeedPhrase },
+    userPreference: { encryptedSeedPhrase },
     setHasEnabledBiometric,
   } = useContext(UserPreferenceContext);
   const animatedStyles = useKeyboardWithAnimation();
@@ -173,7 +173,6 @@ const CreatePassword: React.FC<Props> = ({
   }, [biometricEnabled, nextScreen, password]);
 
   const handleToggleBiometric = (value: boolean) => {
-    setBiometricEnabled(value);
     if (value) {
       check(PERMISSIONS.IOS.FACE_ID).then(result => {
         switch (result) {
