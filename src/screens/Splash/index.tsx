@@ -35,6 +35,10 @@ const Splash: React.FC = () => {
     );
   };
 
+  const onResetWallet = () => {
+    dispatch(StackActions.replace('WalletSetup'));
+  };
+
   const { validateUserCredentials } = useUnlockWallet(
     handleAuthenticationSuccessful,
     passwordBottomSheet,
@@ -45,7 +49,6 @@ const Splash: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    console.log(hasLoaded);
     if (hasLoaded) {
       const timer = setTimeout(() => {
         if (encryptedSeedPhrase) {
@@ -73,7 +76,8 @@ const Splash: React.FC = () => {
       <WiseLogo width={143} height={55} />
       <EnterPasswordModal
         ref={passwordBottomSheet}
-        isNotDismissible
+        isDismissible={false}
+        resetWalletCb={onResetWallet}
         handleNextAction={handleAuthenticationSuccessful}
       />
     </SafeAreaView>

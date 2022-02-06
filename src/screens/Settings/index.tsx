@@ -254,6 +254,7 @@ const Settings = () => {
                 disabled={!hasBioSetup}
               />
               <EnterPasswordModal
+                isDismissible
                 ref={enterPasswordModalRef}
                 handleNextAction={handleBioOn}
               />

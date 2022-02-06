@@ -39,6 +39,7 @@ const RecoverSeedPhrase: React.FC = () => {
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.white }]}>
       <EnterPasswordModal
+        isDismissible
         ref={bottomSheetModalRef}
         handleNextAction={handlePasswordModalAction}
       />

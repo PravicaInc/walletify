@@ -4,14 +4,16 @@ import { CustomBackdrop, CustomBackground } from '../shared/customBackdrop';
 import { WalletUnlockInner } from './WalletUnlock';
 import styles from './styles';
 import { Keyboard } from 'react-native';
+import { Portal } from '@gorhom/portal';
 
 type Props = {
   handleNextAction: (password: string, seedPhrase: string) => void;
-  isNotDismissible?: boolean;
+  isDismissible: boolean;
+  resetWalletCb?: () => void;
 };
 
 const EnterPasswordModal = React.forwardRef<any, Props>(
-  ({ handleNextAction, isNotDismissible }, ref) => {
+  ({ handleNextAction, isDismissible, resetWalletCb }, ref) => {
     const snapPoints = useMemo(() => ['94%'], []);
     const [reset, setReset] = useState<boolean>(false);
 
@@ -37,22 +39,26 @@ const EnterPasswordModal = React.forwardRef<any, Props>(
     }, []);
 
     return (
-      <BottomSheet
-        snapPoints={snapPoints}
-        ref={ref}
-        index={-1}
-        onChange={handleChange}
-        style={styles.container}
-        backgroundComponent={CustomBackground}
-        handleComponent={null}
-        enablePanDownToClose={!isNotDismissible}
-        backdropComponent={CustomBackdrop}>
-        <WalletUnlockInner
-          cancelAction={handleCancel}
-          reset={reset}
-          nextAction={handleGoNext}
-        />
-      </BottomSheet>
+      <Portal>
+        <BottomSheet
+          snapPoints={snapPoints}
+          ref={ref}
+          index={-1}
+          onChange={handleChange}
+          style={styles.container}
+          backgroundComponent={CustomBackground}
+          handleComponent={null}
+          enablePanDownToClose={isDismissible}
+          backdropComponent={CustomBackdrop}>
+          <WalletUnlockInner
+            cancelAction={handleCancel}
+            isDismissible={isDismissible}
+            reset={reset}
+            resetAction={resetWalletCb}
+            nextAction={handleGoNext}
+          />
+        </BottomSheet>
+      </Portal>
     );
   },
 );

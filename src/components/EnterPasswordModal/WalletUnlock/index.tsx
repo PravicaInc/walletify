@@ -25,6 +25,7 @@ import Animated from 'react-native-reanimated';
 import { useKeyboardWithAnimation } from '../../../hooks/common/useKeyboardWithAnimation';
 
 interface IProps {
+  isDismissible: boolean;
   nextAction: any;
   cancelAction?: any;
   resetAction?: any;
@@ -36,6 +37,7 @@ export const WalletUnlockInner: React.FC<IProps> = ({
   resetAction,
   cancelAction,
   reset,
+  isDismissible,
 }) => {
   const disableBack = !!cancelAction;
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
@@ -114,7 +116,7 @@ export const WalletUnlockInner: React.FC<IProps> = ({
       ]}>
       <Header
         leftComponent={
-          cancelAction ? (
+          isDismissible ? (
             <HeaderBack
               text="Cancel"
               customStyle={{ color: colors.secondary100 }}

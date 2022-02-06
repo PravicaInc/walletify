@@ -15,13 +15,13 @@ export default function App() {
     <UserPreference>
       <SafeAreaProvider>
         <ThemeContext.Provider value={{ theme, setTheme }}>
-          <NavigationContainer>
-            <BottomSheetModalProvider>
-              <PortalProvider>
+          <PortalProvider>
+            <NavigationContainer>
+              <BottomSheetModalProvider>
                 <Routes />
-              </PortalProvider>
-            </BottomSheetModalProvider>
-          </NavigationContainer>
+              </BottomSheetModalProvider>
+            </NavigationContainer>
+          </PortalProvider>
         </ThemeContext.Provider>
       </SafeAreaProvider>
     </UserPreference>
