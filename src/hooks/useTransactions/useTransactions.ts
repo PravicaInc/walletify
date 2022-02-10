@@ -5,6 +5,7 @@ import { apiClientState } from '../apiClients/apiClients';
 import { useAccounts } from '../useAccounts/useAccounts';
 import { useProgressState } from '../useProgressState';
 import {
+  accountSubmittedTransactionsState,
   accountTransactionsWithTransfersState,
   currentAccountMempoolTransactionsState,
 } from './transactionsStore';
@@ -18,6 +19,9 @@ export const useTransactions = () => {
   ] = useAtom(accountTransactionsWithTransfersState);
   const [mempoolTransactions, setMempoolTransactions] = useAtom(
     currentAccountMempoolTransactionsState,
+  );
+  const [submittedTransactions, setSubmittedTransactions] = useAtom(
+    accountSubmittedTransactionsState,
   );
   const { selectedAccountState, selectedAccountIndexState } = useAccounts();
   const api = useAtomValue(apiClientState);
@@ -68,6 +72,8 @@ export const useTransactions = () => {
   return {
     accountTransactionsWithTransfers,
     mempoolTransactions,
+    submittedTransactions,
+    setSubmittedTransactions,
     refreshTransactionsList,
     isRefreshing,
     loading,

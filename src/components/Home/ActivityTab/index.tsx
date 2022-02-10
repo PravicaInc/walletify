@@ -22,6 +22,7 @@ import {
   isToday,
 } from 'date-fns';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { SubmittedTransaction } from '../../../models/transactions';
 
 const formatDate = (date: number) => {
   if (isToday(date)) {
@@ -40,6 +41,7 @@ const ActivityTab: React.FC = () => {
   const {
     accountTransactionsWithTransfers,
     mempoolTransactions,
+    submittedTransactions,
     loading,
     isRefreshing,
     refreshTransactionsList,
@@ -69,13 +71,17 @@ const ActivityTab: React.FC = () => {
   }, []);
 
   const renderTransaction: ListRenderItem<
-    AddressTransactionWithTransfers | MempoolTransaction
+    SubmittedTransaction | AddressTransactionWithTransfers | MempoolTransaction
   > = useCallback(({ item }) => {
     return <AccountTransaction transaction={item} />;
   }, []);
 
   const groupTxsByDateMap2 = (
-    txs: (AddressTransactionWithTransfers | MempoolTransaction)[],
+    txs: (
+      | SubmittedTransaction
+      | AddressTransactionWithTransfers
+      | MempoolTransaction
+    )[],
   ) => {
     return Object.values(
       txs.reduce((txsByDate, atx) => {
@@ -98,7 +104,11 @@ const ActivityTab: React.FC = () => {
       }, {}) as {
         [x: number]: {
           title: number;
-          data: (MempoolTransaction | AddressTransactionWithTransfers)[];
+          data: (
+            | SubmittedTransaction
+            | MempoolTransaction
+            | AddressTransactionWithTransfers
+          )[];
         };
       },
     );
@@ -107,6 +117,7 @@ const ActivityTab: React.FC = () => {
   return (
     <SectionList
       sections={groupTxsByDateMap2([
+        ...submittedTransactions,
         ...mempoolTransactions,
         ...accountTransactionsWithTransfers,
       ])}

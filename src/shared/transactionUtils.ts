@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js';
-import { Tx } from '../models/transactions';
+import { SubmittedTransaction, Tx } from '../models/transactions';
 import { stacksValue } from './balanceUtils';
 import {
   TransactionEventFungibleAsset,
@@ -91,6 +91,9 @@ export const getTxCaption = (transaction: Tx) => {
     case 'token_transfer':
     case 'coinbase':
     case 'poison_microblock':
+      if (isSubmittedTransaction(transaction)) {
+        return '';
+      }
       return truncateAddress(transaction.tx_id, 11);
     default:
       return null;
@@ -103,7 +106,16 @@ export function isAddressTransactionWithTransfers(
   return 'tx' in transaction;
 }
 
+export function isSubmittedTransaction(
+  transaction: AddressTransactionWithTransfers | Tx,
+): transaction is SubmittedTransaction {
+  return 'internal_id' in transaction;
+}
+
 export const statusFromTx = (tx: Tx) => {
+  if (tx?.tx_status === 'submitted') {
+    return 'submitted';
+  }
   if (tx?.tx_status === 'pending') {
     return 'pending';
   }

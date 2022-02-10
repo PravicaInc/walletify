@@ -39,6 +39,16 @@ const TransactionStatus: React.FC<{
           </Typography>
         </View>
       );
+    case 'submitted':
+      return (
+        <View style={styles.statusContainer}>
+          <Typography
+            type="commonText"
+            style={[styles.statusText, { color: colors.primary40 }]}>
+            Submitted
+          </Typography>
+        </View>
+      );
     case 'pending':
       return (
         <View style={styles.statusContainer}>
