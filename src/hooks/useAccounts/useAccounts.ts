@@ -89,7 +89,8 @@ export const useAccounts = () => {
       network.stacksNetwork,
     );
 
-    return Number(txFee[1].fee) / 1000000;
+    // Cap the proposed fee to 2 STX
+    return Math.min(Number(txFee[1].fee) / 1000000, 2);
   };
 
   const sendTransaction = async (
