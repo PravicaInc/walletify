@@ -274,7 +274,7 @@ const SendBottomSheet = React.forwardRef<any, Props>(
               type="Primary"
               disabled={isLoading || !isReadyForPreview}
               onPress={() => setPreview(true)}>
-              {isLoading ? 'Loading...' : 'Preview'}
+              {isLoading ? 'Calculating Fees...' : 'Preview'}
             </GeneralButton>
           </KeyboardAwareScrollView>
         </>
