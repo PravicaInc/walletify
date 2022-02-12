@@ -28,6 +28,8 @@ import AccountAsset from '../Home/AccountAsset';
 import { useAssets } from '../../hooks/useAssets/useAssets';
 import { titleCase } from '../../shared/helpers';
 import PreviewTransfer from '../PreviewTransfer';
+import { useTransactions } from '../../hooks/useTransactions/useTransactions';
+import { SubmittedTransaction } from '../../models/transactions';
 
 type Props = {
   fullBalance: any;
@@ -44,6 +46,11 @@ const SendBottomSheet = React.forwardRef<any, Props>(
       sendTransaction,
     } = useAccounts();
     const { selectedAccountAssets: assets } = useAssets();
+    const {
+      submittedTransactions,
+      setSubmittedTransactions,
+      refreshTransactionsList,
+    } = useTransactions();
     const [selectedAsset, setSelectedAsset] = useState<
       AccountToken | undefined
     >(undefined);
@@ -71,26 +78,46 @@ const SendBottomSheet = React.forwardRef<any, Props>(
     });
 
     const handleSendPress = () => {
-      async function handleTransaction() {
+      function handleTransaction() {
         setIsLoading(true);
 
-        const response = await sendTransaction(
-          recipient,
-          Number(amount),
-          Number(fees),
-          memo,
+        const internal_id = `${Math.random()}`;
+        setSubmittedTransactions([
+          ...submittedTransactions,
+          {
+            internal_id,
+            tx_id: internal_id,
+            tx_status: 'submitted',
+            tx_type: 'token_transfer',
+            sender_address: account?.address ?? '',
+            token_transfer: {
+              amount: `${Number(amount) * 1000000}`,
+              recipient_address: recipient,
+              memo,
+            },
+          },
+        ]);
+
+        sendTransaction(recipient, Number(amount), Number(fees), memo).then(
+          result => {
+            const tx = submittedTransactions.find(
+              t => t.internal_id === internal_id,
+            ) as SubmittedTransaction;
+
+            if (result?.error) {
+              tx.tx_status = 'failed';
+            } else {
+              setSubmittedTransactions(
+                submittedTransactions.filter(
+                  t => t.internal_id !== internal_id,
+                ),
+              );
+              refreshTransactionsList();
+            }
+          },
         );
 
-        setIsLoading(false);
-
-        if (response?.error !== undefined) {
-          Alert.alert(
-            titleCase(response.error),
-            `Failure reason: ${response.reason}`,
-          );
-        } else if (response && response?.error === undefined) {
-          dismissBottomSheet();
-        }
+        dismissBottomSheet();
       }
       if (preview) {
         handleTransaction();

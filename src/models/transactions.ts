@@ -2,12 +2,16 @@ import type {
   MempoolTransaction,
   Transaction,
   TransactionStatus,
-  MempoolTransactionStatus
+  MempoolTransactionStatus,
+  TokenTransferTransactionMetadata,
 } from '@stacks/stacks-blockchain-api-types';
 
+export type Tx = MempoolTransaction | Transaction | SubmittedTransaction;
+export type StacksTransactionStatus =
+  | TransactionStatus
+  | MempoolTransactionStatus
+  | 'submitted';
 
-export type Tx = MempoolTransaction | Transaction;
-export type StacksTransactionStatus = TransactionStatus | MempoolTransactionStatus;
 export interface StxTransfer {
   amount: string;
   sender?: string;
@@ -21,4 +25,9 @@ export interface FtTransfer {
   recipient?: string;
 }
 
-export ty
+export type SubmittedTransaction = {
+  internal_id: string;
+  tx_id: string;
+  sender_address: string;
+  tx_status: 'submitted' | 'failed';
+} & TokenTransferTransactionMetadata;
