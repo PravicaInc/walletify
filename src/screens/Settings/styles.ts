@@ -1,15 +1,15 @@
 import { StyleSheet } from 'react-native';
-import { PADDING_HORIZONTAL, PADDING_VERTICAL } from '../../shared/layout';
+import { PADDING_VERTICAL } from '../../shared/layout';
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
   header: {
-    shadowOpacity: 0,
+    paddingLeft: 0,
   },
   contentContainer: {
-    paddingHorizontal: '2.5%',
+    paddingHorizontal: 25,
     paddingVertical: PADDING_VERTICAL,
     flex: 1,
     justifyContent: 'space-between',
@@ -35,7 +35,7 @@ export const styles = StyleSheet.create({
   },
   settingsItemsContainer: {
     width: '100%',
-    marginTop: 40,
+    marginTop: 26,
     borderBottomWidth: 0.5,
   },
   settingsItem: {

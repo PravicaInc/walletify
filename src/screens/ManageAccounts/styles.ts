@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
   },
   screenContentContainer: {
     flexShrink: 1,
-    paddingHorizontal: '2.5%',
+    paddingHorizontal: 20,
     paddingBottom: 12,
   },
   createIdentityButton: {

@@ -85,6 +85,7 @@ const ManageAccounts: React.FC = () => {
         },
       ]}>
       <Header
+        containerStyles={{ paddingLeft: 20 }}
         leftComponent={
           <HeaderBack onPress={handleGoBack} hasChevron text="Back" />
         }
