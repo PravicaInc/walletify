@@ -141,7 +141,7 @@ export const WalletUnlockInner: React.FC<IProps> = ({
               type="buttonText"
               style={[
                 {
-                  color: canGoNext ? colors.primary100 : colors.secondary40,
+                  color: canGoNext ? colors.secondary100 : colors.primary40,
                 },
               ]}>
               Confirm
