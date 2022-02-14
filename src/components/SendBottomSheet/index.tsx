@@ -7,7 +7,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { View, TouchableOpacity, Alert } from 'react-native';
+import { View, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import BottomSheet, { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { Portal } from '@gorhom/portal';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -213,20 +213,35 @@ const SendBottomSheet = React.forwardRef<any, Props>(
                 onPress={dismissBottomSheet}
               />
             }
+            rightComponent={
+              <TouchableOpacity
+                disabled={isLoading || !isReadyForPreview}
+                onPress={() => setPreview(true)}>
+                {isLoading ? (
+                  <ActivityIndicator />
+                ) : (
+                  <Typography
+                    type="buttonText"
+                    style={{
+                      color:
+                        isLoading || !isReadyForPreview
+                          ? colors.primary40
+                          : colors.secondary100,
+                    }}>
+                    Preview
+                  </Typography>
+                )}
+              </TouchableOpacity>
+            }
           />
           <KeyboardAwareScrollView
             resetScrollToCoords={{ x: 0, y: 0 }}
             contentContainerStyle={styles.inputsContainer}
             scrollEnabled={false}
-            extraHeight={100}
-            extraScrollHeight={100}>
+            extraHeight={132}
+            extraScrollHeight={132}>
             <View style={styles.horizontalFill}>
               <View style={styles.horizontalFill}>
-                <Typography
-                  type="commonText"
-                  style={{ color: colors.primary40 }}>
-                  Select Asset
-                </Typography>
                 {selectedAsset && (
                   <AccountAsset
                     item={selectedAsset}
@@ -239,6 +254,7 @@ const SendBottomSheet = React.forwardRef<any, Props>(
                 <SimpleTextInput
                   onChangeText={setAmount}
                   value={amount}
+                  labelStyle={styles.textInputLabel}
                   label="Amount To Send"
                   placeholder="0.00000000"
                   keyboardType="decimal-pad"
@@ -265,6 +281,7 @@ const SendBottomSheet = React.forwardRef<any, Props>(
                 />
                 <SimpleTextInput
                   onChangeText={setRecipient}
+                  labelStyle={styles.textInputLabel}
                   value={recipient}
                   label="Recipient Address"
                   placeholder="Enter an address"
@@ -283,6 +300,7 @@ const SendBottomSheet = React.forwardRef<any, Props>(
                 <SimpleTextInput
                   onChangeText={setMemo}
                   value={memo}
+                  labelStyle={styles.textInputLabel}
                   label="Memo (For exchanges)"
                   placeholder="Enter a memo"
                   subtext={
@@ -297,12 +315,6 @@ const SendBottomSheet = React.forwardRef<any, Props>(
                 />
               </View>
             </View>
-            <GeneralButton
-              type="Primary"
-              disabled={isLoading || !isReadyForPreview}
-              onPress={() => setPreview(true)}>
-              {isLoading ? 'Calculating Fees...' : 'Preview'}
-            </GeneralButton>
           </KeyboardAwareScrollView>
         </>
       );
@@ -318,8 +330,27 @@ const SendBottomSheet = React.forwardRef<any, Props>(
                 textColor={colors.secondary100}
                 text="Back"
                 hasChevron
+                chevronColor={colors.secondary100}
                 onPress={() => setPreview(false)}
               />
+            }
+            rightComponent={
+              <TouchableOpacity disabled={isLoading} onPress={handleSendPress}>
+                {isLoading ? (
+                  <ActivityIndicator />
+                ) : (
+                  <Typography
+                    type="buttonText"
+                    style={{
+                      color:
+                        isLoading || !isReadyForPreview
+                          ? colors.primary40
+                          : colors.secondary100,
+                    }}>
+                    Send
+                  </Typography>
+                )}
+              </TouchableOpacity>
             }
           />
           <View style={styles.inputsContainer}>
@@ -346,12 +377,6 @@ const SendBottomSheet = React.forwardRef<any, Props>(
                 If you confirm this transaction it is not reversible. Make sure
                 all arguments are correct.
               </Typography>
-              <GeneralButton
-                type="Primary"
-                disabled={isLoading}
-                onPress={handleSendPress}>
-                {isLoading ? 'Sending...' : 'Send'}
-              </GeneralButton>
             </View>
           </View>
         </>

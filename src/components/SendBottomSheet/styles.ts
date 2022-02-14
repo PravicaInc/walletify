@@ -31,4 +31,7 @@ export default StyleSheet.create({
     padding: 10,
     marginBottom: 20,
   },
+  textInputLabel: {
+    paddingTop: 32,
+  },
 });
