@@ -3,10 +3,10 @@ import {
   Alert,
   FlatList,
   ListRenderItem,
-  Text,
   TouchableOpacity,
   View,
 } from 'react-native';
+import ContentLoader from 'react-content-loader/native';
 import { useAccounts } from '../../../hooks/useAccounts/useAccounts';
 import AccountAsset from '../AccountAsset';
 import { Typography } from '../../shared/Typography';
@@ -88,4 +88,4 @@ const AssetsTab: React.FC = () => {
   );
 };
 
-export default withSuspense(AssetsTab, <Text>Loading</Text>);
+export default withSuspense(AssetsTab, <ContentLoader />);

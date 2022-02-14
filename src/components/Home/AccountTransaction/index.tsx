@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import ContentLoader from 'react-content-loader/native';
 import {
   AddressTransactionWithTransfers,
   TokensApi,
@@ -11,7 +12,6 @@ import {
 import { StxTransferTransaction, TransactionItem } from './StxTransfer';
 import { getAssetStringParts, stacksValue } from '../../../shared/balanceUtils';
 import { useAccounts } from '../../../hooks/useAccounts/useAccounts';
-import { Typography } from '../../shared/Typography';
 import { useAtomValue } from 'jotai/utils';
 import BigNumber from 'bignumber.js';
 import { withSuspense } from '../../shared/WithSuspense';
@@ -174,7 +174,4 @@ const AccountTransaction: React.FC<AccountTransactionProps> = props => {
   );
 };
 
-export default withSuspense(
-  AccountTransaction,
-  <Typography type="commonText">Loading</Typography>,
-);
+export default withSuspense(AccountTransaction, <ContentLoader />);

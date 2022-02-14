@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
+import ContentLoader from 'react-content-loader/native';
 import AccountAvatar from '../../../components/shared/AccountAvatar';
 import { Typography } from '../../../components/shared/Typography';
 import { ThemeContext } from '../../../contexts/Theme/theme';
@@ -64,4 +65,4 @@ const SwitchAccountButton: React.FC<SwitchAccountButtonProps> = props => {
   );
 };
 
-export default withSuspense(SwitchAccountButton, <Text>Loading</Text>);
+export default withSuspense(SwitchAccountButton, <ContentLoader />);

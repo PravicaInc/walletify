@@ -7,7 +7,8 @@ import React, {
   useState,
 } from 'react';
 import BottomSheet, { BottomSheetFlatList } from '@gorhom/bottom-sheet';
-import { Image, ListRenderItem, Text, View } from 'react-native';
+import { Image, ListRenderItem, View } from 'react-native';
+import ContentLoader from 'react-content-loader/native';
 import { ThemeContext } from '../../contexts/Theme/theme';
 import { useAccounts } from '../../hooks/useAccounts/useAccounts';
 import Header from '../shared/Header';
@@ -152,7 +153,7 @@ const AuthenticationBottomSheet: React.FC = () => {
               />
             }
           />
-          <Suspense fallback={<Text>Loading</Text>}>
+          <Suspense fallback={<ContentLoader />}>
             <BottomSheetFlatList
               data={walletAccounts}
               keyExtractor={account => account.address}
@@ -174,4 +175,4 @@ const AuthenticationBottomSheet: React.FC = () => {
   );
 };
 
-export default withSuspense(AuthenticationBottomSheet, <Text>Loading</Text>);
+export default withSuspense(AuthenticationBottomSheet, <ContentLoader />);

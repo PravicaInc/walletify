@@ -2,6 +2,7 @@ import React, { useCallback, useContext, useEffect, useRef } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import ContentLoader from 'react-content-loader/native';
 import { ThemeContext } from '../../contexts/Theme/theme';
 import { useWallet } from '../../hooks/useWallet/useWallet';
 import Header from '../../components/shared/Header';
@@ -16,7 +17,6 @@ import SwitchAccountBottomSheet from '../../components/Accounts/SwitchAccountBot
 import BottomSheet from '@gorhom/bottom-sheet';
 import SwitchAccountButton from './SwitchAccountButton';
 import { withSuspense } from '../../components/shared/WithSuspense';
-import { Text } from 'react-native-svg';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
@@ -84,4 +84,4 @@ const Home = (props: Props) => {
   );
 };
 
-export default withSuspense(Home, <Text>Loading</Text>);
+export default withSuspense(Home, <ContentLoader />);

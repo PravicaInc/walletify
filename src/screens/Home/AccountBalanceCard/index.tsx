@@ -5,7 +5,8 @@ import React, {
   useRef,
   useCallback,
 } from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
+import ContentLoader from 'react-content-loader/native';
 import { Typography } from '../../../components/shared/Typography';
 import { ThemeContext } from '../../../contexts/Theme/theme';
 import UpArrow from '../../../assets/images/upArrow.svg';
@@ -58,7 +59,7 @@ const AccountBalanceCard: React.FC = () => {
         Total STX Balance:
       </Typography>
       <View style={styles.balanceContainer}>
-        <Suspense fallback={<Text>Loading</Text>}>
+        <Suspense fallback={<ContentLoader />}>
           <Typography type="hugeText" style={{ color: colors.primary100 }}>
             {`$${amountValue}`}
           </Typography>
@@ -87,7 +88,7 @@ const AccountBalanceCard: React.FC = () => {
             Send
           </Typography>
         </TouchableOpacity>
-        <Suspense fallback={<Text>Loading...</Text>}>
+        <Suspense fallback={<ContentLoader />}>
           <SendBottomSheet
             ref={sendRef}
             fullBalance={amountValue}
@@ -110,11 +111,11 @@ const AccountBalanceCard: React.FC = () => {
             Receive
           </Typography>
         </TouchableOpacity>
-        <Suspense fallback={<Text>Loading...</Text>}>
+        <Suspense fallback={<ContentLoader />}>
           <ReceiveBottomSheet ref={receiveRef} />
         </Suspense>
       </View>
     </View>
   );
 };
-export default withSuspense(AccountBalanceCard, <Text>Loading</Text>);
+export default withSuspense(AccountBalanceCard, <ContentLoader />);
