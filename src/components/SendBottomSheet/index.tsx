@@ -160,6 +160,11 @@ const SendBottomSheet = React.forwardRef<any, Props>(
           ...errorMessages,
           recipient: 'Please add a valid recipient address',
         });
+      } else if (recipient === account?.address) {
+        setErrorMessages({
+          ...errorMessages,
+          recipient: "You can't send to your address.",
+        });
       } else {
         setErrorMessages({
           ...errorMessages,
