@@ -9,6 +9,7 @@ export const styles = StyleSheet.create({
     shadowOpacity: 0,
     paddingHorizontal: 0,
     marginBottom: 20,
+    paddingRight: 5,
   },
   contentContainer: {
     paddingHorizontal: '2.5%',
