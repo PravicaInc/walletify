@@ -24,7 +24,7 @@ const TransactionStatus: React.FC<{
           <Typography
             type="commonText"
             style={[styles.statusText, { color: colors.confirm100 }]}>
-            {status}
+            In Microblock
           </Typography>
         </View>
       );
