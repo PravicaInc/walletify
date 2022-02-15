@@ -6,6 +6,10 @@ export default StyleSheet.create({
   container: {
     flex: 1,
   },
+  header: {
+    paddingHorizontal: 20,
+    paddingTop: 22,
+  },
   hiddenItems: {
     alignItems: 'center',
     justifyContent: 'center',

@@ -6,12 +6,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  header: {
+    paddingHorizontal: 20,
+    paddingTop: 22,
+  },
   hiddenItems: {
     alignItems: 'center',
     justifyContent: 'center',
   },
   progress: {
-    marginTop: '2%',
+    marginTop: 22,
     marginHorizontal: PADDING_HORIZONTAL,
     width: '95%',
   },
