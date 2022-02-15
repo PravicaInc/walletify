@@ -8,7 +8,7 @@ import React, {
   useState,
 } from 'react';
 import BottomSheet from '@gorhom/bottom-sheet';
-import { Alert, Image, Linking, Text, View } from 'react-native';
+import { Alert, Image, Linking, View } from 'react-native';
 import ContentLoader from 'react-content-loader/native';
 import { ThemeContext } from '../../contexts/Theme/theme';
 import Header from '../shared/Header';
@@ -271,4 +271,4 @@ const TransactionRequestBottomSheet: React.FC = () => {
   );
 };
 
-export default withSuspense(TransactionRequestBottomSheet, <ContentLoader />);
+export default withSuspense(TransactionRequestBottomSheet);

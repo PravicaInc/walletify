@@ -24,6 +24,8 @@ export interface IThemeColors {
   failed10: string;
   warning100: string;
   warning10: string;
+  gray: string;
+  darkgray: string;
   white: string;
 }
 

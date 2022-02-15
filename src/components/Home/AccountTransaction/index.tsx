@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import ContentLoader from 'react-content-loader/native';
 import {
   AddressTransactionWithTransfers,
   TokensApi,
@@ -174,4 +173,4 @@ const AccountTransaction: React.FC<AccountTransactionProps> = props => {
   );
 };
 
-export default withSuspense(AccountTransaction, <ContentLoader />);
+export default withSuspense(AccountTransaction);

@@ -86,4 +86,4 @@ const SwitchAccountBottomSheet: React.FC<
   );
 };
 
-export default withSuspense(SwitchAccountBottomSheet, <ContentLoader />);
+export default withSuspense(SwitchAccountBottomSheet);

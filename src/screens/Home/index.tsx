@@ -2,7 +2,6 @@ import React, { useCallback, useContext, useEffect, useRef } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import ContentLoader from 'react-content-loader/native';
 import { ThemeContext } from '../../contexts/Theme/theme';
 import { useWallet } from '../../hooks/useWallet/useWallet';
 import Header from '../../components/shared/Header';
@@ -84,4 +83,4 @@ const Home = (props: Props) => {
   );
 };
 
-export default withSuspense(Home, <ContentLoader />);
+export default withSuspense(Home);

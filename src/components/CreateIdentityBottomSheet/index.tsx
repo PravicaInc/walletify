@@ -1,6 +1,5 @@
 import React, { useCallback, useContext, useMemo, useState } from 'react';
 import BottomSheet from '@gorhom/bottom-sheet';
-import ContentLoader from 'react-content-loader/native';
 import { ThemeContext } from '../../contexts/Theme/theme';
 import Header from '../shared/Header';
 import HeaderBack from '../shared/HeaderBack';
@@ -170,4 +169,4 @@ const CreateIdentityBottomSheet: React.FC<CreateIdentityBottomSheetProps> = ({
   );
 };
 
-export default withSuspense(CreateIdentityBottomSheet, <ContentLoader />);
+export default withSuspense(CreateIdentityBottomSheet);

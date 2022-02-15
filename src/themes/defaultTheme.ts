@@ -28,6 +28,8 @@ export const DefaultTheme: Theme = {
     failed10: 'rgba(255, 1, 1, 0.1)',
     warning100: 'rgba(255, 136, 0, 1)',
     warning10: 'rgba(255, 136, 0, 0.1)',
+    gray: 'rgba(128,128,128,1)',
+    darkgray: 'rgba(64, 64, 64, 1)',
     white: 'rgba(255, 255, 255, 1)',
   },
 };

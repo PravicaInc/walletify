@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext } from 'react';
 import {
   Alert,
   FlatList,
@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import ContentLoader from 'react-content-loader/native';
+import ContentLoader, { Circle, Rect } from 'react-content-loader/native';
 import { useAccounts } from '../../../hooks/useAccounts/useAccounts';
 import AccountAsset from '../AccountAsset';
 import { Typography } from '../../shared/Typography';
@@ -26,8 +26,7 @@ const AssetsTab: React.FC = () => {
   } = useContext(ThemeContext);
   const { bottom } = useSafeAreaInsets();
   const { selectedAccountState: account } = useAccounts();
-  const { selectedAccountAssets } = useAssets();
-  const [assets, setAssets] = useState<AccountToken[]>([]);
+  const { selectedAccountAssets: assets } = useAssets();
 
   const handleCopyAccountAddress = () => {
     if (account) {
@@ -35,17 +34,6 @@ const AssetsTab: React.FC = () => {
       Alert.alert('Copied');
     }
   };
-
-  useEffect(() => {
-    if (
-      selectedAccountAssets !== undefined &&
-      selectedAccountAssets.length > 0
-    ) {
-      setAssets(selectedAccountAssets);
-    } else {
-      setAssets([]);
-    }
-  }, [selectedAccountAssets]);
 
   const EmptyAsset = useCallback(() => {
     return (
@@ -74,6 +62,32 @@ const AssetsTab: React.FC = () => {
   const renderAsset: ListRenderItem<AccountToken> = useCallback(({ item }) => {
     return <AccountAsset item={item} />;
   }, []);
+
+  if (account === undefined && assets?.length === 0) {
+    return (
+      <ContentLoader
+        style={{ alignSelf: 'center', marginTop: 20 }}
+        speed={2}
+        width={250}
+        height={220}
+        viewBox="0 0 250 220"
+        backgroundColor={colors.darkgray}
+        foregroundColor={colors.white}>
+        <Rect x="48" y="8" rx="3" ry="3" width="200" height="6" />
+        <Rect x="48" y="26" rx="3" ry="3" width="52" height="6" />
+        <Circle cx="20" cy="20" r="20" />
+        <Rect x="48" y="68" rx="3" ry="3" width="200" height="6" />
+        <Rect x="48" y="86" rx="3" ry="3" width="52" height="6" />
+        <Circle cx="20" cy="80" r="20" />
+        <Rect x="48" y="128" rx="3" ry="3" width="200" height="6" />
+        <Rect x="48" y="146" rx="3" ry="3" width="52" height="6" />
+        <Circle cx="20" cy="140" r="20" />
+        <Rect x="48" y="188" rx="3" ry="3" width="200" height="6" />
+        <Rect x="48" y="206" rx="3" ry="3" width="52" height="6" />
+        <Circle cx="20" cy="200" r="20" />
+      </ContentLoader>
+    );
+  }
 
   return (
     <FlatList

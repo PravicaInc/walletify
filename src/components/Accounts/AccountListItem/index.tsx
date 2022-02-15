@@ -1,6 +1,5 @@
 import React, { useContext, useMemo } from 'react';
 import { View, TouchableOpacity } from 'react-native';
-import ContentLoader from 'react-content-loader/native';
 import { ThemeContext } from '../../../contexts/Theme/theme';
 import { Typography } from '../../shared/Typography';
 import Check from '../../../assets/images/check.svg';
@@ -71,4 +70,4 @@ const AccountListItem: React.FC<AccountProps> = props => {
   );
 };
 
-export default withSuspense(AccountListItem, <ContentLoader />);
+export default withSuspense(AccountListItem);
