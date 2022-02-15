@@ -15,7 +15,7 @@ export default function App() {
 
   useEffect(() => {
     Sentry.init({
-      dsn: Config.SENTRY_URL,
+      dsn: Config.SENTRY_DSN_URL,
       tracesSampleRate: 1.0,
     });
   }, []);
