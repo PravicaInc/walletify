@@ -216,6 +216,7 @@ const Settings = () => {
       <ScrollView contentContainerStyle={styles.contentContainer}>
         <View style={styles.topContent}>
           <Header
+            containerStyles={styles.header}
             leftComponent={
               <HeaderBack
                 onPress={handleGoBack}

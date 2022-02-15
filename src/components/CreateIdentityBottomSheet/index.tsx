@@ -68,6 +68,7 @@ const CreateIdentityBottomSheet: React.FC<CreateIdentityBottomSheetProps> = ({
   return (
     <BottomSheet
       ref={bottomSheetRef}
+      handleComponent={null}
       snapPoints={snapPoints}
       index={-1}
       backdropComponent={CustomBackdrop}

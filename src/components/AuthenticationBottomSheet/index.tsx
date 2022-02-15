@@ -138,6 +138,7 @@ const AuthenticationBottomSheet: React.FC = () => {
         ref={bottomSheetRef}
         snapPoints={snapPoints}
         backdropComponent={CustomBackdrop}
+        handleComponent={null}
         enablePanDownToClose
         index={-1}>
         <View style={styles.container}>

@@ -50,6 +50,7 @@ const ReceiveBottomSheet = React.forwardRef<any, Props>(({}, ref) => {
         backdropComponent={CustomBackdrop}>
         <View style={styles.container}>
           <Header
+            containerStyles={styles.headerContainer}
             title="Receive"
             leftComponent={
               <HeaderBack

@@ -1,5 +1,11 @@
 import React, { useCallback, useContext, useState } from 'react';
-import { View, TextInput, StyleSheet, TextInputProps } from 'react-native';
+import {
+  View,
+  TextInput,
+  StyleSheet,
+  TextInputProps,
+  TextStyle,
+} from 'react-native';
 import { ThemeContext } from '../../contexts/Theme/theme';
 import { Typography } from '../shared/Typography';
 import WarningIcon from '../shared/WarningIcon';
@@ -9,6 +15,7 @@ interface SimpleTextInputProps extends TextInputProps {
   icon?: React.ReactNode;
   subtext?: React.ReactNode;
   errorMessage?: string;
+  labelStyle?: TextStyle;
 }
 
 const SimpleTextInput: React.FC<SimpleTextInputProps> = ({
@@ -16,6 +23,7 @@ const SimpleTextInput: React.FC<SimpleTextInputProps> = ({
   icon,
   subtext,
   errorMessage,
+  labelStyle,
   ...props
 }) => {
   const {
@@ -37,7 +45,9 @@ const SimpleTextInput: React.FC<SimpleTextInputProps> = ({
 
   return (
     <View style={styles.container}>
-      <Typography type="commonText" style={{ color: colors.primary40 }}>
+      <Typography
+        type="commonText"
+        style={[{ color: colors.primary40 }, labelStyle]}>
         {label}
       </Typography>
       <View>

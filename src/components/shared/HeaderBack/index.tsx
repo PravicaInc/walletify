@@ -18,6 +18,7 @@ interface IProps {
   disabled?: boolean;
   hasChevron?: boolean;
   chevronSize?: { height: number; width: number };
+  chevronColor?: string;
   onLayout?: (nativeEvent: LayoutChangeEvent) => void;
 }
 
@@ -28,6 +29,7 @@ const HeaderBack: React.FC<IProps> = ({
   textColor,
   hasChevron,
   chevronSize,
+  chevronColor,
   customStyle,
   onLayout,
   disabled,
@@ -46,7 +48,7 @@ const HeaderBack: React.FC<IProps> = ({
           width={chevronSize ? chevronSize.width : 7.5}
           height={chevronSize ? chevronSize.height : 13.5}
           style={styles.arrow}
-          fill={colors.primary100}
+          fill={chevronColor ? chevronColor : colors.primary100}
         />
       )}
       {text && (

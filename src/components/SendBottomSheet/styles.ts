@@ -3,7 +3,8 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: '2.5%',
+    paddingTop: 22,
+    paddingHorizontal: 20,
   },
   inputsContainer: {
     width: '100%',
@@ -30,5 +31,8 @@ export default StyleSheet.create({
     textAlign: 'center',
     padding: 10,
     marginBottom: 20,
+  },
+  textInputLabel: {
+    paddingTop: 32,
   },
 });

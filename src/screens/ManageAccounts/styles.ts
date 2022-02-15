@@ -3,10 +3,11 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: 22,
   },
   screenContentContainer: {
     flexShrink: 1,
-    paddingHorizontal: '2.5%',
+    paddingHorizontal: 20,
     paddingBottom: 12,
   },
   createIdentityButton: {

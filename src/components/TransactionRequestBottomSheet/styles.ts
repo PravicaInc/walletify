@@ -51,8 +51,8 @@ export default StyleSheet.create({
   },
   container: {
     flex: 1,
-    paddingHorizontal: '2.5%',
-    paddingTop: 5,
+    paddingHorizontal: 20,
+    paddingTop: 22,
   },
   title: { textAlign: 'center' },
   titleSpace: { marginVertical: 12 },

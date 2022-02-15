@@ -14,6 +14,7 @@ export default StyleSheet.create({
     borderBottomLeftRadius: 23,
     borderBottomRightRadius: 23,
     backgroundColor: 'black',
+    paddingHorizontal: 20,
     zIndex: 1,
   },
   fill: { flex: 1, width: '100%' },

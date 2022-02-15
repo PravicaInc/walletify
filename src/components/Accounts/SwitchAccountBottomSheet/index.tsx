@@ -58,9 +58,11 @@ const SwitchAccountBottomSheet: React.FC<
       ref={bottomSheetRef}
       snapPoints={snapPoints}
       index={-1}
+      handleComponent={null}
       backdropComponent={CustomBackdrop}
       enablePanDownToClose>
       <Header
+        containerStyles={styles.headerContainer}
         title="Switch Account"
         titleColor={colors.primary100}
         leftComponent={

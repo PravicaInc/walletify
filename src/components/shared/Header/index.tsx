@@ -52,8 +52,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: '100%',
     alignItems: 'center',
-    paddingTop: 15,
-    paddingHorizontal: PADDING_HORIZONTAL,
   },
   lateral: {
     flex: 1,
