@@ -69,13 +69,13 @@ const SeedRestore: React.FC<Props> = ({
             <Animated.View style={[styles.hiddenItems, animatedStyles]}>
               <PasswordShield />
               <Typography type="bigTitle" style={styles.title}>
-                Enter Your Seed Phrase
+                Enter Your Secret Key
               </Typography>
               <Typography
                 type="commonText"
                 style={[styles.description, { color: colors.primary60 }]}>
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industryLorem Ipsum has beenLorem
+                You can either enter it word by word or just paste it in the
+                first input and it will work.
               </Typography>
             </Animated.View>
           </View>

@@ -11,7 +11,6 @@ import Settings from '../screens/Settings';
 import CreateSeedPhrase from '../screens/CreateSeedPhrase';
 import RecoverSeedPhrase from '../screens/RecoverSeedPhrase';
 import { RootStackParamList } from './types';
-import WalletUnlock from '../screens/WalletUnlock';
 import ManageAccounts from '../screens/ManageAccounts';
 import { useStxPrice } from '../hooks/useStxPrice/useStxPrice';
 import { useAuthenticationListener } from '../hooks/useLinkingListener/useAuthenticationListener';
@@ -66,11 +65,6 @@ export const Routes: React.FC = () => {
           options={{ headerShown: false }}
           name="SeedRestore"
           component={SeedRestore}
-        />
-        <Stack.Screen
-          options={{ headerShown: false }}
-          name="WalletUnlock"
-          component={WalletUnlock}
         />
         <Stack.Screen
           options={{ headerShown: false }}
