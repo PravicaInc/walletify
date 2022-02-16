@@ -10,32 +10,52 @@ import { ThemeContext } from '../../contexts/Theme/theme';
 import useNetwork from '../../hooks/useNetwork/useNetwork';
 import { AvailableNetworks } from '../../models/network';
 import { Portal } from '@gorhom/portal';
+import Toast from 'react-native-toast-message';
+import { TOAST_VISIBILITY_TIME, useGetToastOffset } from '../../shared/layout';
 import styles from './styles';
 import RadioButton from './RadioButton';
+import { onChange } from 'react-native-reanimated';
 
 interface ChangeNetworkBottomSheetProps {
   bottomSheetRef: React.Ref<BottomSheet>;
   onCancel: () => void;
+  onChange: () => void;
 }
 
 const ChangeNetworkBottomSheet: React.FC<ChangeNetworkBottomSheetProps> = ({
   bottomSheetRef,
   onCancel,
+  onChange,
 }) => {
   const snapPoints = React.useMemo(() => ['60%'], []);
   const {
     theme: { colors },
   } = useContext(ThemeContext);
   const { currentNetwork, setCurrentNetworkKey } = useNetwork();
+  const topOffset = useGetToastOffset();
 
   const switchToMainnet = () => {
     setCurrentNetworkKey(AvailableNetworks.MAINNET);
     onCancel();
+    Toast.show({
+      type: 'success',
+      text1: 'You’re viewing Mainnet Network',
+      visibilityTime: TOAST_VISIBILITY_TIME,
+      topOffset,
+    });
+    onChange();
   };
 
   const switchToTestnet = () => {
     setCurrentNetworkKey(AvailableNetworks.TESTNET);
     onCancel();
+    Toast.show({
+      type: 'success',
+      text1: 'You’re viewing Testnet Network',
+      visibilityTime: TOAST_VISIBILITY_TIME,
+      topOffset,
+    });
+    onChange();
   };
 
   return (

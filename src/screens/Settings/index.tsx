@@ -215,6 +215,14 @@ const Settings = () => {
     ];
   }, [colors, validateUserCredentials]);
 
+  const dismissChangeNetworkBottomSheet = () => {
+    changeNetworkModalRef.current?.close();
+  };
+
+  const onChangeNetwork = () => {
+    dispatch(StackActions.pop());
+  };
+
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.white }]}>
       <ScrollView contentContainerStyle={styles.contentContainer}>
@@ -306,7 +314,8 @@ const Settings = () => {
         />
         <ChangeNetworkBottomSheet
           bottomSheetRef={changeNetworkModalRef}
-          onCancel={() => changeNetworkModalRef.current?.close()}
+          onCancel={dismissChangeNetworkBottomSheet}
+          onChange={onChangeNetwork}
         />
       </ScrollView>
     </SafeAreaView>
