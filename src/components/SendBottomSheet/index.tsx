@@ -28,6 +28,7 @@ import { useAssets } from '../../hooks/useAssets/useAssets';
 import PreviewTransfer from '../PreviewTransfer';
 import { useTransactions } from '../../hooks/useTransactions/useTransactions';
 import { SubmittedTransaction } from '../../models/transactions';
+import { microStxToStx } from '../../shared/balanceUtils';
 
 type Props = {
   fullBalance: any;
@@ -204,6 +205,11 @@ const SendBottomSheet = React.forwardRef<any, Props>(
       !errorMessages.amount &&
       !errorMessages.recipient;
 
+    const setMaxAmount = () => {
+      const maxStxAmount = fullBalance - Number(fees);
+      setAmount(maxStxAmount.toString());
+    };
+
     function RenderCreateTransaction() {
       return (
         <>
@@ -259,14 +265,16 @@ const SendBottomSheet = React.forwardRef<any, Props>(
                   value={amount}
                   labelStyle={styles.textInputLabel}
                   label="Amount To Send"
-                  placeholder="0.00000000"
+                  placeholder="0.00000000 STX"
                   keyboardType="decimal-pad"
                   icon={
-                    <Typography
-                      type="smallTitleR"
-                      style={{ color: colors.primary40 }}>
-                      STX
-                    </Typography>
+                    <TouchableOpacity onPress={setMaxAmount}>
+                      <Typography
+                        type="buttonText"
+                        style={{ color: colors.secondary100 }}>
+                        MAX
+                      </Typography>
+                    </TouchableOpacity>
                   }
                   subtext={
                     <Typography
