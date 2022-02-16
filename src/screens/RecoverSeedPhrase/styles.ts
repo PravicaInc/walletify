@@ -14,7 +14,8 @@ const styles = StyleSheet.create({
   },
   header: {
     shadowOpacity: 0,
-    height: 20,
+    paddingHorizontal: 20,
+    paddingTop: 22,
   },
   topContent: {
     alignItems: 'center',
