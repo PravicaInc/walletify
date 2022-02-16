@@ -29,53 +29,49 @@ const mapAssetResponseToToken = async (
   tokensApi?: FungibleTokensApi | NonFungibleTokensApi,
   isFungible = false,
 ) => {
-  const results: Promise<any>[] = [];
+  return Promise.all(
+    Object.keys(assets).map(async fungibleKey => {
+      const assetToken = assets[fungibleKey] as FungibleResponse &
+        NonFungibleResponse;
+      const amount = assetToken.balance || assetToken.count;
 
-  Object.keys(assets).forEach(async fungibleKey => {
-    const assetToken = assets[fungibleKey] as FungibleResponse &
-      NonFungibleResponse;
-    const amount = assetToken.balance || assetToken.count;
+      if (amount === emptyBalance) {
+        return;
+      }
 
-    if (amount === emptyBalance) {
-      return;
-    }
+      const { contractName, assetName, address } =
+        getAssetStringParts(fungibleKey);
+      const contractId = `${address}.${contractName}`;
 
-    const { contractName, assetName, address } =
-      getAssetStringParts(fungibleKey);
-    const contractId = `${address}.${contractName}`;
+      let localAsset: FtMeta = isFungible
+        ? JSON.parse((await AsyncStorage.getItem(contractId)) || '{}')
+        : {};
 
-    let localAsset: FtMeta = isFungible
-      ? JSON.parse((await AsyncStorage.getItem(contractId)) || '{}')
-      : {};
-
-    if (!localAsset.name && isFungible && tokensApi) {
-      localAsset = await (tokensApi as FungibleTokensApi).getContractFtMetadata(
-        {
+      if (!localAsset.name && isFungible && tokensApi) {
+        localAsset = await (
+          tokensApi as FungibleTokensApi
+        ).getContractFtMetadata({
           contractId,
-        },
+        });
+        await AsyncStorage.setItem(contractId, JSON.stringify(localAsset));
+      }
+
+      const calculatedAmount = valueFromBalance(
+        amount,
+        isFungible ? 'ft' : 'nft',
+        localAsset,
       );
-      await AsyncStorage.setItem(contractId, JSON.stringify(localAsset));
-    }
 
-    const calculatedAmount = valueFromBalance(
-      amount,
-      isFungible ? 'ft' : 'nft',
-      localAsset,
-    );
-
-    results.push(
-      Promise.resolve({
+      return {
         name: isFungible ? assetName.toUpperCase() : assetName,
         amount: calculatedAmount,
         contractName,
         contractAddress: address,
         isFungible,
         metaData: localAsset,
-      }),
-    );
-  });
-
-  return Promise.all(results);
+      };
+    }),
+  );
 };
 
 export const assets = atom(async get => {
