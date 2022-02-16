@@ -53,6 +53,7 @@ const SeedRestore: React.FC<Props> = ({
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.white }]}>
       <Header
+        containerStyles={styles.header}
         leftComponent={
           <HeaderBack onPress={handleGoBack} text="Back" hasChevron />
         }

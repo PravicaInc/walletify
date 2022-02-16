@@ -44,6 +44,7 @@ const RecoverSeedPhrase: React.FC = () => {
         handleNextAction={handlePasswordModalAction}
       />
       <Header
+        containerStyles={styles.header}
         leftComponent={
           <HeaderBack onPress={handleGoBack} text="Back" hasChevron />
         }
