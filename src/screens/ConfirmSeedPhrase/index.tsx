@@ -15,6 +15,7 @@ import styles from './styles';
 import { shuffleArrayWithIndex } from '../../shared/helpers';
 import { PuzzleItem } from '../../shared/types';
 import { DraxProvider } from 'react-native-drax';
+import { useWallet } from '../../hooks/useWallet/useWallet';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ConfirmSeedPhrase'>;
 
@@ -24,12 +25,14 @@ const ConfirmSeedPhrase: React.FC<Props> = ({
   },
 }) => {
   const { dispatch } = useNavigation();
+  const { restoreWallet } = useWallet();
   const {
     theme: { colors },
   } = useContext(ThemeContext);
   const [chosenPuzzle, setChosenPuzzle] = useState<PuzzleItem<string>[]>(() =>
     shuffleArrayWithIndex(seedPhrase.split(' ')).slice(0, 4),
   );
+  const [loading, setLoading] = useState<boolean>(false);
 
   const [puzzleState, setPuzzleState] = useState<PuzzleItem<string>[]>([]);
   const isCompleted = puzzleState.length === 4;
@@ -45,16 +48,12 @@ const ConfirmSeedPhrase: React.FC<Props> = ({
     [puzzleState, isCompleted],
   );
 
-  const handleDone = useCallback(
-    () =>
-      dispatch(
-        StackActions.replace('Home', {
-          seedPhrase,
-          password,
-        }),
-      ),
-    [seedPhrase, password],
-  );
+  const handleDone = useCallback(async () => {
+    setLoading(true);
+    await restoreWallet(seedPhrase, password);
+    dispatch(StackActions.replace('Home'));
+    setLoading(false);
+  }, [seedPhrase, password]);
 
   const handleGoBack = useCallback(() => dispatch(StackActions.pop()), []);
   const handleRetry = useCallback(() => {
@@ -95,7 +94,7 @@ const ConfirmSeedPhrase: React.FC<Props> = ({
           />
           <TouchableOpacity
             onPress={isValid ? handleDone : handleRetry}
-            disabled={!isCompleted}
+            disabled={!isCompleted || loading}
             style={[
               styles.button,
               styles.pusher,

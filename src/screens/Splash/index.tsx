@@ -2,6 +2,7 @@ import { StackActions, useNavigation } from '@react-navigation/native';
 import React, { useContext, useEffect } from 'react';
 import SplashScreen from 'react-native-splash-screen';
 import { UserPreferenceContext } from '../../contexts/UserPreference/userPreferenceContext';
+import { useWallet } from '../../hooks/useWallet/useWallet';
 
 const Splash: React.FC = () => {
   const {
@@ -9,6 +10,7 @@ const Splash: React.FC = () => {
   } = useContext(UserPreferenceContext);
 
   const { dispatch } = useNavigation();
+  const { restoreWallet } = useWallet();
 
   useEffect(() => {
     if (encryptedSeedPhrase) {
@@ -17,13 +19,9 @@ const Splash: React.FC = () => {
           resetAction: () => {
             dispatch(StackActions.replace('WalletSetup'));
           },
-          nextAction: (password: string, seedPhrase: string) => {
-            dispatch(
-              StackActions.replace('Home', {
-                password,
-                seedPhrase,
-              }),
-            );
+          nextAction: async (password: string, seedPhrase: string) => {
+            await restoreWallet(seedPhrase, password);
+            dispatch(StackActions.replace('Home'));
           },
         }),
       );

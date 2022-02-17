@@ -31,6 +31,7 @@ interface IProps {
   cancelAction?: any;
   resetAction?: any;
   reset?: boolean;
+  nextActionLoading?: boolean;
 }
 
 export const WalletUnlockInner: React.FC<IProps> = ({
@@ -38,6 +39,7 @@ export const WalletUnlockInner: React.FC<IProps> = ({
   resetAction,
   cancelAction,
   reset,
+  nextActionLoading,
 }) => {
   const disableBack = !!cancelAction;
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
@@ -65,7 +67,12 @@ export const WalletUnlockInner: React.FC<IProps> = ({
         encryptedSeedPhrase,
         userPassword,
       );
-      nextAction(userPassword, seedDecrypted);
+      const nextActionResult = nextAction(userPassword, seedDecrypted);
+      if (nextActionResult instanceof Promise) {
+        try {
+          await nextActionResult;
+        } catch (err) {}
+      }
     },
     [encryptedSeedPhrase, nextAction],
   );
@@ -131,7 +138,7 @@ export const WalletUnlockInner: React.FC<IProps> = ({
           )
         }
         title="Password"
-        isRightLoading={loading}
+        isRightLoading={loading || nextActionLoading}
         rightComponent={
           <TouchableOpacity
             style={styles.confirm}

@@ -7,7 +7,10 @@ import styles from './styles';
 import { Keyboard } from 'react-native';
 
 type Props = {
-  handleNextAction: (password: string, seedPhrase: string) => void;
+  handleNextAction: (
+    password: string,
+    seedPhrase: string,
+  ) => void | Promise<void>;
 };
 
 const EnterPasswordModal = React.forwardRef<any, Props>(
@@ -16,7 +19,10 @@ const EnterPasswordModal = React.forwardRef<any, Props>(
     const [reset, setReset] = useState<boolean>(false);
     const handleGoNext = useCallback(
       async (password: string, seedPhrase: string) => {
-        handleNextAction(password, seedPhrase);
+        const result = handleNextAction(password, seedPhrase);
+        if (result instanceof Promise) {
+          await result;
+        }
       },
       [],
     );
