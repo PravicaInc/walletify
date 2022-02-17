@@ -39,6 +39,8 @@ import { useUnlockWallet } from '../../hooks/useWallet/useUnlockWallet';
 import { decryptMnemonic } from '@stacks/encryption';
 import { encrypt } from '@stacks/wallet-sdk/dist';
 import { useWallet } from '../../hooks/useWallet/useWallet';
+import NetworkChangeIcon from '../../assets/images/settings/networkChangeIcon.svg';
+import ChangeNetworkBottomSheet from '../../components/ChangeNetworkBottomSheet';
 
 type TProps = {
   icon: React.FC;
@@ -88,6 +90,8 @@ const bottomSettingsList = [
 const Settings = () => {
   const enterPasswordModalRef = useRef<BottomSheetModal>(null);
   const confirmModalRef = useRef<BottomSheetModal>(null);
+  const changeNetworkModalRef = useRef<BottomSheetModal>(null);
+
   const {
     theme: { colors },
   } = useContext(ThemeContext);
@@ -211,6 +215,14 @@ const Settings = () => {
     ];
   }, [colors, validateUserCredentials]);
 
+  const dismissChangeNetworkBottomSheet = () => {
+    changeNetworkModalRef.current?.close();
+  };
+
+  const onChangeNetwork = () => {
+    dispatch(StackActions.pop());
+  };
+
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.white }]}>
       <ScrollView contentContainerStyle={styles.contentContainer}>
@@ -265,6 +277,11 @@ const Settings = () => {
               text="Recover the Seed Phrase"
               onPress={handleRecoverSeedPhrase}
             />
+            <TouchableSettingsItem
+              icon={NetworkChangeIcon}
+              text="Change Network"
+              onPress={() => changeNetworkModalRef.current?.expand()}
+            />
           </View>
           <View
             style={[{ borderBottomColor: colors.primary20, width: '100%' }]}>
@@ -294,6 +311,11 @@ const Settings = () => {
           title="Reset Wallet"
           subTitle="Losing the password doesn't matter as much, because as long as you have the Secret Key you can restore your wallet and set up a new password."
           ref={confirmModalRef}
+        />
+        <ChangeNetworkBottomSheet
+          bottomSheetRef={changeNetworkModalRef}
+          onCancel={dismissChangeNetworkBottomSheet}
+          onChange={onChangeNetwork}
         />
       </ScrollView>
     </SafeAreaView>

@@ -9,6 +9,8 @@ import { PortalProvider } from '@gorhom/portal';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import * as Sentry from '@sentry/react-native';
 import Config from 'react-native-config';
+import Toast from 'react-native-toast-message';
+import { toastConfig } from './src/components/Toast/ToastConfig';
 
 export default function App() {
   const [theme, setTheme] = useState<Theme>(DefaultTheme);
@@ -29,6 +31,10 @@ export default function App() {
               <BottomSheetModalProvider>
                 <Routes />
               </BottomSheetModalProvider>
+              <Toast
+                config={toastConfig(theme.colors)}
+                ref={ref => Toast.setRef(ref)}
+              />
             </NavigationContainer>
           </PortalProvider>
         </ThemeContext.Provider>
