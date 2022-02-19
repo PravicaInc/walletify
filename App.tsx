@@ -24,13 +24,13 @@ export default function App() {
     <UserPreference>
       <SafeAreaProvider>
         <ThemeContext.Provider value={{ theme, setTheme }}>
-          <PortalProvider>
-            <NavigationContainer>
-              <BottomSheetModalProvider>
+          <NavigationContainer>
+            <BottomSheetModalProvider>
+              <PortalProvider>
                 <Routes />
-              </BottomSheetModalProvider>
-            </NavigationContainer>
-          </PortalProvider>
+              </PortalProvider>
+            </BottomSheetModalProvider>
+          </NavigationContainer>
         </ThemeContext.Provider>
       </SafeAreaProvider>
     </UserPreference>

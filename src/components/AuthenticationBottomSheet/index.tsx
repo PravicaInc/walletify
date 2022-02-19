@@ -29,16 +29,9 @@ import GeneralButton from '../shared/GeneralButton';
 
 const AuthenticationBottomSheet: React.FC = () => {
   const snapPoints = React.useMemo(() => ['95%'], []);
-  const {
-    theme: { colors },
-  } = useContext(ThemeContext);
-  const network = useAtomValue(selectedNetwork);
-  const { walletAccounts, switchAccount } = useAccounts();
-  const { walletState } = useWallet();
   const [selectedAccountIndex, setSelectedAccountIndex] = useState<
     number | undefined
   >();
-  const { loading, setSuccess, setLoading, setFailure } = useProgressState();
   const authRequest = useAtomValue(authRequestState);
   const setAuthRequest = useAuthRequest();
   const bottomSheetRef = useRef<BottomSheet>(null);
@@ -58,6 +51,55 @@ const AuthenticationBottomSheet: React.FC = () => {
     bottomSheetRef.current?.close();
     setSelectedAccountIndex(undefined);
   }, []);
+
+  const handleSheetChanges = useCallback(
+    (index: number) => {
+      if (index === -1) {
+        dismissBottomSheet();
+      }
+    },
+    [dismissBottomSheet],
+  );
+
+  return (
+    <BottomSheet
+      onChange={handleSheetChanges}
+      ref={bottomSheetRef}
+      snapPoints={snapPoints}
+      backdropComponent={CustomBackdrop}
+      handleComponent={null}
+      enablePanDownToClose
+      index={-1}>
+      <WrappedAuthenticationBottomSheetInner
+        selectedAccountIndex={selectedAccountIndex}
+        setSelectedAccountIndex={setSelectedAccountIndex}
+        dismissBottomSheet={dismissBottomSheet}
+      />
+    </BottomSheet>
+  );
+};
+
+export default AuthenticationBottomSheet;
+
+interface BottomSheetInnerProps {
+  selectedAccountIndex: number;
+  setSelectedAccountIndex: (index: number) => void;
+  dismissBottomSheet: () => void;
+}
+
+const AuthenticationBottomSheetInner: React.FC<BottomSheetInnerProps> = ({
+  selectedAccountIndex,
+  setSelectedAccountIndex,
+  dismissBottomSheet,
+}) => {
+  const {
+    theme: { colors },
+  } = useContext(ThemeContext);
+  const authRequest = useAtomValue(authRequestState);
+  const network = useAtomValue(selectedNetwork);
+  const { walletAccounts, switchAccount } = useAccounts();
+  const { walletState } = useWallet();
+  const { loading, setSuccess, setLoading, setFailure } = useProgressState();
   const handleSelectAccount = (index: number) => {
     if (!loading && walletAccounts?.length) {
       setSelectedAccountIndex(index);
@@ -82,16 +124,6 @@ const AuthenticationBottomSheet: React.FC = () => {
       setSuccess();
     }
   };
-
-  const handleSheetChanges = useCallback(
-    (index: number) => {
-      if (index === -1) {
-        dismissBottomSheet();
-      }
-    },
-    [dismissBottomSheet],
-  );
-
   const renderAccountsListHeader = useCallback(() => {
     return (
       <>
@@ -130,48 +162,39 @@ const AuthenticationBottomSheet: React.FC = () => {
       />
     );
   };
-
   return (
-    <Portal>
-      <BottomSheet
-        onChange={handleSheetChanges}
-        ref={bottomSheetRef}
-        snapPoints={snapPoints}
-        backdropComponent={CustomBackdrop}
-        handleComponent={null}
-        enablePanDownToClose
-        index={-1}>
-        <View style={styles.container}>
-          <Header
-            title="Authentication"
-            leftComponent={
-              <HeaderBack
-                textColor={colors.secondary100}
-                text="Cancel"
-                onPress={dismissBottomSheet}
-              />
-            }
+    <View style={styles.container}>
+      <Header
+        title="Authentication"
+        leftComponent={
+          <HeaderBack
+            textColor={colors.secondary100}
+            text="Cancel"
+            onPress={dismissBottomSheet}
           />
-          <Suspense fallback={<Text>Loading</Text>}>
-            <BottomSheetFlatList
-              data={walletAccounts}
-              keyExtractor={account => account.address}
-              renderItem={renderAccount}
-              ListHeaderComponent={renderAccountsListHeader}
-              contentContainerStyle={styles.accountsList}
-            />
-          </Suspense>
-          <GeneralButton
-            style={styles.confirmButton}
-            type="Primary"
-            disabled={loading || selectedAccountIndex === undefined}
-            onPress={() => handleConfirmAuth()}>
-            {loading ? 'Loading...' : 'Confirm'}
-          </GeneralButton>
-        </View>
-      </BottomSheet>
-    </Portal>
+        }
+      />
+      <Suspense fallback={<Text>Loading</Text>}>
+        <BottomSheetFlatList
+          data={walletAccounts}
+          keyExtractor={account => account.address}
+          renderItem={renderAccount}
+          ListHeaderComponent={renderAccountsListHeader}
+          contentContainerStyle={styles.accountsList}
+        />
+      </Suspense>
+      <GeneralButton
+        style={styles.confirmButton}
+        type="Primary"
+        disabled={loading || selectedAccountIndex === undefined}
+        onPress={() => handleConfirmAuth()}>
+        {loading ? 'Loading...' : 'Confirm'}
+      </GeneralButton>
+    </View>
   );
 };
 
-export default withSuspense(AuthenticationBottomSheet, <Text>Loading</Text>);
+const WrappedAuthenticationBottomSheetInner = withSuspense(
+  AuthenticationBottomSheetInner,
+  <Text>Loading</Text>,
+);
