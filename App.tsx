@@ -9,13 +9,15 @@ import { PortalProvider } from '@gorhom/portal';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import * as Sentry from '@sentry/react-native';
 import Config from 'react-native-config';
+import Toast from 'react-native-toast-message';
+import { toastConfig } from './src/components/Toast/ToastConfig';
 
 export default function App() {
   const [theme, setTheme] = useState<Theme>(DefaultTheme);
 
   useEffect(() => {
     Sentry.init({
-      dsn: Config.SENTRY_URL,
+      dsn: Config.SENTRY_DSN_URL,
       tracesSampleRate: 1.0,
     });
   }, []);
@@ -24,13 +26,17 @@ export default function App() {
     <UserPreference>
       <SafeAreaProvider>
         <ThemeContext.Provider value={{ theme, setTheme }}>
-          <NavigationContainer>
-            <BottomSheetModalProvider>
-              <PortalProvider>
+          <PortalProvider>
+            <NavigationContainer>
+              <BottomSheetModalProvider>
                 <Routes />
-              </PortalProvider>
-            </BottomSheetModalProvider>
-          </NavigationContainer>
+              </BottomSheetModalProvider>
+              <Toast
+                config={toastConfig(theme.colors)}
+                ref={ref => Toast.setRef(ref)}
+              />
+            </NavigationContainer>
+          </PortalProvider>
         </ThemeContext.Provider>
       </SafeAreaProvider>
     </UserPreference>

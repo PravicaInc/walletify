@@ -16,7 +16,9 @@ export const useUserPreference = () => {
   useEffect(() => {
     AsyncStorage.getItem(USER_PREFERENCE_KEY).then(value => {
       if (value) {
-        setUserPreference(JSON.parse(value));
+        setUserPreference({ ...JSON.parse(value), hasLoaded: true });
+      } else {
+        setUserPreference({ ...DEFAULT_USER_PREFERENCE, hasLoaded: true });
       }
     });
   }, []);

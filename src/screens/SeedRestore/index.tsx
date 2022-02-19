@@ -19,6 +19,7 @@ import Animated from 'react-native-reanimated';
 import PasswordShield from '../../assets/password-shield.svg';
 import { useKeyboardWithAnimation } from '../../hooks/common/useKeyboardWithAnimation';
 import SeedPhraseGrid from '../../components/SeedPhraseGrid';
+import { useWallet } from '../../hooks/useWallet/useWallet';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'SeedRestore'>;
 
@@ -33,15 +34,15 @@ const SeedRestore: React.FC<Props> = ({
   } = useContext(ThemeContext);
 
   const animatedStyles = useKeyboardWithAnimation();
+  const { restoreWallet } = useWallet();
   const [seedPhrase, setSeedPhrase] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleContinue = useCallback(async () => {
-    dispatch(
-      StackActions.replace('Home', {
-        password,
-        seedPhrase,
-      }),
-    );
+    setLoading(true);
+    await restoreWallet(seedPhrase, password);
+    dispatch(StackActions.replace('Home'));
+    setLoading(false);
   }, [password, seedPhrase]);
 
   const handleGoBack = useCallback(() => dispatch(StackActions.pop()), []);
@@ -53,6 +54,7 @@ const SeedRestore: React.FC<Props> = ({
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.white }]}>
       <Header
+        containerStyles={styles.header}
         leftComponent={
           <HeaderBack onPress={handleGoBack} text="Back" hasChevron />
         }
@@ -69,13 +71,13 @@ const SeedRestore: React.FC<Props> = ({
             <Animated.View style={[styles.hiddenItems, animatedStyles]}>
               <PasswordShield />
               <Typography type="bigTitle" style={styles.title}>
-                Enter Your Seed Phrase
+                Enter Your Secret Key
               </Typography>
               <Typography
                 type="commonText"
                 style={[styles.description, { color: colors.primary60 }]}>
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industryLorem Ipsum has beenLorem
+                You can either enter it word by word or just paste it in the
+                first input and it will work.
               </Typography>
             </Animated.View>
           </View>
@@ -86,7 +88,7 @@ const SeedRestore: React.FC<Props> = ({
           />
           <TouchableOpacity
             onPress={handleContinue}
-            disabled={!canGoNext}
+            disabled={!canGoNext || loading}
             style={[
               styles.button,
               styles.pusher,

@@ -6,6 +6,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  header: {
+    paddingHorizontal: 20,
+    paddingTop: 22,
+  },
   keyboardContainer: {
     flex: 1,
     paddingHorizontal: PADDING_HORIZONTAL,
@@ -28,7 +32,6 @@ const styles = StyleSheet.create({
   title: { marginVertical: 10 },
   description: {
     textAlign: 'center',
-    width: '80%',
   },
   button: {
     width: '100%',

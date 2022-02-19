@@ -1,13 +1,12 @@
 import { StyleSheet } from 'react-native';
-import { PADDING_HORIZONTAL } from '../../shared/layout';
 
 export default StyleSheet.create({
   safeAreaContainer: {
     flex: 1,
+    padding: 20,
   },
   contentViewContainer: {
     flex: 1,
-    paddingHorizontal: PADDING_HORIZONTAL,
   },
   fullWidth: {
     flex: 1,
