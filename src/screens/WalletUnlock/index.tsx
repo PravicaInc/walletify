@@ -31,7 +31,6 @@ interface IProps {
   cancelAction?: any;
   resetAction?: any;
   reset?: boolean;
-  nextActionLoading?: boolean;
 }
 
 export const WalletUnlockInner: React.FC<IProps> = ({
@@ -39,7 +38,6 @@ export const WalletUnlockInner: React.FC<IProps> = ({
   resetAction,
   cancelAction,
   reset,
-  nextActionLoading,
 }) => {
   const disableBack = !!cancelAction;
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
@@ -138,7 +136,7 @@ export const WalletUnlockInner: React.FC<IProps> = ({
           )
         }
         title="Password"
-        isRightLoading={loading || nextActionLoading}
+        isRightLoading={loading}
         rightComponent={
           <TouchableOpacity
             style={styles.confirm}
