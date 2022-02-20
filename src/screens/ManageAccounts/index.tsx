@@ -18,6 +18,7 @@ import CreateIdentityBottomSheet from '../../components/CreateIdentityBottomShee
 import { OptionsPick } from '../../components/OptionsPick';
 import WarningIcon from '../../components/shared/WarningIcon';
 import AccountAvatar from '../../components/shared/AccountAvatar';
+import { withSuspense } from '../../components/shared/WithSuspense';
 
 const ManageAccounts: React.FC = () => {
   const {
@@ -179,4 +180,4 @@ const ManageAccounts: React.FC = () => {
   );
 };
 
-export default ManageAccounts;
+export default withSuspense(ManageAccounts);
