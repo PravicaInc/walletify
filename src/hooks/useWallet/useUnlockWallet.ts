@@ -5,7 +5,7 @@ import { UserCredentials } from 'react-native-keychain';
 import { UserPreferenceContext } from '../../contexts/UserPreference/userPreferenceContext';
 
 export const useUnlockWallet = (
-  handleGoNext: (password: string, seedPhrase: string) => any,
+  handleGoNext: (password: string, seedPhrase: string) => Promise<any>,
   ref: any,
 ) => {
   const {

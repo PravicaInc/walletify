@@ -19,6 +19,7 @@ import Animated from 'react-native-reanimated';
 import PasswordShield from '../../assets/password-shield.svg';
 import { useKeyboardWithAnimation } from '../../hooks/common/useKeyboardWithAnimation';
 import SeedPhraseGrid from '../../components/SeedPhraseGrid';
+import { useWallet } from '../../hooks/useWallet/useWallet';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'SeedRestore'>;
 
@@ -33,15 +34,15 @@ const SeedRestore: React.FC<Props> = ({
   } = useContext(ThemeContext);
 
   const animatedStyles = useKeyboardWithAnimation();
+  const { restoreWallet } = useWallet();
   const [seedPhrase, setSeedPhrase] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleContinue = useCallback(async () => {
-    dispatch(
-      StackActions.replace('Home', {
-        password,
-        seedPhrase,
-      }),
-    );
+    setLoading(true);
+    await restoreWallet(seedPhrase, password);
+    dispatch(StackActions.replace('Home'));
+    setLoading(false);
   }, [password, seedPhrase]);
 
   const handleGoBack = useCallback(() => dispatch(StackActions.pop()), []);
@@ -87,7 +88,7 @@ const SeedRestore: React.FC<Props> = ({
           />
           <TouchableOpacity
             onPress={handleContinue}
-            disabled={!canGoNext}
+            disabled={!canGoNext || loading}
             style={[
               styles.button,
               styles.pusher,

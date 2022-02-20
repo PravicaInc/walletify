@@ -1,10 +1,11 @@
 import React, { Suspense, useCallback, useContext } from 'react';
 import BottomSheet from '@gorhom/bottom-sheet';
+import ContentLoader from 'react-content-loader/native';
 import { ThemeContext } from '../../../contexts/Theme/theme';
 import { useAccounts } from '../../../hooks/useAccounts/useAccounts';
 import Header from '../../shared/Header';
 import HeaderBack from '../../shared/HeaderBack';
-import { ListRenderItem, Text } from 'react-native';
+import { ListRenderItem } from 'react-native';
 import AccountListItem from '../AccountListItem';
 import { AccountWithAddress } from '../../../models/account';
 import { FlatList } from 'react-native-gesture-handler';
@@ -40,7 +41,7 @@ const SwitchAccountBottomSheet: React.FC<
   const renderAccount: ListRenderItem<AccountWithAddress> = useCallback(
     ({ item }) => {
       return (
-        <Suspense fallback={<Text>Loading</Text>}>
+        <Suspense fallback={<ContentLoader />}>
           <AccountListItem
             account={item}
             onPressAccount={() => onSwitch(item.index)}
@@ -85,4 +86,4 @@ const SwitchAccountBottomSheet: React.FC<
   );
 };
 
-export default withSuspense(SwitchAccountBottomSheet, <Text>Loading</Text>);
+export default withSuspense(SwitchAccountBottomSheet);

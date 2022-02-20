@@ -1,6 +1,6 @@
 export type RootStackParamList = {
   Splash: undefined;
-  Home: { seedPhrase: string; password: string };
+  Home: undefined;
   OnBoarding: undefined;
   WalletSetup: undefined;
   ConfirmSeedPhrase: { seedPhrase: string; password: string };

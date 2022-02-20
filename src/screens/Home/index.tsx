@@ -1,11 +1,8 @@
-import React, { useCallback, useContext, useEffect, useRef } from 'react';
+import React, { useCallback, useContext, useRef } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import { StackActions, useNavigation } from '@react-navigation/native';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ThemeContext } from '../../contexts/Theme/theme';
-import { useWallet } from '../../hooks/useWallet/useWallet';
 import Header from '../../components/shared/Header';
-import { RootStackParamList } from '../../navigation/types';
 import HomeTabs from './HomeTabs';
 import AccountBalanceCard from './AccountBalanceCard';
 import Wise from '../../assets/wise.svg';
@@ -16,24 +13,14 @@ import SwitchAccountBottomSheet from '../../components/Accounts/SwitchAccountBot
 import BottomSheet from '@gorhom/bottom-sheet';
 import SwitchAccountButton from './SwitchAccountButton';
 import { withSuspense } from '../../components/shared/WithSuspense';
-import { Text } from 'react-native-svg';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
-
-const Home = (props: Props) => {
+const Home = () => {
   const {
     theme: { colors },
   } = useContext(ThemeContext);
-  const { restoreWallet } = useWallet();
   const { dispatch } = useNavigation();
   const { switchAccount, walletAccounts } = useAccounts();
   const bottomSheetModalRef = useRef<BottomSheet>(null);
-
-  const { password, seedPhrase } = props.route.params;
-
-  useEffect(() => {
-    restoreWallet(seedPhrase, password);
-  }, []);
 
   const goToSettings = () => dispatch(StackActions.push('Settings'));
 
@@ -84,4 +71,4 @@ const Home = (props: Props) => {
   );
 };
 
-export default withSuspense(Home, <Text>Loading</Text>);
+export default withSuspense(Home);

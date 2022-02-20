@@ -6,6 +6,7 @@ import SplashScreen from 'react-native-splash-screen';
 import BottomSheet from '@gorhom/bottom-sheet';
 import { ThemeContext } from '../../contexts/Theme/theme';
 import { UserPreferenceContext } from '../../contexts/UserPreference/userPreferenceContext';
+import { useWallet } from '../../hooks/useWallet/useWallet';
 import EnterPasswordModal from '../../components/EnterPasswordModal';
 import { useUnlockWallet } from '../../hooks/useWallet/useUnlockWallet';
 import WiseLogo from '../../assets/wise.svg';
@@ -20,19 +21,16 @@ const Splash: React.FC = () => {
   } = useContext(ThemeContext);
   const passwordBottomSheet = useRef<BottomSheet>(null);
   const { dispatch } = useNavigation();
+  const { restoreWallet } = useWallet();
 
-  const handleAuthenticationSuccessful = (
+  const handleAuthenticationSuccessful = async (
     password: string,
     seedPhrase: string,
   ) => {
     Keyboard.dismiss();
     passwordBottomSheet.current?.close();
-    dispatch(
-      StackActions.replace('Home', {
-        password,
-        seedPhrase,
-      }),
-    );
+    await restoreWallet(seedPhrase, password);
+    dispatch(StackActions.replace('Home'));
   };
 
   const onResetWallet = () => {
@@ -43,10 +41,6 @@ const Splash: React.FC = () => {
     handleAuthenticationSuccessful,
     passwordBottomSheet,
   );
-
-  useEffect(() => {
-    SplashScreen.hide();
-  }, []);
 
   useEffect(() => {
     if (hasLoaded) {

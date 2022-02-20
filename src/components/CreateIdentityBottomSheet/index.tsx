@@ -5,7 +5,6 @@ import Header from '../shared/Header';
 import HeaderBack from '../shared/HeaderBack';
 import {
   ActivityIndicator,
-  Text,
   TextInput,
   TouchableOpacity,
   View,
@@ -170,4 +169,4 @@ const CreateIdentityBottomSheet: React.FC<CreateIdentityBottomSheetProps> = ({
   );
 };
 
-export default withSuspense(CreateIdentityBottomSheet, <Text>Loading</Text>);
+export default withSuspense(CreateIdentityBottomSheet);

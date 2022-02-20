@@ -65,7 +65,7 @@ export const WalletUnlockInner: React.FC<IProps> = ({
         encryptedSeedPhrase,
         userPassword,
       );
-      nextAction(userPassword, seedDecrypted);
+      await nextAction(userPassword, seedDecrypted);
     },
     [encryptedSeedPhrase, nextAction],
   );

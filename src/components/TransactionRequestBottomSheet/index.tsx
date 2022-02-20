@@ -8,7 +8,8 @@ import React, {
   useState,
 } from 'react';
 import BottomSheet from '@gorhom/bottom-sheet';
-import { Alert, Image, Linking, Text, View } from 'react-native';
+import { Alert, Image, Linking, View } from 'react-native';
+import ContentLoader from 'react-content-loader/native';
 import { ThemeContext } from '../../contexts/Theme/theme';
 import Header from '../shared/Header';
 import HeaderBack from '../shared/HeaderBack';
@@ -187,7 +188,7 @@ const TransactionRequestBottomSheet: React.FC = () => {
               />
             }
           />
-          <Suspense fallback={<Text>Loading</Text>}>
+          <Suspense fallback={<ContentLoader />}>
             <View
               style={[
                 styles.headerContainer,
@@ -270,7 +271,4 @@ const TransactionRequestBottomSheet: React.FC = () => {
   );
 };
 
-export default withSuspense(
-  TransactionRequestBottomSheet,
-  <Text>Loading</Text>,
-);
+export default withSuspense(TransactionRequestBottomSheet);

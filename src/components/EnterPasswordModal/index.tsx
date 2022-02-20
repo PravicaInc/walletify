@@ -7,7 +7,7 @@ import { Keyboard } from 'react-native';
 import { Portal } from '@gorhom/portal';
 
 type Props = {
-  handleNextAction: (password: string, seedPhrase: string) => void;
+  handleNextAction: (password: string, seedPhrase: string) => any;
   isDismissible: boolean;
   resetWalletCb?: () => void;
 };
@@ -19,7 +19,7 @@ const EnterPasswordModal = React.forwardRef<any, Props>(
 
     const handleGoNext = useCallback(
       async (password: string, seedPhrase: string) => {
-        handleNextAction(password, seedPhrase);
+        await handleNextAction(password, seedPhrase);
       },
       [],
     );

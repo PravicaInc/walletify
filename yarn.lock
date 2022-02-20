@@ -8210,6 +8210,11 @@ rc@^1.0.1, rc@^1.1.6:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
+react-content-loader@^6.1.0:
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/react-content-loader/-/react-content-loader-6.1.0.tgz#6b06be3889d2480ae909be0374a6062a36a53dec"
+  integrity sha512-S4/+doQrNs0PGDgUYCGGfdFjGax8dMQzYkWcSSxfaUcUjFkbnikWARuX9lWkglocIVhxnn3lxNb6uEWFFUzNUw==
+
 react-devtools-core@4.22.1, react-devtools-core@^4.6.0:
   version "4.22.1"
   resolved "https://registry.yarnpkg.com/react-devtools-core/-/react-devtools-core-4.22.1.tgz#b276d42f860bedc373c9b3c0f5f96734318dd453"
@@ -8477,6 +8482,13 @@ react-native-text-size@^4.0.0-rc.1:
   version "4.0.0-rc.1"
   resolved "https://registry.yarnpkg.com/react-native-text-size/-/react-native-text-size-4.0.0-rc.1.tgz#1e048d345dd6a5a8e1269e0585c1a5948c478da5"
   integrity sha512-CysqjU2jK6Yc+a+kEI222pUyTY2ywcU2HqbFqf1KHymW6OPTdvBBHqbEJKL0QiLhQaFYDbqicM+h990s9TP00g==
+
+react-native-toast-message@^1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/react-native-toast-message/-/react-native-toast-message-1.6.0.tgz#863466ff78429902c7182bc08dd8d879476c0a3b"
+  integrity sha512-EDXSGyuhRdy5/S4bDlfJ/fkKXM7Gxz6OTx0obBS5kyGq+ci8rvrrOVJkYhgYyjdppYdzCMIvNuIxkUkCjk80fw==
+  dependencies:
+    prop-types "^15.7.2"
 
 react-native-udp@^2.1.0:
   version "2.7.0"
