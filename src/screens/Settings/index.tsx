@@ -35,7 +35,6 @@ import SecureKeychain from '../../shared/SecureKeychain';
 import { styles } from './styles';
 import { OptionsPick } from '../../components/OptionsPick';
 import WarningIcon from '../../components/shared/WarningIcon';
-import { useUnlockWallet } from '../../hooks/useWallet/useUnlockWallet';
 import { decryptMnemonic } from '@stacks/encryption';
 import { encrypt } from '@stacks/wallet-sdk/dist';
 import { useWallet } from '../../hooks/useWallet/useWallet';
@@ -121,7 +120,6 @@ const Settings = () => {
     }
     resetWallet();
     clearUserPreference();
-    enterPasswordModalRef.current?.close();
     dispatch(StackActions.replace('WalletSetup'));
   };
 
@@ -129,10 +127,6 @@ const Settings = () => {
     confirmModalRef.current?.expand();
   };
 
-  const { validateUserCredentials } = useUnlockWallet(
-    handleResetWallet,
-    enterPasswordModalRef,
-  );
   useEffect(() => {
     const getBioSetup = async () => {
       const type = await SecureKeychain.getSupportedBiometryType();
@@ -207,13 +201,13 @@ const Settings = () => {
     return [
       {
         label: 'OK Reset',
-        onClick: validateUserCredentials,
+        onClick: handleResetWallet,
         optionTextStyle: {
           color: colors.failed100,
         },
       },
     ];
-  }, [colors, validateUserCredentials]);
+  }, [colors, handleResetWallet]);
 
   const dismissChangeNetworkBottomSheet = () => {
     changeNetworkModalRef.current?.close();
