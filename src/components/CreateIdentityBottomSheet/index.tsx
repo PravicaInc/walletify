@@ -38,7 +38,6 @@ const CreateIdentityBottomSheet: React.FC<CreateIdentityBottomSheetProps> = ({
     isRegistering,
     registrationError,
     setRegistrationError,
-    registrationSuccessful,
   } = useBns();
 
   const isCreateDisabled = useMemo(() => userName.length === 0, [userName]);
@@ -46,9 +45,7 @@ const CreateIdentityBottomSheet: React.FC<CreateIdentityBottomSheetProps> = ({
   const handleCreateName = useCallback(async () => {
     try {
       await registerUserSubdomain(userName);
-      if (registrationSuccessful) {
-        handleCancelCreateIdentity();
-      }
+      handleCancelCreateIdentity();
     } catch (err) {
       logger.error(err);
     }
