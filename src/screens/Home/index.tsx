@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useRef } from 'react';
+import React, { useCallback, useContext, useEffect, useRef } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { ThemeContext } from '../../contexts/Theme/theme';
@@ -19,8 +19,14 @@ const Home = () => {
     theme: { colors },
   } = useContext(ThemeContext);
   const { dispatch } = useNavigation();
-  const { switchAccount, walletAccounts } = useAccounts();
+  const { switchAccount, walletAccounts, selectedAccountState } = useAccounts();
   const bottomSheetModalRef = useRef<BottomSheet>(null);
+
+  useEffect(() => {
+    if (!selectedAccountState) {
+      switchAccount(0);
+    }
+  }, [selectedAccountState]);
 
   const goToSettings = () => dispatch(StackActions.push('Settings'));
 

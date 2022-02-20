@@ -7,7 +7,6 @@ import UpArrow from '../../../assets/images/upArrow.svg';
 import DownArrow from '../../../assets/images/downArrow.svg';
 import styles from './styles';
 import { valueFromBalance } from '../../../shared/balanceUtils';
-import { withSuspense } from '../../../components/shared/WithSuspense';
 import { useAtomValue } from 'jotai/utils';
 import { currentAccountAvailableStxBalanceState } from '../../../hooks/useAccounts/accountsStore';
 import { useStxPriceValue } from '../../../hooks/useStxPrice/useStxPrice';
@@ -131,4 +130,4 @@ const AccountBalanceCard: React.FC = () => {
     </View>
   );
 };
-export default withSuspense(AccountBalanceCard);
+export default AccountBalanceCard;

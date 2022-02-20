@@ -44,6 +44,7 @@ const Splash: React.FC = () => {
 
   useEffect(() => {
     if (hasLoaded) {
+      SplashScreen.hide();
       const timer = setTimeout(() => {
         if (encryptedSeedPhrase) {
           validateUserCredentials();
