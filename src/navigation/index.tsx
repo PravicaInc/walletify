@@ -18,6 +18,7 @@ import AuthenticationBottomSheet from '../components/AuthenticationBottomSheet';
 import { useTransactionRequestListener } from '../hooks/useLinkingListener/useTransactionRequestsListener';
 import TransactionRequestBottomSheet from '../components/TransactionRequestBottomSheet';
 import { useInternetConnection } from '../hooks/useInternetConnnection';
+import EnterPassword from '../screens/EnterPassword';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -30,62 +31,19 @@ export const Routes: React.FC = () => {
     <>
       <AuthenticationBottomSheet />
       <TransactionRequestBottomSheet />
-      <Stack.Navigator initialRouteName="Splash">
-        <Stack.Screen
-          options={{ headerShown: false }}
-          name="Splash"
-          component={Splash}
-        />
-        <Stack.Screen
-          options={{ headerShown: false }}
-          name="Home"
-          component={Home}
-        />
-        <Stack.Screen
-          options={{ headerShown: false }}
-          name="OnBoarding"
-          component={OnBoarding}
-        />
-        <Stack.Screen
-          options={{ headerShown: false }}
-          name="WalletSetup"
-          component={WalletSetup}
-        />
-        <Stack.Screen
-          options={{ headerShown: false }}
-          name="ConfirmSeedPhrase"
-          component={ConfirmSeedPhrase}
-        />
-        <Stack.Screen
-          options={{ headerShown: false }}
-          name="CreatePassword"
-          component={CreatePassword}
-        />
-        <Stack.Screen
-          options={{ headerShown: false }}
-          name="SeedRestore"
-          component={SeedRestore}
-        />
-        <Stack.Screen
-          options={{ headerShown: false }}
-          name="CreateSeedPhrase"
-          component={CreateSeedPhrase}
-        />
-        <Stack.Screen
-          options={{ headerShown: false }}
-          name="RecoverSeedPhrase"
-          component={RecoverSeedPhrase}
-        />
-        <Stack.Screen
-          options={{ headerShown: false }}
-          name="Settings"
-          component={Settings}
-        />
-        <Stack.Screen
-          options={{ headerShown: false }}
-          name="ManageAccounts"
-          component={ManageAccounts}
-        />
+      <Stack.Navigator initialRouteName="Splash" headerMode="none">
+        <Stack.Screen name="Splash" component={Splash} />
+        <Stack.Screen name="EnterPassword" component={EnterPassword} />
+        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="OnBoarding" component={OnBoarding} />
+        <Stack.Screen name="WalletSetup" component={WalletSetup} />
+        <Stack.Screen name="ConfirmSeedPhrase" component={ConfirmSeedPhrase} />
+        <Stack.Screen name="CreatePassword" component={CreatePassword} />
+        <Stack.Screen name="SeedRestore" component={SeedRestore} />
+        <Stack.Screen name="CreateSeedPhrase" component={CreateSeedPhrase} />
+        <Stack.Screen name="RecoverSeedPhrase" component={RecoverSeedPhrase} />
+        <Stack.Screen name="Settings" component={Settings} />
+        <Stack.Screen name="ManageAccounts" component={ManageAccounts} />
       </Stack.Navigator>
     </>
   );

@@ -1,6 +1,6 @@
 import { StackActions, useNavigation } from '@react-navigation/native';
 import React, { useContext, useEffect, useRef } from 'react';
-import { Keyboard } from 'react-native';
+import { Keyboard, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import SplashScreen from 'react-native-splash-screen';
 import BottomSheet from '@gorhom/bottom-sheet';
@@ -47,7 +47,11 @@ const Splash: React.FC = () => {
       SplashScreen.hide();
       const timer = setTimeout(() => {
         if (encryptedSeedPhrase) {
-          validateUserCredentials();
+          if (Platform.OS === 'android') {
+            dispatch(StackActions.replace('EnterPassword'));
+          } else {
+            validateUserCredentials();
+          }
         } else if (!viewedOnBoarding) {
           dispatch(StackActions.replace('OnBoarding'));
         } else {
