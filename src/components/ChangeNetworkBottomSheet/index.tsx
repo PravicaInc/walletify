@@ -72,7 +72,7 @@ const ChangeNetworkBottomSheet: React.FC<ChangeNetworkBottomSheetProps> = ({
           containerStyles={styles.header}
           leftComponent={
             <HeaderBack
-              text="Cancel"
+              isCancel
               onPress={onCancel}
               textColor={colors.secondary100}
             />

@@ -54,8 +54,8 @@ const ReceiveBottomSheet = React.forwardRef<any, Props>(({}, ref) => {
             title="Receive"
             leftComponent={
               <HeaderBack
+                isCancel
                 textColor={colors.secondary100}
-                text="Cancel"
                 onPress={dismissBottomSheet}
               />
             }

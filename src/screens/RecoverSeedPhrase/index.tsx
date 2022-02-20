@@ -45,9 +45,7 @@ const RecoverSeedPhrase: React.FC = () => {
       />
       <Header
         containerStyles={styles.header}
-        leftComponent={
-          <HeaderBack onPress={handleGoBack} text="Back" hasChevron />
-        }
+        leftComponent={<HeaderBack onPress={handleGoBack} hasChevron isBack />}
       />
       <View style={styles.contentContainer}>
         <LockedShield />

@@ -80,9 +80,7 @@ const CreateSeedPhrase: React.FC<Props> = ({
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.white }]}>
       <Header
-        leftComponent={
-          <HeaderBack onPress={handleGoBack} text="Back" hasChevron />
-        }
+        leftComponent={<HeaderBack onPress={handleGoBack} hasChevron isBack />}
       />
       <ProgressBar currentBarIdx={2} total={3} customStyle={styles.progress} />
       <View style={styles.contentContainer}>

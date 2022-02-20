@@ -68,7 +68,7 @@ const SwitchAccountBottomSheet: React.FC<
         titleColor={colors.primary100}
         leftComponent={
           <HeaderBack
-            text="Cancel"
+            isCancel
             onPress={onCancel}
             hasChevron={false}
             textColor={colors.secondary100}

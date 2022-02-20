@@ -4,10 +4,13 @@ import {
   TextStyle,
   TouchableOpacity,
   LayoutChangeEvent,
+  Platform,
 } from 'react-native';
 import { Typography, StylesTypes } from '../Typography';
 import { ThemeContext } from '../../../contexts/Theme/theme';
 import Chevron from '../../../assets/chevron-right.svg';
+import Close from '../../../assets/images/close.svg';
+import ArrowLeft from '../../../assets/images/arrowLeft.svg';
 
 interface IProps {
   onPress: () => void;
@@ -20,6 +23,8 @@ interface IProps {
   chevronSize?: { height: number; width: number };
   chevronColor?: string;
   onLayout?: (nativeEvent: LayoutChangeEvent) => void;
+  isCancel?: boolean;
+  isBack?: boolean;
 }
 
 const HeaderBack: React.FC<IProps> = ({
@@ -27,12 +32,13 @@ const HeaderBack: React.FC<IProps> = ({
   text,
   textType,
   textColor,
-  hasChevron,
   chevronSize,
   chevronColor,
   customStyle,
   onLayout,
   disabled,
+  isCancel,
+  isBack,
 }) => {
   const {
     theme: { colors },
@@ -43,13 +49,47 @@ const HeaderBack: React.FC<IProps> = ({
       onPress={onPress}
       disabled={disabled}
       onLayout={onLayout}>
-      {hasChevron && (
-        <Chevron
-          width={chevronSize ? chevronSize.width : 7.5}
-          height={chevronSize ? chevronSize.height : 13.5}
-          style={styles.arrow}
-          fill={chevronColor ? chevronColor : colors.primary100}
-        />
+      {isBack && (
+        <>
+          {Platform.OS === 'ios' ? (
+            <Chevron
+              width={chevronSize ? chevronSize.width : 7.5}
+              height={chevronSize ? chevronSize.height : 13.5}
+              style={styles.arrow}
+              fill={chevronColor ? chevronColor : colors.primary100}
+            />
+          ) : (
+            <ArrowLeft />
+          )}
+          {Platform.OS === 'ios' && (
+            <Typography
+              type={textType || 'buttonText'}
+              style={[{ color: textColor || colors.primary100 }, customStyle]}>
+              Back
+            </Typography>
+          )}
+        </>
+      )}
+      {isCancel && (
+        <>
+          {Platform.OS === 'android' ? (
+            <Close />
+          ) : (
+            <Chevron
+              width={chevronSize ? chevronSize.width : 7.5}
+              height={chevronSize ? chevronSize.height : 13.5}
+              style={styles.arrow}
+              fill={chevronColor ? chevronColor : colors.primary100}
+            />
+          )}
+          {Platform.OS === 'ios' && (
+            <Typography
+              type={textType || 'buttonText'}
+              style={[{ color: textColor || colors.primary100 }, customStyle]}>
+              Cancel
+            </Typography>
+          )}
+        </>
       )}
       {text && (
         <Typography

@@ -215,7 +215,7 @@ const SendBottomSheet = React.forwardRef<any, Props>(
             leftComponent={
               <HeaderBack
                 textColor={colors.secondary100}
-                text="Cancel"
+                isCancel
                 onPress={dismissBottomSheet}
               />
             }
@@ -334,7 +334,7 @@ const SendBottomSheet = React.forwardRef<any, Props>(
             leftComponent={
               <HeaderBack
                 textColor={colors.secondary100}
-                text="Back"
+                isBack
                 hasChevron
                 chevronColor={colors.secondary100}
                 onPress={() => setPreview(false)}

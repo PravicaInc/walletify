@@ -207,9 +207,7 @@ const CreatePassword: React.FC<Props> = ({
     <SafeAreaView style={[styles.container, { backgroundColor: colors.white }]}>
       <Header
         containerStyles={styles.header}
-        leftComponent={
-          <HeaderBack onPress={handleGoBack} text="Back" hasChevron />
-        }
+        leftComponent={<HeaderBack onPress={handleGoBack} hasChevron isBack />}
         title={isEditPassword && 'Change Password'}
         isRightLoading={loading}
         rightComponent={

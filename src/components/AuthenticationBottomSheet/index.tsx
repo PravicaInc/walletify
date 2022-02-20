@@ -171,8 +171,8 @@ const AuthenticationBottomSheetInner: React.FC<BottomSheetInnerProps> = ({
         title="Authentication"
         leftComponent={
           <HeaderBack
+            isCancel
             textColor={colors.secondary100}
-            text="Cancel"
             onPress={dismissBottomSheet}
           />
         }

@@ -65,8 +65,8 @@ const ScanQrBottomSheet = React.forwardRef<any, Props>(
                 titleColor={colors.white}
                 leftComponent={
                   <HeaderBack
+                    isCancel
                     onPress={handleGoBack}
-                    text="Cancel"
                     textColor={colors.secondary100}
                   />
                 }

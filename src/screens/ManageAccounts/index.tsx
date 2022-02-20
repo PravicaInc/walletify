@@ -87,9 +87,7 @@ const ManageAccounts: React.FC = () => {
       ]}>
       <Header
         containerStyles={{ paddingHorizontal: 20 }}
-        leftComponent={
-          <HeaderBack onPress={handleGoBack} hasChevron text="Back" />
-        }
+        leftComponent={<HeaderBack onPress={handleGoBack} hasChevron isBack />}
         rightComponent={
           <TouchableOpacity
             style={styles.createIdentityButton}

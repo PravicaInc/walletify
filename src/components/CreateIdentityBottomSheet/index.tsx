@@ -74,7 +74,7 @@ const CreateIdentityBottomSheet: React.FC<CreateIdentityBottomSheetProps> = ({
           titleColor={colors.primary100}
           leftComponent={
             <HeaderBack
-              text="Cancel"
+              isCancel
               onPress={handleCancelCreateIdentity}
               hasChevron={false}
               textColor={colors.secondary100}

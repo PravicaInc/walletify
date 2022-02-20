@@ -224,13 +224,15 @@ const Settings = () => {
           <Header
             containerStyles={styles.header}
             leftComponent={
-              <HeaderBack
-                onPress={handleGoBack}
-                text="Settings"
-                textType="bigTitle"
-                hasChevron
-                chevronSize={{ width: 9, height: 16.2 }}
-              />
+              <>
+                <HeaderBack
+                  onPress={handleGoBack}
+                  text="Settings"
+                  isBack
+                  textType="bigTitle"
+                  chevronSize={{ width: 9, height: 16.2 }}
+                />
+              </>
             }
           />
           <View

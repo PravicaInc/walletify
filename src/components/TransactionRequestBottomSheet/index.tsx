@@ -188,8 +188,8 @@ const TransactionRequestBottomSheetInner: React.FC<
         title="Transaction Signing"
         leftComponent={
           <HeaderBack
+            isCancel
             textColor={colors.secondary100}
-            text="Cancel"
             onPress={dismissBottomSheet}
           />
         }

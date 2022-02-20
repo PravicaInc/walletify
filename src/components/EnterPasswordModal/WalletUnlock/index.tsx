@@ -118,7 +118,7 @@ export const WalletUnlockInner: React.FC<IProps> = ({
         leftComponent={
           isDismissible ? (
             <HeaderBack
-              text="Cancel"
+              isCancel
               customStyle={{ color: colors.secondary100 }}
               onPress={cancelAction}
             />
