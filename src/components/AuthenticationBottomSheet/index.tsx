@@ -12,6 +12,7 @@ import { ThemeContext } from '../../contexts/Theme/theme';
 import { useAccounts } from '../../hooks/useAccounts/useAccounts';
 import Header from '../shared/Header';
 import HeaderBack from '../shared/HeaderBack';
+import ContentLoader from 'react-content-loader/native';
 import { AccountWithAddress } from '../../models/account';
 import AccountListItem from '../Accounts/AccountListItem';
 import { Typography } from '../shared/Typography';
@@ -19,7 +20,6 @@ import styles from './styles';
 import { useAtomValue } from 'jotai/utils';
 import { authRequestState } from '../../hooks/auth/authStore';
 import { withSuspense } from '../shared/WithSuspense';
-import { Portal } from '@gorhom/portal';
 import { useAuthRequest, finishSignIn } from '../../hooks/auth/useAuthRequest';
 import { useProgressState } from '../../hooks/useProgressState';
 import { useWallet } from '../../hooks/useWallet/useWallet';
@@ -29,16 +29,9 @@ import GeneralButton from '../shared/GeneralButton';
 
 const AuthenticationBottomSheet: React.FC = () => {
   const snapPoints = React.useMemo(() => ['95%'], []);
-  const {
-    theme: { colors },
-  } = useContext(ThemeContext);
-  const network = useAtomValue(selectedNetwork);
-  const { walletAccounts, switchAccount } = useAccounts();
-  const { walletState } = useWallet();
   const [selectedAccountIndex, setSelectedAccountIndex] = useState<
     number | undefined
   >();
-  const { loading, setSuccess, setLoading, setFailure } = useProgressState();
   const authRequest = useAtomValue(authRequestState);
   const setAuthRequest = useAuthRequest();
   const bottomSheetRef = useRef<BottomSheet>(null);
@@ -58,6 +51,55 @@ const AuthenticationBottomSheet: React.FC = () => {
     bottomSheetRef.current?.close();
     setSelectedAccountIndex(undefined);
   }, []);
+
+  const handleSheetChanges = useCallback(
+    (index: number) => {
+      if (index === -1) {
+        dismissBottomSheet();
+      }
+    },
+    [dismissBottomSheet],
+  );
+
+  return (
+    <BottomSheet
+      onChange={handleSheetChanges}
+      ref={bottomSheetRef}
+      snapPoints={snapPoints}
+      backdropComponent={CustomBackdrop}
+      handleComponent={null}
+      enablePanDownToClose
+      index={-1}>
+      <WrappedAuthenticationBottomSheetInner
+        selectedAccountIndex={selectedAccountIndex}
+        setSelectedAccountIndex={setSelectedAccountIndex}
+        dismissBottomSheet={dismissBottomSheet}
+      />
+    </BottomSheet>
+  );
+};
+
+export default AuthenticationBottomSheet;
+
+interface BottomSheetInnerProps {
+  selectedAccountIndex?: number;
+  setSelectedAccountIndex: (index: number) => void;
+  dismissBottomSheet: () => void;
+}
+
+const AuthenticationBottomSheetInner: React.FC<BottomSheetInnerProps> = ({
+  selectedAccountIndex,
+  setSelectedAccountIndex,
+  dismissBottomSheet,
+}) => {
+  const {
+    theme: { colors },
+  } = useContext(ThemeContext);
+  const authRequest = useAtomValue(authRequestState);
+  const network = useAtomValue(selectedNetwork);
+  const { walletAccounts, switchAccount } = useAccounts();
+  const { walletState } = useWallet();
+  const { loading, setSuccess, setLoading, setFailure } = useProgressState();
   const handleSelectAccount = (index: number) => {
     if (!loading && walletAccounts?.length) {
       setSelectedAccountIndex(index);
@@ -82,16 +124,6 @@ const AuthenticationBottomSheet: React.FC = () => {
       setSuccess();
     }
   };
-
-  const handleSheetChanges = useCallback(
-    (index: number) => {
-      if (index === -1) {
-        dismissBottomSheet();
-      }
-    },
-    [dismissBottomSheet],
-  );
-
   const renderAccountsListHeader = useCallback(() => {
     return (
       <>
@@ -130,46 +162,39 @@ const AuthenticationBottomSheet: React.FC = () => {
       />
     );
   };
-
   return (
-    <Portal>
-      <BottomSheet
-        onChange={handleSheetChanges}
-        ref={bottomSheetRef}
-        snapPoints={snapPoints}
-        backdropComponent={CustomBackdrop}
-        handleComponent={null}
-        enablePanDownToClose
-        index={-1}>
-        <View style={styles.container}>
-          <Header
-            title="Authentication"
-            leftComponent={
-              <HeaderBack
-                textColor={colors.secondary100}
-                text="Cancel"
-                onPress={dismissBottomSheet}
-              />
-            }
+    <View style={styles.container}>
+      <Header
+        title="Authentication"
+        leftComponent={
+          <HeaderBack
+            textColor={colors.secondary100}
+            text="Cancel"
+            onPress={dismissBottomSheet}
           />
-          <BottomSheetFlatList
-            data={walletAccounts}
-            keyExtractor={account => account.address}
-            renderItem={renderAccount}
-            ListHeaderComponent={renderAccountsListHeader}
-            contentContainerStyle={styles.accountsList}
-          />
-          <GeneralButton
-            style={styles.confirmButton}
-            type="Primary"
-            disabled={loading || selectedAccountIndex === undefined}
-            onPress={() => handleConfirmAuth()}>
-            {loading ? 'Loading...' : 'Confirm'}
-          </GeneralButton>
-        </View>
-      </BottomSheet>
-    </Portal>
+        }
+      />
+      <Suspense fallback={<ContentLoader />}>
+        <BottomSheetFlatList
+          data={walletAccounts}
+          keyExtractor={account => account.address}
+          renderItem={renderAccount}
+          ListHeaderComponent={renderAccountsListHeader}
+          contentContainerStyle={styles.accountsList}
+        />
+      </Suspense>
+      <GeneralButton
+        style={styles.confirmButton}
+        type="Primary"
+        disabled={loading || selectedAccountIndex === undefined}
+        onPress={() => handleConfirmAuth()}>
+        {loading ? 'Loading...' : 'Confirm'}
+      </GeneralButton>
+    </View>
   );
 };
 
-export default withSuspense(AuthenticationBottomSheet);
+const WrappedAuthenticationBottomSheetInner = withSuspense(
+  AuthenticationBottomSheetInner,
+  <ContentLoader />,
+);

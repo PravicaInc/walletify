@@ -26,17 +26,17 @@ export default function App() {
     <UserPreference>
       <SafeAreaProvider>
         <ThemeContext.Provider value={{ theme, setTheme }}>
-          <PortalProvider>
-            <NavigationContainer>
-              <BottomSheetModalProvider>
+          <NavigationContainer>
+            <BottomSheetModalProvider>
+              <PortalProvider>
                 <Routes />
-              </BottomSheetModalProvider>
-              <Toast
-                config={toastConfig(theme.colors)}
-                ref={ref => Toast.setRef(ref)}
-              />
-            </NavigationContainer>
-          </PortalProvider>
+              </PortalProvider>
+            </BottomSheetModalProvider>
+          </NavigationContainer>
+          <Toast
+            config={toastConfig(theme.colors)}
+            ref={ref => Toast.setRef(ref)}
+          />
         </ThemeContext.Provider>
       </SafeAreaProvider>
     </UserPreference>
