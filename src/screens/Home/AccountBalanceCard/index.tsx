@@ -1,5 +1,5 @@
 import React, { useContext, useMemo, useRef, useCallback } from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { Platform, TouchableOpacity, View } from 'react-native';
 import ContentLoader, { Rect } from 'react-content-loader/native';
 import { Typography } from '../../../components/shared/Typography';
 import { ThemeContext } from '../../../contexts/Theme/theme';
@@ -14,6 +14,7 @@ import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import SendBottomSheet from '../../../components/SendBottomSheet';
 import ReceiveBottomSheet from '../../../components/ReceiveBottomSheet';
 import { useAccounts } from '../../../hooks/useAccounts/useAccounts';
+import { StackActions, useNavigation } from '@react-navigation/native';
 
 const AccountBalanceCard: React.FC = () => {
   const {
@@ -22,12 +23,21 @@ const AccountBalanceCard: React.FC = () => {
   const { selectedAccountState: account } = useAccounts();
   const balance = useAtomValue(currentAccountAvailableStxBalanceState);
   const price = useStxPriceValue();
-
+  const { dispatch } = useNavigation();
   const sendRef = useRef<BottomSheetModal>(null);
   const receiveRef = useRef<BottomSheetModal>(null);
 
   const handlePresentSend = useCallback(() => {
-    sendRef.current?.snapToIndex(0);
+    if (Platform.OS === 'ios') {
+      sendRef.current?.snapToIndex(0);
+    } else {
+      dispatch(
+        StackActions.push('SendScreen', {
+          fullBalance: balance,
+          price: amountValue,
+        }),
+      );
+    }
   }, []);
 
   const handlePresentReceive = useCallback(() => {

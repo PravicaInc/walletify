@@ -1,6 +1,7 @@
 export type RootStackParamList = {
   Splash: undefined;
   EnterPassword: undefined;
+  SendScreen: { fullBalance: any; price: any };
   Home: undefined;
   OnBoarding: undefined;
   WalletSetup: undefined;

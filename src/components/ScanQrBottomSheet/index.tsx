@@ -48,46 +48,42 @@ const ScanQrBottomSheet = React.forwardRef<any, Props>(
     }, []);
 
     return (
-      <Portal>
-        <BottomSheet
-          snapPoints={snapPoints}
-          ref={ref}
-          index={-1}
-          handleComponent={null}
-          enablePanDownToClose
-          backdropComponent={CustomBackdrop}
-          onChange={handleSheetChanges}>
-          <SafeAreaView style={styles.container}>
-            <SafeAreaView style={styles.headerContainer}>
-              <StatusBar barStyle={'light-content'} />
-              <Header
-                title="Scan Recipient QR Code"
-                titleColor={colors.white}
-                leftComponent={
-                  <HeaderBack
-                    isCancel
-                    onPress={handleGoBack}
-                    textColor={colors.secondary100}
-                  />
-                }
-              />
-            </SafeAreaView>
-            <View style={styles.itemsContainer}>
-              <View style={styles.scanner}>
-                {isOpen && (
-                  <QRCodeScanner showMarker={true} onRead={onSuccess} />
-                )}
-              </View>
-              <View style={styles.footer}>
-                <Typography type="commonText" style={{ color: colors.white }}>
-                  If you and your recipient are physically near each other,
-                  let’s try to scan their QR code from their Receive screen.
-                </Typography>
-              </View>
-            </View>
+      <BottomSheet
+        snapPoints={snapPoints}
+        ref={ref}
+        index={-1}
+        handleComponent={null}
+        enablePanDownToClose
+        backdropComponent={CustomBackdrop}
+        onChange={handleSheetChanges}>
+        <SafeAreaView style={styles.container}>
+          <SafeAreaView style={styles.headerContainer}>
+            <StatusBar barStyle={'light-content'} />
+            <Header
+              title="Scan Recipient QR Code"
+              titleColor={colors.white}
+              leftComponent={
+                <HeaderBack
+                  isCancel
+                  onPress={handleGoBack}
+                  textColor={colors.secondary100}
+                />
+              }
+            />
           </SafeAreaView>
-        </BottomSheet>
-      </Portal>
+          <View style={styles.itemsContainer}>
+            <View style={styles.scanner}>
+              {isOpen && <QRCodeScanner showMarker={true} onRead={onSuccess} />}
+            </View>
+            <View style={styles.footer}>
+              <Typography type="commonText" style={{ color: colors.white }}>
+                If you and your recipient are physically near each other, let’s
+                try to scan their QR code from their Receive screen.
+              </Typography>
+            </View>
+          </View>
+        </SafeAreaView>
+      </BottomSheet>
     );
   },
 );

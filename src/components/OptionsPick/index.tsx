@@ -1,9 +1,12 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { StyleProp, TextStyle, View } from 'react-native';
 import styles from './styles';
-import BottomSheet, { useBottomSheet } from '@gorhom/bottom-sheet';
+import BottomSheet, {
+  BottomSheetView,
+  TouchableHighlight,
+  useBottomSheet,
+} from '@gorhom/bottom-sheet';
 import { CustomBackdrop, CustomBackground } from '../shared/customBackdrop';
-import { TouchableHighlight } from 'react-native-gesture-handler';
 import { Typography } from '../shared/Typography';
 import { Portal } from '@gorhom/portal';
 import rnTextSize, { TSFontSpecs } from 'react-native-text-size';
@@ -84,23 +87,22 @@ export const OptionsPick = React.forwardRef<BottomSheet, IProps>(
           ref={ref}
           snapPoints={snapPoints}
           index={-1}
-          style={styles.container}
-          handleComponent={null}>
-          <View
+          style={styles.container}>
+          <BottomSheetView
             style={[
               styles.contentContainer,
               { backgroundColor: colors.white },
             ]}>
             {(username || userIcon) && (
               <>
-                <View style={styles.user}>
+                <BottomSheetView style={styles.user}>
                   {userIcon}
                   {username && (
                     <Typography type="smallTitle" style={styles.username}>
                       {username}
                     </Typography>
                   )}
-                </View>
+                </BottomSheetView>
                 <View
                   style={[
                     styles.separator,
@@ -140,8 +142,8 @@ export const OptionsPick = React.forwardRef<BottomSheet, IProps>(
                 />
               );
             })}
-          </View>
-          <View
+          </BottomSheetView>
+          <BottomSheetView
             style={[
               styles.cancelWrapper,
               {
@@ -158,7 +160,7 @@ export const OptionsPick = React.forwardRef<BottomSheet, IProps>(
                 Cancel
               </Typography>
             </TouchableHighlight>
-          </View>
+          </BottomSheetView>
         </BottomSheet>
       </Portal>
     );
@@ -181,7 +183,6 @@ const Option: React.FC<IOptionProps> = ({ option, isLast }) => {
   }, [close, option]);
   return (
     <TouchableHighlight
-      underlayColor={colors.card}
       onPress={handleSelectOption}
       style={[
         styles.option,

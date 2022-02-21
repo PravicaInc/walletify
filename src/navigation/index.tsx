@@ -19,6 +19,7 @@ import { useTransactionRequestListener } from '../hooks/useLinkingListener/useTr
 import TransactionRequestBottomSheet from '../components/TransactionRequestBottomSheet';
 import { useInternetConnection } from '../hooks/useInternetConnnection';
 import EnterPassword from '../screens/EnterPassword';
+import SendScreen from '../screens/Send';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -34,6 +35,7 @@ export const Routes: React.FC = () => {
       <Stack.Navigator initialRouteName="Splash" headerMode="none">
         <Stack.Screen name="Splash" component={Splash} />
         <Stack.Screen name="EnterPassword" component={EnterPassword} />
+        <Stack.Screen name="SendScreen" component={SendScreen} />
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="OnBoarding" component={OnBoarding} />
         <Stack.Screen name="WalletSetup" component={WalletSetup} />

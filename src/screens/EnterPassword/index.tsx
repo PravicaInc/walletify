@@ -3,6 +3,7 @@ import { StackActions, useNavigation } from '@react-navigation/native';
 import { Keyboard } from 'react-native';
 import WalletUnlockInner from '../../components/EnterPasswordModal/WalletUnlock';
 import { useWallet } from '../../hooks/useWallet/useWallet';
+import { PortalHost } from '@gorhom/portal';
 
 const EnterPassword: React.FC = () => {
   const { restoreWallet } = useWallet();
@@ -21,11 +22,14 @@ const EnterPassword: React.FC = () => {
   };
 
   return (
-    <WalletUnlockInner
-      isDismissible={false}
-      nextAction={handleAuthenticationSuccessful}
-      resetAction={onResetWallet}
-    />
+    <>
+      <PortalHost name="CustomPortalHost" />
+      <WalletUnlockInner
+        isDismissible={false}
+        nextAction={handleAuthenticationSuccessful}
+        resetAction={onResetWallet}
+      />
+    </>
   );
 };
 
