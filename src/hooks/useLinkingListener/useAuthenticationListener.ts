@@ -52,10 +52,10 @@ export function useAuthenticationListener() {
   }, []);
 
   useEffect(() => {
-    if (walletState && authRequestToken) {
+    if (walletState?.encryptedSecretKey && authRequestToken) {
       saveAuthRequestParam(authRequestToken);
     }
-  }, [walletState, authRequestToken]);
+  }, [walletState?.encryptedSecretKey, authRequestToken]);
 
   const saveAuthRequestParam = useCallback(async (authRequest: string) => {
     const { payload } = decodeToken(authRequest);
