@@ -34,13 +34,14 @@ const AccountBalanceCard: React.FC = () => {
     receiveRef.current?.snapToIndex(0);
   }, []);
 
-  const amount = useMemo(() => {
+  const amountValue = useMemo(() => {
     if (balance) {
-      return valueFromBalance(balance, 'stx');
+      return valueFromBalance(balance.multipliedBy(price), 'stx', {
+        fixedDecimals: false,
+      });
     }
     return NaN;
-  }, [balance]);
-  const amountValue = (+amount * price).toFixed(2);
+  }, [balance, price]);
 
   const balanceAvailable = balance !== undefined;
   const buttonsDisabled = account === undefined;

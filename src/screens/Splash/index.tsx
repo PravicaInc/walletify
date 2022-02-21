@@ -53,7 +53,7 @@ const Splash: React.FC = () => {
         } else {
           dispatch(StackActions.replace('WalletSetup'));
         }
-      }, 200);
+      }, 500);
       return () => {
         clearTimeout(timer);
       };
