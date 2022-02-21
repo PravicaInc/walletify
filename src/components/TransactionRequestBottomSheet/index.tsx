@@ -31,6 +31,7 @@ import { titleCase } from '../../shared/helpers';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { valueFromBalance } from '../../shared/balanceUtils';
 import { currentAccountAvailableStxBalanceState } from '../../hooks/useAccounts/accountsStore';
+import { Portal } from '@gorhom/portal';
 
 const TransactionRequestBottomSheet: React.FC = () => {
   const snapPoints = React.useMemo(() => ['95%'], []);
@@ -65,20 +66,22 @@ const TransactionRequestBottomSheet: React.FC = () => {
   );
 
   return (
-    <BottomSheet
-      onChange={handleSheetChanges}
-      ref={bottomSheetRef}
-      snapPoints={snapPoints}
-      handleComponent={null}
-      backdropComponent={CustomBackdrop}
-      enablePanDownToClose
-      index={-1}>
-      <WrappedTransactionRequestBottomSheetInner
-        dismissBottomSheet={dismissBottomSheet}
-        setFees={setFees}
-        fees={fees}
-      />
-    </BottomSheet>
+    <Portal>
+      <BottomSheet
+        onChange={handleSheetChanges}
+        ref={bottomSheetRef}
+        snapPoints={snapPoints}
+        handleComponent={null}
+        backdropComponent={CustomBackdrop}
+        enablePanDownToClose
+        index={-1}>
+        <WrappedTransactionRequestBottomSheetInner
+          dismissBottomSheet={dismissBottomSheet}
+          setFees={setFees}
+          fees={fees}
+        />
+      </BottomSheet>
+    </Portal>
   );
 };
 

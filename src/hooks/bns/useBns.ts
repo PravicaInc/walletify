@@ -19,7 +19,10 @@ export const useBns = () => {
     useProgressState();
   const [registrationError, setRegistrationError] = useState<string>('');
 
-  const registerUserSubdomain = async (subdomain: string) => {
+  const registerUserSubdomain = async (
+    subdomain: string,
+    successCB: () => void,
+  ) => {
     setRegistrationError('');
     try {
       setLoading();
@@ -57,6 +60,7 @@ export const useBns = () => {
             wallet: updatedWalletState,
             gaiaHubConfig: gaiaHubConfig,
           });
+          successCB();
         }
       }
       setSuccess();

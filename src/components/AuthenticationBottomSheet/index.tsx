@@ -26,6 +26,7 @@ import { useWallet } from '../../hooks/useWallet/useWallet';
 import { CustomBackdrop } from '../shared/customBackdrop';
 import { selectedNetwork } from '../../hooks/useNetwork/networkStore';
 import GeneralButton from '../shared/GeneralButton';
+import { Portal } from '@gorhom/portal';
 
 const AuthenticationBottomSheet: React.FC = () => {
   const snapPoints = React.useMemo(() => ['95%'], []);
@@ -62,20 +63,22 @@ const AuthenticationBottomSheet: React.FC = () => {
   );
 
   return (
-    <BottomSheet
-      onChange={handleSheetChanges}
-      ref={bottomSheetRef}
-      snapPoints={snapPoints}
-      backdropComponent={CustomBackdrop}
-      handleComponent={null}
-      enablePanDownToClose
-      index={-1}>
-      <WrappedAuthenticationBottomSheetInner
-        selectedAccountIndex={selectedAccountIndex}
-        setSelectedAccountIndex={setSelectedAccountIndex}
-        dismissBottomSheet={dismissBottomSheet}
-      />
-    </BottomSheet>
+    <Portal>
+      <BottomSheet
+        onChange={handleSheetChanges}
+        ref={bottomSheetRef}
+        snapPoints={snapPoints}
+        backdropComponent={CustomBackdrop}
+        handleComponent={null}
+        enablePanDownToClose
+        index={-1}>
+        <WrappedAuthenticationBottomSheetInner
+          selectedAccountIndex={selectedAccountIndex}
+          setSelectedAccountIndex={setSelectedAccountIndex}
+          dismissBottomSheet={dismissBottomSheet}
+        />
+      </BottomSheet>
+    </Portal>
   );
 };
 

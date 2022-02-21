@@ -43,8 +43,7 @@ const CreateIdentityBottomSheet: React.FC<CreateIdentityBottomSheetProps> = ({
 
   const handleCreateName = useCallback(async () => {
     try {
-      await registerUserSubdomain(userName);
-      handleCancelCreateIdentity();
+      await registerUserSubdomain(userName, handleCancelCreateIdentity);
     } catch (err) {
       logger.error(err);
     }

@@ -7,7 +7,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { View, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
+import { View, TouchableOpacity, ActivityIndicator } from 'react-native';
 import BottomSheet, { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { Portal } from '@gorhom/portal';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -24,10 +24,14 @@ import WarningIcon from '../shared/WarningIcon';
 import { useAccounts } from '../../hooks/useAccounts/useAccounts';
 import { AccountToken } from '../../models/account';
 import AccountAsset from '../Home/AccountAsset';
-import { useAssets } from '../../hooks/useAssets/useAssets';
 import PreviewTransfer from '../PreviewTransfer';
 import { useTransactions } from '../../hooks/useTransactions/useTransactions';
 import { SubmittedTransaction } from '../../models/transactions';
+import { useAtomValue } from 'jotai/utils';
+import { currentAccountAvailableStxBalanceState } from '../../hooks/useAccounts/accountsStore';
+import StxTokenIcon from '../../assets/images/stx.svg';
+import { valueFromBalance } from '../../shared/balanceUtils';
+import BigNumber from 'bignumber.js';
 
 type Props = {
   fullBalance: any;
@@ -43,15 +47,20 @@ const SendBottomSheet = React.forwardRef<any, Props>(
       estimateTransactionFees,
       sendTransaction,
     } = useAccounts();
-    const { selectedAccountAssets: assets } = useAssets();
+    const stxBalance = useAtomValue(currentAccountAvailableStxBalanceState);
     const {
       submittedTransactions,
       setSubmittedTransactions,
       refreshTransactionsList,
     } = useTransactions();
-    const [selectedAsset, setSelectedAsset] = useState<
-      AccountToken | undefined
-    >(undefined);
+    const [selectedAsset] = useState<AccountToken>({
+      name: 'STX',
+      defaultStyles: {
+        backgroundColor: 'black',
+      },
+      icon: StxTokenIcon,
+      amount: valueFromBalance(stxBalance as BigNumber, 'stx'),
+    });
 
     const handlePresentQrScan = useCallback(() => {
       qrScanRef.current?.snapToIndex(0);
@@ -121,12 +130,6 @@ const SendBottomSheet = React.forwardRef<any, Props>(
         handleTransaction();
       }
     };
-
-    useEffect(() => {
-      if (assets !== undefined && assets.length > 0) {
-        setSelectedAsset(assets.find(a => a.name === 'STX'));
-      }
-    }, [assets]);
 
     useEffect(() => {
       if (String(+amount) !== amount || +amount <= -1) {
