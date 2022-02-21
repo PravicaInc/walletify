@@ -40,7 +40,7 @@ export const stacksValue = ({
     abbreviate && stxAmount > 10000
       ? abbreviateNumber(stxAmount)
       : stxAmount.toLocaleString('en-US', {
-          maximumFractionDigits: fixedDecimals ? STX_DECIMALS : 3,
+          maximumFractionDigits: fixedDecimals ? STX_DECIMALS : 2,
         })
   }${withTicker ? ' STX' : ''}`;
 };
@@ -52,7 +52,11 @@ export const valueFromBalance = (
   type === 'ft'
     ? ftDecimals(balance, meta?.decimals || 0)
     : type === 'stx'
-    ? stacksValue({ value: balance || 0, withTicker: false })
+    ? stacksValue({
+        value: balance || 0,
+        withTicker: false,
+        fixedDecimals: meta?.fixedDecimals,
+      })
     : balance.toString();
 
 export const STX_DECIMALS = 6;
