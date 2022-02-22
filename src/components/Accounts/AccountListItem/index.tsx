@@ -26,13 +26,13 @@ const AccountListItem: React.FC<AccountProps> = props => {
   } = useContext(ThemeContext);
   const accountStxBalance = useAccountAvailableStxBalance(account.address);
   const stxPrice = useStxPriceValue();
-  const amount = useMemo(
-    () => valueFromBalance(accountStxBalance as BigNumber, 'stx'),
-    [accountStxBalance],
-  );
   const valueInUsd = useMemo(
-    () => (+amount * stxPrice).toFixed(2),
-    [stxPrice, amount],
+    () =>
+      valueFromBalance(
+        (accountStxBalance as BigNumber).multipliedBy(stxPrice),
+        'stx',
+      ),
+    [accountStxBalance, stxPrice],
   );
 
   return (
