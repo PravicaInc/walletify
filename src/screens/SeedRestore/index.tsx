@@ -93,9 +93,8 @@ const SeedRestore: React.FC<Props> = ({
               styles.button,
               styles.pusher,
               {
-                backgroundColor: canGoNext
-                  ? colors.primary100
-                  : colors.primary20,
+                backgroundColor:
+                  !canGoNext || loading ? colors.primary20 : colors.primary100,
               },
             ]}>
             <Typography type="buttonText" style={{ color: colors.white }}>

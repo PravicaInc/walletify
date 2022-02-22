@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
   },
   header: {
     shadowOpacity: 0,
-    paddingHorizontal: 20,
+    paddingHorizontal: PADDING_HORIZONTAL,
     paddingTop: 22,
   },
   topContent: {

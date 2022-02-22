@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    paddingHorizontal: 20,
+    paddingHorizontal: PADDING_HORIZONTAL,
     paddingTop: 22,
   },
   hiddenItems: {

@@ -174,6 +174,9 @@ const CreatePassword: React.FC<Props> = ({
 
   const handleToggleBiometric = (value: boolean) => {
     if (value) {
+      if (Platform.OS === 'android') {
+        return setBiometricEnabled(true);
+      }
       check(PERMISSIONS.IOS.FACE_ID).then(result => {
         switch (result) {
           case RESULTS.UNAVAILABLE:
@@ -272,7 +275,6 @@ const CreatePassword: React.FC<Props> = ({
             />
           )}
           <GeneralTextInput
-            autoFocus={!isEditPassword && true}
             customStyle={styles.input}
             outerWrapperStyle={isEditPassword && styles.bottomInput}
             labelText="Enter a Password"
