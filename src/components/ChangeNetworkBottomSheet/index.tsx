@@ -3,8 +3,7 @@ import BottomSheet from '@gorhom/bottom-sheet';
 import { CustomBackdrop } from '../shared/customBackdrop';
 import Header from '../shared/Header';
 import HeaderBack from '../shared/HeaderBack';
-import { View } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { View, TouchableOpacity } from 'react-native';
 import { Typography } from '../shared/Typography';
 import { ThemeContext } from '../../contexts/Theme/theme';
 import useNetwork from '../../hooks/useNetwork/useNetwork';
@@ -14,7 +13,6 @@ import Toast from 'react-native-toast-message';
 import { TOAST_VISIBILITY_TIME, useGetToastOffset } from '../../shared/layout';
 import styles from './styles';
 import RadioButton from './RadioButton';
-import { onChange } from 'react-native-reanimated';
 
 interface ChangeNetworkBottomSheetProps {
   bottomSheetRef: React.Ref<BottomSheet>;

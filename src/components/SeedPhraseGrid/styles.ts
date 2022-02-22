@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
   },
   wordInput: {
     flex: 1,
-    height: '100%',
+    height: 46,
     fontSize: 12,
   },
   word: {
