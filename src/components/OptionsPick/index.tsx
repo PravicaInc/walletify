@@ -1,9 +1,8 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { StyleProp, TextStyle, View } from 'react-native';
+import { StyleProp, TextStyle, View, TouchableHighlight } from 'react-native';
 import styles from './styles';
 import BottomSheet, { useBottomSheet } from '@gorhom/bottom-sheet';
 import { CustomBackdrop, CustomBackground } from '../shared/customBackdrop';
-import { TouchableHighlight } from 'react-native-gesture-handler';
 import { Typography } from '../shared/Typography';
 import { Portal } from '@gorhom/portal';
 import rnTextSize, { TSFontSpecs } from 'react-native-text-size';
