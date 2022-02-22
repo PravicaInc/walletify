@@ -13,8 +13,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    shadowOpacity: 0,
-    height: 20,
+    paddingHorizontal: PADDING_HORIZONTAL,
+    paddingTop: 22,
   },
   progress: {
     marginTop: '5%',

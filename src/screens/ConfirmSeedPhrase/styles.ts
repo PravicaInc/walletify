@@ -7,7 +7,7 @@ export default StyleSheet.create({
     flex: 1,
   },
   header: {
-    paddingHorizontal: 20,
+    paddingHorizontal: PADDING_HORIZONTAL,
     paddingTop: 22,
   },
   hiddenItems: {
@@ -27,10 +27,6 @@ export default StyleSheet.create({
     alignItems: 'center',
     paddingTop: 40,
     flex: 1,
-  },
-  header: {
-    shadowOpacity: 0,
-    height: 20,
   },
   title: { marginVertical: 10, alignSelf: 'center' },
   description: { textAlign: 'center', width: '80%', alignSelf: 'center' },

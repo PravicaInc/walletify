@@ -100,9 +100,10 @@ const ConfirmSeedPhrase: React.FC<Props> = ({
               styles.button,
               styles.pusher,
               {
-                backgroundColor: !isCompleted
-                  ? colors.primary20
-                  : colors.primary100,
+                backgroundColor:
+                  !isCompleted || loading
+                    ? colors.primary20
+                    : colors.primary100,
               },
             ]}>
             <Typography type="buttonText" style={{ color: colors.white }}>
