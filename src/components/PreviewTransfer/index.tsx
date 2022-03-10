@@ -115,7 +115,17 @@ const PreviewTransfer = ({
             Fees
           </Typography>
           {!fees ? (
-            <ActivityIndicator color={colors.secondary100} />
+            <View style={styles.calculationWrapper}>
+              <ActivityIndicator color={colors.secondary100} />
+              <Typography
+                type="commonText"
+                style={[
+                  styles.calculationText,
+                  { color: colors.secondary100 },
+                ]}>
+                Calculating
+              </Typography>
+            </View>
           ) : (
             <Typography type="commonText" style={{ color: colors.primary40 }}>
               {`${fees} STX`}

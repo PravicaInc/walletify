@@ -7,6 +7,8 @@ export default StyleSheet.create({
     borderWidth: 1,
     borderRadius: 13,
   },
+  calculationWrapper: { flexDirection: 'row', alignItems: 'center' },
+  calculationText: { marginLeft: 5 },
   detailText: {
     marginBottom: 5,
   },

@@ -18,6 +18,8 @@ import AuthenticationBottomSheet from '../components/AuthenticationBottomSheet';
 import { useTransactionRequestListener } from '../hooks/useLinkingListener/useTransactionRequestsListener';
 import TransactionRequestBottomSheet from '../components/TransactionRequestBottomSheet';
 import { useInternetConnection } from '../hooks/useInternetConnnection';
+import SendForm from '../screens/SendForm';
+import PreviewTransaction from '../screens/PreviewTransaction';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -91,4 +93,21 @@ export const Routes: React.FC = () => {
   );
 };
 
-export default Routes;
+const Stack2 = createStackNavigator();
+
+export const SendAssetsRoutes: React.FC = () => {
+  return (
+    <Stack2.Navigator initialRouteName="sendForm">
+      <Stack2.Screen
+        name="sendForm"
+        component={SendForm}
+        options={{ headerShown: false }}
+      />
+      <Stack2.Screen
+        name="previewTransaction"
+        component={PreviewTransaction}
+        options={{ headerShown: false }}
+      />
+    </Stack2.Navigator>
+  );
+};
