@@ -11,23 +11,23 @@ import { useAtomValue } from 'jotai/utils';
 import { currentAccountAvailableStxBalanceState } from '../../../hooks/useAccounts/accountsStore';
 import { useStxPriceValue } from '../../../hooks/useStxPrice/useStxPrice';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
-import SendBottomSheet from '../../../components/SendBottomSheet';
 import ReceiveBottomSheet from '../../../components/ReceiveBottomSheet';
 import { useAccounts } from '../../../hooks/useAccounts/useAccounts';
+import { StackActions, useNavigation } from '@react-navigation/native';
 
 const AccountBalanceCard: React.FC = () => {
   const {
     theme: { colors },
   } = useContext(ThemeContext);
   const { selectedAccountState: account } = useAccounts();
+  const { dispatch } = useNavigation();
   const balance = useAtomValue(currentAccountAvailableStxBalanceState);
   const price = useStxPriceValue();
 
-  const sendRef = useRef<BottomSheetModal>(null);
   const receiveRef = useRef<BottomSheetModal>(null);
 
   const handlePresentSend = useCallback(() => {
-    sendRef.current?.snapToIndex(0);
+    dispatch(StackActions.push('sendForm'));
   }, []);
 
   const handlePresentReceive = useCallback(() => {
@@ -102,7 +102,6 @@ const AccountBalanceCard: React.FC = () => {
             Send
           </Typography>
         </TouchableOpacity>
-        <SendBottomSheet ref={sendRef} />
         <TouchableOpacity
           onPress={handlePresentReceive}
           activeOpacity={0.9}

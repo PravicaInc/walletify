@@ -17,6 +17,12 @@ export default StyleSheet.create({
     width: '100%',
     marginVertical: 20,
   },
+  speedTransaction: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 10,
+  },
+  icon: { marginRight: 5 },
   assetPreview: {
     paddingTop: 5,
   },
@@ -54,7 +60,7 @@ export default StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: '4%',
-    marginVertical: 5,
+    height: 35,
+    alignItems: 'center',
   },
 });

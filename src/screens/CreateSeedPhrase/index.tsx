@@ -127,7 +127,15 @@ const CreateSeedPhrase: React.FC<Props> = ({
         </TouchableOpacity>
         <OptionsPick
           options={options}
-          userIcon={<WarningIcon width={80} height={80} />}
+          userIcon={
+            <WarningIcon
+              fill={colors.warning100}
+              fillOpacity={0.1}
+              stroke={colors.warning100}
+              width={80}
+              height={80}
+            />
+          }
           title="Backed up your Secret Key?"
           subTitle="You have to back up your Secret Key in safe place, theres NOTHING we can do if somebody finds it."
           ref={confirmModalRef}

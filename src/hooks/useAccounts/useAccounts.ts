@@ -5,11 +5,11 @@ import {
   updateWalletConfig,
 } from '@stacks/wallet-sdk/dist';
 import {
-  makeSTXTokenTransfer,
-  broadcastTransaction,
   AnchorMode,
-  SignedTokenTransferOptions,
+  broadcastTransaction,
   estimateTransaction,
+  makeSTXTokenTransfer,
+  SignedTokenTransferOptions,
   TxBroadcastResult,
 } from '@stacks/transactions/dist';
 import {
@@ -23,6 +23,9 @@ import { wallet } from '../useWallet/walletStore';
 import { gaiaUrl } from '../../shared/constants';
 import { selectedNetwork } from '../useNetwork/networkStore';
 import { createTokenTransferPayload } from '@stacks/transactions/dist/payload';
+import { EstimationsLevels, FeeEstimation } from '../../shared/types';
+import BigNumber from 'bignumber.js';
+import { stxToMicroStx } from '../../shared/balanceUtils';
 
 const MAX_NONCE_INCREMENT_RETRIES = 5;
 
@@ -62,13 +65,13 @@ export const useAccounts = () => {
   };
 
   const estimateTransactionFees = async (
-    recipientAddress: string,
-    amount: number,
+    recipientAddress?: string,
+    amount?: string,
     memo?: string,
   ) => {
     const txOptions = {
-      recipient: recipientAddress,
-      amount: amount * 1000000, // To convert from micro STX to STX
+      recipient: recipientAddress || selectedAccountState?.address,
+      amount: amount ? stxToMicroStx(amount).toString(10) : '0', // To convert from micro STX to STX
       senderKey: selectedAccountState?.stxPrivateKey,
       memo: memo,
       anchorMode: AnchorMode.Any,
@@ -89,8 +92,7 @@ export const useAccounts = () => {
       network.stacksNetwork,
     );
 
-    // Cap the proposed fee to 2 STX
-    return Math.min(Number(txFee[1].fee) / 1000000, 2);
+    return getFeeEstimationsWithMaxValues(txFee);
   };
 
   const sendTransaction = async (
@@ -147,4 +149,28 @@ export const useAccounts = () => {
 
 export function useAccountAvailableStxBalance(address: string) {
   return useAtomValue(accountAvailableStxBalanceState(address));
+}
+
+export function getFeeEstimationsWithMaxValues(
+  feeEstimations: FeeEstimation[],
+) {
+  const feeEstimationsMaxValues = [500000, 750000, 2000000];
+  return feeEstimations.map((feeEstimation, index) => {
+    const level =
+      index === 0
+        ? EstimationsLevels.Low
+        : index === 1
+        ? EstimationsLevels.Middle
+        : EstimationsLevels.High;
+    if (
+      feeEstimationsMaxValues &&
+      new BigNumber(feeEstimation.fee).isGreaterThan(
+        feeEstimationsMaxValues[index],
+      )
+    ) {
+      return { fee: feeEstimationsMaxValues[index], fee_rate: 0, level };
+    } else {
+      return { ...feeEstimation, level };
+    }
+  });
 }

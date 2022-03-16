@@ -1,6 +1,6 @@
-import { useNavigation, RouteProp, useRoute } from '@react-navigation/native';
-import React, { useContext, useEffect, useState } from 'react';
-import { ActivityIndicator, TouchableOpacity, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import React, { useContext, useState } from 'react';
+import { TouchableOpacity, View } from 'react-native';
 import { ThemeContext } from '../../contexts/Theme/theme';
 import styles from './styles';
 import Header from '../../components/shared/Header';
@@ -11,39 +11,31 @@ import WarningIcon from '../../components/shared/WarningIcon';
 import { SubmittedTransaction } from '../../models/transactions';
 import { useTransactions } from '../../hooks/useTransactions/useTransactions';
 import { useAccounts } from '../../hooks/useAccounts/useAccounts';
-import { AccountToken } from '../../models/account';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../navigation/types';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-type StackParamsList = {
-  PreviewTransaction: {
-    amount: string;
-    recipient: string;
-    memo: string;
-    dismissBottomSheet: () => void;
-    selectedAsset: AccountToken;
-  };
-};
-const PreviewTransaction: React.FC = () => {
+type Props = NativeStackScreenProps<RootStackParamList, 'previewTransaction'>;
+
+const PreviewTransaction: React.FC<Props> = ({
+  route: {
+    params: { selectedFee, amount, selectedAsset, memo, recipient },
+  },
+}) => {
   const {
     theme: { colors },
   } = useContext(ThemeContext);
   const { goBack } = useNavigation();
   const {
-    params: { amount, selectedAsset, dismissBottomSheet, memo, recipient },
-  } = useRoute<RouteProp<StackParamsList, 'PreviewTransaction'>>();
-  const {
     submittedTransactions,
     setSubmittedTransactions,
     refreshTransactionsList,
   } = useTransactions();
-  const {
-    selectedAccountState: account,
-    estimateTransactionFees,
-    sendTransaction,
-  } = useAccounts();
-  const [fees, setFees] = useState<Number>(NaN);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { selectedAccountState: account, sendTransaction } = useAccounts();
+  const [isSending, toggleSending] = useState<boolean>(false);
+
   const handleSendPress = () => {
-    setIsLoading(true);
+    toggleSending(true);
 
     const internal_id = `${Math.random()}`;
     setSubmittedTransactions([
@@ -62,45 +54,32 @@ const PreviewTransaction: React.FC = () => {
       },
     ]);
 
-    sendTransaction(recipient, Number(amount), Number(fees), memo).then(
-      result => {
-        const tx = submittedTransactions.find(
-          t => t.internal_id === internal_id,
-        ) as SubmittedTransaction;
+    sendTransaction(
+      recipient,
+      Number(amount),
+      selectedFee.fee as number,
+      memo,
+    ).then(result => {
+      const tx = submittedTransactions.find(
+        t => t.internal_id === internal_id,
+      ) as SubmittedTransaction;
 
-        if (result?.error) {
-          tx.tx_status = 'failed';
-        } else {
-          setSubmittedTransactions(
-            submittedTransactions.filter(t => t.internal_id !== internal_id),
-          );
-          refreshTransactionsList();
-        }
-      },
-    );
-
-    dismissBottomSheet();
+      if (result?.error) {
+        tx.tx_status = 'failed';
+      } else {
+        setSubmittedTransactions(
+          submittedTransactions.filter(t => t.internal_id !== internal_id),
+        );
+        refreshTransactionsList();
+      }
+    });
   };
 
-  useEffect(() => {
-    const fetchFees = async () => {
-      setIsLoading(true);
-      const transactionFees = await estimateTransactionFees(
-        recipient,
-        Number(amount),
-        memo,
-      );
-      setFees(transactionFees);
-      setIsLoading(false);
-    };
-    if (amount && recipient) {
-      fetchFees();
-    }
-  }, [amount, recipient, memo]);
   return (
-    <View style={[styles.container, { backgroundColor: colors.white }]}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.white }]}>
       <Header
         title="Preview"
+        containerStyles={styles.header}
         leftComponent={
           <HeaderBack
             textColor={colors.secondary100}
@@ -111,11 +90,11 @@ const PreviewTransaction: React.FC = () => {
           />
         }
         rightComponent={
-          <TouchableOpacity disabled={isLoading} onPress={handleSendPress}>
+          <TouchableOpacity disabled={isSending} onPress={handleSendPress}>
             <Typography
               type="buttonText"
               style={{
-                color: isLoading ? colors.primary40 : colors.secondary100,
+                color: isSending ? colors.primary40 : colors.secondary100,
               }}>
               Send
             </Typography>
@@ -129,12 +108,12 @@ const PreviewTransaction: React.FC = () => {
             recipient={recipient}
             memo={memo}
             amount={Number(amount)}
-            fees={Number(fees)}
+            selectedFee={selectedFee}
             selectedAsset={selectedAsset}
           />
         )}
         <View style={[styles.horizontalFill, styles.centerItems]}>
-          <WarningIcon fill={colors.primary60} />
+          <WarningIcon width={20} height={20} fill={colors.primary60} />
           <Typography
             type="commonText"
             style={[
@@ -148,7 +127,7 @@ const PreviewTransaction: React.FC = () => {
           </Typography>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

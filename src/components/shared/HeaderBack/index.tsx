@@ -48,13 +48,13 @@ const HeaderBack: React.FC<IProps> = ({
           width={chevronSize ? chevronSize.width : 7.5}
           height={chevronSize ? chevronSize.height : 13.5}
           style={styles.arrow}
-          fill={chevronColor ? chevronColor : colors.primary100}
+          fill={chevronColor ? chevronColor : colors.secondary100}
         />
       )}
       {text && (
         <Typography
           type={textType || 'buttonText'}
-          style={[{ color: textColor || colors.primary100 }, customStyle]}>
+          style={[{ color: textColor || colors.secondary100 }, customStyle]}>
           {text}
         </Typography>
       )}

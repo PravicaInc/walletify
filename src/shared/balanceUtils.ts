@@ -1,4 +1,5 @@
 import BigNumber from 'bignumber.js';
+import { MEMO_MAX_LENGTH_BYTES } from '@stacks/transactions';
 
 export function initBigNumber(num: string | number | BigNumber) {
   return BigNumber.isBigNumber(num) ? num : new BigNumber(num);
@@ -65,7 +66,18 @@ export const microStxToStx = (mStx: number | string | BigNumber) => {
   const microStacks = initBigNumber(mStx);
   return microStacks.shiftedBy(-STX_DECIMALS);
 };
+export const stxToMicroStx = (stx: number | string | BigNumber) => {
+  const stxBN = initBigNumber(stx);
+  return stxBN.shiftedBy(STX_DECIMALS);
+};
+const exceedsMaxLengthBytes = (
+  string: string,
+  maxLengthBytes: number,
+): boolean => (string ? Buffer.from(string).length > maxLengthBytes : false);
 
+export const isTxMemoValid = (memo: string) => {
+  return !exceedsMaxLengthBytes(memo, MEMO_MAX_LENGTH_BYTES);
+};
 export const ftDecimals = (
   value: number | string | BigNumber,
   decimals: number,

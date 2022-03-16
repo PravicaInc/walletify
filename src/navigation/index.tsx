@@ -88,26 +88,17 @@ export const Routes: React.FC = () => {
           name="ManageAccounts"
           component={ManageAccounts}
         />
+        <Stack.Screen
+          name="sendForm"
+          component={SendForm}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="previewTransaction"
+          component={PreviewTransaction}
+          options={{ headerShown: false }}
+        />
       </Stack.Navigator>
     </>
-  );
-};
-
-const Stack2 = createStackNavigator();
-
-export const SendAssetsRoutes: React.FC = () => {
-  return (
-    <Stack2.Navigator initialRouteName="sendForm">
-      <Stack2.Screen
-        name="sendForm"
-        component={SendForm}
-        options={{ headerShown: false }}
-      />
-      <Stack2.Screen
-        name="previewTransaction"
-        component={PreviewTransaction}
-        options={{ headerShown: false }}
-      />
-    </Stack2.Navigator>
   );
 };
