@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { ActivityIndicator, StyleProp, View, ViewStyle } from 'react-native';
+import { StyleProp, View, ViewStyle } from 'react-native';
 import styles from './styles';
 import { ThemeContext } from '../../contexts/Theme/theme';
 import { Typography } from '../shared/Typography';
@@ -8,13 +8,16 @@ import useNetwork from '../../hooks/useNetwork/useNetwork';
 import { AccountToken } from '../../models/account';
 import TokenAvatar from '../Home/TokenAvatar';
 import { capitalizeFirstLetter } from '../../shared/helpers';
+import { SelectedFee } from '../../shared/types';
+import { FeesCalculations } from '../FeesCalculations';
 
 type Props = {
   sender: string;
+  isSigning?: boolean;
   recipient: string;
   memo?: string;
   amount: number;
-  fees: number;
+  selectedFee?: SelectedFee;
   selectedAsset: AccountToken;
   style?: StyleProp<ViewStyle> | undefined;
 };
@@ -22,10 +25,11 @@ type Props = {
 const PreviewTransfer = ({
   sender,
   recipient,
+  isSigning,
   memo,
   amount,
-  fees,
   selectedAsset,
+  selectedFee,
   style: externalStyle,
 }: Props) => {
   const { currentNetwork } = useNetwork();
@@ -33,7 +37,6 @@ const PreviewTransfer = ({
   const {
     theme: { colors },
   } = useContext(ThemeContext);
-
   const truncatedRecipient = truncateAddress(recipient, 11);
   const truncatedSender = truncateAddress(sender, 11);
 
@@ -110,33 +113,21 @@ const PreviewTransfer = ({
         )}
       </View>
       <View style={styles.horizontalFill}>
-        <View style={styles.transactionMetadataItem}>
-          <Typography type="commonText" style={{ color: colors.primary40 }}>
-            Fees
-          </Typography>
-          {!fees ? (
-            <View style={styles.calculationWrapper}>
-              <ActivityIndicator color={colors.secondary100} />
-              <Typography
-                type="commonText"
-                style={[
-                  styles.calculationText,
-                  { color: colors.secondary100 },
-                ]}>
-                Calculating
-              </Typography>
-            </View>
-          ) : (
-            <Typography type="commonText" style={{ color: colors.primary40 }}>
-              {`${fees} STX`}
+        {!isSigning && (
+          <View style={styles.transactionMetadataItem}>
+            <Typography type="smallTitleR" style={{ color: colors.primary40 }}>
+              Fees
             </Typography>
-          )}
-        </View>
+            <Typography type="smallTitleR" style={{ color: colors.primary40 }}>
+              {`${selectedFee?.fee} STX`}
+            </Typography>
+          </View>
+        )}
         <View style={styles.transactionMetadataItem}>
-          <Typography type="commonText" style={{ color: colors.primary40 }}>
+          <Typography type="smallTitleR" style={{ color: colors.primary40 }}>
             Network
           </Typography>
-          <Typography type="commonText" style={{ color: colors.primary40 }}>
+          <Typography type="smallTitleR" style={{ color: colors.primary40 }}>
             {capitalizeFirstLetter(currentNetwork.name)}
           </Typography>
         </View>

@@ -3,8 +3,9 @@ import { useCallback, useEffect, useState } from 'react';
 export const usePasswordField = (
   validation: (val: string) => Promise<any> = () => Promise.resolve(),
   extraDeps: any[] = [],
+  timout: number = 500,
 ) => {
-  const [input, setInput] = useState<string>('');
+  const [input, setInput] = useState<string>();
   const [error, setError] = useState<string | undefined>();
   const [touched, setTouched] = useState(false);
 
@@ -18,7 +19,7 @@ export const usePasswordField = (
       if (touched && validation) {
         try {
           setError(undefined);
-          const result = validation(input);
+          const result = validation(input || '');
           if (result instanceof Promise) {
             result.catch(e => setError(e.message));
           }
@@ -26,7 +27,7 @@ export const usePasswordField = (
           setError(e.message);
         }
       }
-    }, 500);
+    }, timout);
 
     return () => {
       clearTimeout(timer);

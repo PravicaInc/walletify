@@ -29,15 +29,16 @@ import { AccountToken } from '../../models/account';
 import WarningIcon from '../shared/WarningIcon';
 import { titleCase } from '../../shared/helpers';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { valueFromBalance } from '../../shared/balanceUtils';
+import { microStxToStx, valueFromBalance } from '../../shared/balanceUtils';
 import { currentAccountAvailableStxBalanceState } from '../../hooks/useAccounts/accountsStore';
 import { Portal } from '@gorhom/portal';
+import { FeesCalculations } from '../FeesCalculations';
+import { SelectedFee } from '../../shared/types';
 
 const TransactionRequestBottomSheet: React.FC = () => {
   const snapPoints = React.useMemo(() => ['95%'], []);
   const transactionRequest = useAtomValue(transactionRequestTokenPayloadState);
   const setTransactionRequest = useTransactionRequest();
-  const [fees, setFees] = useState<Number>(NaN);
 
   const bottomSheetRef = useRef<BottomSheet>(null);
 
@@ -52,7 +53,6 @@ const TransactionRequestBottomSheet: React.FC = () => {
 
   const dismissBottomSheet = useCallback(() => {
     setTransactionRequest(undefined);
-    setFees(NaN);
     bottomSheetRef.current?.close();
   }, []);
 
@@ -77,8 +77,6 @@ const TransactionRequestBottomSheet: React.FC = () => {
         index={-1}>
         <WrappedTransactionRequestBottomSheetInner
           dismissBottomSheet={dismissBottomSheet}
-          setFees={setFees}
-          fees={fees}
         />
       </BottomSheet>
     </Portal>
@@ -89,15 +87,13 @@ export default TransactionRequestBottomSheet;
 
 interface TransactionRequestInnerProps {
   dismissBottomSheet: () => void;
-  setFees: (fee: Number) => void;
-  fees: Number;
 }
 
 const TransactionRequestBottomSheetInner: React.FC<
   TransactionRequestInnerProps
-> = ({ dismissBottomSheet, setFees, fees }) => {
-  const { estimateTransactionFees } = useAccounts();
+> = ({ dismissBottomSheet }) => {
   const { selectedAccountAssets: assets } = useAssets();
+  const [selectedFee, setSelectedFee] = useState<SelectedFee>();
   const [selectedAsset, setSelectedAsset] = useState<AccountToken | undefined>(
     undefined,
   );
@@ -106,6 +102,8 @@ const TransactionRequestBottomSheetInner: React.FC<
   } = useContext(ThemeContext);
   const { bottom } = useSafeAreaInsets();
   const balance = useAtomValue(currentAccountAvailableStxBalanceState);
+  const transactionRequest = useAtomValue(transactionRequestTokenPayloadState);
+  const transferPayload = transactionRequest as STXTransferPayload;
   const amount = useMemo(() => {
     if (balance) {
       return valueFromBalance(balance, 'stx');
@@ -113,30 +111,16 @@ const TransactionRequestBottomSheetInner: React.FC<
     return 0;
   }, [balance]);
   const { selectedAccountState: account, sendTransaction } = useAccounts();
-  const transactionRequest = useAtomValue(transactionRequestTokenPayloadState);
-  const transferPayload = transactionRequest as STXTransferPayload;
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isSending, toggleSending] = useState<boolean>(false);
   useEffect(() => {
     if (assets !== undefined && assets.length > 0) {
       setSelectedAsset(assets.find(a => a.name === 'STX'));
     }
   }, [assets]);
 
-  useEffect(() => {
-    const fetchFees = async () => {
-      const transactionFees = await estimateTransactionFees(
-        transferPayload?.recipient,
-        Number(transferPayload?.amount) / 1000000,
-        transferPayload.memo,
-      );
-      setFees(transactionFees);
-    };
-    if (transactionRequest) {
-      fetchFees();
-    }
-  }, [transactionRequest]);
-  const isEnoughBalance =
-    Number(transferPayload?.amount || 0) / 1000000 + Number(fees) <= amount;
+  const isEnoughBalance = microStxToStx(transferPayload?.amount || '0')
+    .plus(selectedFee?.fee || '0')
+    .lte(amount);
   const handSendPress = useCallback(() => {
     async function handleTransfer() {
       if (!transactionRequest || !transferPayload) {
@@ -148,16 +132,16 @@ const TransactionRequestBottomSheetInner: React.FC<
         Alert.alert('Cannot proceed auth with malformed url');
       }
 
-      setIsLoading(true);
+      toggleSending(true);
 
       const response = await sendTransaction(
         transferPayload.recipient,
-        Number(transferPayload.amount) / 1000000,
-        Number(fees),
+        microStxToStx(transferPayload.amount).toNumber(),
+        selectedFee as number,
         transferPayload.memo,
       );
 
-      setIsLoading(false);
+      toggleSending(false);
 
       if (response?.error !== undefined) {
         Alert.alert(
@@ -180,7 +164,7 @@ const TransactionRequestBottomSheetInner: React.FC<
     if (transactionRequest) {
       handleTransfer();
     }
-  }, [transactionRequest, fees]);
+  }, [transactionRequest, selectedFee]);
   return (
     <View style={[styles.container, { paddingBottom: bottom + 10 }]}>
       <Header
@@ -193,12 +177,16 @@ const TransactionRequestBottomSheetInner: React.FC<
             onPress={dismissBottomSheet}
           />
         }
-        isRightLoading={isLoading}
+        isRightLoading={isSending}
         rightComponent={
           <HeaderBack
-            disabled={Number(fees) === null || !isEnoughBalance}
+            disabled={
+              Number(selectedFee?.fee) === null ||
+              !(isEnoughBalance && selectedFee)
+            }
             textColor={
-              Number(fees) === null || !isEnoughBalance
+              Number(selectedFee?.fee) === null ||
+              !(isEnoughBalance && selectedFee)
                 ? colors.primary40
                 : colors.secondary100
             }
@@ -257,15 +245,24 @@ const TransactionRequestBottomSheetInner: React.FC<
         )}
         {transferPayload && selectedAsset && account && (
           <PreviewTransfer
+            isSigning
             sender={account.address}
             memo={transferPayload.memo}
             recipient={transferPayload.recipient}
             amount={Number(transferPayload.amount) / 1000000}
-            fees={Number(fees)}
             selectedAsset={selectedAsset}
             style={styles.previewPanel}
+            selectedFee={selectedFee}
           />
         )}
+        <FeesCalculations
+          isSigning
+          recipient={transferPayload?.recipient}
+          amount={transferPayload?.amount}
+          setSelectedFee={setSelectedFee}
+          memo={transferPayload?.memo}
+          selectedFee={selectedFee}
+        />
       </Suspense>
       <View style={[styles.horizontalFill, styles.centerItems]}>
         <WarningIcon width={24} height={24} fill={colors.primary60} />
