@@ -39,7 +39,7 @@ const TokenAvatar: React.FC<TokenAvatarProps> = ({
         <CustomIcon with={iconDimension || 18} height={iconDimension || 18} />
       ) : (
         <Typography
-          type="smallTitle"
+          type="bigTitle"
           style={[styles.avatarInitial, { color: colors.white }]}>
           {tokenName[0]}
         </Typography>

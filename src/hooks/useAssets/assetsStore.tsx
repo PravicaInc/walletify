@@ -22,6 +22,8 @@ import {
   currentAccountBalancesUnanchoredState,
 } from '../useAccounts/accountsStore';
 
+import { currentStxPrice } from '../useStxPrice/stxPriceStore';
+
 const mapAssetResponseToToken = async (
   assets: { [x: string]: FungibleResponse | NonFungibleResponse },
   tokensApi?: FungibleTokensApi | NonFungibleTokensApi,
@@ -90,6 +92,14 @@ export const assets = atom(async get => {
 
   let results: AccountToken[] = [];
   if (stxBalance !== undefined) {
+    const stxValue = valueFromBalance(
+      stxBalance.multipliedBy(get(currentStxPrice)),
+      'stx',
+      {
+        fixedDecimals: false,
+      },
+    );
+
     const stxToken: AccountToken = {
       name: 'STX',
       defaultStyles: {
@@ -97,7 +107,10 @@ export const assets = atom(async get => {
       },
       icon: StxTokenIcon,
       amount: valueFromBalance(stxBalance as BigNumber, 'stx'),
+      value: `~$${stxValue}`,
+      isFungible: true,
     };
+
     if (new BigNumber(0).isLessThan(stxBalance)) {
       results.push(stxToken);
     }

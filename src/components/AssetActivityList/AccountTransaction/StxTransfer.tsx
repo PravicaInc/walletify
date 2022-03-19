@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Linking, View } from 'react-native';
+import { Linking, View, ViewStyle } from 'react-native';
 import { ThemeContext } from '../../../contexts/Theme/theme';
 import { useAccounts } from '../../../hooks/useAccounts/useAccounts';
 import { Tx } from '../../../models/transactions';
@@ -9,7 +9,7 @@ import {
   getTxValue,
 } from '../../../shared/transactionUtils';
 import { Typography } from '../../shared/Typography';
-import TokenAvatar from '../TokenAvatar';
+import TokenAvatar from '../../Home/TokenAvatar';
 import Stx from '../../../assets/images/stx.svg';
 import styles from './styles';
 import InTransaction from '../../../assets/images/Home/inTransaction.svg';
@@ -110,7 +110,19 @@ export const TransactionItem: React.FC<{
   value: string;
   isOriginator: boolean;
   onClickTransaction: () => void;
-}> = ({ title, caption, value, isOriginator, onClickTransaction }) => {
+  tokenName?: string;
+  customIcon?: any;
+  customStyle?: ViewStyle;
+}> = ({
+  title,
+  caption,
+  value,
+  isOriginator,
+  onClickTransaction,
+  tokenName,
+  customIcon,
+  customStyle,
+}) => {
   const {
     theme: { colors },
   } = useContext(ThemeContext);
@@ -126,9 +138,9 @@ export const TransactionItem: React.FC<{
       ]}>
       <View style={styles.tokenIconContainer}>
         <TokenAvatar
-          CustomIcon={Stx}
-          tokenName="STX"
-          customStyle={{ backgroundColor: colors.primary100 }}
+          CustomIcon={customIcon}
+          tokenName={tokenName ?? ''}
+          customStyle={customStyle}
         />
         <View style={styles.transactionIndicator}>
           {isOriginator ? <OutTransaction /> : <InTransaction />}

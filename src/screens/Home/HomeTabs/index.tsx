@@ -3,16 +3,20 @@ import { useWindowDimensions, TouchableOpacity } from 'react-native';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { Typography } from '../../../components/shared/Typography';
 import { ThemeContext } from '../../../contexts/Theme/theme';
-import ActivityTab from '../../../components/Home/ActivityTab';
 import AssetsTab from '../../../components/Home/AssetsTab';
 import styles from './styles';
+import AssetActivityList from '../../../components/AssetActivityList';
+
+const ActivityTab: React.FC = () => {
+  return <AssetActivityList />;
+};
 
 const renderScene = SceneMap({
   Assets: AssetsTab,
   Activity: ActivityTab,
 });
 
-const TabsHeader = props => {
+const TabsHeader = (props: any) => {
   const {
     theme: { colors },
   } = useContext(ThemeContext);

@@ -20,6 +20,7 @@ import TransactionRequestBottomSheet from '../components/TransactionRequestBotto
 import { useInternetConnection } from '../hooks/useInternetConnnection';
 import SendForm from '../screens/SendForm';
 import PreviewTransaction from '../screens/PreviewTransaction';
+import AssetDetails from '../screens/AssetDetails';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -42,6 +43,11 @@ export const Routes: React.FC = () => {
           options={{ headerShown: false }}
           name="Home"
           component={Home}
+        />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="AssetDetails"
+          component={AssetDetails}
         />
         <Stack.Screen
           options={{ headerShown: false }}

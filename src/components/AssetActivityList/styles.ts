@@ -17,5 +17,8 @@ const activityTabStyles = StyleSheet.create({
   emptyMessage: {
     marginTop: 14,
   },
+  sectionHeader: {
+    paddingBottom: 10,
+  },
 });
 export default activityTabStyles;

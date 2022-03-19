@@ -1,13 +1,23 @@
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
-  buttonContainer: {
+  largeButtonContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     height: 60,
     paddingHorizontal: 7,
     marginBottom: 20,
     borderRadius: 13,
+  },
+  smallButtonContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    height: 40,
+    width: 200,
+    paddingVertical: 5,
+    paddingHorizontal: 7,
+    borderRadius: 20,
+    backgroundColor: 'rgba(255, 255, 255, 0.3)',
   },
   switchIconContainer: {
     justifyContent: 'flex-end',
@@ -22,9 +32,10 @@ export default StyleSheet.create({
     marginLeft: 6,
   },
   accountName: {
-    width: '100%',
+    marginBottom: 3,
   },
   address: {
-    paddingTop: 6,
+    marginTop: 3,
   },
+  none: {},
 });

@@ -1,20 +1,21 @@
 import React, { useContext } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import ContentLoader, { Circle, Rect } from 'react-content-loader/native';
-import AccountAvatar from '../../../components/shared/AccountAvatar';
-import { Typography } from '../../../components/shared/Typography';
-import { ThemeContext } from '../../../contexts/Theme/theme';
-import { useAccounts } from '../../../hooks/useAccounts/useAccounts';
-import { truncateAddress } from '../../../shared/addressUtils';
-import Switch from '../../../assets/images/Home/switch.svg';
+import AccountAvatar from '../shared/AccountAvatar';
+import { Typography } from '../shared/Typography';
+import { ThemeContext } from '../../contexts/Theme/theme';
+import { useAccounts } from '../../hooks/useAccounts/useAccounts';
+import { truncateAddress } from '../../shared/addressUtils';
+import Switch from '../../assets/images/Home/switch.svg';
 import styles from './styles';
 
 interface SwitchAccountButtonProps {
   handlePressSwitchAccount: () => void;
+  mode: 'large' | 'small';
 }
 
 const SwitchAccountButton: React.FC<SwitchAccountButtonProps> = props => {
-  const { handlePressSwitchAccount } = props;
+  const { handlePressSwitchAccount, mode } = props;
   const { selectedAccountState, walletAccounts } = useAccounts();
   const {
     theme: { colors },
@@ -28,7 +29,7 @@ const SwitchAccountButton: React.FC<SwitchAccountButtonProps> = props => {
     return (
       <View
         style={[
-          styles.buttonContainer,
+          styles.largeButtonContainer,
           {
             backgroundColor: colors.card,
           },
@@ -53,22 +54,33 @@ const SwitchAccountButton: React.FC<SwitchAccountButtonProps> = props => {
       onPress={handlePressSwitchAccount}
       activeOpacity={0.5}
       style={[
-        styles.buttonContainer,
         {
           backgroundColor: colors.card,
         },
+        mode === 'large'
+          ? styles.largeButtonContainer
+          : styles.smallButtonContainer,
       ]}>
-      <AccountAvatar accountName={accountName} diameter={45} />
+      <AccountAvatar
+        accountName={accountName}
+        diameter={mode === 'large' ? 45 : 27.5}
+      />
       <View style={styles.accountInfo}>
         <Typography
           numberOfLines={1}
-          type="smallTitle"
-          style={[styles.accountName, { color: colors.primary100 }]}>
+          type={mode === 'large' ? 'smallTitle' : 'commonTextBold'}
+          style={[
+            mode === 'large' ? styles.accountName : styles.none,
+            { color: mode === 'large' ? colors.primary100 : colors.white },
+          ]}>
           {accountName}
         </Typography>
         <Typography
-          type="commonText"
-          style={[styles.address, { color: colors.primary40 }]}>
+          type={mode === 'large' ? 'commonText' : 'smallText'}
+          style={[
+            mode === 'large' ? styles.address : styles.none,
+            { color: mode === 'large' ? colors.primary40 : colors.white },
+          ]}>
           {`(${
             selectedAccountState?.address
               ? truncateAddress(selectedAccountState?.address, 11)
@@ -78,12 +90,16 @@ const SwitchAccountButton: React.FC<SwitchAccountButtonProps> = props => {
       </View>
       {(walletAccounts?.length || 0) > 1 && (
         <View style={styles.switchIconContainer}>
-          <Typography
-            type="commonText"
-            style={[styles.switchText, { color: colors.secondary100 }]}>
-            Switch
-          </Typography>
-          <Switch />
+          {mode === 'large' && (
+            <Typography
+              type="commonText"
+              style={[styles.switchText, { color: colors.secondary100 }]}>
+              Switch
+            </Typography>
+          )}
+          <Switch
+            fill={mode === 'large' ? colors.secondary100 : colors.white}
+          />
         </View>
       )}
     </TouchableOpacity>

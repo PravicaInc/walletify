@@ -4,6 +4,11 @@ import { SelectedFee } from '../shared/types';
 export type RootStackParamList = {
   Splash: undefined;
   Home: undefined;
+  AssetDetails: {
+    type: string;
+    balance: string;
+    balanceValue: string;
+  };
   OnBoarding: undefined;
   WalletSetup: undefined;
   ConfirmSeedPhrase: { seedPhrase: string; password: string };

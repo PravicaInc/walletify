@@ -11,7 +11,7 @@ import { styles } from './styles';
 import { useAccounts } from '../../hooks/useAccounts/useAccounts';
 import SwitchAccountBottomSheet from '../../components/Accounts/SwitchAccountBottomSheet';
 import BottomSheet from '@gorhom/bottom-sheet';
-import SwitchAccountButton from './SwitchAccountButton';
+import SwitchAccountButton from '../../components/SwitchAccountButton';
 import { withSuspense } from '../../components/shared/WithSuspense';
 
 const Home = () => {
@@ -61,6 +61,7 @@ const Home = () => {
           }
         />
         <SwitchAccountButton
+          mode="large"
           handlePressSwitchAccount={handlePressSwitchAccount}
         />
         <AccountBalanceCard />
