@@ -2,7 +2,7 @@ import React, { useCallback, useContext } from 'react';
 import { Alert, ScrollView, TouchableOpacity, View } from 'react-native';
 import ContentLoader, { Circle, Rect } from 'react-content-loader/native';
 import { useAccounts } from '../../../hooks/useAccounts/useAccounts';
-import AccountAsset from '../NewAccountAsset';
+import AccountAsset from '../LargeAccountAsset';
 import { Typography } from '../../shared/Typography';
 import { ThemeContext } from '../../../contexts/Theme/theme';
 import NoAssets from '../../../assets/images/Home/noAssets.svg';

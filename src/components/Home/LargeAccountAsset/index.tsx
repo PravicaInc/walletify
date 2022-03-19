@@ -14,7 +14,7 @@ interface AccountAssetProps {
   style?: StyleProp<ViewStyle>;
 }
 
-const AccountAsset: React.FC<AccountAssetProps> = props => {
+const LargeAccountAsset: React.FC<AccountAssetProps> = props => {
   const { item, style } = props;
   const { icon, name, amount, isFungible, metaData, defaultStyles, value } =
     item;
@@ -60,7 +60,7 @@ const AccountAsset: React.FC<AccountAssetProps> = props => {
         <TokenAvatar
           CustomIcon={icon}
           customStyle={defaultStyles}
-          tokenName={name}
+          tokenName={metaData?.name ?? name}
         />
         <View style={styles.fullWidth}>
           <Typography
@@ -103,4 +103,4 @@ const AccountAsset: React.FC<AccountAssetProps> = props => {
   );
 };
 
-export default AccountAsset;
+export default LargeAccountAsset;

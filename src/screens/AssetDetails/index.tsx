@@ -1,4 +1,4 @@
-import BottomSheet from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import React, { useRef, useCallback, useContext } from 'react';
 import { Image, ImageBackground, TouchableOpacity, View } from 'react-native';
@@ -16,6 +16,7 @@ import AssetActivityList from '../../components/AssetActivityList';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/types';
 import { ThemeContext } from '../../contexts/Theme/theme';
+import ReceiveBottomSheet from '../../components/ReceiveBottomSheet';
 
 type AssetDetailsProps = NativeStackScreenProps<
   RootStackParamList,
@@ -34,6 +35,7 @@ const AssetDetails: React.FC<AssetDetailsProps> = ({
   const { switchAccount, walletAccounts } = useAccounts();
   const { dispatch } = useNavigation();
   const bottomSheetModalRef = useRef<BottomSheet>(null);
+  const receiveRef = useRef<BottomSheetModal>(null);
 
   const handleGoBack = useCallback(() => dispatch(StackActions.pop()), []);
 
@@ -42,6 +44,10 @@ const AssetDetails: React.FC<AssetDetailsProps> = ({
       (walletAccounts?.length || 0) > 5 ? 1 : 0,
     );
   }, [walletAccounts]);
+
+  const handlePresentReceive = useCallback(() => {
+    receiveRef.current?.snapToIndex(0);
+  }, []);
 
   const handleCancelSwitchAccount = useCallback(() => {
     bottomSheetModalRef.current?.close();
@@ -129,6 +135,7 @@ const AssetDetails: React.FC<AssetDetailsProps> = ({
           </TouchableOpacity>
           <TouchableOpacity
             activeOpacity={0.9}
+            onPress={handlePresentReceive}
             style={[
               styles.balanceActionButton,
               {
@@ -182,6 +189,7 @@ const AssetDetails: React.FC<AssetDetailsProps> = ({
         onSwitch={handleSwitchAccount}
         onCancel={handleCancelSwitchAccount}
       />
+      <ReceiveBottomSheet ref={receiveRef} />
     </View>
   );
 };
