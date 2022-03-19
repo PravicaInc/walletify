@@ -66,31 +66,48 @@ const SimpleTextInput: React.FC<SimpleTextInputProps> = ({
         />
         {icon && <View style={styles.icon}>{icon}</View>}
       </View>
-      {touched && hasError && (
-        <View style={styles.errorContainer}>
-          <WarningIcon />
-          <Typography
-            type="smallText"
-            style={[styles.error, { color: colors.failed100 }]}>
-            {errorMessage}
-          </Typography>
-        </View>
-      )}
-      {subtext}
+      <View style={styles.wrapper}>
+        {touched && hasError ? (
+          <View style={styles.errorContainer}>
+            <WarningIcon />
+            <Typography
+              type="smallText"
+              style={[styles.error, { color: colors.failed100 }]}>
+              {errorMessage}
+            </Typography>
+          </View>
+        ) : (
+          <View />
+        )}
+        {subtext}
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { width: '100%' },
+  container: {
+    width: '100%',
+    position: 'relative',
+    marginTop: 20,
+    marginBottom: 20,
+  },
   input: {
     height: 60,
     borderWidth: 1,
     borderRadius: 13,
     padding: 16,
     marginTop: 10,
-    marginBottom: 10,
     paddingRight: 60,
+    width: '99%',
+  },
+  wrapper: {
+    bottom: -20,
+    position: 'absolute',
+    width: '99%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   icon: {
     position: 'absolute',
@@ -105,7 +122,6 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 10,
   },
   error: {
     alignSelf: 'flex-start',
