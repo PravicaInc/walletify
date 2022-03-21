@@ -41,7 +41,7 @@ const AccountAsset: React.FC<AccountAssetProps> = props => {
           <Typography style={{ color: colors.primary100 }} type="smallTitleR">
             {name}
           </Typography>
-          {isFungible && (
+          {isFungible && metaData?.name && (
             <Typography style={{ color: colors.primary40 }} type="commonText">
               {metaData?.name}
             </Typography>

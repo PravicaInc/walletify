@@ -35,8 +35,16 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { usePasswordField } from '../../hooks/common/usePasswordField';
 import { FeesCalculations } from '../../components/FeesCalculations';
 import { SelectedFee } from '../../shared/types';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../navigation/types';
 
-const SendForm: React.FC = () => {
+type SendFormProps = NativeStackScreenProps<RootStackParamList, 'SendForm'>;
+
+const SendForm: React.FC<SendFormProps> = ({
+  route: {
+    params: { asset },
+  },
+}) => {
   const {
     theme: { colors },
   } = useContext(ThemeContext);

@@ -14,12 +14,14 @@ import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import ReceiveBottomSheet from '../../../components/ReceiveBottomSheet';
 import { useAccounts } from '../../../hooks/useAccounts/useAccounts';
 import { StackActions, useNavigation } from '@react-navigation/native';
+import { useAssets } from '../../../hooks/useAssets/useAssets';
 
 const AccountBalanceCard: React.FC = () => {
   const {
     theme: { colors },
   } = useContext(ThemeContext);
   const { selectedAccountState: account } = useAccounts();
+  const { selectedAccountAssets: assets } = useAssets();
   const { dispatch } = useNavigation();
   const balance = useAtomValue(currentAccountAvailableStxBalanceState);
   const price = useStxPriceValue();
@@ -27,7 +29,11 @@ const AccountBalanceCard: React.FC = () => {
   const receiveRef = useRef<BottomSheetModal>(null);
 
   const handlePresentSend = useCallback(() => {
-    dispatch(StackActions.push('sendForm'));
+    dispatch(
+      StackActions.push('sendForm', {
+        asset: assets.find(a => a.name === 'STX'),
+      }),
+    );
   }, []);
 
   const handlePresentReceive = useCallback(() => {

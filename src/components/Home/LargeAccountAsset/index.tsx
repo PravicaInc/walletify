@@ -24,13 +24,7 @@ const LargeAccountAsset: React.FC<AccountAssetProps> = props => {
   const { dispatch } = useNavigation();
 
   const goToAssetDetails = () =>
-    dispatch(
-      StackActions.push('AssetDetails', {
-        type: item.name,
-        balance: item.amount,
-        balanceValue: item.value,
-      }),
-    );
+    dispatch(StackActions.push('AssetDetails', { asset: item }));
 
   const extraStyles = style ? [style] : [];
 

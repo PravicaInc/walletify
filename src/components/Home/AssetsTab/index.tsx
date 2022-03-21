@@ -54,9 +54,9 @@ const AssetsTab: React.FC = () => {
   const renderGroup = (group: AccountToken[]) => {
     return group.map((a, idx) => {
       if (group.length % 2 !== 0 && idx === group.length - 1) {
-        return <AccountAsset item={a} style={styles.lastAsset} />;
+        return <AccountAsset key={idx} item={a} style={styles.lastAsset} />;
       } else {
-        return <AccountAsset item={a} />;
+        return <AccountAsset key={idx} item={a} />;
       }
     });
   };

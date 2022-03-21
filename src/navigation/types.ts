@@ -4,11 +4,7 @@ import { SelectedFee } from '../shared/types';
 export type RootStackParamList = {
   Splash: undefined;
   Home: undefined;
-  AssetDetails: {
-    type: string;
-    balance: string;
-    balanceValue: string;
-  };
+  AssetDetails: { asset: AccountToken };
   OnBoarding: undefined;
   WalletSetup: undefined;
   ConfirmSeedPhrase: { seedPhrase: string; password: string };
@@ -22,7 +18,7 @@ export type RootStackParamList = {
   SeedRestore: { password: string };
   OldPassword: { seedPhrase: string } | undefined;
   Settings: undefined;
-  sendForm: undefined;
+  SendForm: { asset: AccountToken };
   previewTransaction: {
     amount: string;
     recipient: string;

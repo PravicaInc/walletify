@@ -25,13 +25,14 @@ type AssetDetailsProps = NativeStackScreenProps<
 
 const AssetDetails: React.FC<AssetDetailsProps> = ({
   route: {
-    params: { type, balance, balanceValue },
+    params: { asset },
   },
 }) => {
   const {
     theme: { colors },
   } = useContext(ThemeContext);
 
+  const { name, amount, value } = asset;
   const { switchAccount, walletAccounts } = useAccounts();
   const { dispatch } = useNavigation();
   const bottomSheetModalRef = useRef<BottomSheet>(null);
@@ -44,6 +45,10 @@ const AssetDetails: React.FC<AssetDetailsProps> = ({
       (walletAccounts?.length || 0) > 5 ? 1 : 0,
     );
   }, [walletAccounts]);
+
+  const handlePresentSend = useCallback(() => {
+    dispatch(StackActions.push('sendForm', { asset }));
+  }, []);
 
   const handlePresentReceive = useCallback(() => {
     receiveRef.current?.snapToIndex(0);
@@ -81,19 +86,19 @@ const AssetDetails: React.FC<AssetDetailsProps> = ({
         />
         <View style={styles.balanceContainer}>
           <Typography type="commonText" style={{ color: colors.white }}>
-            {`Total ${type} Balance:`}
+            {`Total ${name} Balance:`}
           </Typography>
           <Typography
             type="hugeText"
             style={[styles.balanceText, { color: colors.white }]}>
-            {`${balance}`}
+            {`${amount}`}
           </Typography>
           <Typography
             type="commonText"
             style={[
               styles.balanceValueTitle,
               {
-                opacity: balanceValue ? 1 : 0,
+                opacity: value ? 1 : 0,
                 color: colors.white,
               },
             ]}>
@@ -103,12 +108,12 @@ const AssetDetails: React.FC<AssetDetailsProps> = ({
             type="bigTitle"
             style={[
               styles.balanceText,
-              { opacity: balanceValue ? 1 : 0, color: colors.white },
+              { opacity: value ? 1 : 0, color: colors.white },
             ]}>
-            {`${balanceValue}`}
+            {`${value}`}
           </Typography>
         </View>
-        {type === 'STX' && (
+        {name === 'STX' && (
           <Stx
             fill={'rgba(255,255,255,0.15)'}
             width={85}
@@ -119,6 +124,7 @@ const AssetDetails: React.FC<AssetDetailsProps> = ({
         <View style={styles.balanceActionsContainer}>
           <TouchableOpacity
             activeOpacity={0.9}
+            onPress={handlePresentSend}
             style={[
               styles.balanceActionButton,
               styles.sendButton,
@@ -155,7 +161,7 @@ const AssetDetails: React.FC<AssetDetailsProps> = ({
   };
 
   const primaryColor = colors.primary100;
-  const useGradient = type !== 'STX';
+  const useGradient = name !== 'STX';
 
   return (
     <View style={[styles.fill, { backgroundColor: colors.white }]}>
@@ -181,7 +187,7 @@ const AssetDetails: React.FC<AssetDetailsProps> = ({
       )}
       <View style={styles.transactionsContainer}>
         <Typography type="smallTitleR">Asset activity</Typography>
-        <AssetActivityList showFTTransfersOnly assetNameFilter={type} />
+        <AssetActivityList showFTTransfersOnly assetNameFilter={name} />
       </View>
 
       <SwitchAccountBottomSheet

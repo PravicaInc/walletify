@@ -52,7 +52,7 @@ export const valueFromBalance = (
 ) =>
   type === 'ft'
     ? ftDecimals(balance, meta?.decimals || 0)
-    : type === 'stx'
+    : type === 'stx' || type === 'STX'
     ? stacksValue({
         value: balance || 0,
         withTicker: false,
