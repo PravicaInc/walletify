@@ -1,19 +1,17 @@
-import React, {
-  Suspense,
-  useCallback,
-  useContext,
-  useRef,
-  useState,
-} from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import React, { useCallback, useContext, useRef, useState } from 'react';
+import {
+  KeyboardAvoidingView,
+  Platform,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { ThemeContext } from '../../contexts/Theme/theme';
 import styles from './styles';
 import Header from '../../components/shared/Header';
 import HeaderBack from '../../components/shared/HeaderBack';
 import { Typography } from '../../components/shared/Typography';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import AccountAsset from '../../components/Home/AccountAsset';
+import AssetPicker from '../../components/Home/AssetPicker';
 import SimpleTextInput from '../../components/shared/SimpleTextInput';
 import ScanQrIcon from '../../assets/images/scanQr.svg';
 import ScanQrBottomSheet from '../../components/ScanQrBottomSheet';
@@ -48,7 +46,7 @@ const SendForm: React.FC<SendFormProps> = ({
   const { selectedAccountState: account } = useAccounts();
   const { selectedAccountAssets: assets } = useAssets();
 
-  const { name, amount: balance, value: balanceValue } = asset;
+  const { name, amount: balance } = asset;
   const { amount: stxBalance } = assets?.find(a => a.name === 'STX') ?? {
     amount: '0',
   };
@@ -56,7 +54,7 @@ const SendForm: React.FC<SendFormProps> = ({
   const stxPrice = useStxPriceValue();
   const price = asset.name === 'STX' ? stxPrice : undefined;
 
-  const [selectedAsset] = useState<AccountToken>(asset);
+  const [selectedAsset, setSelectedAsset] = useState<AccountToken>(asset);
   const { dispatch } = useNavigation();
 
   const {
@@ -156,19 +154,14 @@ const SendForm: React.FC<SendFormProps> = ({
           </TouchableOpacity>
         }
       />
-      <KeyboardAwareScrollView
-        resetScrollToCoords={{ x: 0, y: 0 }}
-        contentContainerStyle={styles.inputsContainer}
-        scrollEnabled={false}
-        extraHeight={132}
-        extraScrollHeight={132}>
-        {selectedAsset && (
-          <AccountAsset
-            item={selectedAsset}
-            showFullBalance={!!balanceValue}
-            fullBalance={balanceValue}
-          />
-        )}
+      <KeyboardAvoidingView
+        style={styles.inputsContainer}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={0}>
+        <AssetPicker
+          selectedAsset={selectedAsset}
+          setSelectedAsset={setSelectedAsset}
+        />
         {!isEnoughBalance && (
           <View
             style={[
@@ -279,7 +272,7 @@ const SendForm: React.FC<SendFormProps> = ({
           memo={memo}
           selectedFee={selectedFee}
         />
-      </KeyboardAwareScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };

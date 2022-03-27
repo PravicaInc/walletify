@@ -2,7 +2,7 @@ import React, { useCallback, useContext } from 'react';
 import { Alert, ScrollView, TouchableOpacity, View } from 'react-native';
 import ContentLoader, { Circle, Rect } from 'react-content-loader/native';
 import { useAccounts } from '../../../hooks/useAccounts/useAccounts';
-import AccountAsset from '../LargeAccountAsset';
+import LargeAccountAsset from '../LargeAccountAsset';
 import { Typography } from '../../shared/Typography';
 import { ThemeContext } from '../../../contexts/Theme/theme';
 import NoAssets from '../../../assets/images/Home/noAssets.svg';
@@ -51,12 +51,19 @@ const AssetsTab: React.FC = () => {
     );
   }, [account]);
 
-  const renderGroup = (group: AccountToken[]) => {
+  const renderGroup = (group: AccountToken[], hasPreview?: boolean) => {
     return group.map((a, idx) => {
       if (group.length % 2 !== 0 && idx === group.length - 1) {
-        return <AccountAsset key={idx} item={a} style={styles.lastAsset} />;
+        return (
+          <LargeAccountAsset
+            hasPreview={hasPreview}
+            key={idx}
+            item={a}
+            style={styles.lastAsset}
+          />
+        );
       } else {
-        return <AccountAsset key={idx} item={a} />;
+        return <LargeAccountAsset hasPreview={hasPreview} key={idx} item={a} />;
       }
     });
   };
@@ -78,7 +85,7 @@ const AssetsTab: React.FC = () => {
       );
       children.push(
         <View key={'coins-view'} style={styles.assetsList}>
-          {renderGroup(coins)}
+          {renderGroup(coins, true)}
         </View>,
       );
     }
@@ -130,7 +137,11 @@ const AssetsTab: React.FC = () => {
     return EmptyAsset();
   }
 
-  return <ScrollView>{renderedAssets()}</ScrollView>;
+  return (
+    <ScrollView showsVerticalScrollIndicator={false}>
+      {renderedAssets()}
+    </ScrollView>
+  );
 };
 
 export default withSuspense(AssetsTab, <ContentLoader />);

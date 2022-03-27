@@ -11,10 +11,11 @@ import { StackActions, useNavigation } from '@react-navigation/native';
 interface AccountAssetProps {
   item: AccountToken;
   style?: StyleProp<ViewStyle>;
+  hasPreview?: boolean;
 }
 
 const LargeAccountAsset: React.FC<AccountAssetProps> = props => {
-  const { item, style } = props;
+  const { item, style, hasPreview } = props;
   const { icon, name, amount, metaData, defaultStyles, value } = item;
   const {
     theme: { colors },
@@ -39,7 +40,7 @@ const LargeAccountAsset: React.FC<AccountAssetProps> = props => {
   return (
     <TouchableHighlight
       underlayColor={colors.primary10}
-      onPress={goToAssetDetails}
+      onPress={hasPreview ? goToAssetDetails : undefined}
       style={[
         styles.tokenCard,
         ...extraStyles,
@@ -79,13 +80,15 @@ const LargeAccountAsset: React.FC<AccountAssetProps> = props => {
               type="commonText">
               {value ? value : ''}
             </Typography>
-            <View
-              style={[
-                styles.expandIconContainer,
-                { backgroundColor: colors.primary40 },
-              ]}>
-              <ExpandIcon />
-            </View>
+            {hasPreview && (
+              <View
+                style={[
+                  styles.expandIconContainer,
+                  { backgroundColor: colors.primary40 },
+                ]}>
+                <ExpandIcon />
+              </View>
+            )}
           </View>
         </View>
       </>

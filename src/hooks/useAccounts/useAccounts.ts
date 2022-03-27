@@ -247,7 +247,7 @@ export const useAccounts = () => {
       functionArgs,
       network: network.stacksNetwork,
       anchorMode: AnchorMode.Any,
-      postConditionMode: PostConditionMode.Allow,
+      postConditionMode: PostConditionMode.Deny,
       postConditions,
       fee: new BN(stxToMicroStx(fee ?? 0).toNumber()),
       publicKey: publicKeyToString(pubKeyfromPrivKey(stxPrivateKey)),

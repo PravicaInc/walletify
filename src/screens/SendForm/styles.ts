@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import {PADDING_HORIZONTAL} from "../../shared/layout";
 
 export default StyleSheet.create({
   container: {
@@ -9,8 +10,7 @@ export default StyleSheet.create({
   },
   inputsContainer: {
     flex: 1,
-    paddingHorizontal: '2.5%',
-    paddingTop: 40,
+    paddingHorizontal: PADDING_HORIZONTAL,
   },
   alignRight: { alignSelf: 'flex-end' },
   noteWrapper: {
