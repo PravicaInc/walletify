@@ -12,6 +12,7 @@ export default StyleSheet.create({
   },
   transactionInformationContainer: {
     flexDirection: 'column',
+    flex: 0.9,
   },
   tokenIconContainer: {
     position: 'relative',

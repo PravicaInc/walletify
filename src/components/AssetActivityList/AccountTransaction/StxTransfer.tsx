@@ -18,6 +18,7 @@ import FunctionCall from '../../../assets/images/Home/functionCall.svg';
 import TransactionStatus from './TransactionStatus';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import useNetwork from '../../../hooks/useNetwork/useNetwork';
+import { CoinbaseTransaction } from '@stacks/stacks-blockchain-api-types';
 
 export const StxTransferTransaction: React.FC<{
   transaction: Tx;
@@ -51,6 +52,22 @@ export const StxTransferTransaction: React.FC<{
   const openTransactionInExplorer = () => {
     Linking.openURL(link);
   };
+  const tokenName = () => {
+    switch (transaction.tx_type) {
+      case 'coinbase':
+        return `Coinbase ${(transaction as CoinbaseTransaction).block_height}`;
+      case 'smart_contract':
+        return transaction.smart_contract.contract_id;
+      case 'contract_call':
+        return `${transaction.contract_call.contract_id}::${transaction.contract_call.function_name}`;
+      case 'token_transfer':
+        return 'STX';
+      case 'poison_microblock':
+        return 'Failed';
+      default:
+        return '';
+    }
+  };
   return (
     <TouchableOpacity
       onPress={openTransactionInExplorer}
@@ -63,19 +80,27 @@ export const StxTransferTransaction: React.FC<{
       ]}>
       <View style={styles.tokenIconContainer}>
         <TokenAvatar
-          CustomIcon={Stx}
-          tokenName="STX"
-          customStyle={{ backgroundColor: colors.primary100 }}
+          CustomIcon={
+            transaction.tx_type === 'token_transfer' ? Stx : undefined
+          }
+          tokenName={tokenName()}
+          customStyle={
+            transaction.tx_type === 'token_transfer'
+              ? { backgroundColor: colors.primary100 }
+              : {}
+          }
         />
         <View style={styles.transactionIndicator}>
           {renderTransactionTypeIcon()}
         </View>
       </View>
       <View style={styles.transactionInformationContainer}>
-        <Typography style={{ color: colors.primary100 }} type="smallTitleR">
-          {getTxTitle(transaction) === 'Stacks Token'
-            ? 'STX Transfer'
-            : getTxTitle(transaction)}
+        <Typography
+          numberOfLines={1}
+          ellipsizeMode="tail"
+          style={{ color: colors.primary100 }}
+          type="smallTitleR">
+          {getTxTitle(transaction)}
         </Typography>
         <Typography
           style={{ color: colors.primary40, marginTop: 7 }}
@@ -85,9 +110,9 @@ export const StxTransferTransaction: React.FC<{
       </View>
       <View
         style={{
-          flex: 1,
           alignItems: 'flex-end',
           justifyContent: 'space-between',
+          marginLeft: 'auto',
         }}>
         {value ? (
           <Typography style={{ color: colors.primary100 }} type="smallTitleR">
@@ -152,7 +177,7 @@ export const TransactionItem: React.FC<{
           type="smallTitleR"
           numberOfLines={1}
           ellipsizeMode="tail">
-          {title === 'Stacks Token' ? 'Stx Transfer' : title}
+          {title}
         </Typography>
         <Typography
           style={{ color: colors.primary40, marginTop: 7 }}
@@ -162,9 +187,9 @@ export const TransactionItem: React.FC<{
       </View>
       <View
         style={{
-          flex: 1,
           alignItems: 'flex-end',
           justifyContent: 'space-between',
+          marginLeft: 'auto',
         }}>
         {value ? (
           <Typography style={{ color: colors.primary100 }} type="smallTitleR">

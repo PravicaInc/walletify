@@ -1,4 +1,4 @@
-import React, { useCallback, useContext } from 'react';
+import React, { useCallback, useContext, useMemo } from 'react';
 import {
   ActivityIndicator,
   ListRenderItem,
@@ -35,13 +35,13 @@ const formatDate = (date: number) => {
 };
 
 type AssetActivityListProps = {
-  showFTTransfersOnly?: boolean;
   assetNameFilter?: string;
+  isStx?: boolean;
 };
 
 const AssetActivityList: React.FC<AssetActivityListProps> = ({
-  showFTTransfersOnly,
   assetNameFilter,
+  isStx,
 }) => {
   const {
     theme: { colors },
@@ -81,25 +81,52 @@ const AssetActivityList: React.FC<AssetActivityListProps> = ({
   const renderTransaction: ListRenderItem<
     SubmittedTransaction | AddressTransactionWithTransfers | MempoolTransaction
   > = useCallback(({ item }) => {
-    return (
-      <AccountTransaction
-        transaction={item}
-        showFTTransfersOnly={showFTTransfersOnly}
-        assetNameFilter={assetNameFilter}
-      />
-    );
+    return <AccountTransaction transaction={item} />;
   }, []);
 
-  const groupTxsByDateMap2 = (
-    txs: (
-      | SubmittedTransaction
-      | AddressTransactionWithTransfers
-      | MempoolTransaction
-    )[],
-  ) => {
+  const filteredTransactions = useMemo(() => {
+    let txs = [...mempoolTransactions, ...accountTransactionsWithTransfers];
+    if (!assetNameFilter) {
+      txs = [...submittedTransactions, ...txs] as any;
+    } else {
+      if (isStx) {
+        txs = txs.filter(atx => {
+          const tx = isAddressTransactionWithTransfers(atx) ? atx.tx : atx;
+          return (
+            tx.tx_type === 'token_transfer' ||
+            (tx.tx_type === 'contract_call' &&
+              (atx?.stx_transfers || []).length > 0)
+          );
+        });
+      } else {
+        txs = txs.filter(atx => {
+          const tx = isAddressTransactionWithTransfers(atx) ? atx.tx : atx;
+          const acceptedTypes = tx.tx_type === 'contract_call';
+          return (
+            acceptedTypes &&
+            ((atx?.ft_transfers || []).filter(transfer =>
+              transfer.asset_identifier.includes(assetNameFilter),
+            ).length > 0 ||
+              (atx?.nft_transfers || []).filter(transfer =>
+                transfer.asset_identifier.includes(assetNameFilter),
+              ).length > 0 ||
+              tx?.contract_call?.contract_id === assetNameFilter)
+          );
+        });
+      }
+    }
+    return txs;
+  }, [
+    assetNameFilter,
+    submittedTransactions,
+    mempoolTransactions,
+    accountTransactionsWithTransfers,
+  ]);
+
+  const groupedTxsByDateMap = useMemo(() => {
     return Object.values(
-      txs.reduce((txsByDate: any, atx) => {
-        const tx: any = isAddressTransactionWithTransfers(atx) ? atx.tx : atx;
+      filteredTransactions.reduce((txsByDate, atx) => {
+        const tx = isAddressTransactionWithTransfers(atx) ? atx.tx : atx;
         const date: number = startOfDay(
           ('burn_block_time' in tx &&
             tx.burn_block_time > 0 &&
@@ -126,39 +153,10 @@ const AssetActivityList: React.FC<AssetActivityListProps> = ({
         };
       },
     );
-  };
-
-  const getTransactions = (): (
-    | SubmittedTransaction
-    | AddressTransactionWithTransfers
-    | MempoolTransaction
-  )[] => {
-    const txs = [
-      ...submittedTransactions,
-      ...mempoolTransactions,
-      ...accountTransactionsWithTransfers,
-    ];
-
-    if (showFTTransfersOnly) {
-      const results = [
-        ...accountTransactionsWithTransfers.filter(
-          t => t.stx_transfers.length > 0 || (t.ft_transfers?.length ?? 0) > 0,
-        ),
-      ];
-
-      if (assetNameFilter === 'STX') {
-        return [...mempoolTransactions, ...results];
-      } else {
-        return results;
-      }
-    } else {
-      return txs;
-    }
-  };
-
+  }, [filteredTransactions]);
   return (
     <SectionList
-      sections={groupTxsByDateMap2(getTransactions())}
+      sections={groupedTxsByDateMap}
       renderSectionHeader={info => (
         <Typography
           type="commonText"

@@ -19,7 +19,6 @@ import useNetwork from '../../../hooks/useNetwork/useNetwork';
 import Stx from '../../../assets/images/stx.svg';
 import { Linking } from 'react-native';
 import { ThemeContext } from '../../../contexts/Theme/theme';
-import { toLower } from 'lodash';
 
 interface StxTransferItemProps {
   stxTransfer: StxTransfer;
@@ -32,12 +31,11 @@ const StxTransferItem = ({ stxTransfer, parentTx }: StxTransferItemProps) => {
   } = useContext(ThemeContext);
 
   const { selectedAccountState } = useAccounts();
-  const title = 'STX Transfer';
-  const tx = parentTx.tx as Tx;
-  const caption = getTxCaption(tx) ?? '';
+  const title = 'Stacks Token';
+  const caption = getTxCaption(parentTx.tx) ?? '';
   const isOriginator = stxTransfer.sender === selectedAccountState?.address;
   const { currentNetwork } = useNetwork();
-  const link = `https://explorer.stacks.co/txid/${tx.tx_id}?chain=${currentNetwork.name}`;
+  const link = `https://explorer.stacks.co/txid/${parentTx.tx.tx_id}?chain=${currentNetwork.name}`;
 
   const openTransactionInExplorer = () => {
     Linking.openURL(link);
@@ -51,11 +49,11 @@ const StxTransferItem = ({ stxTransfer, parentTx }: StxTransferItemProps) => {
   return (
     <TransactionItem
       title={title}
+      tokenName={title}
       onClickTransaction={openTransactionInExplorer}
       caption={caption}
       value={value}
       isOriginator={isOriginator}
-      tokenName="STX"
       customIcon={Stx}
       customStyle={{ backgroundColor: colors.primary100 }}
     />
@@ -70,10 +68,9 @@ interface FtTransferItemProps {
 const getAssetMeta = async (identifier: string, tokenApi: TokensApi) => {
   const { contractName, address } = getAssetStringParts(identifier);
   const contractId = `${address}.${contractName}`;
-  const assetMeta = await tokenApi.getContractFtMetadata({
+  return await tokenApi.getContractFtMetadata({
     contractId,
   });
-  return assetMeta;
 };
 
 export const calculateTokenTransferAmount = (
@@ -84,31 +81,40 @@ export const calculateTokenTransferAmount = (
 };
 
 const FtTransferItem = ({ ftTransfer, parentTx }: FtTransferItemProps) => {
+  const {
+    theme: { colors },
+  } = useContext(ThemeContext);
   const { selectedAccountState } = useAccounts();
   const { fungibleTokensApi } = useAtomValue(apiClientState);
   const { currentNetwork } = useNetwork();
-  const [assetMetadata, setAssetMetadata] = useState<any>('');
+  const [ftTitle, setFtTitle] = useState<string>('');
+  const [ftValue, setFtValue] = useState<BigNumber>();
 
-  const tx = parentTx.tx as Tx;
-
-  const link = `https://explorer.stacks.co/txid/${tx.tx_id}?chain=${currentNetwork.name}`;
+  const link = `https://explorer.stacks.co/txid/${parentTx.tx.tx_id}?chain=${currentNetwork.name}`;
 
   const openTransactionInExplorer = () => {
     Linking.openURL(link);
   };
 
-  const ftTitle = `${assetMetadata?.name || 'Token'} Transfer`;
-  const ftValue = assetMetadata
-    ? calculateTokenTransferAmount(assetMetadata.decimals, ftTransfer.amount)
-    : undefined;
+  const getFtDisplayAmount = async () => {
+    const assetMetaData = await getAssetMeta(
+      ftTransfer.asset_identifier,
+      fungibleTokensApi,
+    );
+    const title = `${assetMetaData?.name || 'Token'} Transfer`;
+    setFtTitle(title);
+    const displayAmount = calculateTokenTransferAmount(
+      assetMetaData.decimals,
+      ftTransfer.amount,
+    );
+    setFtValue(displayAmount);
+  };
 
   useEffect(() => {
-    getAssetMeta(ftTransfer.asset_identifier, fungibleTokensApi).then(m =>
-      setAssetMetadata(m),
-    );
-  }, [ftTransfer]);
+    getFtDisplayAmount();
+  }, []);
 
-  const caption = getTxCaption(tx) ?? '';
+  const caption = getTxCaption(parentTx.tx) ?? '';
   const isOriginator = ftTransfer.sender === selectedAccountState?.address;
 
   if (typeof ftValue === 'undefined') {
@@ -121,9 +127,11 @@ const FtTransferItem = ({ ftTransfer, parentTx }: FtTransferItemProps) => {
       onClickTransaction={openTransactionInExplorer}
       title={ftTitle}
       caption={caption}
+      tokenName={ftTitle}
       value={value}
       isOriginator={isOriginator}
-      tokenName={assetMetadata?.name}
+      customIcon={Stx}
+      customStyle={{ backgroundColor: colors.primary100 }}
     />
   );
 };
@@ -159,49 +167,22 @@ const TxTransfers = ({ transaction, ...rest }: TxTransfersProps) => {
 
 interface AccountTransactionProps {
   transaction: AddressTransactionWithTransfers | Tx;
-  showFTTransfersOnly?: boolean;
-  assetNameFilter?: string;
 }
 
-const AccountTransaction: React.FC<AccountTransactionProps> = ({
-  transaction,
-  showFTTransfersOnly,
-  assetNameFilter,
-}) => {
+const AccountTransaction: React.FC<AccountTransactionProps> = props => {
+  const { transaction } = props;
   if (!isAddressTransactionWithTransfers(transaction)) {
-    if (showFTTransfersOnly && assetNameFilter !== 'STX') {
-      return null;
-    } else {
-      return <StxTransferTransaction transaction={transaction} />;
-    }
+    return <StxTransferTransaction transaction={transaction} />;
   } // This is a normal Transaction or MempoolTransaction
 
-  const tx = transaction.tx as Tx;
-
   // Show transfer only for contract calls
-  if (tx.tx_type !== 'contract_call') {
-    if (showFTTransfersOnly && assetNameFilter !== 'STX') {
-      return null;
-    } else {
-      return <StxTransferTransaction transaction={tx} />;
-    }
+  if (transaction.tx.tx_type !== 'contract_call') {
+    return <StxTransferTransaction transaction={transaction.tx} />;
   }
-
-  if (showFTTransfersOnly) {
-    if (assetNameFilter === 'STX') {
-      transaction.ft_transfers = [];
-    } else {
-      transaction.stx_transfers = [];
-      transaction.ft_transfers = transaction.ft_transfers?.filter(
-        t => t.asset_identifier.split('::')[1] === toLower(assetNameFilter),
-      );
-    }
-  }
-
   return (
     <>
       <TxTransfers transaction={transaction} />
-      {!showFTTransfersOnly && <StxTransferTransaction transaction={tx} />}
+      <StxTransferTransaction transaction={transaction.tx} />
     </>
   );
 };

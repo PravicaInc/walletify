@@ -7,13 +7,9 @@ import AssetsTab from '../../../components/Home/AssetsTab';
 import styles from './styles';
 import AssetActivityList from '../../../components/AssetActivityList';
 
-const ActivityTab: React.FC = () => {
-  return <AssetActivityList />;
-};
-
 const renderScene = SceneMap({
   Assets: AssetsTab,
-  Activity: ActivityTab,
+  Activity: AssetActivityList,
 });
 
 const TabsHeader = (props: any) => {

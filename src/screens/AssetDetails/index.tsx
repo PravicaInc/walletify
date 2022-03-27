@@ -1,7 +1,7 @@
 import BottomSheet, { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import React, { useRef, useCallback, useContext } from 'react';
-import { Image, ImageBackground, TouchableOpacity, View } from 'react-native';
+import { ImageBackground, TouchableOpacity, View } from 'react-native';
 import SwitchAccountBottomSheet from '../../components/Accounts/SwitchAccountBottomSheet';
 import Header from '../../components/shared/Header';
 import HeaderBack from '../../components/shared/HeaderBack';
@@ -31,8 +31,7 @@ const AssetDetails: React.FC<AssetDetailsProps> = ({
   const {
     theme: { colors },
   } = useContext(ThemeContext);
-
-  const { name, amount, value } = asset;
+  const { name, amount, value, contractAddress, contractName } = asset;
   const { switchAccount, walletAccounts } = useAccounts();
   const { dispatch } = useNavigation();
   const bottomSheetModalRef = useRef<BottomSheet>(null);
@@ -187,7 +186,10 @@ const AssetDetails: React.FC<AssetDetailsProps> = ({
       )}
       <View style={styles.transactionsContainer}>
         <Typography type="smallTitleR">Asset activity</Typography>
-        <AssetActivityList showFTTransfersOnly assetNameFilter={name} />
+        <AssetActivityList
+          isStx={asset.name === 'STX'}
+          assetNameFilter={`${contractAddress}.${contractName}`}
+        />
       </View>
 
       <SwitchAccountBottomSheet
