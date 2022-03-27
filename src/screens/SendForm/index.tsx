@@ -1,11 +1,11 @@
 import React, {
+  Suspense,
   useCallback,
   useContext,
-  useMemo,
   useRef,
   useState,
 } from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { ThemeContext } from '../../contexts/Theme/theme';
 import styles from './styles';
@@ -18,16 +18,8 @@ import SimpleTextInput from '../../components/shared/SimpleTextInput';
 import ScanQrIcon from '../../assets/images/scanQr.svg';
 import ScanQrBottomSheet from '../../components/ScanQrBottomSheet';
 import { useAccounts } from '../../hooks/useAccounts/useAccounts';
-import { useAtomValue } from 'jotai/utils';
-import { currentAccountAvailableStxBalanceState } from '../../hooks/useAccounts/accountsStore';
 import { AccountToken } from '../../models/account';
-import StxTokenIcon from '../../assets/images/stx.svg';
-import {
-  isTxMemoValid,
-  microStxToStx,
-  valueFromBalance,
-} from '../../shared/balanceUtils';
-import BigNumber from 'bignumber.js';
+import { isTxMemoValid } from '../../shared/balanceUtils';
 import { useStxPriceValue } from '../../hooks/useStxPrice/useStxPrice';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import WarningIcon from '../../assets/images/note-icon.svg';
@@ -37,6 +29,9 @@ import { FeesCalculations } from '../../components/FeesCalculations';
 import { SelectedFee } from '../../shared/types';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/types';
+import BigNumber from 'bignumber.js';
+import { useAssets } from '../../hooks/useAssets/useAssets';
+import { withSuspense } from '../../components/shared/WithSuspense';
 
 type SendFormProps = NativeStackScreenProps<RootStackParamList, 'SendForm'>;
 
@@ -51,18 +46,19 @@ const SendForm: React.FC<SendFormProps> = ({
   const [selectedFee, setSelectedFee] = useState<SelectedFee>();
   const qrScanRef = useRef<BottomSheetModal>(null);
   const { selectedAccountState: account } = useAccounts();
-  const price = useStxPriceValue();
-  const stxBalance = useAtomValue(currentAccountAvailableStxBalanceState);
-  const [selectedAsset] = useState<AccountToken>({
-    name: 'STX',
-    defaultStyles: {
-      backgroundColor: 'black',
-    },
-    icon: StxTokenIcon,
-    amount: valueFromBalance(stxBalance as BigNumber, 'stx'),
-  });
+  const { selectedAccountAssets: assets } = useAssets();
+
+  const { name, amount: balance, value: balanceValue } = asset;
+  const { amount: stxBalance } = assets?.find(a => a.name === 'STX') ?? {
+    amount: '0',
+  };
+
+  const stxPrice = useStxPriceValue();
+  const price = asset.name === 'STX' ? stxPrice : undefined;
+
+  const [selectedAsset] = useState<AccountToken>(asset);
   const { dispatch } = useNavigation();
-  const balance = useAtomValue(currentAccountAvailableStxBalanceState);
+
   const {
     handleChangeText: setMemo,
     error: memoError,
@@ -106,17 +102,14 @@ const SendForm: React.FC<SendFormProps> = ({
     undefined,
     0,
   );
-  const fullBalance = useMemo(() => {
-    if (balance) {
-      return valueFromBalance(balance.multipliedBy(price), 'stx', {
-        fixedDecimals: false,
-      });
-    }
-    return NaN;
-  }, [balance, price]);
-  const isEnoughBalance = microStxToStx(balance || '0').gt(
-    Number(amount || '0') + Number(selectedFee?.fee || '0'),
-  );
+  const isEnoughBalance =
+    name === 'STX'
+      ? new BigNumber(balance || '0').gte(
+          Number(amount || '0') + Number(selectedFee?.fee || '0'),
+        )
+      : new BigNumber(balance || '0').gte(Number(amount || '0')) &&
+        new BigNumber(stxBalance || '0').gte(Number(selectedFee?.fee || '0'));
+
   const handleGoBack = useCallback(() => dispatch(StackActions.pop()), []);
   const handlePresentQrScan = useCallback(() => {
     qrScanRef.current?.snapToIndex(0);
@@ -131,12 +124,10 @@ const SendForm: React.FC<SendFormProps> = ({
         selectedFee,
       }),
     );
-  }, [amount, recipient, memo, selectedAsset]);
+  }, [amount, recipient, memo, selectedAsset, selectedFee]);
   const handleMaxClicked = useCallback(() => {
     handleChangeAmount(
-      microStxToStx(balance || '0')
-        ?.minus(selectedFee?.fee || '0')
-        .toString(),
+      new BigNumber(balance || '0')?.minus(selectedFee?.fee || '0').toString(),
     );
   }, [balance, selectedFee]);
   const isReadyForPreview =
@@ -174,8 +165,8 @@ const SendForm: React.FC<SendFormProps> = ({
         {selectedAsset && (
           <AccountAsset
             item={selectedAsset}
-            showFullBalance
-            fullBalance={`~ $${fullBalance}`}
+            showFullBalance={!!balanceValue}
+            fullBalance={balanceValue}
           />
         )}
         {!isEnoughBalance && (
@@ -207,9 +198,7 @@ const SendForm: React.FC<SendFormProps> = ({
                 style={{
                   color: colors.failed100,
                 }}>
-                {`You have not enough balance to proceed this transaction, \nAvailable Balance: ${microStxToStx(
-                  balance || '0',
-                )} STX`}
+                {`You have not enough balance to proceed this transaction, \nAvailable Balance: ${balance} ${name}`}
               </Typography>
             </View>
           </View>
@@ -238,7 +227,7 @@ const SendForm: React.FC<SendFormProps> = ({
                 },
                 styles.alignRight,
               ]}>
-              {`~ $${(+(amount || 0) * price).toFixed(2)}`}
+              {price ? `~ $${(+(amount || 0) * price).toFixed(2)}` : ''}
             </Typography>
           }
           errorMessage={amountError}
@@ -283,6 +272,7 @@ const SendForm: React.FC<SendFormProps> = ({
           </Typography>
         </View>
         <FeesCalculations
+          selectedAsset={asset}
           recipient={recipient}
           amount={amount}
           setSelectedFee={setSelectedFee}
@@ -294,4 +284,4 @@ const SendForm: React.FC<SendFormProps> = ({
   );
 };
 
-export default SendForm;
+export default withSuspense(SendForm);

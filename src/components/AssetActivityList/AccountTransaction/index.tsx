@@ -192,8 +192,6 @@ const AccountTransaction: React.FC<AccountTransactionProps> = ({
       transaction.ft_transfers = [];
     } else {
       transaction.stx_transfers = [];
-      console.log(assetNameFilter);
-      console.log(transaction.ft_transfers?.map(t => t.asset_identifier));
       transaction.ft_transfers = transaction.ft_transfers?.filter(
         t => t.asset_identifier.split('::')[1] === toLower(assetNameFilter),
       );

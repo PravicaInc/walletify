@@ -9,7 +9,6 @@ import { AccountToken } from '../../models/account';
 import TokenAvatar from '../Home/TokenAvatar';
 import { capitalizeFirstLetter } from '../../shared/helpers';
 import { SelectedFee } from '../../shared/types';
-import { FeesCalculations } from '../FeesCalculations';
 
 type Props = {
   sender: string;

@@ -19,8 +19,11 @@ import { Typography } from '../shared/Typography';
 import EditPenIcon from '../../assets/icon-edit-pen.svg';
 import ChangeFeesBottomSheet from '../ChangeFeesBottomSheet';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { AccountToken } from '../../models/account';
+import BigNumber from 'bignumber.js';
 
 interface IProps {
+  selectedAsset: AccountToken;
   isSigning?: boolean;
   recipient?: string;
   amount?: string;
@@ -30,6 +33,7 @@ interface IProps {
 }
 
 export const FeesCalculations: React.FC<IProps> = ({
+  selectedAsset,
   recipient,
   memo,
   amount,
@@ -48,8 +52,17 @@ export const FeesCalculations: React.FC<IProps> = ({
     toggleCalculatingFees(true);
   }, []);
   useEffect(() => {
+    if (!recipient || !amount) {
+      return;
+    }
+
     const timer = setTimeout(() => {
-      estimateTransactionFees(recipient, amount, memo).then(transactionFees => {
+      estimateTransactionFees(
+        selectedAsset,
+        recipient,
+        new BigNumber(amount).toNumber(),
+        memo,
+      ).then(transactionFees => {
         setFees(transactionFees);
         setSelectedFee({
           fee: microStxToStx(transactionFees[1].fee).toString(),

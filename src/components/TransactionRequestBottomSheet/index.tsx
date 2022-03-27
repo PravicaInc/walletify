@@ -123,7 +123,7 @@ const TransactionRequestBottomSheetInner: React.FC<
     .lte(amount);
   const handSendPress = useCallback(() => {
     async function handleTransfer() {
-      if (!transactionRequest || !transferPayload) {
+      if (!transactionRequest || !transferPayload || !selectedAsset) {
         return;
       }
 
@@ -135,6 +135,7 @@ const TransactionRequestBottomSheetInner: React.FC<
       toggleSending(true);
 
       const response = await sendTransaction(
+        selectedAsset,
         transferPayload.recipient,
         microStxToStx(transferPayload.amount).toNumber(),
         selectedFee as number,
@@ -164,7 +165,7 @@ const TransactionRequestBottomSheetInner: React.FC<
     if (transactionRequest) {
       handleTransfer();
     }
-  }, [transactionRequest, selectedFee]);
+  }, [transactionRequest, selectedFee, selectedAsset]);
   return (
     <View style={[styles.container, { paddingBottom: bottom + 10 }]}>
       <Header
@@ -244,25 +245,28 @@ const TransactionRequestBottomSheetInner: React.FC<
           </View>
         )}
         {transferPayload && selectedAsset && account && (
-          <PreviewTransfer
-            isSigning
-            sender={account.address}
-            memo={transferPayload.memo}
-            recipient={transferPayload.recipient}
-            amount={Number(transferPayload.amount) / 1000000}
-            selectedAsset={selectedAsset}
-            style={styles.previewPanel}
-            selectedFee={selectedFee}
-          />
+          <>
+            <PreviewTransfer
+              isSigning
+              sender={account.address}
+              memo={transferPayload.memo}
+              recipient={transferPayload.recipient}
+              amount={microStxToStx(transferPayload.amount).toNumber()}
+              selectedAsset={selectedAsset}
+              style={styles.previewPanel}
+              selectedFee={selectedFee}
+            />
+            <FeesCalculations
+              isSigning
+              selectedAsset={selectedAsset}
+              recipient={transferPayload.recipient}
+              amount={transferPayload.amount}
+              setSelectedFee={setSelectedFee}
+              memo={transferPayload.memo}
+              selectedFee={selectedFee}
+            />
+          </>
         )}
-        <FeesCalculations
-          isSigning
-          recipient={transferPayload?.recipient}
-          amount={transferPayload?.amount}
-          setSelectedFee={setSelectedFee}
-          memo={transferPayload?.memo}
-          selectedFee={selectedFee}
-        />
       </Suspense>
       <View style={[styles.horizontalFill, styles.centerItems]}>
         <WarningIcon width={24} height={24} fill={colors.primary60} />

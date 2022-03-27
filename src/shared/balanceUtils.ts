@@ -62,6 +62,14 @@ export const valueFromBalance = (
 
 export const STX_DECIMALS = 6;
 
+export const ftUnshiftDecimals = (
+  value: number | string | BigNumber,
+  decimals: number,
+) => {
+  const amount = initBigNumber(value);
+  return amount.shiftedBy(decimals).toString(10);
+};
+
 export const microStxToStx = (mStx: number | string | BigNumber) => {
   const microStacks = initBigNumber(mStx);
   return microStacks.shiftedBy(-STX_DECIMALS);

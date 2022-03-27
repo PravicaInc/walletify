@@ -70,26 +70,32 @@ const AssetsTab: React.FC = () => {
     if (coins.length > 0) {
       children.push(
         <Typography
+          key={'coins'}
           style={[styles.assetGroupHeader, { color: colors.primary40 }]}
           type="smallTitleR">
           Coins
         </Typography>,
       );
       children.push(
-        <View style={styles.assetsList}>{renderGroup(coins)}</View>,
+        <View key={'coins-view'} style={styles.assetsList}>
+          {renderGroup(coins)}
+        </View>,
       );
     }
 
     if (collectibles.length > 0) {
       children.push(
         <Typography
+          key={'collectibles'}
           style={[styles.assetGroupHeader, { color: colors.primary40 }]}
           type="smallTitleR">
           Collectibles
         </Typography>,
       );
       children.push(
-        <View style={styles.assetsList}>{renderGroup(collectibles)}</View>,
+        <View key={'collectibles-view'} style={styles.assetsList}>
+          {renderGroup(collectibles)}
+        </View>,
       );
     }
 

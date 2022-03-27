@@ -34,7 +34,7 @@ const AccountBalanceCard: React.FC = () => {
         asset: assets.find(a => a.name === 'STX'),
       }),
     );
-  }, []);
+  }, [account, assets]);
 
   const handlePresentReceive = useCallback(() => {
     receiveRef.current?.snapToIndex(0);

@@ -1,4 +1,4 @@
-import { useNavigation } from '@react-navigation/native';
+import { StackActions, useNavigation } from '@react-navigation/native';
 import React, { useContext, useState } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import { ThemeContext } from '../../contexts/Theme/theme';
@@ -25,7 +25,7 @@ const PreviewTransaction: React.FC<Props> = ({
   const {
     theme: { colors },
   } = useContext(ThemeContext);
-  const { goBack } = useNavigation();
+  const { goBack, dispatch } = useNavigation();
   const {
     submittedTransactions,
     setSubmittedTransactions,
@@ -55,9 +55,10 @@ const PreviewTransaction: React.FC<Props> = ({
     ]);
 
     sendTransaction(
+      selectedAsset,
       recipient,
       Number(amount),
-      selectedFee.fee as number,
+      Number(selectedFee.fee ?? 0),
       memo,
     ).then(result => {
       const tx = submittedTransactions.find(
@@ -72,6 +73,9 @@ const PreviewTransaction: React.FC<Props> = ({
         );
         refreshTransactionsList();
       }
+
+      toggleSending(false);
+      dispatch(StackActions.pop(2));
     });
   };
 
