@@ -5,7 +5,7 @@ import React, {
   useMemo,
   useState,
 } from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { Keyboard, TouchableOpacity, View } from 'react-native';
 import BottomSheet from '@gorhom/bottom-sheet';
 import { Portal } from '@gorhom/portal';
 import { CustomBackdrop } from '../shared/customBackdrop';
@@ -31,7 +31,7 @@ interface IProps {
 
 const ChangeFeesBottomSheet = React.forwardRef<BottomSheet, IProps>(
   ({ fees, selectedFee, setSelectedFee }, ref) => {
-    const snapPoints = useMemo(() => ['50%'], []);
+    const snapPoints = useMemo(() => ['45%'], []);
     const {
       theme: { colors },
     } = useContext(ThemeContext);
@@ -72,6 +72,7 @@ const ChangeFeesBottomSheet = React.forwardRef<BottomSheet, IProps>(
       (index: number) => {
         if (index === -1) {
           setNewValue(selectedFee);
+          Keyboard.dismiss();
         }
       },
       [selectedFee],
@@ -115,7 +116,9 @@ const ChangeFeesBottomSheet = React.forwardRef<BottomSheet, IProps>(
           <View style={styles.contentContainer}>
             <View style={styles.card}>
               <ChangeFeeIcon width={69} height={72.35} />
-              <Typography type="commonText" style={{ color: colors.primary60 }}>
+              <Typography
+                type="commonText"
+                style={[styles.cardText, { color: colors.primary60 }]}>
                 Higher fees increase the likelihood of your transaction getting
                 confirmed before others. This action cannot be undone and the
                 fees won't be returned, even if the transaction fails.
@@ -124,6 +127,7 @@ const ChangeFeesBottomSheet = React.forwardRef<BottomSheet, IProps>(
             <SimpleTextInput
               onChangeText={handleFeeChanged}
               value={newValue?.fee}
+              isBottomSheet
               label="Fees"
               keyboardType="decimal-pad"
               icon={

@@ -7,6 +7,8 @@ import TokenAvatar from '../TokenAvatar';
 import styles from './styles';
 import ExpandIcon from '../../../assets/expand.svg';
 import { StackActions, useNavigation } from '@react-navigation/native';
+import { useStxPriceValue } from '../../../hooks/useStxPrice/useStxPrice';
+import { stxToMicroStx, valueFromBalance } from '../../../shared/balanceUtils';
 
 interface AccountAssetProps {
   item: AccountToken;
@@ -16,22 +18,30 @@ interface AccountAssetProps {
 
 const LargeAccountAsset: React.FC<AccountAssetProps> = props => {
   const { item, style, hasPreview } = props;
-  const { icon, name, amount, metaData, defaultStyles, value } = item;
+  const { icon, name, amount, metaData, isFungible, defaultStyles } = item;
   const {
     theme: { colors },
   } = useContext(ThemeContext);
   const { dispatch } = useNavigation();
+  const stxPrice = useStxPriceValue();
 
   const goToAssetDetails = () =>
     dispatch(StackActions.push('AssetDetails', { asset: item }));
 
   const extraStyles = style ? [style] : [];
 
-  let title, subtitle;
+  let title, subtitle, value;
 
   if (name === 'STX') {
     title = 'Stacks Coins';
     subtitle = 'STX';
+    value = valueFromBalance(
+      stxToMicroStx(amount).multipliedBy(stxPrice),
+      'stx',
+      {
+        fixedDecimals: false,
+      },
+    );
   } else {
     title = metaData?.name ?? name;
     subtitle = name;
@@ -69,7 +79,7 @@ const LargeAccountAsset: React.FC<AccountAssetProps> = props => {
         </View>
         <View style={styles.balanceInformationContainer}>
           <Typography style={{ color: colors.primary40 }} type="smallText">
-            Balance:
+            {isFungible ? 'Balance:' : 'Owned:'}
           </Typography>
           <Typography style={{ color: colors.primary100 }} type="midTitle">
             {amount}

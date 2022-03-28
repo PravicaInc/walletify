@@ -21,7 +21,6 @@ import {
   isYesterday,
   isToday,
 } from 'date-fns';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SubmittedTransaction } from '../../models/transactions';
 
 const formatDate = (date: number) => {
@@ -54,7 +53,6 @@ const AssetActivityList: React.FC<AssetActivityListProps> = ({
     isRefreshing,
     refreshTransactionsList,
   } = useTransactions();
-  const { bottom } = useSafeAreaInsets();
 
   const EmptyActivity = useCallback(() => {
     return (
@@ -169,7 +167,7 @@ const AssetActivityList: React.FC<AssetActivityListProps> = ({
       showsHorizontalScrollIndicator={false}
       showsVerticalScrollIndicator={false}
       renderItem={renderTransaction}
-      style={[styles.activityList, { marginBottom: bottom + 10 }]}
+      style={styles.activityList}
       contentContainerStyle={styles.activityListContent}
       ListEmptyComponent={EmptyActivity}
       stickySectionHeadersEnabled={false}

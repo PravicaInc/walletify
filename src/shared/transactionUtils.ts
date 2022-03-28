@@ -82,7 +82,8 @@ export const txHasTime = (tx: Tx) => {
   );
 };
 
-export const getTxCaption = (transaction: Tx) => {
+export const getTxCaption = (transaction: Tx, address?: string) => {
+  const isOriginator = transaction.sender_address === address;
   switch (transaction.tx_type) {
     case 'smart_contract':
       return truncateAddress(transaction.smart_contract.contract_id, 11);
@@ -94,7 +95,12 @@ export const getTxCaption = (transaction: Tx) => {
       if (isSubmittedTransaction(transaction)) {
         return '';
       }
-      return truncateAddress(transaction.tx_id, 11);
+      return truncateAddress(
+        isOriginator
+          ? (transaction as any).token_transfer.recipient_address
+          : transaction.sender_address,
+        11,
+      );
     default:
       return null;
   }

@@ -21,6 +21,8 @@ import ChangeFeesBottomSheet from '../ChangeFeesBottomSheet';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { AccountToken } from '../../models/account';
 import BigNumber from 'bignumber.js';
+import { selectedAccount } from '../../hooks/useAccounts/accountsStore';
+import { useAtomValue } from 'jotai/utils';
 
 interface IProps {
   selectedAsset: AccountToken;
@@ -44,23 +46,20 @@ export const FeesCalculations: React.FC<IProps> = ({
   const [fees, setFees] = useState<FeeEstimationWithLevels[]>([]);
   const speedTransactionsRef = useRef<BottomSheetModal>(null);
   const { estimateTransactionFees } = useAccounts();
+  const selectedAccountState = useAtomValue(selectedAccount);
   const [isCalculatingFees, toggleCalculatingFees] = useState<boolean>(true);
   const {
     theme: { colors },
   } = useContext(ThemeContext);
   useEffect(() => {
     toggleCalculatingFees(true);
-  }, []);
+  }, [selectedAsset]);
   useEffect(() => {
-    if (!recipient || !amount) {
-      return;
-    }
-
     const timer = setTimeout(() => {
       estimateTransactionFees(
         selectedAsset,
-        recipient,
-        new BigNumber(amount).toNumber(),
+        recipient || selectedAccountState?.address || '',
+        new BigNumber(amount || 0).toNumber(),
         memo,
       ).then(transactionFees => {
         setFees(transactionFees);
@@ -72,10 +71,12 @@ export const FeesCalculations: React.FC<IProps> = ({
       });
     }, 500);
     () => clearTimeout(timer);
-  }, [amount, recipient, memo]);
+  }, [amount, recipient, memo, selectedAccountState, selectedAsset]);
   const handlePresentSpeedTransactions = useCallback(() => {
-    speedTransactionsRef.current?.snapToIndex(0);
-  }, []);
+    if (!isCalculatingFees) {
+      speedTransactionsRef.current?.snapToIndex(0);
+    }
+  }, [isCalculatingFees]);
   return (
     <>
       <ChangeFeesBottomSheet
@@ -94,17 +95,6 @@ export const FeesCalculations: React.FC<IProps> = ({
           Transaction Fees
         </Typography>
         <View style={styles.calculationWrapper}>
-          <TouchableOpacity
-            onPress={handlePresentSpeedTransactions}
-            style={styles.changeFeesButton}
-            activeOpacity={0.6}>
-            <EditPenIcon />
-            <Typography
-              type="smallTitleR"
-              style={{ color: colors.secondary100 }}>
-              Change
-            </Typography>
-          </TouchableOpacity>
           {isCalculatingFees ? (
             <View style={styles.calculationWrapper}>
               <ActivityIndicator color={colors.primary100} />
@@ -115,9 +105,24 @@ export const FeesCalculations: React.FC<IProps> = ({
               </Typography>
             </View>
           ) : (
-            <Typography type="smallTitleR" style={{ color: colors.primary100 }}>
-              {`${selectedFee?.fee} STX`}
-            </Typography>
+            <>
+              <TouchableOpacity
+                onPress={handlePresentSpeedTransactions}
+                style={styles.changeFeesButton}
+                activeOpacity={0.6}>
+                <EditPenIcon />
+                <Typography
+                  type="smallTitleR"
+                  style={{ color: colors.secondary100 }}>
+                  Change
+                </Typography>
+              </TouchableOpacity>
+              <Typography
+                type="smallTitleR"
+                style={{ color: colors.primary100 }}>
+                {`${selectedFee?.fee} STX`}
+              </Typography>
+            </>
           )}
         </View>
       </View>

@@ -51,7 +51,6 @@ export interface AccountToken {
   contractAddress?: string;
   metaData?: FtMeta;
   icon?: SVGElement;
-  value?: string;
   defaultStyles?: ViewStyle;
 }
 

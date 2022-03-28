@@ -75,7 +75,11 @@ const ScanQrBottomSheet = React.forwardRef<any, Props>(
             <View style={styles.itemsContainer}>
               <View style={styles.scanner}>
                 {isOpen && (
-                  <QRCodeScanner showMarker={true} onRead={onSuccess} />
+                  <QRCodeScanner
+                    cameraStyle={{ height: '100%' }}
+                    showMarker={true}
+                    onRead={onSuccess}
+                  />
                 )}
               </View>
               <View style={styles.footer}>

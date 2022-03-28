@@ -96,7 +96,7 @@ const CreatePassword: React.FC<Props> = ({
       throw Error('You need at least 12 characters');
     } else {
       try {
-        await decryptMnemonic(encryptedSeedPhrase, password);
+        await decryptMnemonic(encryptedSeedPhrase, password || '');
       } catch (e) {
         throw Error('The password is incorrect!');
       }
@@ -140,7 +140,7 @@ const CreatePassword: React.FC<Props> = ({
 
   const handleEditConfirm = useCallback(() => {
     setLoading();
-    handleEditPassword(oldPassword, password)
+    handleEditPassword(oldPassword || '', password || '')
       .then(setSuccess)
       .catch(e => {
         setOldPasswordError(e);
@@ -149,7 +149,7 @@ const CreatePassword: React.FC<Props> = ({
   }, [handleEditPassword, password, oldPassword]);
 
   const canGoNext =
-    (isEditPassword ? oldPassword.length >= 12 : true) &&
+    (isEditPassword ? (oldPassword || '').length >= 12 : true) &&
     !confirmPasswordError &&
     !passwordError &&
     passwordTouched &&
@@ -161,7 +161,7 @@ const CreatePassword: React.FC<Props> = ({
     try {
       if (biometricEnabled) {
         await SecureKeychain.setGenericPassword(
-          password,
+          password || '',
           ACCESS_CONTROL.BIOMETRY_CURRENT_SET,
         );
         setHasEnabledBiometric(biometricEnabled);

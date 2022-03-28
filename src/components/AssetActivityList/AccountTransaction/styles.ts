@@ -19,7 +19,7 @@ export default StyleSheet.create({
   },
   transactionIndicator: {
     position: 'absolute',
-    bottom: 0,
-    right: 6,
+    bottom: -3,
+    right: 3,
   },
 });

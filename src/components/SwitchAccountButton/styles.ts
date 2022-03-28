@@ -13,22 +13,22 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     height: 40,
-    width: 200,
+    maxWidth: 200,
     paddingVertical: 5,
     paddingHorizontal: 7,
     borderRadius: 20,
-    backgroundColor: 'rgba(255, 255, 255, 0.3)',
   },
   switchIconContainer: {
     justifyContent: 'flex-end',
     alignItems: 'center',
     flexDirection: 'row',
+    marginLeft: 'auto',
   },
   switchText: {
     marginRight: 3,
   },
   accountInfo: {
-    flex: 1,
+    flexShrink: 1,
     marginLeft: 6,
   },
   accountName: {

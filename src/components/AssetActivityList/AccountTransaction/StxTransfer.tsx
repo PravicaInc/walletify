@@ -36,13 +36,11 @@ export const StxTransferTransaction: React.FC<{
   }
 
   const renderTransactionTypeIcon = () => {
-    if (transaction.tx_type === 'contract_call') {
-      return <FunctionCall />;
-    } else {
+    if (transaction.tx_type !== 'contract_call') {
       if (isOriginator) {
-        return <OutTransaction />;
+        return <OutTransaction width={24} height={24} />;
       } else {
-        return <InTransaction />;
+        return <InTransaction width={24} height={24} />;
       }
     }
   };
@@ -103,9 +101,9 @@ export const StxTransferTransaction: React.FC<{
           {getTxTitle(transaction)}
         </Typography>
         <Typography
-          style={{ color: colors.primary40, marginTop: 7 }}
+          style={{ color: colors.primary40, marginTop: 10 }}
           type="commonText">
-          {getTxCaption(transaction)}
+          {getTxCaption(transaction, selectedAccountState?.address)}
         </Typography>
       </View>
       <View
@@ -121,7 +119,10 @@ export const StxTransferTransaction: React.FC<{
         ) : (
           <View />
         )}
-        <View style={{ marginTop: 7, alignSelf: 'flex-end' }}>
+        {transaction.tx_type === 'contract_call' && (
+          <FunctionCall width={13} height={17} />
+        )}
+        <View style={{ marginTop: 10, alignSelf: 'flex-end' }}>
           <TransactionStatus transaction={transaction} />
         </View>
       </View>
@@ -168,7 +169,11 @@ export const TransactionItem: React.FC<{
           customStyle={customStyle}
         />
         <View style={styles.transactionIndicator}>
-          {isOriginator ? <OutTransaction /> : <InTransaction />}
+          {isOriginator ? (
+            <OutTransaction width={24} height={24} />
+          ) : (
+            <InTransaction width={24} height={24} />
+          )}
         </View>
       </View>
       <View style={styles.transactionInformationContainer}>
@@ -180,7 +185,7 @@ export const TransactionItem: React.FC<{
           {title}
         </Typography>
         <Typography
-          style={{ color: colors.primary40, marginTop: 7 }}
+          style={{ color: colors.primary40, marginTop: 10 }}
           type="commonText">
           {caption}
         </Typography>
@@ -198,7 +203,7 @@ export const TransactionItem: React.FC<{
         ) : (
           <View />
         )}
-        <View style={{ marginTop: 7, alignSelf: 'flex-end' }}>
+        <View style={{ marginTop: 10, alignSelf: 'flex-end' }}>
           <TransactionStatus
             transaction={{
               tx_status: 'success',

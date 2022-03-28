@@ -7,8 +7,8 @@ export default StyleSheet.create({
     paddingVertical: 15,
     paddingHorizontal: 12,
     marginVertical: 10,
-    width: 182,
-    height: 150,
+    width: '47%',
+    aspectRatio: 1.1,
   },
   tokenInformationContainer: {
     flexDirection: 'row',

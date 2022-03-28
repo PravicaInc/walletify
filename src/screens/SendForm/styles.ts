@@ -1,9 +1,15 @@
 import { StyleSheet } from 'react-native';
-import {PADDING_HORIZONTAL} from "../../shared/layout";
+import { PADDING_HORIZONTAL } from '../../shared/layout';
 
 export default StyleSheet.create({
   container: {
     flex: 1,
+  },
+  contentContainer: {
+    flex: 1,
+  },
+  scroller: {
+    paddingBottom: 10,
   },
   header: {
     paddingHorizontal: '2.5%',

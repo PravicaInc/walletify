@@ -87,7 +87,7 @@ const ReceiveBottomSheet = React.forwardRef<any, Props>(({}, ref) => {
           </View>
           <View style={(styles.horizontalFill, styles.centerItems)}>
             <Typography type="midTitle">
-              {account && getAccountDisplayName(account)}
+              {account && account.username}
             </Typography>
             <View style={styles.accountInfoContainer}>
               <Typography

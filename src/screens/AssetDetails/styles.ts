@@ -4,6 +4,9 @@ export const styles = StyleSheet.create({
   fill: {
     flex: 1,
   },
+  transactionsHeader: {
+    marginBottom: 20,
+  },
   header: {
     shadowOpacity: 0,
     paddingHorizontal: 0,

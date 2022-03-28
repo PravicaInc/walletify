@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { TouchableHighlight, View } from 'react-native';
 import ContentLoader, { Circle, Rect } from 'react-content-loader/native';
 import AccountAvatar from '../shared/AccountAvatar';
 import { Typography } from '../shared/Typography';
@@ -50,9 +50,9 @@ const SwitchAccountButton: React.FC<SwitchAccountButtonProps> = props => {
   }
 
   return (
-    <TouchableOpacity
-      onPress={handlePressSwitchAccount}
-      activeOpacity={0.5}
+    <TouchableHighlight
+      underlayColor={colors.primary10}
+      onPress={mode === 'large' ? handlePressSwitchAccount : undefined}
       style={[
         {
           backgroundColor: colors.card,
@@ -61,48 +61,48 @@ const SwitchAccountButton: React.FC<SwitchAccountButtonProps> = props => {
           ? styles.largeButtonContainer
           : styles.smallButtonContainer,
       ]}>
-      <AccountAvatar
-        accountName={accountName}
-        diameter={mode === 'large' ? 45 : 27.5}
-      />
-      <View style={styles.accountInfo}>
-        <Typography
-          numberOfLines={1}
-          type={mode === 'large' ? 'smallTitle' : 'commonTextBold'}
-          style={[
-            mode === 'large' ? styles.accountName : styles.none,
-            { color: mode === 'large' ? colors.primary100 : colors.white },
-          ]}>
-          {accountName}
-        </Typography>
-        <Typography
-          type={mode === 'large' ? 'commonText' : 'smallText'}
-          style={[
-            mode === 'large' ? styles.address : styles.none,
-            { color: mode === 'large' ? colors.primary40 : colors.white },
-          ]}>
-          {`(${
-            selectedAccountState?.address
-              ? truncateAddress(selectedAccountState?.address, 11)
-              : '....'
-          })`}
-        </Typography>
-      </View>
-      {(walletAccounts?.length || 0) > 1 && (
-        <View style={styles.switchIconContainer}>
-          {mode === 'large' && (
-            <Typography
-              type="commonText"
-              style={[styles.switchText, { color: colors.secondary100 }]}>
-              Switch
-            </Typography>
-          )}
-          <Switch
-            fill={mode === 'large' ? colors.secondary100 : colors.white}
-          />
+      <>
+        <AccountAvatar
+          accountName={accountName}
+          diameter={mode === 'large' ? 45 : 27.5}
+        />
+        <View style={styles.accountInfo}>
+          <Typography
+            numberOfLines={1}
+            type={mode === 'large' ? 'smallTitle' : 'commonTextBold'}
+            style={[
+              mode === 'large' ? styles.accountName : styles.none,
+              { color: mode === 'large' ? colors.primary100 : colors.white },
+            ]}>
+            {accountName}
+          </Typography>
+          <Typography
+            type={mode === 'large' ? 'commonText' : 'smallText'}
+            style={[
+              mode === 'large' ? styles.address : styles.none,
+              { color: mode === 'large' ? colors.primary40 : colors.white },
+            ]}>
+            {`(${
+              selectedAccountState?.address
+                ? truncateAddress(selectedAccountState?.address, 11)
+                : '....'
+            })`}
+          </Typography>
         </View>
-      )}
-    </TouchableOpacity>
+        {(walletAccounts?.length || 0) > 1 && (
+          <View style={styles.switchIconContainer}>
+            {mode === 'large' && (
+              <Typography
+                type="commonText"
+                style={[styles.switchText, { color: colors.secondary100 }]}>
+                Switch
+              </Typography>
+            )}
+            {mode === 'large' && <Switch fill={colors.secondary100} />}
+          </View>
+        )}
+      </>
+    </TouchableHighlight>
   );
 };
 

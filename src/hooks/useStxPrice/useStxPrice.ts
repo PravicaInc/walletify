@@ -1,12 +1,10 @@
-import { useAtom } from 'jotai';
-import { useAtomValue } from 'jotai/utils';
-import { currentStxPrice } from './stxPriceStore';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useContext, useEffect } from 'react';
 import { useAppState } from '@react-native-community/hooks';
 import { useInternetConnectionValue } from '../useInternetConnnection';
+import { UserPreferenceContext } from '../../contexts/UserPreference/userPreferenceContext';
 
 export const useStxPrice = () => {
-  const [, setStxPrice] = useAtom(currentStxPrice);
+  const { setStxPrice } = useContext(UserPreferenceContext);
   const currentAppState = useAppState();
   const hasInternet = useInternetConnectionValue();
   const handleInitialPrice = useCallback(() => {
@@ -38,5 +36,6 @@ export const useStxPrice = () => {
 };
 
 export const useStxPriceValue = () => {
-  return useAtomValue(currentStxPrice);
+  const { stxPrice } = useContext(UserPreferenceContext);
+  return stxPrice;
 };

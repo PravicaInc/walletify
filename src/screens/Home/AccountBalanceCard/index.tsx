@@ -15,7 +15,7 @@ import ReceiveBottomSheet from '../../../components/ReceiveBottomSheet';
 import { useAccounts } from '../../../hooks/useAccounts/useAccounts';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { useAssets } from '../../../hooks/useAssets/useAssets';
-import BigNumber from "bignumber.js";
+import BigNumber from 'bignumber.js';
 
 const AccountBalanceCard: React.FC = () => {
   const {
@@ -30,10 +30,14 @@ const AccountBalanceCard: React.FC = () => {
   const receiveRef = useRef<BottomSheetModal>(null);
 
   const handlePresentSend = useCallback(() => {
+    const stxAsset = assets.find(a => a.name === 'STX');
+    if (!stxAsset) {
+      return;
+    }
     dispatch(
       StackActions.push('sendForm', {
         asset: {
-          ...assets.find(a => a.name === 'STX'),
+          ...stxAsset,
           value: valueFromBalance(balance || new BigNumber(0), 'stx'),
         },
       }),
@@ -65,7 +69,7 @@ const AccountBalanceCard: React.FC = () => {
         },
       ]}>
       <Typography type="commonText" style={{ color: colors.primary40 }}>
-        Total STX Balance:
+        Total STX Balance in USD
       </Typography>
       <View style={styles.balanceContainer}>
         {balanceAvailable && (

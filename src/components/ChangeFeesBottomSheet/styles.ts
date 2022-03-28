@@ -17,6 +17,10 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  cardText: {
+    flex: 1,
+    textAlign: 'justify',
+  },
   chips: {
     flexDirection: 'row',
     alignItems: 'center',

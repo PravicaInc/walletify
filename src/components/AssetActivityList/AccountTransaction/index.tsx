@@ -19,6 +19,7 @@ import useNetwork from '../../../hooks/useNetwork/useNetwork';
 import Stx from '../../../assets/images/stx.svg';
 import { Linking } from 'react-native';
 import { ThemeContext } from '../../../contexts/Theme/theme';
+import { truncateAddress } from '../../../shared/addressUtils';
 
 interface StxTransferItemProps {
   stxTransfer: StxTransfer;
@@ -32,7 +33,8 @@ const StxTransferItem = ({ stxTransfer, parentTx }: StxTransferItemProps) => {
 
   const { selectedAccountState } = useAccounts();
   const title = 'Stacks Token';
-  const caption = getTxCaption(parentTx.tx) ?? '';
+  const caption =
+    getTxCaption(parentTx.tx, selectedAccountState?.address) ?? '';
   const isOriginator = stxTransfer.sender === selectedAccountState?.address;
   const { currentNetwork } = useNetwork();
   const link = `https://explorer.stacks.co/txid/${parentTx.tx.tx_id}?chain=${currentNetwork.name}`;
@@ -114,7 +116,16 @@ const FtTransferItem = ({ ftTransfer, parentTx }: FtTransferItemProps) => {
     getFtDisplayAmount();
   }, []);
 
-  const caption = getTxCaption(parentTx.tx) ?? '';
+  const caption =
+    (ftTransfer.sender || '').match('^[A-Z0-9]{40,}$') &&
+    (ftTransfer.recipient || '').match('^[A-Z0-9]{40,}$')
+      ? truncateAddress(
+          ftTransfer.sender === selectedAccountState?.address
+            ? ftTransfer.recipient
+            : ftTransfer.sender,
+          11,
+        )
+      : getTxCaption(parentTx.tx as any);
   const isOriginator = ftTransfer.sender === selectedAccountState?.address;
 
   if (typeof ftValue === 'undefined') {
@@ -126,7 +137,7 @@ const FtTransferItem = ({ ftTransfer, parentTx }: FtTransferItemProps) => {
     <TransactionItem
       onClickTransaction={openTransactionInExplorer}
       title={ftTitle}
-      caption={caption}
+      caption={caption || ''}
       tokenName={ftTitle}
       value={value}
       isOriginator={isOriginator}

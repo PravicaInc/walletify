@@ -45,11 +45,14 @@ import {
   createContractCallPayload,
   createTokenTransferPayload,
 } from '@stacks/transactions/dist/payload';
-import { EstimationsLevels, FeeEstimation } from '../../shared/types';
-import BigNumber from 'bignumber.js';
 import { ftUnshiftDecimals, stxToMicroStx } from '../../shared/balanceUtils';
 import { AccountToken } from '../../models/account';
 import BN from 'bn.js';
+import {
+  getFeeEstimationsWithCappedValues,
+  useFeeEstimationsMaxValues,
+  useFeeEstimationsMinValues,
+} from '../useTransactions/use-fee-estimations-capped-values';
 
 const MAX_NONCE_INCREMENT_RETRIES = 5;
 
@@ -60,6 +63,8 @@ export const useAccounts = () => {
   const [selectedAccountIndexState, setSelectedAccountIndexState] =
     useAtom(selectedAccountIndex);
   const selectedAccountState = useAtomValue(selectedAccount);
+  const feeEstimationsMaxValues = useFeeEstimationsMaxValues();
+  const feeEstimationsMinValues = useFeeEstimationsMinValues();
 
   const createAccount = async () => {
     if (currentWallet) {
@@ -167,7 +172,11 @@ export const useAccounts = () => {
       network.stacksNetwork,
     );
 
-    return getFeeEstimationsWithMaxValues(estimates);
+    return getFeeEstimationsWithCappedValues(
+      estimates,
+      feeEstimationsMaxValues,
+      feeEstimationsMinValues,
+    );
   };
 
   const makeSTXTransaction = async (
@@ -325,28 +334,4 @@ export const useAccounts = () => {
 
 export function useAccountAvailableStxBalance(address: string) {
   return useAtomValue(accountAvailableStxBalanceState(address));
-}
-
-export function getFeeEstimationsWithMaxValues(
-  feeEstimations: FeeEstimation[],
-) {
-  const feeEstimationsMaxValues = [500000, 750000, 2000000];
-  return feeEstimations.map((feeEstimation, index) => {
-    const level =
-      index === 0
-        ? EstimationsLevels.Low
-        : index === 1
-        ? EstimationsLevels.Middle
-        : EstimationsLevels.High;
-    if (
-      feeEstimationsMaxValues &&
-      new BigNumber(feeEstimation.fee).isGreaterThan(
-        feeEstimationsMaxValues[index],
-      )
-    ) {
-      return { fee: feeEstimationsMaxValues[index], fee_rate: 0, level };
-    } else {
-      return { ...feeEstimation, level };
-    }
-  });
 }

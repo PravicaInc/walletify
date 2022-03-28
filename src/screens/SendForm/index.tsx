@@ -4,6 +4,7 @@ import {
   Platform,
   TouchableOpacity,
   View,
+  ScrollView,
 } from 'react-native';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { ThemeContext } from '../../contexts/Theme/theme';
@@ -158,120 +159,128 @@ const SendForm: React.FC<SendFormProps> = ({
         style={styles.inputsContainer}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         keyboardVerticalOffset={0}>
-        <AssetPicker
-          selectedAsset={selectedAsset}
-          setSelectedAsset={setSelectedAsset}
-        />
-        {!isEnoughBalance && (
-          <View
-            style={[
-              styles.noBalanceCard,
-              {
-                backgroundColor: colors.failed10,
-                borderColor: colors.failed100,
-              },
-            ]}>
+        <ScrollView
+          style={styles.contentContainer}
+          contentContainerStyle={styles.scroller}
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}>
+          <AssetPicker
+            selectedAsset={selectedAsset}
+            setSelectedAsset={setSelectedAsset}
+          />
+          {!isEnoughBalance && (
+            <View
+              style={[
+                styles.noBalanceCard,
+                {
+                  backgroundColor: colors.failed10,
+                  borderColor: colors.failed100,
+                },
+              ]}>
+              <WarningIcon
+                width={15}
+                height={15}
+                fill={colors.failed100}
+                fillOpacity={0}
+                stroke={colors.failed100}
+              />
+              <View style={styles.noBalanceRow}>
+                <Typography
+                  type="smallTextBold"
+                  style={{
+                    color: colors.failed100,
+                  }}>
+                  Insufficient balance
+                </Typography>
+                <Typography
+                  type="smallText"
+                  style={{
+                    color: colors.failed100,
+                  }}>
+                  {`You have not enough balance to proceed this transaction, \nAvailable Balance: ${balance} ${name}`}
+                </Typography>
+              </View>
+            </View>
+          )}
+          <SimpleTextInput
+            onChangeText={handleChangeAmount}
+            value={amount}
+            label="Amount"
+            placeholder="0.00000000"
+            keyboardType="decimal-pad"
+            icon={
+              <TouchableOpacity activeOpacity={0.6} onPress={handleMaxClicked}>
+                <Typography
+                  type="buttonText"
+                  style={{ color: colors.secondary100 }}>
+                  MAX
+                </Typography>
+              </TouchableOpacity>
+            }
+            subtext={
+              selectedAsset.name === 'STX' && (
+                <Typography
+                  type="commonText"
+                  style={[
+                    {
+                      color: colors.primary40,
+                    },
+                    styles.alignRight,
+                  ]}>
+                  {price ? `~ $${(+(amount || 0) * price).toFixed(2)}` : ''}
+                </Typography>
+              )
+            }
+            errorMessage={amountError}
+          />
+          <SimpleTextInput
+            onChangeText={handleChangeRecipient}
+            value={recipient}
+            label="Recipient Address"
+            placeholder="Enter an address"
+            maxLength={50}
+            icon={
+              <TouchableOpacity onPress={handlePresentQrScan}>
+                <ScanQrIcon stroke={colors.secondary100} />
+              </TouchableOpacity>
+            }
+            errorMessage={recipientError}
+          />
+          <ScanQrBottomSheet
+            ref={qrScanRef}
+            setRecipient={handleChangeRecipient}
+          />
+          <SimpleTextInput
+            onChangeText={setMemo}
+            value={memo}
+            label="Memo"
+            placeholder="Enter a message (Optional)"
+            errorMessage={memoError}
+          />
+          <View style={[styles.noteWrapper, { backgroundColor: colors.card }]}>
             <WarningIcon
               width={15}
               height={15}
-              fill={colors.failed100}
-              fillOpacity={0}
-              stroke={colors.failed100}
+              fill={colors.secondary100}
+              fillOpacity={0.1}
+              stroke={colors.secondary100}
             />
-            <View style={styles.noBalanceRow}>
-              <Typography
-                type="smallTextBold"
-                style={{
-                  color: colors.failed100,
-                }}>
-                Insufficient balance
-              </Typography>
-              <Typography
-                type="smallText"
-                style={{
-                  color: colors.failed100,
-                }}>
-                {`You have not enough balance to proceed this transaction, \nAvailable Balance: ${balance} ${name}`}
-              </Typography>
-            </View>
-          </View>
-        )}
-        <SimpleTextInput
-          onChangeText={handleChangeAmount}
-          value={amount}
-          label="Amount"
-          placeholder="0.00000000"
-          keyboardType="decimal-pad"
-          icon={
-            <TouchableOpacity activeOpacity={0.6} onPress={handleMaxClicked}>
-              <Typography
-                type="buttonText"
-                style={{ color: colors.secondary100 }}>
-                MAX
-              </Typography>
-            </TouchableOpacity>
-          }
-          subtext={
             <Typography
               type="commonText"
-              style={[
-                {
-                  color: colors.primary40,
-                },
-                styles.alignRight,
-              ]}>
-              {price ? `~ $${(+(amount || 0) * price).toFixed(2)}` : ''}
+              style={[styles.note, { color: colors.primary40 }]}>
+              If you are sending to an exchange, be sure to include the memo the
+              exchange provided so the STX is credited to your account
             </Typography>
-          }
-          errorMessage={amountError}
-        />
-        <SimpleTextInput
-          onChangeText={handleChangeRecipient}
-          value={recipient}
-          label="Recipient Address"
-          placeholder="Enter an address"
-          maxLength={50}
-          icon={
-            <TouchableOpacity onPress={handlePresentQrScan}>
-              <ScanQrIcon stroke={colors.secondary100} />
-            </TouchableOpacity>
-          }
-          errorMessage={recipientError}
-        />
-        <ScanQrBottomSheet
-          ref={qrScanRef}
-          setRecipient={handleChangeRecipient}
-        />
-        <SimpleTextInput
-          onChangeText={setMemo}
-          value={memo}
-          label="Memo"
-          placeholder="Enter a message (Optional)"
-          errorMessage={memoError}
-        />
-        <View style={[styles.noteWrapper, { backgroundColor: colors.card }]}>
-          <WarningIcon
-            width={15}
-            height={15}
-            fill={colors.secondary100}
-            fillOpacity={0.1}
-            stroke={colors.secondary100}
+          </View>
+          <FeesCalculations
+            selectedAsset={asset}
+            recipient={recipient}
+            amount={amount}
+            setSelectedFee={setSelectedFee}
+            memo={memo}
+            selectedFee={selectedFee}
           />
-          <Typography
-            type="commonText"
-            style={[styles.note, { color: colors.primary40 }]}>
-            If you are sending to an exchange, be sure to include the memo the
-            exchange provided so the STX is credited to your account
-          </Typography>
-        </View>
-        <FeesCalculations
-          selectedAsset={asset}
-          recipient={recipient}
-          amount={amount}
-          setSelectedFee={setSelectedFee}
-          memo={memo}
-          selectedFee={selectedFee}
-        />
+        </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );

@@ -17,6 +17,9 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/types';
 import { ThemeContext } from '../../contexts/Theme/theme';
 import ReceiveBottomSheet from '../../components/ReceiveBottomSheet';
+import { stxToMicroStx, valueFromBalance } from '../../shared/balanceUtils';
+import { useStxPriceValue } from '../../hooks/useStxPrice/useStxPrice';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 type AssetDetailsProps = NativeStackScreenProps<
   RootStackParamList,
@@ -31,12 +34,22 @@ const AssetDetails: React.FC<AssetDetailsProps> = ({
   const {
     theme: { colors },
   } = useContext(ThemeContext);
-  const { name, amount, value, contractAddress, contractName } = asset;
+  const { name, amount, contractAddress, contractName } = asset;
   const { switchAccount, walletAccounts } = useAccounts();
   const { dispatch } = useNavigation();
   const bottomSheetModalRef = useRef<BottomSheet>(null);
   const receiveRef = useRef<BottomSheetModal>(null);
-
+  const stxPrice = useStxPriceValue();
+  let value: any;
+  if (name === 'STX') {
+    value = valueFromBalance(
+      stxToMicroStx(amount).multipliedBy(stxPrice),
+      'stx',
+      {
+        fixedDecimals: false,
+      },
+    );
+  }
   const handleGoBack = useCallback(() => dispatch(StackActions.pop()), []);
 
   const handlePressSwitchAccount = useCallback(() => {
@@ -163,7 +176,9 @@ const AssetDetails: React.FC<AssetDetailsProps> = ({
   const useGradient = name !== 'STX';
 
   return (
-    <View style={[styles.fill, { backgroundColor: colors.white }]}>
+    <SafeAreaView
+      edges={['bottom']}
+      style={[styles.fill, { backgroundColor: colors.white }]}>
       {useGradient && (
         <ImageBackground
           source={require('../../assets/images/gradient.jpeg')}
@@ -185,7 +200,9 @@ const AssetDetails: React.FC<AssetDetailsProps> = ({
         </View>
       )}
       <View style={styles.transactionsContainer}>
-        <Typography type="smallTitleR">Asset activity</Typography>
+        <Typography style={styles.transactionsHeader} type="smallTitleR">
+          Asset activity
+        </Typography>
         <AssetActivityList
           isStx={asset.name === 'STX'}
           assetNameFilter={`${contractAddress}.${contractName}`}
@@ -198,7 +215,7 @@ const AssetDetails: React.FC<AssetDetailsProps> = ({
         onCancel={handleCancelSwitchAccount}
       />
       <ReceiveBottomSheet ref={receiveRef} />
-    </View>
+    </SafeAreaView>
   );
 };
 
