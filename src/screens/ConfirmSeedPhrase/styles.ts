@@ -8,7 +8,6 @@ export default StyleSheet.create({
   },
   header: {
     paddingHorizontal: PADDING_HORIZONTAL,
-    paddingTop: 22,
   },
   hiddenItems: {
     alignItems: 'center',
@@ -25,7 +24,7 @@ export default StyleSheet.create({
   contentContainer: {
     paddingHorizontal: PADDING_HORIZONTAL,
     alignItems: 'center',
-    paddingTop: 40,
+    paddingTop: 35,
     flex: 1,
   },
   title: { marginVertical: 10, alignSelf: 'center' },

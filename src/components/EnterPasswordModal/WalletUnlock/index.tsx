@@ -14,7 +14,7 @@ import { GeneralTextInput } from '../../shared/GeneralTextInput';
 import Header from '../../shared/Header';
 import HeaderBack from '../../shared/HeaderBack';
 import PasswordShield from '../../../assets/password-shield.svg';
-import WarningIcon from '../../shared/WarningIcon';
+import WarningIcon from '../../../assets/images/note-icon.svg';
 import { UserPreferenceContext } from '../../../contexts/UserPreference/userPreferenceContext';
 import { ThemeContext } from '../../../contexts/Theme/theme';
 import styles from './styles';
@@ -151,7 +151,15 @@ export const WalletUnlockInner: React.FC<IProps> = ({
       />
       <OptionsPick
         options={options}
-        userIcon={<WarningIcon width={80} height={80} />}
+        userIcon={
+          <WarningIcon
+            fill={colors.warning100}
+            fillOpacity={0.1}
+            stroke={colors.warning100}
+            width={80}
+            height={80}
+          />
+        }
         title="Reset Wallet"
         subTitle="Losing the password doesn't matter as much, because as long as you have the Secret Key you can restore your wallet and set up a new password."
         ref={bottomSheetModalRef}

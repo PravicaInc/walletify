@@ -216,7 +216,7 @@ const CreatePassword: React.FC<Props> = ({
         title={isEditPassword && 'Change Password'}
         isRightLoading={loading}
         rightComponent={
-          isEditPassword && (
+          isEditPassword ? (
             <TouchableOpacity
               style={styles.confirmContainer}
               onPress={handleEditConfirm}
@@ -228,6 +228,20 @@ const CreatePassword: React.FC<Props> = ({
                   !canGoNext && { color: colors.primary40 },
                 ]}>
                 Confirm
+              </Typography>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              onPress={handlePressCreate}
+              disabled={!canGoNext}
+              style={styles.confirmContainer}>
+              <Typography
+                type="buttonText"
+                style={[
+                  { color: colors.secondary100 },
+                  !canGoNext && { color: colors.primary40 },
+                ]}>
+                Create
               </Typography>
             </TouchableOpacity>
           )
@@ -248,7 +262,7 @@ const CreatePassword: React.FC<Props> = ({
           scrollEnabled={isEditPassword}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.scrollableContent}>
-          <View style={styles.pusher}>
+          <View style={styles.smallPusher}>
             <Animated.View style={[styles.hiddenItems, animatedStyles]}>
               <PasswordShield />
               <Typography type="bigTitle" style={styles.title}>
@@ -368,22 +382,7 @@ const CreatePassword: React.FC<Props> = ({
                   </View>
                 </View>
               </View>
-              <TouchableOpacity
-                onPress={handlePressCreate}
-                disabled={!canGoNext}
-                style={[
-                  styles.button,
-                  styles.pusher,
-                  {
-                    backgroundColor: canGoNext
-                      ? colors.primary100
-                      : colors.primary20,
-                  },
-                ]}>
-                <Typography type="buttonText" style={{ color: colors.white }}>
-                  Create
-                </Typography>
-              </TouchableOpacity>
+              <View style={styles.pusher} />
             </>
           )}
         </ScrollView>

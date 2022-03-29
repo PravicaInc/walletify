@@ -72,6 +72,23 @@ const ConfirmSeedPhrase: React.FC<Props> = ({
         leftComponent={
           <HeaderBack onPress={handleGoBack} text="Back" hasChevron />
         }
+        isRightLoading={loading}
+        rightComponent={
+          <TouchableOpacity
+            disabled={!isCompleted || loading}
+            onPress={isValid ? handleDone : handleRetry}>
+            <Typography
+              type="buttonText"
+              style={{
+                color:
+                  !isCompleted || loading
+                    ? colors.primary40
+                    : colors.secondary100,
+              }}>
+              {isValid || !isCompleted ? 'Done' : 'Retry'}
+            </Typography>
+          </TouchableOpacity>
+        }
       />
       <ProgressBar currentBarIdx={3} total={3} customStyle={styles.progress} />
       <DraxProvider>
@@ -93,23 +110,6 @@ const ConfirmSeedPhrase: React.FC<Props> = ({
             puzzleState={puzzleState}
             setPuzzleState={setPuzzleState}
           />
-          <TouchableOpacity
-            onPress={isValid ? handleDone : handleRetry}
-            disabled={!isCompleted || loading}
-            style={[
-              styles.button,
-              styles.pusher,
-              {
-                backgroundColor:
-                  !isCompleted || loading
-                    ? colors.primary20
-                    : colors.primary100,
-              },
-            ]}>
-            <Typography type="buttonText" style={{ color: colors.white }}>
-              {isValid || !isCompleted ? 'Done' : 'Retry'}
-            </Typography>
-          </TouchableOpacity>
         </View>
       </DraxProvider>
     </SafeAreaView>

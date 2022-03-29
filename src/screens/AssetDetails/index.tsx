@@ -4,7 +4,7 @@ import React, { useRef, useCallback, useContext } from 'react';
 import {
   ImageBackground,
   StatusBar,
-  TouchableOpacity,
+  TouchableHighlight,
   View,
 } from 'react-native';
 import SwitchAccountBottomSheet from '../../components/Accounts/SwitchAccountBottomSheet';
@@ -147,8 +147,8 @@ const AssetDetails: React.FC<AssetDetailsProps> = ({
           />
         )}
         <View style={styles.balanceActionsContainer}>
-          <TouchableOpacity
-            activeOpacity={0.9}
+          <TouchableHighlight
+            underlayColor={'#dddddd'}
             onPress={handlePresentSend}
             style={[
               styles.balanceActionButton,
@@ -157,15 +157,20 @@ const AssetDetails: React.FC<AssetDetailsProps> = ({
                 backgroundColor: colors.white,
               },
             ]}>
-            <UpArrow fill={primaryColor} />
-            <Typography
-              type="buttonText"
-              style={[styles.balanceActionButtonText, { color: primaryColor }]}>
-              Send
-            </Typography>
-          </TouchableOpacity>
-          <TouchableOpacity
-            activeOpacity={0.9}
+            <>
+              <UpArrow fill={primaryColor} />
+              <Typography
+                type="buttonText"
+                style={[
+                  styles.balanceActionButtonText,
+                  { color: primaryColor },
+                ]}>
+                Send
+              </Typography>
+            </>
+          </TouchableHighlight>
+          <TouchableHighlight
+            underlayColor={'#dddddd'}
             onPress={handlePresentReceive}
             style={[
               styles.balanceActionButton,
@@ -173,13 +178,18 @@ const AssetDetails: React.FC<AssetDetailsProps> = ({
                 backgroundColor: colors.white,
               },
             ]}>
-            <DownArrow fill={primaryColor} />
-            <Typography
-              type="buttonText"
-              style={[styles.balanceActionButtonText, { color: primaryColor }]}>
-              Receive
-            </Typography>
-          </TouchableOpacity>
+            <>
+              <DownArrow fill={primaryColor} />
+              <Typography
+                type="buttonText"
+                style={[
+                  styles.balanceActionButtonText,
+                  { color: primaryColor },
+                ]}>
+                Receive
+              </Typography>
+            </>
+          </TouchableHighlight>
         </View>
       </>
     );

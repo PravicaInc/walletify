@@ -19,11 +19,11 @@ export const useKeyboardWithAnimation = () => {
   useEffect(() => {
     if (!keyboardShown) {
       offset.value = withTiming(1, {
-        duration: 150,
+        duration: 100,
       });
     } else {
       offset.value = withTiming(0, {
-        duration: 150,
+        duration: 100,
       });
     }
   }, [keyboardShown]);

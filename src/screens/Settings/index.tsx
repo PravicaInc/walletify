@@ -34,7 +34,7 @@ import ExitIcon from '../../assets/images/settings/exit.svg';
 import SecureKeychain from '../../shared/SecureKeychain';
 import { styles } from './styles';
 import { OptionsPick } from '../../components/OptionsPick';
-import WarningIcon from '../../components/shared/WarningIcon';
+import WarningIcon from '../../assets/images/note-icon.svg';
 import { decryptMnemonic } from '@stacks/encryption';
 import { encrypt } from '@stacks/wallet-sdk/dist';
 import { useWallet } from '../../hooks/useWallet/useWallet';
@@ -238,7 +238,7 @@ const Settings = () => {
           <View
             style={[
               styles.settingsItemsContainer,
-              { borderBottomColor: colors.primary20 },
+              { borderBottomColor: colors.primary10 },
             ]}>
             <TouchableSettingsItem
               icon={Manage}
@@ -280,7 +280,12 @@ const Settings = () => {
             />
           </View>
           <View
-            style={[{ borderBottomColor: colors.primary20, width: '100%' }]}>
+            style={[
+              {
+                paddingTop: 15,
+                width: '100%',
+              },
+            ]}>
             {bottomSettingsList.map(item => (
               <TouchableSettingsItem
                 key={item.text}
@@ -303,7 +308,15 @@ const Settings = () => {
         </TouchableOpacity>
         <OptionsPick
           options={options}
-          userIcon={<WarningIcon width={80} height={80} />}
+          userIcon={
+            <WarningIcon
+              fill={colors.warning100}
+              fillOpacity={0.1}
+              stroke={colors.warning100}
+              width={80}
+              height={80}
+            />
+          }
           title="Reset Wallet"
           subTitle="Losing the password doesn't matter as much, because as long as you have the Secret Key you can restore your wallet and set up a new password."
           ref={confirmModalRef}

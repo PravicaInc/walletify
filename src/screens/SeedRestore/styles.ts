@@ -8,7 +8,6 @@ const styles = StyleSheet.create({
   },
   header: {
     paddingHorizontal: PADDING_HORIZONTAL,
-    paddingTop: 22,
   },
   keyboardContainer: {
     flex: 1,
@@ -19,6 +18,10 @@ const styles = StyleSheet.create({
   },
   pusher: {
     marginTop: 'auto',
+  },
+  smallPusher: {
+    marginTop: 20,
+    marginBottom: 10,
   },
   hiddenItems: {
     alignItems: 'center',
@@ -32,14 +35,6 @@ const styles = StyleSheet.create({
   title: { marginVertical: 10 },
   description: {
     textAlign: 'center',
-  },
-  button: {
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 13,
-    height: 60,
-    marginBottom: 10,
   },
 });
 

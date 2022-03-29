@@ -25,7 +25,6 @@ export default StyleSheet.create({
     borderTopRightRadius: 13,
     borderBottomLeftRadius: 13,
     borderBottomRightRadius: 13,
-    marginTop: 20,
   },
   note: {
     marginLeft: 5,

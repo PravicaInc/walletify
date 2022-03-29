@@ -58,6 +58,23 @@ const SeedRestore: React.FC<Props> = ({
         leftComponent={
           <HeaderBack onPress={handleGoBack} text="Back" hasChevron />
         }
+        isRightLoading={loading}
+        rightComponent={
+          <TouchableOpacity
+            onPress={handleContinue}
+            disabled={!canGoNext || loading}>
+            <Typography
+              type="buttonText"
+              style={{
+                color:
+                  !canGoNext || loading
+                    ? colors.primary40
+                    : colors.secondary100,
+              }}>
+              Continue
+            </Typography>
+          </TouchableOpacity>
+        }
       />
       <KeyboardAvoidingView
         style={styles.keyboardContainer}
@@ -67,7 +84,7 @@ const SeedRestore: React.FC<Props> = ({
           showsVerticalScrollIndicator={false}
           scrollEnabled={false}
           contentContainerStyle={styles.scrollableContent}>
-          <View style={styles.pusher}>
+          <View style={styles.smallPusher}>
             <Animated.View style={[styles.hiddenItems, animatedStyles]}>
               <PasswordShield />
               <Typography type="bigTitle" style={styles.title}>
@@ -86,21 +103,7 @@ const SeedRestore: React.FC<Props> = ({
             phrase={seedPhrase}
             setPhrase={setSeedPhrase}
           />
-          <TouchableOpacity
-            onPress={handleContinue}
-            disabled={!canGoNext || loading}
-            style={[
-              styles.button,
-              styles.pusher,
-              {
-                backgroundColor:
-                  !canGoNext || loading ? colors.primary20 : colors.primary100,
-              },
-            ]}>
-            <Typography type="buttonText" style={{ color: colors.white }}>
-              Continue
-            </Typography>
-          </TouchableOpacity>
+          <View style={styles.pusher} />
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>

@@ -17,6 +17,7 @@ const SeedPhraseGrid: React.FC<IProps> = ({
   isEditable,
   phrase,
   setPhrase,
+  children,
 }) => {
   const {
     theme: { colors, fonts },
@@ -99,6 +100,7 @@ const SeedPhraseGrid: React.FC<IProps> = ({
       {isBlurred && (
         <BlurView style={styles.absolute} blurType="light" blurAmount={2} />
       )}
+      {children}
     </View>
   );
 };

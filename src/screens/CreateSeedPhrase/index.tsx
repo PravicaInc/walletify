@@ -19,6 +19,7 @@ import ProgressBar from '../../components/ProgressBar';
 import SeedPhraseGrid from '../../components/SeedPhraseGrid';
 import { ThemeContext } from '../../contexts/Theme/theme';
 import LockedShield from '../../assets/locked-shield.svg';
+import RevealEye from '../../assets/reveal-eye.svg';
 import { RootStackParamList } from '../../navigation/types';
 import styles from './styles';
 import { OptionsPick } from '../../components/OptionsPick';
@@ -84,10 +85,22 @@ const CreateSeedPhrase: React.FC<Props> = ({
         leftComponent={
           <HeaderBack onPress={handleGoBack} text="Back" hasChevron />
         }
+        rightComponent={
+          currentShape !== ScreenShape.Blurred && (
+            <TouchableOpacity onPress={handlePressConfirm}>
+              <Typography
+                type="buttonText"
+                style={{
+                  color: colors.secondary100,
+                }}>
+                Continue
+              </Typography>
+            </TouchableOpacity>
+          )
+        }
       />
       <ProgressBar currentBarIdx={2} total={3} customStyle={styles.progress} />
       <View style={styles.contentContainer}>
-        <View style={styles.pusher} />
         <LockedShield />
         <Typography type="bigTitle" style={styles.title}>
           Your Secret Key
@@ -96,35 +109,23 @@ const CreateSeedPhrase: React.FC<Props> = ({
           type="commonText"
           style={[styles.description, { color: colors.primary60 }]}>
           {currentShape === ScreenShape.Blurred
-            ? 'NEVER share or show your Secret Key. Keep it private and safe!'
+            ? 'NEVER share or show your Secret Key.\n Keep it private and safe!'
             : 'Write it down, copy it, save it, or even memorize it. Just make sure your Seed Phrase is safe and accessible.'}
-        </Typography>
-        <Typography type="commonTextBold" style={styles.seedTitle}>
-          Your Seed Phrase:
         </Typography>
         <SeedPhraseGrid
           phrase={generatedSeedPhrase}
-          isBlurred={currentShape === ScreenShape.Blurred}
-        />
-        <TouchableOpacity
-          onPress={
-            currentShape === ScreenShape.Blurred
-              ? handleView
-              : handlePressConfirm
-          }
-          style={[
-            styles.button,
-            styles.pusher,
-            {
-              backgroundColor: colors.primary100,
-            },
-          ]}>
-          <Typography type="buttonText" style={{ color: colors.white }}>
-            {currentShape === ScreenShape.Blurred
-              ? 'View Seed Phrase'
-              : 'Confirm'}
-          </Typography>
-        </TouchableOpacity>
+          isBlurred={currentShape === ScreenShape.Blurred}>
+          {currentShape === ScreenShape.Blurred && (
+            <TouchableOpacity onPress={handleView} style={styles.reveal}>
+              <RevealEye style={styles.smallSpace} />
+              <Typography
+                type="buttonText"
+                style={[styles.smallSpace, { color: colors.secondary100 }]}>
+                View Seed Phrase
+              </Typography>
+            </TouchableOpacity>
+          )}
+        </SeedPhraseGrid>
         <OptionsPick
           options={options}
           userIcon={

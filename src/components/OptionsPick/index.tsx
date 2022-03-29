@@ -66,7 +66,7 @@ export const OptionsPick = React.forwardRef<BottomSheet, IProps>(
             (username ? usernameHeight + 5 : 0) +
             (userIcon ? 80 : 0) +
             (userIcon || username ? 40 : 0) +
-            (subTitle ? subTitleHeight + 15 : 0) +
+            (subTitle ? subTitleHeight + 20 : 0) +
             (title ? titleHeight - 10 : 0) +
             60 * (options.length + 1),
         ]);

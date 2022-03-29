@@ -13,14 +13,12 @@ export const styles = StyleSheet.create({
   header: {
     shadowOpacity: 0,
     paddingHorizontal: 0,
-    marginTop: 25,
-    marginBottom: 20,
     paddingRight: 5,
   },
   contentContainer: {
     paddingTop: 40,
     paddingHorizontal: '2.5%',
-    height: 320,
+    height: 290,
     borderBottomLeftRadius: 35,
     borderBottomRightRadius: 35,
   },
@@ -58,7 +56,7 @@ export const styles = StyleSheet.create({
   balanceActionsContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    bottom: 10,
+    bottom: 0,
   },
   balanceActionButton: {
     height: 53,
@@ -68,7 +66,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     shadowColor: 'black',
-    shadowOpacity: 0.25,
+    shadowOpacity: 0.2,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 8,
   },

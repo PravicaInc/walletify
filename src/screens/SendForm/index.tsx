@@ -199,7 +199,7 @@ const SendForm: React.FC<SendFormProps> = ({
                   style={{
                     color: colors.failed100,
                   }}>
-                  {`You don\'t have enough balance to proceed this transaction, \nAvailable Balance: ${balance} ${name}`}
+                  {`You don't have enough balance to proceed this transaction, \nAvailable Balance: ${balance} ${name}`}
                 </Typography>
               </View>
             </View>
