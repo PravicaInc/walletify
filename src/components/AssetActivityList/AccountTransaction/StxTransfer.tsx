@@ -137,6 +137,7 @@ export const TransactionItem: React.FC<{
   isOriginator: boolean;
   onClickTransaction: () => void;
   tokenName?: string;
+  customURL?: string;
   customIcon?: any;
   customStyle?: ViewStyle;
 }> = ({
@@ -148,6 +149,7 @@ export const TransactionItem: React.FC<{
   tokenName,
   customIcon,
   customStyle,
+  customURL,
 }) => {
   const {
     theme: { colors },
@@ -167,6 +169,7 @@ export const TransactionItem: React.FC<{
           CustomIcon={customIcon}
           tokenName={tokenName ?? ''}
           customStyle={customStyle}
+          tokenURL={customURL}
         />
         <View style={styles.transactionIndicator}>
           {isOriginator ? (

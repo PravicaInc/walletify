@@ -58,6 +58,7 @@ const PreviewTransfer = ({
               CustomIcon={selectedAsset.icon}
               customStyle={{ ...selectedAsset.defaultStyles, ...styles.avatar }}
               tokenName={selectedAsset.name}
+              tokenURL={selectedAsset?.metaData?.image_uri}
             />
             <Typography style={{ color: colors.primary100 }} type="bigTitle">
               {amount}

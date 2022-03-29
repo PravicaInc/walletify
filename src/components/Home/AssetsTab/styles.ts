@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   assetGroupHeader: {
-    marginTop: 27,
+    marginTop: 20,
     marginBottom: 10,
   },
   assetsList: {

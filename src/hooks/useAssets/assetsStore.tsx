@@ -69,6 +69,7 @@ const mapAssetResponseToToken = async (
           contractAddress: address,
           isFungible,
           metaData: localAsset,
+          fullContractId: fungibleKey,
         };
       }),
   );

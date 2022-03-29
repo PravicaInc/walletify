@@ -20,6 +20,7 @@ import ReceiveBottomSheet from '../../components/ReceiveBottomSheet';
 import { stxToMicroStx, valueFromBalance } from '../../shared/balanceUtils';
 import { useStxPriceValue } from '../../hooks/useStxPrice/useStxPrice';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import TokenAvatar from '../../components/Home/TokenAvatar';
 
 type AssetDetailsProps = NativeStackScreenProps<
   RootStackParamList,
@@ -125,12 +126,19 @@ const AssetDetails: React.FC<AssetDetailsProps> = ({
             {`${value}`}
           </Typography>
         </View>
-        {name === 'STX' && (
+        {name === 'STX' ? (
           <Stx
             fill={'rgba(255,255,255,0.15)'}
             width={85}
             height={85}
             style={styles.stxIcon}
+          />
+        ) : (
+          <TokenAvatar
+            customStyle={{ ...styles.stxIcon, ...styles.tokenImage }}
+            tokenName={asset.metaData?.symbol || ''}
+            tokenURL={asset.metaData?.image_uri}
+            showTokenSymbol
           />
         )}
         <View style={styles.balanceActionsContainer}>

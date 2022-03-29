@@ -1,10 +1,11 @@
-import BigNumber from "bignumber.js";
+import BigNumber from 'bignumber.js';
 
 export interface FtMeta {
   name: string;
   symbol: string;
   decimals: number;
   ftTrait?: boolean | null;
+  image_uri?: string;
 }
 
 export interface NftMeta {

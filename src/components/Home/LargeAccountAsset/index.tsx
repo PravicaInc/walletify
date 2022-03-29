@@ -35,13 +35,13 @@ const LargeAccountAsset: React.FC<AccountAssetProps> = props => {
   if (name === 'STX') {
     title = 'Stacks Coins';
     subtitle = 'STX';
-    value = valueFromBalance(
+    value = `$${valueFromBalance(
       stxToMicroStx(amount).multipliedBy(stxPrice),
       'stx',
       {
         fixedDecimals: false,
       },
-    );
+    )}`;
   } else {
     title = metaData?.name ?? name;
     subtitle = name;
@@ -64,6 +64,7 @@ const LargeAccountAsset: React.FC<AccountAssetProps> = props => {
             CustomIcon={icon}
             customStyle={defaultStyles}
             tokenName={metaData?.name ?? name}
+            tokenURL={metaData?.image_uri}
           />
           <View style={styles.fullWidth}>
             <Typography

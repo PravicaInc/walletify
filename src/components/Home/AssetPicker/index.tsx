@@ -23,10 +23,11 @@ import Check from '../../../assets/images/check.svg';
 interface AccountAssetProps {
   selectedAsset: AccountToken;
   setSelectedAsset: (value: AccountToken) => void;
+  resetForm: () => void;
 }
 
 const AssetPicker: React.FC<AccountAssetProps> = props => {
-  const { icon, name, amount, defaultStyles } = props.selectedAsset;
+  const { icon, name, amount, defaultStyles, metaData } = props.selectedAsset;
   const bottomSheetModalRef = useRef<BottomSheet>(null);
   const { selectedAccountAssets: assets } = useAssets();
   const handlePressSwitchAccount = useCallback(() => {
@@ -42,6 +43,7 @@ const AssetPicker: React.FC<AccountAssetProps> = props => {
         bottomSheetRef={bottomSheetModalRef}
         selectedAsset={props.selectedAsset}
         setSelectedAsset={props.setSelectedAsset}
+        resetForm={props.resetForm}
       />
       <TouchableHighlight
         underlayColor={colors.primary10}
@@ -59,6 +61,7 @@ const AssetPicker: React.FC<AccountAssetProps> = props => {
               CustomIcon={icon}
               customStyle={defaultStyles}
               tokenName={name}
+              tokenURL={metaData?.image_uri}
             />
             <View>
               <Typography
@@ -88,16 +91,19 @@ interface AssetsPickerBottomSheetProps {
   bottomSheetRef: React.Ref<BottomSheet>;
   selectedAsset: AccountToken;
   setSelectedAsset: (value: AccountToken) => void;
+  resetForm: () => void;
 }
 
 const maxLength = 5;
 const itemHeight = 85;
 
-const AssetsPickerBottomSheet: React.FC<
-  AssetsPickerBottomSheetProps
-> = props => {
+const AssetsPickerBottomSheet: React.FC<AssetsPickerBottomSheetProps> = ({
+  bottomSheetRef,
+  setSelectedAsset,
+  selectedAsset,
+  resetForm,
+}) => {
   const { bottom } = useSafeAreaInsets();
-  const { bottomSheetRef, setSelectedAsset, selectedAsset } = props;
   const { selectedAccountAssets: assets } = useAssets();
   const {
     theme: { colors },
@@ -109,6 +115,7 @@ const AssetsPickerBottomSheet: React.FC<
   );
   const handlePressAsset = useCallback(
     (item: AccountToken) => () => {
+      resetForm();
       setSelectedAsset(item);
       bottomSheetRef?.current?.close();
     },
@@ -140,6 +147,7 @@ const AssetsPickerBottomSheet: React.FC<
                 CustomIcon={item.icon}
                 customStyle={item.defaultStyles}
                 tokenName={item.name}
+                tokenURL={item?.metaData?.image_uri}
               />
               <View>
                 <Typography

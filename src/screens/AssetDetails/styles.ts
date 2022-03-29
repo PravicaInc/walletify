@@ -5,7 +5,7 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
   transactionsHeader: {
-    marginBottom: 20,
+    marginTop: 10,
   },
   header: {
     shadowOpacity: 0,
@@ -37,8 +37,14 @@ export const styles = StyleSheet.create({
   stxIcon: {
     zIndex: -1,
     position: 'absolute',
-    right: 68,
-    bottom: 53,
+    right: '10%',
+    bottom: 40,
+  },
+  tokenImage: {
+    zIndex: 1,
+    width: 92,
+    height: 92,
+    borderRadius: 46,
   },
   balanceActionButtonText: {
     marginLeft: 5,

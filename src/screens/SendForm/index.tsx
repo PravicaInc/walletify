@@ -29,7 +29,6 @@ import { SelectedFee } from '../../shared/types';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/types';
 import BigNumber from 'bignumber.js';
-import { useAssets } from '../../hooks/useAssets/useAssets';
 import { withSuspense } from '../../components/shared/WithSuspense';
 
 type SendFormProps = NativeStackScreenProps<RootStackParamList, 'SendForm'>;
@@ -45,17 +44,13 @@ const SendForm: React.FC<SendFormProps> = ({
   const [selectedFee, setSelectedFee] = useState<SelectedFee>();
   const qrScanRef = useRef<BottomSheetModal>(null);
   const { selectedAccountState: account } = useAccounts();
-  const { selectedAccountAssets: assets } = useAssets();
+  const [selectedAsset, setSelectedAsset] = useState<AccountToken>(asset);
 
-  const { name, amount: balance } = asset;
-  const { amount: stxBalance } = assets?.find(a => a.name === 'STX') ?? {
-    amount: '0',
-  };
+  const { name, amount: balance } = selectedAsset;
 
   const stxPrice = useStxPriceValue();
-  const price = asset.name === 'STX' ? stxPrice : undefined;
+  const price = selectedAsset.name === 'STX' ? stxPrice : undefined;
 
-  const [selectedAsset, setSelectedAsset] = useState<AccountToken>(asset);
   const { dispatch } = useNavigation();
 
   const {
@@ -101,13 +96,12 @@ const SendForm: React.FC<SendFormProps> = ({
     undefined,
     0,
   );
-  const isEnoughBalance =
-    name === 'STX'
-      ? new BigNumber(balance || '0').gte(
-          Number(amount || '0') + Number(selectedFee?.fee || '0'),
-        )
-      : new BigNumber(balance || '0').gte(Number(amount || '0')) &&
-        new BigNumber(stxBalance || '0').gte(Number(selectedFee?.fee || '0'));
+  const isEnoughBalance = new BigNumber(
+    Number((balance || '0').replace(/[^0-9.-]+/g, '')),
+  ).gte(
+    Number(amount || '0') +
+      Number(selectedAsset.name === 'STX' ? selectedFee?.fee || '0' : '0'),
+  );
 
   const handleGoBack = useCallback(() => dispatch(StackActions.pop()), []);
   const handlePresentQrScan = useCallback(() => {
@@ -126,9 +120,16 @@ const SendForm: React.FC<SendFormProps> = ({
   }, [amount, recipient, memo, selectedAsset, selectedFee]);
   const handleMaxClicked = useCallback(() => {
     handleChangeAmount(
-      new BigNumber(balance || '0')?.minus(selectedFee?.fee || '0').toString(),
+      new BigNumber(Number((balance || '0').replace(/[^0-9.-]+/g, '')))
+        ?.minus(
+          Number(selectedAsset.name === 'STX' ? selectedFee?.fee || '0' : '0'),
+        )
+        .toString(),
     );
   }, [balance, selectedFee]);
+  const resetForm = useCallback(() => {
+    handleChangeAmount(undefined);
+  }, []);
   const isReadyForPreview =
     amount && recipient && !amountError && !recipientError && !memoError;
   return (
@@ -165,6 +166,7 @@ const SendForm: React.FC<SendFormProps> = ({
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}>
           <AssetPicker
+            resetForm={resetForm}
             selectedAsset={selectedAsset}
             setSelectedAsset={setSelectedAsset}
           />
@@ -273,7 +275,7 @@ const SendForm: React.FC<SendFormProps> = ({
             </Typography>
           </View>
           <FeesCalculations
-            selectedAsset={asset}
+            selectedAsset={selectedAsset}
             recipient={recipient}
             amount={amount}
             setSelectedFee={setSelectedFee}
