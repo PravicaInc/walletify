@@ -24,9 +24,10 @@ interface IProps {
   subTitle?: string;
   userIcon?: SVGElement;
   username?: string;
+  cancelText?: string;
 }
 export const OptionsPick = React.forwardRef<BottomSheet, IProps>(
-  ({ options, title, username, userIcon, subTitle }, ref) => {
+  ({ cancelText, options, title, username, userIcon, subTitle }, ref) => {
     const {
       theme: { colors },
     } = useContext(ThemeContext);
@@ -154,7 +155,7 @@ export const OptionsPick = React.forwardRef<BottomSheet, IProps>(
               <Typography
                 style={{ color: colors.secondary100 }}
                 type="smallTitle">
-                Cancel
+                {cancelText || 'Cancel'}
               </Typography>
             </TouchableHighlight>
           </View>

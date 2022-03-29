@@ -67,14 +67,14 @@ const LargeAccountAsset: React.FC<AccountAssetProps> = props => {
             tokenURL={metaData?.image_uri}
           />
           <View style={styles.fullWidth}>
-            <Typography
-              style={{ color: colors.primary100 }}
-              numberOfLines={1}
-              type="smallTitleR">
-              {title}
-            </Typography>
-            <Typography style={{ color: colors.primary40 }} type="commonText">
+            <Typography style={{ color: colors.primary100 }} type="smallTitleR">
               {subtitle}
+            </Typography>
+            <Typography
+              style={{ color: colors.primary40 }}
+              numberOfLines={1}
+              type="commonText">
+              {title}
             </Typography>
           </View>
         </View>

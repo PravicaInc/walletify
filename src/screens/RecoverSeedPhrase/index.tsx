@@ -52,13 +52,14 @@ const RecoverSeedPhrase: React.FC = () => {
       <View style={styles.contentContainer}>
         <LockedShield />
         <Typography type="bigTitle" style={styles.title}>
-          Recover Your Seed Phrase
+          {decryptedSeedPhrase ? 'Secret Key' : 'Reveal Secret Key'}
         </Typography>
         <Typography
           type="commonText"
           style={[styles.description, { color: colors.primary60 }]}>
-          This feature allows you to recover your seed phrase in case you need
-          it.
+          {decryptedSeedPhrase
+            ? 'Write it down, copy it, save it, or even memorize it. Just make sure your Secret Key is safe and accessible'
+            : 'Make sure that nobody is seeing your screen right now'}
         </Typography>
       </View>
       <View style={styles.pusher}>
@@ -74,7 +75,7 @@ const RecoverSeedPhrase: React.FC = () => {
               },
             ]}>
             <Typography type="buttonText" style={{ color: colors.white }}>
-              View Seed Phrase
+              Reveal Secret Key
             </Typography>
           </TouchableOpacity>
         )}

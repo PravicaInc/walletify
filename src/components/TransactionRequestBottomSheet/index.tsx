@@ -138,7 +138,7 @@ const TransactionRequestBottomSheetInner: React.FC<
         selectedAsset,
         transferPayload.recipient,
         microStxToStx(transferPayload.amount).toNumber(),
-        selectedFee as number,
+        Number(selectedFee?.fee ?? 0),
         transferPayload.memo,
       );
 

@@ -5,7 +5,10 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
   transactionsHeader: {
-    marginTop: 10,
+    marginVertical: 10,
+  },
+  list: {
+    paddingTop: 10,
   },
   header: {
     shadowOpacity: 0,

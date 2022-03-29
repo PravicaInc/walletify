@@ -12,7 +12,6 @@ import HeaderBack from '../shared/HeaderBack';
 import WarningIcon from '../shared/WarningIcon';
 import { Typography } from '../shared/Typography';
 import { truncateAddress } from '../../shared/addressUtils';
-import { getAccountDisplayName } from '@stacks/wallet-sdk/dist';
 import Copy from '../../assets/images/copy.svg';
 
 type Props = {};
@@ -106,7 +105,7 @@ const ReceiveBottomSheet = React.forwardRef<any, Props>(({}, ref) => {
                     styles.copyAddressIcon,
                     { color: colors.secondary100 },
                   ]}>
-                  Copy
+                  Copy Address
                 </Typography>
               </TouchableOpacity>
             </View>

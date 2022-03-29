@@ -21,6 +21,7 @@ import { useInternetConnection } from '../hooks/useInternetConnnection';
 import SendForm from '../screens/SendForm';
 import PreviewTransaction from '../screens/PreviewTransaction';
 import AssetDetails from '../screens/AssetDetails';
+import { StatusBar } from 'react-native';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -33,6 +34,7 @@ export const Routes: React.FC = () => {
     <>
       <AuthenticationBottomSheet />
       <TransactionRequestBottomSheet />
+      <StatusBar barStyle={'dark-content'} />
       <Stack.Navigator initialRouteName="Splash">
         <Stack.Screen
           options={{ headerShown: false }}

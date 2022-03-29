@@ -89,7 +89,7 @@ const SendForm: React.FC<SendFormProps> = ({
     input: amount,
   } = usePasswordField(
     async (inputValue: string) => {
-      if (String(+inputValue) !== inputValue || +inputValue <= -1) {
+      if (String(+inputValue) !== inputValue || +inputValue <= 0) {
         throw Error('Please enter a valid amount');
       }
     },
@@ -199,7 +199,7 @@ const SendForm: React.FC<SendFormProps> = ({
                   style={{
                     color: colors.failed100,
                   }}>
-                  {`You have not enough balance to proceed this transaction, \nAvailable Balance: ${balance} ${name}`}
+                  {`You don\'t have enough balance to proceed this transaction, \nAvailable Balance: ${balance} ${name}`}
                 </Typography>
               </View>
             </View>

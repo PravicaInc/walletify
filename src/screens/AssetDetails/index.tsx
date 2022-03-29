@@ -1,7 +1,12 @@
 import BottomSheet, { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import React, { useRef, useCallback, useContext } from 'react';
-import { ImageBackground, TouchableOpacity, View } from 'react-native';
+import {
+  ImageBackground,
+  StatusBar,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import SwitchAccountBottomSheet from '../../components/Accounts/SwitchAccountBottomSheet';
 import Header from '../../components/shared/Header';
 import HeaderBack from '../../components/shared/HeaderBack';
@@ -99,7 +104,7 @@ const AssetDetails: React.FC<AssetDetailsProps> = ({
         />
         <View style={styles.balanceContainer}>
           <Typography type="commonText" style={{ color: colors.white }}>
-            {`Total ${name} Balance:`}
+            {`Total ${name} Balance`}
           </Typography>
           <Typography
             type="hugeText"
@@ -115,7 +120,7 @@ const AssetDetails: React.FC<AssetDetailsProps> = ({
                 color: colors.white,
               },
             ]}>
-            Balance in USD:
+            Balance in USD
           </Typography>
           <Typography
             type="bigTitle"
@@ -123,7 +128,7 @@ const AssetDetails: React.FC<AssetDetailsProps> = ({
               styles.balanceText,
               { opacity: value ? 1 : 0, color: colors.white },
             ]}>
-            {`${value}`}
+            {`$${value}`}
           </Typography>
         </View>
         {name === 'STX' ? (
@@ -207,11 +212,13 @@ const AssetDetails: React.FC<AssetDetailsProps> = ({
           {renderTopPanel()}
         </View>
       )}
+      <StatusBar barStyle={'light-content'} />
       <View style={styles.transactionsContainer}>
         <Typography style={styles.transactionsHeader} type="smallTitleR">
           Asset activity
         </Typography>
         <AssetActivityList
+          listStyles={styles.list}
           isStx={asset.name === 'STX'}
           assetNameFilter={`${contractAddress}.${contractName}`}
         />

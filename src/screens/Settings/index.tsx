@@ -228,6 +228,8 @@ const Settings = () => {
                 onPress={handleGoBack}
                 text="Settings"
                 textType="bigTitle"
+                customStyle={{ color: colors.primary100 }}
+                chevronColor={colors.primary100}
                 hasChevron
                 chevronSize={{ width: 9, height: 16.2 }}
               />
@@ -268,7 +270,7 @@ const Settings = () => {
             </View>
             <TouchableSettingsItem
               icon={LockIcon}
-              text="Recover the Seed Phrase"
+              text="Reveal Secret Key"
               onPress={handleRecoverSeedPhrase}
             />
             <TouchableSettingsItem

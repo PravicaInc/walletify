@@ -1,5 +1,5 @@
 import React, { useContext, useMemo } from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, TouchableHighlight } from 'react-native';
 import { ThemeContext } from '../../../contexts/Theme/theme';
 import { Typography } from '../../shared/Typography';
 import Check from '../../../assets/images/check.svg';
@@ -36,7 +36,8 @@ const AccountListItem: React.FC<AccountProps> = props => {
   );
 
   return (
-    <TouchableOpacity
+    <TouchableHighlight
+      underlayColor={colors.primary10}
       onPress={onPressAccount}
       style={[
         styles.container,
@@ -46,27 +47,29 @@ const AccountListItem: React.FC<AccountProps> = props => {
           borderColor: isSelected ? colors.confirm100 : undefined,
         },
       ]}>
-      <AccountAvatar
-        diameter={45}
-        accountName={account.username || `Account ${account.index + 1}`}
-      />
-      <View style={styles.accountNameWithAddress}>
-        <Typography type="smallTitle" numberOfLines={1} ellipsizeMode="tail">
-          {account.username || `Account ${account.index + 1}`}
-        </Typography>
-        <Typography type="smallTitleR" style={{ color: colors.primary100 }}>
-          {`$${valueInUsd}`}
-        </Typography>
-      </View>
-      <View style={styles.accountDetails}>
-        <Typography
-          type="commonText"
-          style={[{ color: colors.primary40 }, styles.accountAddress]}>
-          {`(${truncateAddress(account.address, 11)})`}
-        </Typography>
-        {isSelected && <Check />}
-      </View>
-    </TouchableOpacity>
+      <>
+        <AccountAvatar
+          diameter={45}
+          accountName={account.username || `Account ${account.index + 1}`}
+        />
+        <View style={styles.accountNameWithAddress}>
+          <Typography type="smallTitle" numberOfLines={1} ellipsizeMode="tail">
+            {account.username || `Account ${account.index + 1}`}
+          </Typography>
+          <Typography type="smallTitleR" style={{ color: colors.primary100 }}>
+            {`$${valueInUsd}`}
+          </Typography>
+        </View>
+        <View style={styles.accountDetails}>
+          <Typography
+            type="commonText"
+            style={[{ color: colors.primary40 }, styles.accountAddress]}>
+            {`(${truncateAddress(account.address, 11)})`}
+          </Typography>
+          {isSelected && <Check />}
+        </View>
+      </>
+    </TouchableHighlight>
   );
 };
 

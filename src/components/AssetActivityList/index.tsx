@@ -36,11 +36,13 @@ const formatDate = (date: number) => {
 type AssetActivityListProps = {
   assetNameFilter?: string;
   isStx?: boolean;
+  listStyles?: any;
 };
 
 const AssetActivityList: React.FC<AssetActivityListProps> = ({
   assetNameFilter,
   isStx,
+  listStyles,
 }) => {
   const {
     theme: { colors },
@@ -168,7 +170,7 @@ const AssetActivityList: React.FC<AssetActivityListProps> = ({
       showsVerticalScrollIndicator={false}
       renderItem={renderTransaction}
       style={styles.activityList}
-      contentContainerStyle={styles.activityListContent}
+      contentContainerStyle={[styles.activityListContent, listStyles]}
       ListEmptyComponent={EmptyActivity}
       stickySectionHeadersEnabled={false}
     />
