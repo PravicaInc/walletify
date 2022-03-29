@@ -13,6 +13,7 @@ import {
   createAddress,
   createAssetInfo,
   createStacksPrivateKey,
+  deserializeCV,
   estimateTransaction,
   FungibleConditionCode,
   makeStandardFungiblePostCondition,
@@ -22,6 +23,7 @@ import {
   PostConditionMode,
   pubKeyfromPrivKey,
   publicKeyToString,
+  serializeCV,
   SignedTokenTransferOptions,
   someCV,
   StacksTransaction,
@@ -197,7 +199,7 @@ export const useAccounts = () => {
       network: network.stacksNetwork,
       anchorMode: AnchorMode.Any,
       memo,
-      fee: new BN(stxToMicroStx(fee || 0).toNumber()),
+      fee: stxToMicroStx(fee || 0).toNumber(),
       nonce: nonce ?? 0,
     };
 
@@ -227,7 +229,7 @@ export const useAccounts = () => {
       asset?.metaData?.decimals || 0,
     );
 
-    const assetInfo = createAssetInfo(stxAddress, contractName, assetName);
+    const assetInfo = createAssetInfo(contractAddress, contractName, assetName);
     const postConditions = [
       makeStandardFungiblePostCondition(
         stxAddress,
@@ -253,12 +255,15 @@ export const useAccounts = () => {
       contractAddress,
       contractName,
       functionName: 'transfer',
-      functionArgs,
+      functionArgs: functionArgs
+        .map(serializeCV)
+        .map(arg => arg.toString('hex'))
+        .map(arg => deserializeCV(hexToBuff(arg))),
       network: network.stacksNetwork,
       anchorMode: AnchorMode.Any,
       postConditionMode: PostConditionMode.Deny,
       postConditions,
-      fee: new BN(stxToMicroStx(fee ?? 0).toNumber()),
+      fee: stxToMicroStx(fee ?? 0).toNumber(),
       publicKey: publicKeyToString(pubKeyfromPrivKey(stxPrivateKey)),
       nonce: nonce ?? 0,
     };
@@ -334,4 +339,16 @@ export const useAccounts = () => {
 
 export function useAccountAvailableStxBalance(address: string) {
   return useAtomValue(accountAvailableStxBalanceState(address));
+}
+
+export function hexToBuff(hex: string): Buffer {
+  return Buffer.from(cleanHex(hex), 'hex');
+}
+function cleanHex(hexWithMaybePrefix: string): string {
+  if (hexWithMaybePrefix !== 'string') {
+    return hexWithMaybePrefix;
+  }
+  return hexWithMaybePrefix.startsWith('0x')
+    ? hexWithMaybePrefix.replace('0x', '')
+    : hexWithMaybePrefix;
 }

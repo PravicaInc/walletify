@@ -44,7 +44,7 @@ const LargeAccountAsset: React.FC<AccountAssetProps> = props => {
     )}`;
   } else {
     title = metaData?.name ?? name;
-    subtitle = name;
+    subtitle = isFungible ? name.toUpperCase() : name;
   }
 
   return (

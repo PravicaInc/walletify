@@ -66,7 +66,7 @@ const PreviewTransfer = ({
             <Typography
               style={[styles.assetName, { color: colors.primary40 }]}
               type="bigTitleR">
-              {selectedAsset.name}
+              {selectedAsset.name.toUpperCase()}
             </Typography>
           </View>
           {selectedAsset.name === 'STX' && (

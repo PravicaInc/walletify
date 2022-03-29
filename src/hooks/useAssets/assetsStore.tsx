@@ -63,7 +63,7 @@ const mapAssetResponseToToken = async (
         );
 
         return {
-          name: isFungible ? assetName.toUpperCase() : assetName,
+          name: assetName,
           amount: calculatedAmount,
           contractName,
           contractAddress: address,

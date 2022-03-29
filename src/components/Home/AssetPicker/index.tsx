@@ -36,7 +36,7 @@ const AssetPicker: React.FC<AccountAssetProps> = props => {
   const {
     theme: { colors },
   } = useContext(ThemeContext);
-  const selectedName = name === 'STX' ? 'Stacks Coins' : name;
+  const selectedName = name === 'STX' ? 'Stacks Coins' : name.toUpperCase();
   return (
     <>
       <AssetsPickerBottomSheet
@@ -123,7 +123,8 @@ const AssetsPickerBottomSheet: React.FC<AssetsPickerBottomSheetProps> = ({
   );
   const renderAsset: ListRenderItem<AccountToken> = useCallback(
     ({ item }) => {
-      const selectedName = item.name === 'STX' ? 'Stacks Coins' : item.name;
+      const selectedName =
+        item.name === 'STX' ? 'Stacks Coins' : item.name.toUpperCase();
       const isSelected = item.name === selectedAsset.name;
       return (
         <TouchableHighlight
