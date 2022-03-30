@@ -152,7 +152,11 @@ export const Typography: React.FC<IProps> = props => {
           text
         ) : (
           <Animated.Text
-            onPress={() => props.highlightClick && props.highlightClick(text)}
+            onPress={
+              props.highlightClick
+                ? () => props.highlightClick(text)
+                : undefined
+            }
             key={index}
             style={[
               chunk.highlight && highlightStyle,

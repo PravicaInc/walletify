@@ -8,7 +8,6 @@ const styles = StyleSheet.create({
   },
   header: {
     paddingHorizontal: PADDING_HORIZONTAL,
-    paddingTop: 22,
   },
   hiddenItems: {
     alignItems: 'center',
@@ -77,6 +76,9 @@ const styles = StyleSheet.create({
   },
   pusher: {
     marginTop: 'auto',
+  },
+  smallPusher: {
+    marginTop: 20,
   },
   button: {
     width: '100%',

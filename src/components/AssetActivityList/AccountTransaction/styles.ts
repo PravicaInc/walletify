@@ -12,13 +12,14 @@ export default StyleSheet.create({
   },
   transactionInformationContainer: {
     flexDirection: 'column',
+    flex: 0.9,
   },
   tokenIconContainer: {
     position: 'relative',
   },
   transactionIndicator: {
     position: 'absolute',
-    bottom: 0,
-    right: 6,
+    bottom: -3,
+    right: 3,
   },
 });

@@ -47,6 +47,7 @@ export interface AccountToken {
   isFungible?: boolean;
   amount: string;
   name: string;
+  fullContractId: string;
   contractName?: string;
   contractAddress?: string;
   metaData?: FtMeta;

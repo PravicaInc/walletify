@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   AddressTransactionWithTransfers,
   TokensApi,
@@ -16,7 +16,11 @@ import BigNumber from 'bignumber.js';
 import { withSuspense } from '../../shared/WithSuspense';
 import { apiClientState } from '../../../hooks/apiClients/apiClients';
 import useNetwork from '../../../hooks/useNetwork/useNetwork';
+import Stx from '../../../assets/images/stx.svg';
 import { Linking } from 'react-native';
+import { ThemeContext } from '../../../contexts/Theme/theme';
+import { truncateAddress } from '../../../shared/addressUtils';
+import { useAssets } from '../../../hooks/useAssets/useAssets';
 
 interface StxTransferItemProps {
   stxTransfer: StxTransfer;
@@ -24,9 +28,14 @@ interface StxTransferItemProps {
 }
 
 const StxTransferItem = ({ stxTransfer, parentTx }: StxTransferItemProps) => {
+  const {
+    theme: { colors },
+  } = useContext(ThemeContext);
+
   const { selectedAccountState } = useAccounts();
-  const title = 'STX Transfer';
-  const caption = getTxCaption(parentTx.tx) ?? '';
+  const title = 'Stacks Token';
+  const caption =
+    getTxCaption(parentTx.tx, selectedAccountState?.address) ?? '';
   const isOriginator = stxTransfer.sender === selectedAccountState?.address;
   const { currentNetwork } = useNetwork();
   const link = `https://explorer.stacks.co/txid/${parentTx.tx.tx_id}?chain=${currentNetwork.name}`;
@@ -43,10 +52,13 @@ const StxTransferItem = ({ stxTransfer, parentTx }: StxTransferItemProps) => {
   return (
     <TransactionItem
       title={title}
+      tokenName={title}
       onClickTransaction={openTransactionInExplorer}
       caption={caption}
       value={value}
       isOriginator={isOriginator}
+      customIcon={Stx}
+      customStyle={{ backgroundColor: colors.primary100 }}
     />
   );
 };
@@ -59,10 +71,9 @@ interface FtTransferItemProps {
 const getAssetMeta = async (identifier: string, tokenApi: TokensApi) => {
   const { contractName, address } = getAssetStringParts(identifier);
   const contractId = `${address}.${contractName}`;
-  const assetMeta = await tokenApi.getContractFtMetadata({
+  return await tokenApi.getContractFtMetadata({
     contractId,
   });
-  return assetMeta;
 };
 
 export const calculateTokenTransferAmount = (
@@ -73,11 +84,15 @@ export const calculateTokenTransferAmount = (
 };
 
 const FtTransferItem = ({ ftTransfer, parentTx }: FtTransferItemProps) => {
+  const {
+    theme: { colors },
+  } = useContext(ThemeContext);
   const { selectedAccountState } = useAccounts();
   const { fungibleTokensApi } = useAtomValue(apiClientState);
   const { currentNetwork } = useNetwork();
   const [ftTitle, setFtTitle] = useState<string>('');
   const [ftValue, setFtValue] = useState<BigNumber>();
+  const { selectedAccountAssets: assets } = useAssets();
 
   const link = `https://explorer.stacks.co/txid/${parentTx.tx.tx_id}?chain=${currentNetwork.name}`;
 
@@ -102,9 +117,22 @@ const FtTransferItem = ({ ftTransfer, parentTx }: FtTransferItemProps) => {
   useEffect(() => {
     getFtDisplayAmount();
   }, []);
-
-  const caption = getTxCaption(parentTx.tx) ?? '';
+  const isTransaction =
+    (ftTransfer.sender || '').match('^[A-Z0-9]{40,}$') &&
+    (ftTransfer.recipient || '').match('^[A-Z0-9]{40,}$');
+  const caption = isTransaction
+    ? truncateAddress(
+        ftTransfer.sender === selectedAccountState?.address
+          ? ftTransfer.recipient
+          : ftTransfer.sender,
+        11,
+      )
+    : getTxCaption(parentTx.tx as any);
   const isOriginator = ftTransfer.sender === selectedAccountState?.address;
+  const customURL = isTransaction
+    ? assets.find(asset => asset.fullContractId === ftTransfer.asset_identifier)
+        ?.metaData?.image_uri
+    : undefined;
 
   if (typeof ftValue === 'undefined') {
     return null;
@@ -115,9 +143,13 @@ const FtTransferItem = ({ ftTransfer, parentTx }: FtTransferItemProps) => {
     <TransactionItem
       onClickTransaction={openTransactionInExplorer}
       title={ftTitle}
-      caption={caption}
+      caption={caption || ''}
+      tokenName={ftTitle}
       value={value}
       isOriginator={isOriginator}
+      customIcon={Stx}
+      customURL={customURL}
+      customStyle={{ backgroundColor: colors.primary100 }}
     />
   );
 };

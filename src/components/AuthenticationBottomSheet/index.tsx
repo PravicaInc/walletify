@@ -25,7 +25,6 @@ import { useProgressState } from '../../hooks/useProgressState';
 import { useWallet } from '../../hooks/useWallet/useWallet';
 import { CustomBackdrop } from '../shared/customBackdrop';
 import { selectedNetwork } from '../../hooks/useNetwork/networkStore';
-import GeneralButton from '../shared/GeneralButton';
 import { Portal } from '@gorhom/portal';
 
 const AuthenticationBottomSheet: React.FC = () => {
@@ -142,14 +141,13 @@ const AuthenticationBottomSheetInner: React.FC<BottomSheetInnerProps> = ({
             source={{ uri: authRequest?.appIcon }}
           />
           <Typography type={'commonText'} style={styles.warning}>
-            {`Allow ${authRequest?.appName} to proceed with the decentralized authentication
-            process.`}
+            {`Allow ${authRequest?.appName} to proceed with the decentralized authentication process.`}
           </Typography>
         </View>
         <Typography
           type={'commonText'}
           style={[styles.title, styles.titleSpace]}>
-          Choose an account
+          Select Account
         </Typography>
       </>
     );
@@ -176,6 +174,19 @@ const AuthenticationBottomSheetInner: React.FC<BottomSheetInnerProps> = ({
             onPress={dismissBottomSheet}
           />
         }
+        isRightLoading={loading}
+        rightComponent={
+          <HeaderBack
+            disabled={loading || selectedAccountIndex === undefined}
+            textColor={
+              loading || selectedAccountIndex === undefined
+                ? colors.primary40
+                : colors.secondary100
+            }
+            text="Confirm"
+            onPress={handleConfirmAuth}
+          />
+        }
       />
       <Suspense fallback={<ContentLoader />}>
         <BottomSheetFlatList
@@ -186,13 +197,6 @@ const AuthenticationBottomSheetInner: React.FC<BottomSheetInnerProps> = ({
           contentContainerStyle={styles.accountsList}
         />
       </Suspense>
-      <GeneralButton
-        style={styles.confirmButton}
-        type="Primary"
-        disabled={loading || selectedAccountIndex === undefined}
-        onPress={() => handleConfirmAuth()}>
-        {loading ? 'Loading...' : 'Confirm'}
-      </GeneralButton>
     </View>
   );
 };

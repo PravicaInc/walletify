@@ -1,33 +1,24 @@
-import React, {
-  useCallback,
-  useContext,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import React, { useCallback, useContext, useRef, useState } from 'react';
+import {
+  KeyboardAvoidingView,
+  Platform,
+  TouchableOpacity,
+  View,
+  ScrollView,
+} from 'react-native';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { ThemeContext } from '../../contexts/Theme/theme';
 import styles from './styles';
 import Header from '../../components/shared/Header';
 import HeaderBack from '../../components/shared/HeaderBack';
 import { Typography } from '../../components/shared/Typography';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import AccountAsset from '../../components/Home/AccountAsset';
+import AssetPicker from '../../components/Home/AssetPicker';
 import SimpleTextInput from '../../components/shared/SimpleTextInput';
 import ScanQrIcon from '../../assets/images/scanQr.svg';
 import ScanQrBottomSheet from '../../components/ScanQrBottomSheet';
 import { useAccounts } from '../../hooks/useAccounts/useAccounts';
-import { useAtomValue } from 'jotai/utils';
-import { currentAccountAvailableStxBalanceState } from '../../hooks/useAccounts/accountsStore';
 import { AccountToken } from '../../models/account';
-import StxTokenIcon from '../../assets/images/stx.svg';
-import {
-  isTxMemoValid,
-  microStxToStx,
-  valueFromBalance,
-} from '../../shared/balanceUtils';
-import BigNumber from 'bignumber.js';
+import { isTxMemoValid } from '../../shared/balanceUtils';
 import { useStxPriceValue } from '../../hooks/useStxPrice/useStxPrice';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import WarningIcon from '../../assets/images/note-icon.svg';
@@ -35,26 +26,33 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { usePasswordField } from '../../hooks/common/usePasswordField';
 import { FeesCalculations } from '../../components/FeesCalculations';
 import { SelectedFee } from '../../shared/types';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../navigation/types';
+import BigNumber from 'bignumber.js';
+import { withSuspense } from '../../components/shared/WithSuspense';
 
-const SendForm: React.FC = () => {
+type SendFormProps = NativeStackScreenProps<RootStackParamList, 'SendForm'>;
+
+const SendForm: React.FC<SendFormProps> = ({
+  route: {
+    params: { asset },
+  },
+}) => {
   const {
     theme: { colors },
   } = useContext(ThemeContext);
   const [selectedFee, setSelectedFee] = useState<SelectedFee>();
   const qrScanRef = useRef<BottomSheetModal>(null);
   const { selectedAccountState: account } = useAccounts();
-  const price = useStxPriceValue();
-  const stxBalance = useAtomValue(currentAccountAvailableStxBalanceState);
-  const [selectedAsset] = useState<AccountToken>({
-    name: 'STX',
-    defaultStyles: {
-      backgroundColor: 'black',
-    },
-    icon: StxTokenIcon,
-    amount: valueFromBalance(stxBalance as BigNumber, 'stx'),
-  });
+  const [selectedAsset, setSelectedAsset] = useState<AccountToken>(asset);
+
+  const { name, amount: balance } = selectedAsset;
+
+  const stxPrice = useStxPriceValue();
+  const price = selectedAsset.name === 'STX' ? stxPrice : undefined;
+
   const { dispatch } = useNavigation();
-  const balance = useAtomValue(currentAccountAvailableStxBalanceState);
+
   const {
     handleChangeText: setMemo,
     error: memoError,
@@ -91,24 +89,20 @@ const SendForm: React.FC = () => {
     input: amount,
   } = usePasswordField(
     async (inputValue: string) => {
-      if (String(+inputValue) !== inputValue || +inputValue <= -1) {
+      if (String(+inputValue) !== inputValue || +inputValue <= 0) {
         throw Error('Please enter a valid amount');
       }
     },
     undefined,
     0,
   );
-  const fullBalance = useMemo(() => {
-    if (balance) {
-      return valueFromBalance(balance.multipliedBy(price), 'stx', {
-        fixedDecimals: false,
-      });
-    }
-    return NaN;
-  }, [balance, price]);
-  const isEnoughBalance = microStxToStx(balance || '0').gt(
-    Number(amount || '0') + Number(selectedFee?.fee || '0'),
+  const isEnoughBalance = new BigNumber(
+    Number((balance || '0').replace(/[^0-9.-]+/g, '')),
+  ).gte(
+    Number(amount || '0') +
+      Number(selectedAsset.name === 'STX' ? selectedFee?.fee || '0' : '0'),
   );
+
   const handleGoBack = useCallback(() => dispatch(StackActions.pop()), []);
   const handlePresentQrScan = useCallback(() => {
     qrScanRef.current?.snapToIndex(0);
@@ -123,14 +117,19 @@ const SendForm: React.FC = () => {
         selectedFee,
       }),
     );
-  }, [amount, recipient, memo, selectedAsset]);
+  }, [amount, recipient, memo, selectedAsset, selectedFee]);
   const handleMaxClicked = useCallback(() => {
     handleChangeAmount(
-      microStxToStx(balance || '0')
-        ?.minus(selectedFee?.fee || '0')
+      new BigNumber(Number((balance || '0').replace(/[^0-9.-]+/g, '')))
+        ?.minus(
+          Number(selectedAsset.name === 'STX' ? selectedFee?.fee || '0' : '0'),
+        )
         .toString(),
     );
   }, [balance, selectedFee]);
+  const resetForm = useCallback(() => {
+    handleChangeAmount(undefined);
+  }, []);
   const isReadyForPreview =
     amount && recipient && !amountError && !recipientError && !memoError;
   return (
@@ -157,133 +156,136 @@ const SendForm: React.FC = () => {
           </TouchableOpacity>
         }
       />
-      <KeyboardAwareScrollView
-        resetScrollToCoords={{ x: 0, y: 0 }}
-        contentContainerStyle={styles.inputsContainer}
-        scrollEnabled={false}
-        extraHeight={132}
-        extraScrollHeight={132}>
-        {selectedAsset && (
-          <AccountAsset
-            item={selectedAsset}
-            showFullBalance
-            fullBalance={`~ $${fullBalance}`}
+      <KeyboardAvoidingView
+        style={styles.inputsContainer}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={0}>
+        <ScrollView
+          style={styles.contentContainer}
+          contentContainerStyle={styles.scroller}
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}>
+          <AssetPicker
+            resetForm={resetForm}
+            selectedAsset={selectedAsset}
+            setSelectedAsset={setSelectedAsset}
           />
-        )}
-        {!isEnoughBalance && (
-          <View
-            style={[
-              styles.noBalanceCard,
-              {
-                backgroundColor: colors.failed10,
-                borderColor: colors.failed100,
-              },
-            ]}>
+          {!isEnoughBalance && (
+            <View
+              style={[
+                styles.noBalanceCard,
+                {
+                  backgroundColor: colors.failed10,
+                  borderColor: colors.failed100,
+                },
+              ]}>
+              <WarningIcon
+                width={15}
+                height={15}
+                fill={colors.failed100}
+                fillOpacity={0}
+                stroke={colors.failed100}
+              />
+              <View style={styles.noBalanceRow}>
+                <Typography
+                  type="smallTextBold"
+                  style={{
+                    color: colors.failed100,
+                  }}>
+                  Insufficient balance
+                </Typography>
+                <Typography
+                  type="smallText"
+                  style={{
+                    color: colors.failed100,
+                  }}>
+                  {`You don't have enough balance to proceed this transaction, \nAvailable Balance: ${balance} ${name}`}
+                </Typography>
+              </View>
+            </View>
+          )}
+          <SimpleTextInput
+            onChangeText={handleChangeAmount}
+            value={amount}
+            label="Amount"
+            placeholder="0.00000000"
+            keyboardType="decimal-pad"
+            icon={
+              <TouchableOpacity activeOpacity={0.6} onPress={handleMaxClicked}>
+                <Typography
+                  type="buttonText"
+                  style={{ color: colors.secondary100 }}>
+                  MAX
+                </Typography>
+              </TouchableOpacity>
+            }
+            subtext={
+              selectedAsset.name === 'STX' && (
+                <Typography
+                  type="commonText"
+                  style={[
+                    {
+                      color: colors.primary40,
+                    },
+                    styles.alignRight,
+                  ]}>
+                  {price ? `~ $${(+(amount || 0) * price).toFixed(2)}` : ''}
+                </Typography>
+              )
+            }
+            errorMessage={amountError}
+          />
+          <SimpleTextInput
+            onChangeText={handleChangeRecipient}
+            value={recipient}
+            label="Recipient Address"
+            placeholder="Enter an address"
+            maxLength={50}
+            icon={
+              <TouchableOpacity onPress={handlePresentQrScan}>
+                <ScanQrIcon stroke={colors.secondary100} />
+              </TouchableOpacity>
+            }
+            errorMessage={recipientError}
+          />
+          <ScanQrBottomSheet
+            ref={qrScanRef}
+            setRecipient={handleChangeRecipient}
+          />
+          <SimpleTextInput
+            onChangeText={setMemo}
+            value={memo}
+            label="Memo"
+            placeholder="Enter a message (Optional)"
+            errorMessage={memoError}
+          />
+          <View style={[styles.noteWrapper, { backgroundColor: colors.card }]}>
             <WarningIcon
               width={15}
               height={15}
-              fill={colors.failed100}
-              fillOpacity={0}
-              stroke={colors.failed100}
+              fill={colors.secondary100}
+              fillOpacity={0.1}
+              stroke={colors.secondary100}
             />
-            <View style={styles.noBalanceRow}>
-              <Typography
-                type="smallTextBold"
-                style={{
-                  color: colors.failed100,
-                }}>
-                Insufficient balance
-              </Typography>
-              <Typography
-                type="smallText"
-                style={{
-                  color: colors.failed100,
-                }}>
-                {`You have not enough balance to proceed this transaction, \nAvailable Balance: ${microStxToStx(
-                  balance || '0',
-                )} STX`}
-              </Typography>
-            </View>
-          </View>
-        )}
-        <SimpleTextInput
-          onChangeText={handleChangeAmount}
-          value={amount}
-          label="Amount"
-          placeholder="0.00000000"
-          keyboardType="decimal-pad"
-          icon={
-            <TouchableOpacity activeOpacity={0.6} onPress={handleMaxClicked}>
-              <Typography
-                type="buttonText"
-                style={{ color: colors.secondary100 }}>
-                MAX
-              </Typography>
-            </TouchableOpacity>
-          }
-          subtext={
             <Typography
               type="commonText"
-              style={[
-                {
-                  color: colors.primary40,
-                },
-                styles.alignRight,
-              ]}>
-              {`~ $${(+(amount || 0) * price).toFixed(2)}`}
+              style={[styles.note, { color: colors.primary40 }]}>
+              If you are sending to an exchange, be sure to include the memo the
+              exchange provided so the STX is credited to your account
             </Typography>
-          }
-          errorMessage={amountError}
-        />
-        <SimpleTextInput
-          onChangeText={handleChangeRecipient}
-          value={recipient}
-          label="Recipient Address"
-          placeholder="Enter an address"
-          maxLength={50}
-          icon={
-            <TouchableOpacity onPress={handlePresentQrScan}>
-              <ScanQrIcon stroke={colors.secondary100} />
-            </TouchableOpacity>
-          }
-          errorMessage={recipientError}
-        />
-        <ScanQrBottomSheet
-          ref={qrScanRef}
-          setRecipient={handleChangeRecipient}
-        />
-        <SimpleTextInput
-          onChangeText={setMemo}
-          value={memo}
-          label="Memo"
-          placeholder="Enter a message (Optional)"
-          errorMessage={memoError}
-        />
-        <View style={[styles.noteWrapper, { backgroundColor: colors.card }]}>
-          <WarningIcon
-            width={15}
-            height={15}
-            fill={colors.secondary100}
-            fillOpacity={0.1}
-            stroke={colors.secondary100}
+          </View>
+          <FeesCalculations
+            selectedAsset={selectedAsset}
+            recipient={recipient}
+            amount={amount}
+            setSelectedFee={setSelectedFee}
+            memo={memo}
+            selectedFee={selectedFee}
           />
-          <Typography
-            type="commonText"
-            style={[styles.note, { color: colors.primary40 }]}>
-            If you are sending to an exchange, be sure to include the memo the
-            exchange provided so the STX is credited to your account
-          </Typography>
-        </View>
-        <FeesCalculations
-          recipient={recipient}
-          amount={amount}
-          setSelectedFee={setSelectedFee}
-          memo={memo}
-          selectedFee={selectedFee}
-        />
-      </KeyboardAwareScrollView>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
 
-export default SendForm;
+export default withSuspense(SendForm);

@@ -11,6 +11,9 @@ import * as Sentry from '@sentry/react-native';
 import Config from 'react-native-config';
 import Toast from 'react-native-toast-message';
 import { toastConfig } from './src/components/Toast/ToastConfig';
+import { QueryClient, QueryClientProvider } from 'react-query';
+
+const queryClient = new QueryClient();
 
 export default function App() {
   const [theme, setTheme] = useState<Theme>(DefaultTheme);
@@ -23,22 +26,24 @@ export default function App() {
   }, []);
 
   return (
-    <UserPreference>
-      <SafeAreaProvider>
-        <ThemeContext.Provider value={{ theme, setTheme }}>
-          <NavigationContainer>
-            <BottomSheetModalProvider>
-              <PortalProvider>
-                <Routes />
-              </PortalProvider>
-            </BottomSheetModalProvider>
-          </NavigationContainer>
-          <Toast
-            config={toastConfig(theme.colors)}
-            ref={ref => Toast.setRef(ref)}
-          />
-        </ThemeContext.Provider>
-      </SafeAreaProvider>
-    </UserPreference>
+    <QueryClientProvider client={queryClient}>
+      <UserPreference>
+        <SafeAreaProvider>
+          <ThemeContext.Provider value={{ theme, setTheme }}>
+            <NavigationContainer>
+              <BottomSheetModalProvider>
+                <PortalProvider>
+                  <Routes />
+                </PortalProvider>
+              </BottomSheetModalProvider>
+            </NavigationContainer>
+            <Toast
+              config={toastConfig(theme.colors)}
+              ref={ref => Toast.setRef(ref)}
+            />
+          </ThemeContext.Provider>
+        </SafeAreaProvider>
+      </UserPreference>
+    </QueryClientProvider>
   );
 }

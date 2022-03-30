@@ -6,8 +6,10 @@ export interface UserPreference {
 }
 
 export type UserPreferenceContextValue = {
+  stxPrice: number;
   userPreference: UserPreference;
   setEncryptedSeed: (encryptedSeed: string) => void;
+  setStxPrice: (value: number) => void;
   setHasEnabledBiometric: (hasEnabledBiometric: boolean) => void;
   setViewedOnBoarding: (hasViewedOnBoarding: boolean) => void;
   clearUserPreference: () => void;

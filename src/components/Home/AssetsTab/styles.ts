@@ -1,13 +1,17 @@
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
-  assetsList: {
-    flex: 1,
-    paddingTop: 20,
+  assetGroupHeader: {
+    marginTop: 20,
+    marginBottom: 10,
   },
-  assetsListContent: {
-    flexGrow: 1,
-    paddingBottom: 20,
+  assetsList: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+  },
+  lastAsset: {
+    marginRight: 'auto',
   },
   emptyContainer: {
     flex: 1,
@@ -25,4 +29,5 @@ export default StyleSheet.create({
   copyAddressIcon: {
     marginLeft: 5,
   },
+  contentLoader: { alignSelf: 'center', marginTop: 20 },
 });

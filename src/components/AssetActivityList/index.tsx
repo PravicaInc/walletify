@@ -1,19 +1,19 @@
-import React, { useCallback, useContext } from 'react';
+import React, { useCallback, useContext, useMemo } from 'react';
 import {
   ActivityIndicator,
   ListRenderItem,
   SectionList,
   View,
 } from 'react-native';
-import NoActivity from '../../../assets/images/Home/noActivity.svg';
-import { Typography } from '../../shared/Typography';
-import { ThemeContext } from '../../../contexts/Theme/theme';
-import activityTabStyles from './styles';
-import { useTransactions } from '../../../hooks/useTransactions/useTransactions';
+import NoActivity from '../../assets/images/noActivity.svg';
+import { Typography } from '../shared/Typography';
+import { ThemeContext } from '../../contexts/Theme/theme';
+import styles from './styles';
+import { useTransactions } from '../../hooks/useTransactions/useTransactions';
 import { AddressTransactionWithTransfers } from '@stacks/blockchain-api-client';
 import type { MempoolTransaction } from '@stacks/stacks-blockchain-api-types';
-import AccountTransaction from '../AccountTransaction';
-import { isAddressTransactionWithTransfers } from '../../../shared/transactionUtils';
+import AccountTransaction from './AccountTransaction';
+import { isAddressTransactionWithTransfers } from '../../shared/transactionUtils';
 import {
   format,
   startOfDay,
@@ -21,8 +21,7 @@ import {
   isYesterday,
   isToday,
 } from 'date-fns';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { SubmittedTransaction } from '../../../models/transactions';
+import { SubmittedTransaction } from '../../models/transactions';
 
 const formatDate = (date: number) => {
   if (isToday(date)) {
@@ -34,7 +33,17 @@ const formatDate = (date: number) => {
   return format(date, 'MMMM dd, yyyy');
 };
 
-const ActivityTab: React.FC = () => {
+type AssetActivityListProps = {
+  assetNameFilter?: string;
+  isStx?: boolean;
+  listStyles?: any;
+};
+
+const AssetActivityList: React.FC<AssetActivityListProps> = ({
+  assetNameFilter,
+  isStx,
+  listStyles,
+}) => {
   const {
     theme: { colors },
   } = useContext(ThemeContext);
@@ -46,11 +55,10 @@ const ActivityTab: React.FC = () => {
     isRefreshing,
     refreshTransactionsList,
   } = useTransactions();
-  const { bottom } = useSafeAreaInsets();
 
   const EmptyActivity = useCallback(() => {
     return (
-      <View style={activityTabStyles.emptyContainer}>
+      <View style={styles.emptyContainer}>
         <NoActivity />
         {loading ? (
           <ActivityIndicator color={colors.secondary100} />
@@ -58,7 +66,7 @@ const ActivityTab: React.FC = () => {
           <Typography
             type="commonText"
             style={[
-              activityTabStyles.emptyMessage,
+              styles.emptyMessage,
               {
                 color: colors.primary40,
               },
@@ -76,15 +84,48 @@ const ActivityTab: React.FC = () => {
     return <AccountTransaction transaction={item} />;
   }, []);
 
-  const groupTxsByDateMap2 = (
-    txs: (
-      | SubmittedTransaction
-      | AddressTransactionWithTransfers
-      | MempoolTransaction
-    )[],
-  ) => {
+  const filteredTransactions = useMemo(() => {
+    let txs = [...mempoolTransactions, ...accountTransactionsWithTransfers];
+    if (!assetNameFilter) {
+      txs = [...submittedTransactions, ...txs] as any;
+    } else {
+      if (isStx) {
+        txs = txs.filter(atx => {
+          const tx = isAddressTransactionWithTransfers(atx) ? atx.tx : atx;
+          return (
+            tx.tx_type === 'token_transfer' ||
+            (tx.tx_type === 'contract_call' &&
+              (atx?.stx_transfers || []).length > 0)
+          );
+        });
+      } else {
+        txs = txs.filter(atx => {
+          const tx = isAddressTransactionWithTransfers(atx) ? atx.tx : atx;
+          const acceptedTypes = tx.tx_type === 'contract_call';
+          return (
+            acceptedTypes &&
+            ((atx?.ft_transfers || []).filter(transfer =>
+              transfer.asset_identifier.includes(assetNameFilter),
+            ).length > 0 ||
+              (atx?.nft_transfers || []).filter(transfer =>
+                transfer.asset_identifier.includes(assetNameFilter),
+              ).length > 0 ||
+              tx?.contract_call?.contract_id === assetNameFilter)
+          );
+        });
+      }
+    }
+    return txs;
+  }, [
+    assetNameFilter,
+    submittedTransactions,
+    mempoolTransactions,
+    accountTransactionsWithTransfers,
+  ]);
+
+  const groupedTxsByDateMap = useMemo(() => {
     return Object.values(
-      txs.reduce((txsByDate, atx) => {
+      filteredTransactions.reduce((txsByDate, atx) => {
         const tx = isAddressTransactionWithTransfers(atx) ? atx.tx : atx;
         const date: number = startOfDay(
           ('burn_block_time' in tx &&
@@ -112,19 +153,14 @@ const ActivityTab: React.FC = () => {
         };
       },
     );
-  };
-
+  }, [filteredTransactions]);
   return (
     <SectionList
-      sections={groupTxsByDateMap2([
-        ...submittedTransactions,
-        ...mempoolTransactions,
-        ...accountTransactionsWithTransfers,
-      ])}
+      sections={groupedTxsByDateMap}
       renderSectionHeader={info => (
         <Typography
           type="commonText"
-          style={{ color: colors.primary40, paddingBottom: 10 }}>
+          style={[{ color: colors.primary40 }, styles.sectionHeader]}>
           {formatDate(info.section.title)}
         </Typography>
       )}
@@ -133,12 +169,12 @@ const ActivityTab: React.FC = () => {
       showsHorizontalScrollIndicator={false}
       showsVerticalScrollIndicator={false}
       renderItem={renderTransaction}
-      style={[activityTabStyles.activityList, { marginBottom: bottom + 10 }]}
-      contentContainerStyle={activityTabStyles.activityListContent}
+      style={styles.activityList}
+      contentContainerStyle={[styles.activityListContent, listStyles]}
       ListEmptyComponent={EmptyActivity}
       stickySectionHeadersEnabled={false}
     />
   );
 };
 
-export default ActivityTab;
+export default AssetActivityList;

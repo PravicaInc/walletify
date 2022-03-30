@@ -1,30 +1,22 @@
 import React, { useCallback, useContext } from 'react';
-import {
-  Alert,
-  FlatList,
-  ListRenderItem,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { Alert, ScrollView, TouchableOpacity, View } from 'react-native';
 import ContentLoader, { Circle, Rect } from 'react-content-loader/native';
 import { useAccounts } from '../../../hooks/useAccounts/useAccounts';
-import AccountAsset from '../AccountAsset';
+import LargeAccountAsset from '../LargeAccountAsset';
 import { Typography } from '../../shared/Typography';
 import { ThemeContext } from '../../../contexts/Theme/theme';
 import NoAssets from '../../../assets/images/Home/noAssets.svg';
 import Copy from '../../../assets/images/copy.svg';
 import Clipboard from '@react-native-clipboard/clipboard';
 import styles from './styles';
-import { AccountToken } from '../../../models/account';
-import { withSuspense } from '../../shared/WithSuspense';
 import { useAssets } from '../../../hooks/useAssets/useAssets';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { withSuspense } from '../../shared/WithSuspense';
+import { AccountToken } from '../../../models/account';
 
 const AssetsTab: React.FC = () => {
   const {
     theme: { colors },
   } = useContext(ThemeContext);
-  const { bottom } = useSafeAreaInsets();
   const { selectedAccountState: account } = useAccounts();
   const { selectedAccountAssets: assets } = useAssets();
 
@@ -59,14 +51,68 @@ const AssetsTab: React.FC = () => {
     );
   }, [account]);
 
-  const renderAsset: ListRenderItem<AccountToken> = useCallback(({ item }) => {
-    return <AccountAsset item={item} />;
-  }, []);
+  const renderGroup = (group: AccountToken[], hasPreview?: boolean) => {
+    return group.map((a, idx) => {
+      if (group.length % 2 !== 0 && idx === group.length - 1) {
+        return (
+          <LargeAccountAsset
+            hasPreview={hasPreview}
+            key={idx}
+            item={a}
+            style={styles.lastAsset}
+          />
+        );
+      } else {
+        return <LargeAccountAsset hasPreview={hasPreview} key={idx} item={a} />;
+      }
+    });
+  };
+
+  const renderedAssets = useCallback(() => {
+    const coins = assets.filter(a => a.isFungible);
+    const collectibles = assets.filter(a => !a.isFungible);
+
+    let children = [];
+
+    if (coins.length > 0) {
+      children.push(
+        <Typography
+          key={'coins'}
+          style={[styles.assetGroupHeader, { color: colors.primary40 }]}
+          type="smallTitleR">
+          Coins
+        </Typography>,
+      );
+      children.push(
+        <View key={'coins-view'} style={styles.assetsList}>
+          {renderGroup(coins, true)}
+        </View>,
+      );
+    }
+
+    if (collectibles.length > 0) {
+      children.push(
+        <Typography
+          key={'collectibles'}
+          style={[styles.assetGroupHeader, { color: colors.primary40 }]}
+          type="smallTitleR">
+          Collectibles
+        </Typography>,
+      );
+      children.push(
+        <View key={'collectibles-view'} style={styles.assetsList}>
+          {renderGroup(collectibles)}
+        </View>,
+      );
+    }
+
+    return children;
+  }, [assets]);
 
   if (account === undefined && assets?.length === 0) {
     return (
       <ContentLoader
-        style={{ alignSelf: 'center', marginTop: 20 }}
+        style={styles.contentLoader}
         speed={2}
         width={250}
         height={220}
@@ -87,18 +133,14 @@ const AssetsTab: React.FC = () => {
         <Circle cx="20" cy="200" r="20" />
       </ContentLoader>
     );
+  } else if (assets === undefined || assets.length === 0) {
+    return EmptyAsset();
   }
 
   return (
-    <FlatList
-      data={assets}
-      showsHorizontalScrollIndicator={false}
-      showsVerticalScrollIndicator={false}
-      renderItem={renderAsset}
-      style={[styles.assetsList, { marginBottom: bottom + 10 }]}
-      contentContainerStyle={styles.assetsListContent}
-      ListEmptyComponent={EmptyAsset}
-    />
+    <ScrollView showsVerticalScrollIndicator={false}>
+      {renderedAssets()}
+    </ScrollView>
   );
 };
 

@@ -59,7 +59,7 @@ const ScanQrBottomSheet = React.forwardRef<any, Props>(
           onChange={handleSheetChanges}>
           <SafeAreaView style={styles.container}>
             <SafeAreaView style={styles.headerContainer}>
-              <StatusBar barStyle={'light-content'} />
+              {isOpen && <StatusBar barStyle={'light-content'} />}
               <Header
                 title="Scan Recipient QR Code"
                 titleColor={colors.white}
@@ -75,7 +75,11 @@ const ScanQrBottomSheet = React.forwardRef<any, Props>(
             <View style={styles.itemsContainer}>
               <View style={styles.scanner}>
                 {isOpen && (
-                  <QRCodeScanner showMarker={true} onRead={onSuccess} />
+                  <QRCodeScanner
+                    cameraStyle={{ height: '100%' }}
+                    showMarker={true}
+                    onRead={onSuccess}
+                  />
                 )}
               </View>
               <View style={styles.footer}>

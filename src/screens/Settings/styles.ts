@@ -9,8 +9,8 @@ export const styles = StyleSheet.create({
     paddingLeft: 0,
   },
   contentContainer: {
-    paddingHorizontal: 25,
-    paddingVertical: PADDING_VERTICAL,
+    paddingHorizontal: '2.5%',
+    paddingBottom: PADDING_VERTICAL,
     flex: 1,
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -37,6 +37,7 @@ export const styles = StyleSheet.create({
     width: '100%',
     marginTop: 26,
     borderBottomWidth: 0.5,
+    paddingBottom: 15,
   },
   settingsItem: {
     flexDirection: 'row',

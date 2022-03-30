@@ -8,13 +8,15 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     paddingHorizontal: PADDING_HORIZONTAL,
-    justifyContent: 'center',
     alignItems: 'center',
     flex: 1,
+    paddingTop: 40,
   },
   header: {
     paddingHorizontal: PADDING_HORIZONTAL,
-    paddingTop: 22,
+  },
+  smallSpace: {
+    marginHorizontal: 2,
   },
   progress: {
     marginTop: '5%',
@@ -31,14 +33,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   title: { marginVertical: 10 },
-  description: { textAlign: 'center' },
-  seedTitle: { marginBottom: 10, marginTop: 'auto' },
+  description: { textAlign: 'center', marginBottom: 50 },
   confirmContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  pusher: {
-    marginTop: 'auto',
   },
   button: {
     width: '100%',
@@ -47,6 +45,15 @@ const styles = StyleSheet.create({
     borderRadius: 13,
     height: 60,
     marginBottom: 10,
+  },
+  reveal: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    position: 'absolute',
+    top: '25%',
+    bottom: '25%',
+    width: '100%',
+    alignItems: 'center',
   },
 });
 

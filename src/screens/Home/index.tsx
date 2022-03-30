@@ -11,8 +11,9 @@ import { styles } from './styles';
 import { useAccounts } from '../../hooks/useAccounts/useAccounts';
 import SwitchAccountBottomSheet from '../../components/Accounts/SwitchAccountBottomSheet';
 import BottomSheet from '@gorhom/bottom-sheet';
-import SwitchAccountButton from './SwitchAccountButton';
+import SwitchAccountButton from '../../components/SwitchAccountButton';
 import { withSuspense } from '../../components/shared/WithSuspense';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const Home = () => {
   const {
@@ -46,7 +47,7 @@ const Home = () => {
   }, []);
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.white }]}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.white }]}>
       <View style={styles.contentContainer}>
         <Header
           containerStyles={styles.header}
@@ -61,6 +62,7 @@ const Home = () => {
           }
         />
         <SwitchAccountButton
+          mode="large"
           handlePressSwitchAccount={handlePressSwitchAccount}
         />
         <AccountBalanceCard />
@@ -73,7 +75,7 @@ const Home = () => {
         onSwitch={handleSwitchAccount}
         onCancel={handleCancelSwitchAccount}
       />
-    </View>
+    </SafeAreaView>
   );
 };
 

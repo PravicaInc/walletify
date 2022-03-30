@@ -63,12 +63,13 @@ const mapAssetResponseToToken = async (
         );
 
         return {
-          name: isFungible ? assetName.toUpperCase() : assetName,
+          name: assetName,
           amount: calculatedAmount,
           contractName,
           contractAddress: address,
           isFungible,
           metaData: localAsset,
+          fullContractId: fungibleKey,
         };
       }),
   );
@@ -97,7 +98,9 @@ export const assets = atom(async get => {
       },
       icon: StxTokenIcon,
       amount: valueFromBalance(stxBalance as BigNumber, 'stx'),
+      isFungible: true,
     };
+
     if (new BigNumber(0).isLessThan(stxBalance)) {
       results.push(stxToken);
     }

@@ -9,7 +9,6 @@ import { AccountToken } from '../../models/account';
 import TokenAvatar from '../Home/TokenAvatar';
 import { capitalizeFirstLetter } from '../../shared/helpers';
 import { SelectedFee } from '../../shared/types';
-import { FeesCalculations } from '../FeesCalculations';
 
 type Props = {
   sender: string;
@@ -59,6 +58,7 @@ const PreviewTransfer = ({
               CustomIcon={selectedAsset.icon}
               customStyle={{ ...selectedAsset.defaultStyles, ...styles.avatar }}
               tokenName={selectedAsset.name}
+              tokenURL={selectedAsset?.metaData?.image_uri}
             />
             <Typography style={{ color: colors.primary100 }} type="bigTitle">
               {amount}
@@ -66,7 +66,7 @@ const PreviewTransfer = ({
             <Typography
               style={[styles.assetName, { color: colors.primary40 }]}
               type="bigTitleR">
-              {selectedAsset.name}
+              {selectedAsset.name.toUpperCase()}
             </Typography>
           </View>
           {selectedAsset.name === 'STX' && (

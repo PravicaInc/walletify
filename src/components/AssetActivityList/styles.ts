@@ -3,11 +3,10 @@ import { StyleSheet } from 'react-native';
 const activityTabStyles = StyleSheet.create({
   activityList: {
     flex: 1,
-    paddingTop: 20,
   },
   activityListContent: {
     flexGrow: 1,
-    paddingBottom: 40,
+    paddingTop: 20,
   },
   emptyContainer: {
     flex: 1,
@@ -16,6 +15,9 @@ const activityTabStyles = StyleSheet.create({
   },
   emptyMessage: {
     marginTop: 14,
+  },
+  sectionHeader: {
+    paddingBottom: 10,
   },
 });
 export default activityTabStyles;

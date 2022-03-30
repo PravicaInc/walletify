@@ -52,7 +52,7 @@ export const valueFromBalance = (
 ) =>
   type === 'ft'
     ? ftDecimals(balance, meta?.decimals || 0)
-    : type === 'stx'
+    : type === 'stx' || type === 'STX'
     ? stacksValue({
         value: balance || 0,
         withTicker: false,
@@ -61,6 +61,14 @@ export const valueFromBalance = (
     : balance.toString();
 
 export const STX_DECIMALS = 6;
+
+export const ftUnshiftDecimals = (
+  value: number | string | BigNumber,
+  decimals: number,
+) => {
+  const amount = initBigNumber(value);
+  return amount.shiftedBy(decimals).toString(10);
+};
 
 export const microStxToStx = (mStx: number | string | BigNumber) => {
   const microStacks = initBigNumber(mStx);

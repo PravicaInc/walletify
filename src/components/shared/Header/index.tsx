@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import { View, StyleSheet, ActivityIndicator, ViewStyle } from 'react-native';
 import { Typography } from '../Typography';
 import { ThemeContext } from '../../../contexts/Theme/theme';
-import { PADDING_HORIZONTAL } from '../../../shared/layout';
 
 interface IProps {
   leftComponent: React.ReactNode;

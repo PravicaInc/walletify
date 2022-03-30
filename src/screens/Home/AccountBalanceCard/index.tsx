@@ -14,12 +14,15 @@ import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import ReceiveBottomSheet from '../../../components/ReceiveBottomSheet';
 import { useAccounts } from '../../../hooks/useAccounts/useAccounts';
 import { StackActions, useNavigation } from '@react-navigation/native';
+import { useAssets } from '../../../hooks/useAssets/useAssets';
+import BigNumber from 'bignumber.js';
 
 const AccountBalanceCard: React.FC = () => {
   const {
     theme: { colors },
   } = useContext(ThemeContext);
   const { selectedAccountState: account } = useAccounts();
+  const { selectedAccountAssets: assets } = useAssets();
   const { dispatch } = useNavigation();
   const balance = useAtomValue(currentAccountAvailableStxBalanceState);
   const price = useStxPriceValue();
@@ -27,8 +30,19 @@ const AccountBalanceCard: React.FC = () => {
   const receiveRef = useRef<BottomSheetModal>(null);
 
   const handlePresentSend = useCallback(() => {
-    dispatch(StackActions.push('sendForm'));
-  }, []);
+    const stxAsset = assets.find(a => a.name === 'STX');
+    if (!stxAsset) {
+      return;
+    }
+    dispatch(
+      StackActions.push('sendForm', {
+        asset: {
+          ...stxAsset,
+          value: valueFromBalance(balance || new BigNumber(0), 'stx'),
+        },
+      }),
+    );
+  }, [account, assets, balance]);
 
   const handlePresentReceive = useCallback(() => {
     receiveRef.current?.snapToIndex(0);
@@ -55,7 +69,7 @@ const AccountBalanceCard: React.FC = () => {
         },
       ]}>
       <Typography type="commonText" style={{ color: colors.primary40 }}>
-        Total STX Balance:
+        Total STX Balance in USD
       </Typography>
       <View style={styles.balanceContainer}>
         {balanceAvailable && (

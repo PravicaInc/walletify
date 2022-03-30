@@ -18,4 +18,6 @@ export const UserPreferenceContext = createContext<UserPreferenceContextValue>({
   setViewedOnBoarding: () => null,
   setUserPreference: () => null,
   clearUserPreference: () => null,
+  stxPrice: 0,
+  setStxPrice: () => null,
 });

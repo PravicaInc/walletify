@@ -96,7 +96,7 @@ const CreatePassword: React.FC<Props> = ({
       throw Error('You need at least 12 characters');
     } else {
       try {
-        await decryptMnemonic(encryptedSeedPhrase, password);
+        await decryptMnemonic(encryptedSeedPhrase, password || '');
       } catch (e) {
         throw Error('The password is incorrect!');
       }
@@ -140,7 +140,7 @@ const CreatePassword: React.FC<Props> = ({
 
   const handleEditConfirm = useCallback(() => {
     setLoading();
-    handleEditPassword(oldPassword, password)
+    handleEditPassword(oldPassword || '', password || '')
       .then(setSuccess)
       .catch(e => {
         setOldPasswordError(e);
@@ -149,7 +149,7 @@ const CreatePassword: React.FC<Props> = ({
   }, [handleEditPassword, password, oldPassword]);
 
   const canGoNext =
-    (isEditPassword ? oldPassword.length >= 12 : true) &&
+    (isEditPassword ? (oldPassword || '').length >= 12 : true) &&
     !confirmPasswordError &&
     !passwordError &&
     passwordTouched &&
@@ -161,7 +161,7 @@ const CreatePassword: React.FC<Props> = ({
     try {
       if (biometricEnabled) {
         await SecureKeychain.setGenericPassword(
-          password,
+          password || '',
           ACCESS_CONTROL.BIOMETRY_CURRENT_SET,
         );
         setHasEnabledBiometric(biometricEnabled);
@@ -216,7 +216,7 @@ const CreatePassword: React.FC<Props> = ({
         title={isEditPassword && 'Change Password'}
         isRightLoading={loading}
         rightComponent={
-          isEditPassword && (
+          isEditPassword ? (
             <TouchableOpacity
               style={styles.confirmContainer}
               onPress={handleEditConfirm}
@@ -228,6 +228,20 @@ const CreatePassword: React.FC<Props> = ({
                   !canGoNext && { color: colors.primary40 },
                 ]}>
                 Confirm
+              </Typography>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              onPress={handlePressCreate}
+              disabled={!canGoNext}
+              style={styles.confirmContainer}>
+              <Typography
+                type="buttonText"
+                style={[
+                  { color: colors.secondary100 },
+                  !canGoNext && { color: colors.primary40 },
+                ]}>
+                Create
               </Typography>
             </TouchableOpacity>
           )
@@ -248,7 +262,7 @@ const CreatePassword: React.FC<Props> = ({
           scrollEnabled={isEditPassword}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.scrollableContent}>
-          <View style={styles.pusher}>
+          <View style={styles.smallPusher}>
             <Animated.View style={[styles.hiddenItems, animatedStyles]}>
               <PasswordShield />
               <Typography type="bigTitle" style={styles.title}>
@@ -368,22 +382,7 @@ const CreatePassword: React.FC<Props> = ({
                   </View>
                 </View>
               </View>
-              <TouchableOpacity
-                onPress={handlePressCreate}
-                disabled={!canGoNext}
-                style={[
-                  styles.button,
-                  styles.pusher,
-                  {
-                    backgroundColor: canGoNext
-                      ? colors.primary100
-                      : colors.primary20,
-                  },
-                ]}>
-                <Typography type="buttonText" style={{ color: colors.white }}>
-                  Create
-                </Typography>
-              </TouchableOpacity>
+              <View style={styles.pusher} />
             </>
           )}
         </ScrollView>

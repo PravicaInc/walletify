@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
-  buttonContainer: {
+  largeButtonContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     height: 60,
@@ -9,22 +9,33 @@ export default StyleSheet.create({
     marginBottom: 20,
     borderRadius: 13,
   },
+  smallButtonContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    height: 40,
+    maxWidth: 200,
+    paddingVertical: 5,
+    paddingHorizontal: 7,
+    borderRadius: 20,
+  },
   switchIconContainer: {
     justifyContent: 'flex-end',
     alignItems: 'center',
     flexDirection: 'row',
+    marginLeft: 'auto',
   },
   switchText: {
     marginRight: 3,
   },
   accountInfo: {
-    flex: 1,
+    flexShrink: 1,
     marginLeft: 6,
   },
   accountName: {
-    width: '100%',
+    marginBottom: 3,
   },
   address: {
-    paddingTop: 6,
+    marginTop: 3,
   },
+  none: {},
 });

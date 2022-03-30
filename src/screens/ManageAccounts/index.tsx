@@ -161,16 +161,10 @@ const ManageAccounts: React.FC = () => {
         userIcon={
           <WarningIcon width={65} height={65} fill={colors.warning100} />
         }
-        username="Warning"
-        title="Account already Have a Username"
+        title="Already had one!"
         subTitle="The Account you chose has registered a name already you can choose another one which doesn't have a name yet"
-        options={[
-          {
-            label: 'ok',
-            onClick: async () =>
-              createIdentityUnAvailableModal.current?.close(),
-          },
-        ]}
+        options={[]}
+        cancelText="OK"
       />
       <CreateIdentityBottomSheet
         bottomSheetRef={bottomSheetModalRef}

@@ -9,12 +9,14 @@ import {
 import { ThemeContext } from '../../contexts/Theme/theme';
 import { Typography } from '../shared/Typography';
 import WarningIcon from '../shared/WarningIcon';
+import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
 
 interface SimpleTextInputProps extends TextInputProps {
   label: string;
   icon?: React.ReactNode;
   subtext?: React.ReactNode;
   errorMessage?: string;
+  isBottomSheet?: boolean;
   labelStyle?: TextStyle;
 }
 
@@ -51,19 +53,39 @@ const SimpleTextInput: React.FC<SimpleTextInputProps> = ({
         {label}
       </Typography>
       <View>
-        <TextInput
-          placeholderTextColor={colors.primary40}
-          style={[
-            styles.input,
-            {
-              color: colors.primary100,
-              borderColor: inputFocused ? colors.primary100 : colors.primary40,
-            },
-          ]}
-          onFocus={handleInputFocus}
-          onBlur={handleInputBlur}
-          {...props}
-        />
+        {props.isBottomSheet ? (
+          <BottomSheetTextInput
+            placeholderTextColor={colors.primary40}
+            style={[
+              styles.input,
+              {
+                color: colors.primary100,
+                borderColor: inputFocused
+                  ? colors.primary100
+                  : colors.primary40,
+              },
+            ]}
+            onFocus={handleInputFocus}
+            onBlur={handleInputBlur}
+            {...props}
+          />
+        ) : (
+          <TextInput
+            placeholderTextColor={colors.primary40}
+            style={[
+              styles.input,
+              {
+                color: colors.primary100,
+                borderColor: inputFocused
+                  ? colors.primary100
+                  : colors.primary40,
+              },
+            ]}
+            onFocus={handleInputFocus}
+            onBlur={handleInputBlur}
+            {...props}
+          />
+        )}
         {icon && <View style={styles.icon}>{icon}</View>}
       </View>
       <View style={styles.wrapper}>

@@ -10,18 +10,33 @@ export default StyleSheet.create({
     paddingLeft: 8,
     paddingRight: 12,
     marginBottom: 10,
+    marginTop: 40,
   },
   tokenInformationContainer: {
     flexDirection: 'row',
     alignItems: 'center',
   },
-  tokenIconContainer: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 10,
+  textSpace: {
+    marginVertical: 1.5,
   },
-  alignRight: { alignSelf: 'flex-end' },
+  headerContainer: {
+    paddingTop: 22,
+    paddingHorizontal: 20,
+  },
+  assetsList: {
+    flex: 1,
+    marginTop: 15,
+    paddingHorizontal: '2.5%',
+  },
+  asset: {
+    width: '100%',
+    height: 75,
+    paddingLeft: 8,
+    paddingRight: 12,
+    marginVertical: 5,
+    borderRadius: 13,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
 });

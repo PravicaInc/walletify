@@ -9,6 +9,10 @@ export default StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  tokenImage: {
+    width: '100%',
+    height: '100%',
+  },
   avatarInitial: {
     textTransform: 'uppercase',
   },

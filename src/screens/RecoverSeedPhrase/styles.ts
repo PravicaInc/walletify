@@ -15,7 +15,6 @@ const styles = StyleSheet.create({
   header: {
     shadowOpacity: 0,
     paddingHorizontal: PADDING_HORIZONTAL,
-    paddingTop: 22,
   },
   topContent: {
     alignItems: 'center',

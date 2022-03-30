@@ -17,12 +17,16 @@ const SeedPhraseGrid: React.FC<IProps> = ({
   isEditable,
   phrase,
   setPhrase,
+  children,
 }) => {
   const {
     theme: { colors, fonts },
   } = useContext(ThemeContext);
+  const phraseLength = isEditable
+    ? 24
+    : ((phrase || '')?.split(' ') || []).length;
   const [phraseState, setPhraseState] = useState<any[]>(
-    new Array(24).fill(undefined).map((val, index) => {
+    new Array(phraseLength).fill(undefined).map((val, index) => {
       const parsedPhrase = phrase?.split(' ') || [];
       return parsedPhrase[index] || val;
     }),
@@ -57,7 +61,7 @@ const SeedPhraseGrid: React.FC<IProps> = ({
           <View
             style={[
               styles.word,
-              i < 20 && {
+              i < phraseLength - 4 && {
                 ...styles.bottomBorder,
                 borderBottomColor: colors.primary20,
               },
@@ -96,6 +100,7 @@ const SeedPhraseGrid: React.FC<IProps> = ({
       {isBlurred && (
         <BlurView style={styles.absolute} blurType="light" blurAmount={2} />
       )}
+      {children}
     </View>
   );
 };
