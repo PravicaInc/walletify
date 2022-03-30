@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import { useState } from 'react';
 
 export const useProgressState = () => {
   const [success, setSuccess] = useState(false);

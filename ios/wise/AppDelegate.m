@@ -5,6 +5,7 @@
 #import <React/RCTRootView.h>
 #import <React/RCTLinkingManager.h>
 #import "EventEmitterModule.h"
+#import "RNSplashScreen.h"
 
 @implementation AppDelegate
 
@@ -17,7 +18,11 @@ EventEmitterModule *eventEmitterModule;
                                                    moduleName:@"wise"
                                             initialProperties:nil];
 
-  rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
+  if (@available(iOS 13.0, *)) {
+      rootView.backgroundColor = [UIColor systemBackgroundColor];
+  } else {
+      rootView.backgroundColor = [UIColor whiteColor];
+  }
 
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
   UIViewController *rootViewController = [UIViewController new];
@@ -25,7 +30,7 @@ EventEmitterModule *eventEmitterModule;
   self.window.rootViewController = rootViewController;
   eventEmitterModule = [EventEmitterModule allocWithZone:nil];
   [self.window makeKeyAndVisible];
-  [NSThread sleepForTimeInterval:2.0];
+  [RNSplashScreen show];
   return YES;
 }
 

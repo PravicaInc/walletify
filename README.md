@@ -8,31 +8,58 @@ We appreciate it you send us all your comments and feedback to develop a one-of-
 
 To know more and view our planned milestones, check this [Wise grant](https://github.com/stacksgov/Stacks-Grants/issues/134)
 
-## WISE App iOS/Android
+
+
+## WISE App iOS
+
+
+## Screenshots
+
+<table style="width:80%">
+  <tr>
+    <td><img src="screenshots/ss1.png" alt="Home Screen"></td>
+    <td><img src="screenshots/ss2.png" alt="Authentication"></td>
+  </tr>
+  <tr>
+   <td><img src="screenshots/ss3.png" alt="Send Multiple Assets"></td>
+   <td><img src="screenshots/ss4.png" alt="Asset Detail screen"></td>
+  </tr>
+</table>
+
 
 Through WISE you can:
 
-1- Manage your identity
- - Authentication.
- - Create a new ID.
- - Create a new account.
- - Recover seed phrase.
- - Create and change the username.
+1- Wallet Management
+- Generate a new wallet and Secret Key.
+- Restore wallet with Secret Key.
+- Reset wallet functionality.
+- Change the password that encrypts/decrypts locally stored Secret Key.
+- Reveal wallet Secret Key.
+- Switch between networks (Mainnet & Testnet).
 
-2- Manage your assets
- - Send and receive STX and BTC.
- - Send and receive NFTs.
- - Send and receive Fungible tokens on Stacks.
- - Stacking pools.
- - Delegation.
+2- Identity Management
+
+- Authenticate with different accounts.
+- Add infinite number of accounts.
+- Create decentralized identities through BNS SmartContract.
+- Preview purchased names as collectibles.
+
+3- Assets Management
+
+- Send and Receive STX tokens.
+- Send and Receive Stacks Fungible Tokens.
+- Preview transaction activity in real-time.
+- Preview the amount of owned NFTs.
+- Branded AssetDetail screens for Stacks DeFi projects.
+- Change fees for each transaction.
 
 ## Seamless onboarding experience
 
 We came with a solution to ease the user’s journey authenticating through [Stacks BNS](https://docs.stacks.co/build-apps/references/bns). With a single tap the users and dApp developers could access the plethora of potential stacks blockchain features and services, the idea of this authenticator is, The user will login with his wallet one time using WISE, and every time any other apps try to authenticate it will ask the user’s permission to generate the identity for the current usage app, so basically, the flow is:
 
- - The DApp requests the appPrivateKey from WISE
- - The user will review the app data within WISE interface and then decide to either grant or reject access request by that app to use any of his currently set up identities on WISE.
- - WISE will generate appPrivateKey for the app, once it’s generated it will redirect the user to the app with the required data.
+- The DApp requests the appPrivateKey from WISE
+- The user will review the app data within WISE interface and then decide to either grant or reject access request by that app to use any of his currently set up identities on WISE.
+- WISE will generate appPrivateKey for the app, once it’s generated it will redirect the user to the app with the required data.
 
 ## Scope
 
@@ -43,22 +70,3 @@ We will not stop from here, we’re looking further to implement more features f
 Also, we’re planning to implement STX transfer where users will be able to transfer STX from other apps through Wise, and more features.
 
 
-Why Wise?
-
- - **W** > Wallet: Fully wallet functionality, with a better UX and usage, users will be able to transfer/receive STX, NFTs, and so on
- - **I** > Identities: Users will be able to generate new identities, and authenticate with these identities to other apps
- - **S** > Stacks: We'll implement Stacks functionalities such as Stacking pool, Delegations, etc..
- - **E** > Encryption
-
-## Screenshots
-
-<table style="width:80%">
-  <tr>
-    <td><img src="screenshots/ss1.png" alt="Authentication screen"></td>
-    <td><img src="screenshots/ss2.png" alt="Identities screen"></td>
-  </tr>
-  <tr>
-   <td><img src="screenshots/ss3.png" alt="Seed Phrase screen"></td>
-   <td><img src="screenshots/ss4.png" alt="Wallet screen"></td>
-  </tr>
-</table> 

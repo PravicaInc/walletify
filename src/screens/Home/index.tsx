@@ -1,30 +1,82 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import React from 'react';
-import {FlatList, View} from 'react-native';
-import {styles} from './styles';
-import {useSelector} from 'react-redux';
-import {selectCurrentWallet} from '../../store/wallet/selectors';
-import {IdentityCard} from '../../components/IdentityCard';
-import {HeaderComponent} from '../../components/Header';
-import {sortIdentities} from '../../hooks/useCardsIdentity';
+import React, { useCallback, useContext, useEffect, useRef } from 'react';
+import { TouchableOpacity, View } from 'react-native';
+import { StackActions, useNavigation } from '@react-navigation/native';
+import { ThemeContext } from '../../contexts/Theme/theme';
+import Header from '../../components/shared/Header';
+import HomeTabs from './HomeTabs';
+import AccountBalanceCard from './AccountBalanceCard';
+import Wise from '../../assets/wise.svg';
+import Settings from '../../assets/images/settings/settings.svg';
+import { styles } from './styles';
+import { useAccounts } from '../../hooks/useAccounts/useAccounts';
+import SwitchAccountBottomSheet from '../../components/Accounts/SwitchAccountBottomSheet';
+import BottomSheet from '@gorhom/bottom-sheet';
+import SwitchAccountButton from '../../components/SwitchAccountButton';
+import { withSuspense } from '../../components/shared/WithSuspense';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-const Home: React.FC = () => {
-  const wallet = useSelector(selectCurrentWallet);
+const Home = () => {
+  const {
+    theme: { colors },
+  } = useContext(ThemeContext);
+  const { dispatch } = useNavigation();
+  const { switchAccount, walletAccounts, selectedAccountState } = useAccounts();
+  const bottomSheetModalRef = useRef<BottomSheet>(null);
+
+  useEffect(() => {
+    if (!selectedAccountState) {
+      switchAccount(0);
+    }
+  }, [selectedAccountState]);
+
+  const goToSettings = () => dispatch(StackActions.push('Settings'));
+
+  const handlePressSwitchAccount = useCallback(() => {
+    bottomSheetModalRef.current?.snapToIndex(
+      (walletAccounts?.length || 0) > 5 ? 1 : 0,
+    );
+  }, [walletAccounts]);
+
+  const handleCancelSwitchAccount = useCallback(() => {
+    bottomSheetModalRef.current?.close();
+  }, []);
+
+  const handleSwitchAccount = useCallback((accountIndex: number) => {
+    switchAccount(accountIndex);
+    handleCancelSwitchAccount();
+  }, []);
+
   return (
-    <>
-      <View style={styles.container}>
-        <HeaderComponent
-          title={'Identities'}
-          imageSource={require('../../assets/fingerprint.png')}
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.white }]}>
+      <View style={styles.contentContainer}>
+        <Header
+          containerStyles={styles.header}
+          leftComponent={<Wise width={92} height={36} />}
+          rightComponent={
+            <TouchableOpacity
+              onPress={goToSettings}
+              activeOpacity={0.5}
+              style={styles.settingsButton}>
+              <Settings />
+            </TouchableOpacity>
+          }
         />
-        <FlatList
-          data={sortIdentities(wallet?.identities || [])}
-          renderItem={({item}) => <IdentityCard identity={item} />}
-          keyExtractor={(item, index) => index.toString()}
+        <SwitchAccountButton
+          mode="large"
+          handlePressSwitchAccount={handlePressSwitchAccount}
         />
+        <AccountBalanceCard />
+        <View style={styles.walletOperationsTabs}>
+          <HomeTabs />
+        </View>
       </View>
-    </>
+      <SwitchAccountBottomSheet
+        bottomSheetRef={bottomSheetModalRef}
+        onSwitch={handleSwitchAccount}
+        onCancel={handleCancelSwitchAccount}
+      />
+    </SafeAreaView>
   );
 };
 
-export default Home;
+export default withSuspense(Home);
