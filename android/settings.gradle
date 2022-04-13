@@ -1,4 +1,6 @@
 rootProject.name = 'wise'
+include ':react-native-config'
+project(':react-native-config').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-config/android')
 include ':react-native-permissions'
 project(':react-native-permissions').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-permissions/android')
 include ':react-native-camera'

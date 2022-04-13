@@ -40,7 +40,7 @@
 	<key>NSFaceIDUsageDescription</key>
 	<string>Wise would like to use Face ID to protect your wallet </string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>UIAppFonts</key>
 	<array>
 		<string>OpenSauceOne-Bold.ttf</string>

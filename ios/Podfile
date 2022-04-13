@@ -21,6 +21,8 @@ target 'wise' do
   pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
   pod 'Permission-FaceID', :path => "#{permissions_path}/FaceID"
 
+  pod 'react-native-config', :path => '../node_modules/react-native-config'
+
   post_install do |installer|
     react_native_post_install(installer)
   end

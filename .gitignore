@@ -64,3 +64,4 @@ buck-out/
 
 # Env Files
 .env
+sentry.properties
