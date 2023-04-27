@@ -1,3 +1,5 @@
+## WISE was renamed to WALLETIFY on April 2023
+
 # Overview
 
 A lot of open-source projects start as small point solution initiatives, versus behemoth one-size-fits-all software packages. As a result, these solutions tend to be lightweight, focused, and usually do a pretty good job solving the problem.
