@@ -59,7 +59,12 @@ const ScanQrBottomSheet = React.forwardRef<any, Props>(
           onChange={handleSheetChanges}>
           <SafeAreaView style={styles.container}>
             <SafeAreaView style={styles.headerContainer}>
-              {isOpen && <StatusBar barStyle={'light-content'} />}
+              {isOpen && (
+                <StatusBar
+                  barStyle={'light-content'}
+                  backgroundColor={colors.secondary100}
+                />
+              )}
               <Header
                 title="Scan Recipient QR Code"
                 titleColor={colors.white}

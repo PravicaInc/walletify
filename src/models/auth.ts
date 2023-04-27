@@ -11,6 +11,7 @@ export interface DecodedAuthRequest {
   domain_name: string;
   manifest_uri: string;
   redirect_uri: string;
+  bnsRequired?: boolean;
   scopes: string[];
   sendToSignIn: boolean;
   appDetails?: {

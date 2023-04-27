@@ -17,8 +17,7 @@ export const styles = StyleSheet.create({
   },
   contentContainer: {
     paddingTop: 40,
-    paddingHorizontal: '2.5%',
-    height: 290,
+    paddingHorizontal: '5%',
     borderBottomLeftRadius: 35,
     borderBottomRightRadius: 35,
   },
@@ -28,6 +27,7 @@ export const styles = StyleSheet.create({
   },
   balanceContainer: {
     padding: 20,
+    position: 'relative',
   },
   balanceText: {
     marginTop: 8,
@@ -56,12 +56,15 @@ export const styles = StyleSheet.create({
   balanceActionsContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    bottom: 0,
+    bottom: -24,
+    position: 'absolute',
+    left: '10%',
+    zIndex: 10,
   },
   balanceActionButton: {
     height: 53,
     borderRadius: 13,
-    flex: 0.4,
+    flex: 0.45,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
@@ -69,6 +72,7 @@ export const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 8,
+    elevation: 10,
   },
   transactionsContainer: {
     flex: 1,

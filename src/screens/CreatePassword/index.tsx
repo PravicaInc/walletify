@@ -1,11 +1,5 @@
 import React, { useCallback, useContext, useMemo, useState } from 'react';
-import {
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -37,6 +31,8 @@ import { useKeyboardWithAnimation } from '../../hooks/common/useKeyboardWithAnim
 import { useProgressState } from '../../hooks/useProgressState';
 import { GeneralSwitch } from '../../components/shared/GeneralSwitch';
 import { decryptMnemonic } from '@stacks/encryption';
+import { isIosApp } from '../../shared/helpers';
+import GeneralButton from '../../components/shared/GeneralButton';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'CreatePassword'>;
 
@@ -205,7 +201,21 @@ const CreatePassword: React.FC<Props> = ({
       setBiometricEnabled(false);
     }
   };
-
+  const ctaButton = isEditPassword ? (
+    <GeneralButton
+      loading={loading}
+      canGoNext={canGoNext}
+      onClick={handleEditConfirm}
+      text={'Confirm'}
+    />
+  ) : (
+    <GeneralButton
+      loading={loading}
+      canGoNext={canGoNext}
+      onClick={handlePressCreate}
+      text={'Create'}
+    />
+  );
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.white }]}>
       <Header
@@ -214,38 +224,7 @@ const CreatePassword: React.FC<Props> = ({
           <HeaderBack onPress={handleGoBack} text="Back" hasChevron />
         }
         title={isEditPassword && 'Change Password'}
-        isRightLoading={loading}
-        rightComponent={
-          isEditPassword ? (
-            <TouchableOpacity
-              style={styles.confirmContainer}
-              onPress={handleEditConfirm}
-              disabled={!canGoNext || loading}>
-              <Typography
-                type="buttonText"
-                style={[
-                  { color: colors.secondary100 },
-                  !canGoNext && { color: colors.primary40 },
-                ]}>
-                Confirm
-              </Typography>
-            </TouchableOpacity>
-          ) : (
-            <TouchableOpacity
-              onPress={handlePressCreate}
-              disabled={!canGoNext}
-              style={styles.confirmContainer}>
-              <Typography
-                type="buttonText"
-                style={[
-                  { color: colors.secondary100 },
-                  !canGoNext && { color: colors.primary40 },
-                ]}>
-                Create
-              </Typography>
-            </TouchableOpacity>
-          )
-        }
+        rightComponent={isIosApp && ctaButton}
       />
       {nextScreen === 'CreateSeedPhrase' && (
         <ProgressBar
@@ -339,9 +318,7 @@ const CreatePassword: React.FC<Props> = ({
             disableCancel
             errorMessage={confirmPasswordError}
           />
-          {isEditPassword ? (
-            <View style={styles.pusher} />
-          ) : (
+          {!isEditPassword && (
             <>
               <View style={styles.switchGroupContainer}>
                 <View style={styles.switchTop}>
@@ -382,9 +359,10 @@ const CreatePassword: React.FC<Props> = ({
                   </View>
                 </View>
               </View>
-              <View style={styles.pusher} />
             </>
           )}
+          {!isIosApp && ctaButton}
+          <View style={styles.pusher} />
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>

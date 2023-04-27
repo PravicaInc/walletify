@@ -26,7 +26,7 @@ export default StyleSheet.create({
   assetsList: {
     flex: 1,
     marginTop: 15,
-    paddingHorizontal: '2.5%',
+    paddingHorizontal: '5%',
   },
   asset: {
     width: '100%',

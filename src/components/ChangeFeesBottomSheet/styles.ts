@@ -5,10 +5,11 @@ export default StyleSheet.create({
     borderRadius: 13,
     overflow: 'hidden',
     flex: 1,
-    paddingHorizontal: '2.5%',
+    paddingHorizontal: '5%',
   },
   header: {
-    paddingVertical: 20,
+    paddingTop: 20,
+    paddingBottom: 20,
   },
   contentContainer: {
     flex: 1,

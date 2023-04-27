@@ -55,7 +55,7 @@ const Splash: React.FC = () => {
             dispatch(StackActions.replace('WalletSetup'));
           }
         },
-        Platform.OS === 'ios' ? 500 : 1000,
+        Platform.OS === 'ios' ? 500 : 2000,
       );
       return () => {
         clearTimeout(timer);

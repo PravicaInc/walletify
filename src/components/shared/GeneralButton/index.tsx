@@ -1,65 +1,67 @@
 import React, { useContext } from 'react';
-import { TouchableOpacityProps, TouchableOpacity, View } from 'react-native';
+import {
+  TouchableOpacityProps,
+  TouchableOpacity,
+  TouchableHighlight,
+  ActivityIndicator,
+} from 'react-native';
 import { Typography } from '../Typography';
 import { ThemeContext } from '../../../contexts/Theme/theme';
 import styles from './styles';
+import { isIosApp } from '../../../shared/helpers';
 
 interface IProps extends TouchableOpacityProps {
-  type: 'Primary' | 'Secondary';
+  loading: boolean;
+  canGoNext: boolean;
+  text: string;
+  onClick: () => void;
 }
 
 const GeneralButton = React.forwardRef<TouchableOpacity, IProps>(
-  (props, ref) => {
+  ({ canGoNext, onClick, text, loading }, ref) => {
     const {
       theme: { colors },
     } = useContext(ThemeContext);
-
-    const { type, disabled } = props;
-
-    let containerStyle;
-    let txtStyle;
-
-    switch (type) {
-      case 'Primary':
-        if (disabled) {
-          containerStyle = { backgroundColor: colors.primary20 };
-          txtStyle = { color: colors.white };
-        } else {
-          containerStyle = { backgroundColor: colors.primary100 };
-          txtStyle = { color: colors.white };
-        }
-        break;
-      case 'Secondary':
-        if (disabled) {
-          containerStyle = {
-            ...styles.containerActiveSecondary,
-            backgroundColor: colors.white,
-            borderColor: colors.primary40,
-          };
-          txtStyle = { color: colors.primary40 };
-        } else {
-          containerStyle = {
-            ...styles.containerActiveSecondary,
-            backgroundColor: colors.white,
-            borderColor: colors.primary100,
-          };
-          txtStyle = { color: colors.primary100 };
-        }
-        break;
-    }
+    const PressComponent: any = isIosApp
+      ? TouchableOpacity
+      : TouchableHighlight;
 
     return (
-      <TouchableOpacity
+      <PressComponent
         ref={ref}
-        disabled={disabled}
-        {...props}
-        style={[styles.wrapper, props.style]}>
-        <View style={[styles.container, containerStyle]}>
-          <Typography style={[styles.txt, txtStyle]} type="buttonText">
-            {props.children}
+        underlayColor={colors.primary60}
+        style={
+          isIosApp
+            ? styles.containerIOS
+            : {
+                ...styles.container,
+                backgroundColor: canGoNext
+                  ? colors.primary100
+                  : colors.primary20,
+              }
+        }
+        onPress={onClick}
+        disabled={!canGoNext || loading}>
+        {loading ? (
+          <ActivityIndicator
+            color={isIosApp ? colors.primary40 : colors.white}
+          />
+        ) : (
+          <Typography
+            type="buttonText"
+            style={[
+              {
+                color: isIosApp
+                  ? canGoNext
+                    ? colors.secondary100
+                    : colors.primary40
+                  : colors.white,
+              },
+            ]}>
+            {text}
           </Typography>
-        </View>
-      </TouchableOpacity>
+        )}
+      </PressComponent>
     );
   },
 );

@@ -246,7 +246,6 @@ export const finishSignIn = async (
     [
       {
         text: 'Cancel',
-        onPress: () => console.log('Cancel Pressed'),
         style: 'cancel',
       },
       {

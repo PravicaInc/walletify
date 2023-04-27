@@ -1,11 +1,5 @@
 import React, { useCallback, useContext, useMemo, useState } from 'react';
-import {
-  View,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  TouchableOpacity,
-} from 'react-native';
+import { View, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -20,6 +14,8 @@ import PasswordShield from '../../assets/password-shield.svg';
 import { useKeyboardWithAnimation } from '../../hooks/common/useKeyboardWithAnimation';
 import SeedPhraseGrid from '../../components/SeedPhraseGrid';
 import { useWallet } from '../../hooks/useWallet/useWallet';
+import { isIosApp } from '../../shared/helpers';
+import GeneralButton from '../../components/shared/GeneralButton';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'SeedRestore'>;
 
@@ -50,7 +46,14 @@ const SeedRestore: React.FC<Props> = ({
     const phraseLength = seedPhrase.split(' ').length;
     return phraseLength === 12 || phraseLength === 24;
   }, [seedPhrase]);
-
+  const ctaButton = (
+    <GeneralButton
+      loading={loading}
+      canGoNext={canGoNext}
+      onClick={handleContinue}
+      text={'Continue'}
+    />
+  );
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.white }]}>
       <Header
@@ -58,23 +61,7 @@ const SeedRestore: React.FC<Props> = ({
         leftComponent={
           <HeaderBack onPress={handleGoBack} text="Back" hasChevron />
         }
-        isRightLoading={loading}
-        rightComponent={
-          <TouchableOpacity
-            onPress={handleContinue}
-            disabled={!canGoNext || loading}>
-            <Typography
-              type="buttonText"
-              style={{
-                color:
-                  !canGoNext || loading
-                    ? colors.primary40
-                    : colors.secondary100,
-              }}>
-              Continue
-            </Typography>
-          </TouchableOpacity>
-        }
+        rightComponent={isIosApp && ctaButton}
       />
       <KeyboardAvoidingView
         style={styles.keyboardContainer}
@@ -103,6 +90,7 @@ const SeedRestore: React.FC<Props> = ({
             phrase={seedPhrase}
             setPhrase={setSeedPhrase}
           />
+          {!isIosApp && ctaButton}
           <View style={styles.pusher} />
         </ScrollView>
       </KeyboardAvoidingView>

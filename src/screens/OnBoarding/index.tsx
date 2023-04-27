@@ -1,5 +1,5 @@
 import React, { useRef, useContext, useCallback } from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, TouchableHighlight } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AppIntroSlider from 'react-native-app-intro-slider';
 import { StackActions, useNavigation } from '@react-navigation/native';
@@ -92,19 +92,21 @@ const OnBoarding: React.FC = () => {
                 />
               ))}
           </View>
-          <TouchableOpacity
-            onPress={handleDone}
-            disabled={!isDone}
-            style={[
-              styles.button,
-              {
-                backgroundColor: isDone ? colors.primary100 : colors.primary20,
-              },
-            ]}>
-            <Typography type="buttonText" style={{ color: colors.white }}>
-              Get Started
-            </Typography>
-          </TouchableOpacity>
+          {isDone && (
+            <TouchableHighlight
+              underlayColor={colors.primary60}
+              onPress={handleDone}
+              style={[
+                styles.button,
+                {
+                  backgroundColor: colors.primary100,
+                },
+              ]}>
+              <Typography type="buttonText" style={{ color: colors.white }}>
+                Get Started
+              </Typography>
+            </TouchableHighlight>
+          )}
         </View>
       );
     },

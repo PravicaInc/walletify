@@ -1,6 +1,13 @@
 import { useUpdateAtom } from 'jotai/utils';
-import { transactionRequestTokenPayloadState } from './requests';
+import {
+  signatureRequestTokenPayloadState,
+  transactionRequestTokenPayloadState,
+} from './requests';
 
 export function useTransactionRequest() {
   return useUpdateAtom(transactionRequestTokenPayloadState);
+}
+
+export function useSignatureRequest() {
+  return useUpdateAtom(signatureRequestTokenPayloadState);
 }

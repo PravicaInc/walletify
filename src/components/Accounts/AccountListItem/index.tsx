@@ -1,4 +1,4 @@
-import React, { useContext, useMemo } from 'react';
+import React, { useCallback, useContext, useMemo } from 'react';
 import { View, TouchableOpacity, TouchableHighlight } from 'react-native';
 import { ThemeContext } from '../../../contexts/Theme/theme';
 import { Typography } from '../../shared/Typography';
@@ -12,18 +12,22 @@ import { valueFromBalance } from '../../../shared/balanceUtils';
 import { useStxPriceValue } from '../../../hooks/useStxPrice/useStxPrice';
 import BigNumber from 'bignumber.js';
 import { withSuspense } from '../../shared/WithSuspense';
+import Add from '../../../assets/images/add.svg';
+import { StackActions, useNavigation } from '@react-navigation/native';
 
 interface AccountProps {
   account: AccountWithAddress;
   onPressAccount: () => void;
   isSelected: boolean;
+  disabled?: boolean;
 }
 
 const AccountListItem: React.FC<AccountProps> = props => {
-  const { account, onPressAccount, isSelected } = props;
+  const { account, onPressAccount, isSelected, disabled } = props;
   const {
     theme: { colors },
   } = useContext(ThemeContext);
+  const { dispatch } = useNavigation();
   const accountStxBalance = useAccountAvailableStxBalance(account.address);
   const stxPrice = useStxPriceValue();
   const valueInUsd = useMemo(
@@ -34,11 +38,15 @@ const AccountListItem: React.FC<AccountProps> = props => {
       ),
     [accountStxBalance, stxPrice],
   );
-
+  const disabledStyle = { opacity: disabled ? 0.6 : 1 };
+  const handleGoToCreate = useCallback(() => {
+    dispatch(StackActions.push('CreateIdentity', { selectedAccount: account }));
+  }, [account]);
   return (
     <TouchableHighlight
       underlayColor={colors.primary10}
       onPress={onPressAccount}
+      disabled={disabled}
       style={[
         styles.container,
         {
@@ -49,10 +57,11 @@ const AccountListItem: React.FC<AccountProps> = props => {
       ]}>
       <>
         <AccountAvatar
+          customStyle={disabledStyle}
           diameter={45}
           accountName={account.username || `Account ${account.index + 1}`}
         />
-        <View style={styles.accountNameWithAddress}>
+        <View style={[styles.accountNameWithAddress, disabledStyle]}>
           <Typography type="smallTitle" numberOfLines={1} ellipsizeMode="tail">
             {account.username || `Account ${account.index + 1}`}
           </Typography>
@@ -63,10 +72,27 @@ const AccountListItem: React.FC<AccountProps> = props => {
         <View style={styles.accountDetails}>
           <Typography
             type="commonText"
-            style={[{ color: colors.primary40 }, styles.accountAddress]}>
+            style={[
+              { color: colors.primary40 },
+              styles.accountAddress,
+              disabledStyle,
+            ]}>
             {`(${truncateAddress(account.address, 11)})`}
           </Typography>
           {isSelected && <Check />}
+          {disabled && (
+            <TouchableOpacity
+              onPress={handleGoToCreate}
+              activeOpacity={0.6}
+              style={styles.button}>
+              <Add />
+              <Typography
+                type={'buttonText'}
+                style={[styles.buttonText, { color: colors.secondary100 }]}>
+                Create Identity
+              </Typography>
+            </TouchableOpacity>
+          )}
         </View>
       </>
     </TouchableHighlight>

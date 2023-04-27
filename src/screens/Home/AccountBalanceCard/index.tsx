@@ -1,5 +1,5 @@
 import React, { useContext, useMemo, useRef, useCallback } from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { TouchableHighlight, View } from 'react-native';
 import ContentLoader, { Rect } from 'react-content-loader/native';
 import { Typography } from '../../../components/shared/Typography';
 import { ThemeContext } from '../../../contexts/Theme/theme';
@@ -35,7 +35,7 @@ const AccountBalanceCard: React.FC = () => {
       return;
     }
     dispatch(
-      StackActions.push('sendForm', {
+      StackActions.push('SendForm', {
         asset: {
           ...stxAsset,
           value: valueFromBalance(balance || new BigNumber(0), 'stx'),
@@ -58,7 +58,6 @@ const AccountBalanceCard: React.FC = () => {
   }, [balance, price]);
 
   const balanceAvailable = balance !== undefined;
-  const buttonsDisabled = account === undefined;
 
   return (
     <View
@@ -96,45 +95,43 @@ const AccountBalanceCard: React.FC = () => {
         </Typography>
       </View>
       <View style={styles.balanceActionsContainer}>
-        <TouchableOpacity
+        <TouchableHighlight
           onPress={handlePresentSend}
-          activeOpacity={0.9}
-          disabled={buttonsDisabled}
+          underlayColor={'#dddddd'}
           style={[
             styles.balanceActionButton,
             styles.sendButton,
             {
-              backgroundColor: buttonsDisabled
-                ? colors.primary40
-                : colors.primary100,
+              backgroundColor: colors.primary100,
             },
           ]}>
-          <UpArrow />
-          <Typography
-            type="buttonText"
-            style={[styles.balanceActionButtonText, { color: colors.white }]}>
-            Send
-          </Typography>
-        </TouchableOpacity>
-        <TouchableOpacity
+          <>
+            <UpArrow />
+            <Typography
+              type="buttonText"
+              style={[styles.balanceActionButtonText, { color: colors.white }]}>
+              Send
+            </Typography>
+          </>
+        </TouchableHighlight>
+        <TouchableHighlight
           onPress={handlePresentReceive}
-          activeOpacity={0.9}
-          disabled={buttonsDisabled}
+          underlayColor={'#dddddd'}
           style={[
             styles.balanceActionButton,
             {
-              backgroundColor: buttonsDisabled
-                ? colors.primary40
-                : colors.primary100,
+              backgroundColor: colors.primary100,
             },
           ]}>
-          <DownArrow />
-          <Typography
-            type="buttonText"
-            style={[styles.balanceActionButtonText, { color: colors.white }]}>
-            Receive
-          </Typography>
-        </TouchableOpacity>
+          <>
+            <DownArrow />
+            <Typography
+              type="buttonText"
+              style={[styles.balanceActionButtonText, { color: colors.white }]}>
+              Receive
+            </Typography>
+          </>
+        </TouchableHighlight>
         <ReceiveBottomSheet ref={receiveRef} />
       </View>
     </View>

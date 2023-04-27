@@ -22,6 +22,8 @@ import SimpleTextInput from '../shared/SimpleTextInput';
 import { microStxToStx } from '../../shared/balanceUtils';
 import Header from '../shared/Header';
 import HeaderBack from '../shared/HeaderBack';
+import GeneralButton from '../shared/GeneralButton';
+import { isIosApp } from '../../shared/helpers';
 
 interface IProps {
   setSelectedFee: (val?: SelectedFee) => void;
@@ -31,7 +33,7 @@ interface IProps {
 
 const ChangeFeesBottomSheet = React.forwardRef<BottomSheet, IProps>(
   ({ fees, selectedFee, setSelectedFee }, ref) => {
-    const snapPoints = useMemo(() => ['45%'], []);
+    const snapPoints = useMemo(() => [isIosApp ? '45%' : '60%'], []);
     const {
       theme: { colors },
     } = useContext(ThemeContext);
@@ -84,6 +86,14 @@ const ChangeFeesBottomSheet = React.forwardRef<BottomSheet, IProps>(
     const isLowEstimation = newValue?.level === EstimationsLevels.Low;
     const isStandardEstimation = newValue?.level === EstimationsLevels.Middle;
     const isHighEstimation = newValue?.level === EstimationsLevels.High;
+    const ctaButton = (
+      <GeneralButton
+        loading={false}
+        canGoNext={true}
+        onClick={handleConfirm}
+        text={'Confirm'}
+      />
+    );
     return (
       <Portal>
         <BottomSheet
@@ -98,13 +108,7 @@ const ChangeFeesBottomSheet = React.forwardRef<BottomSheet, IProps>(
           <Header
             containerStyles={styles.header}
             title="Change Fees"
-            rightComponent={
-              <HeaderBack
-                textColor={colors.secondary100}
-                text="Confirm"
-                onPress={handleConfirm}
-              />
-            }
+            rightComponent={isIosApp && ctaButton}
             leftComponent={
               <HeaderBack
                 textColor={colors.secondary100}
@@ -212,6 +216,7 @@ const ChangeFeesBottomSheet = React.forwardRef<BottomSheet, IProps>(
                 </Typography>
               </TouchableOpacity>
             </View>
+            {!isIosApp && ctaButton}
           </View>
         </BottomSheet>
       </Portal>

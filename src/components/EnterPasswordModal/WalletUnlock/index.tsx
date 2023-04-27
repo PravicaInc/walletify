@@ -1,11 +1,5 @@
 import React, { useCallback, useContext, useRef, useMemo } from 'react';
-import {
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { decryptMnemonic } from '@stacks/encryption';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
@@ -23,6 +17,8 @@ import { usePasswordField } from '../../../hooks/common/usePasswordField';
 import { useProgressState } from '../../../hooks/useProgressState';
 import Animated from 'react-native-reanimated';
 import { useKeyboardWithAnimation } from '../../../hooks/common/useKeyboardWithAnimation';
+import GeneralButton from '../../shared/GeneralButton';
+import { isIosApp } from '../../../shared/helpers';
 
 interface IProps {
   isDismissible: boolean;
@@ -105,6 +101,15 @@ export const WalletUnlockInner: React.FC<IProps> = ({
     ];
   }, [colors, handleResetWallet]);
 
+  const ctaButton = (
+    <GeneralButton
+      loading={loading}
+      canGoNext={canGoNext}
+      onClick={handleConfirm}
+      text={'Confirm'}
+    />
+  );
+
   return (
     <SafeAreaView
       edges={disableBack ? ['left', 'right'] : ['top', 'bottom']}
@@ -131,23 +136,7 @@ export const WalletUnlockInner: React.FC<IProps> = ({
           )
         }
         title="Password"
-        isRightLoading={loading}
-        rightComponent={
-          <TouchableOpacity
-            style={styles.confirm}
-            onPress={handleConfirm}
-            disabled={!canGoNext}>
-            <Typography
-              type="buttonText"
-              style={[
-                {
-                  color: canGoNext ? colors.secondary100 : colors.primary40,
-                },
-              ]}>
-              Confirm
-            </Typography>
-          </TouchableOpacity>
-        }
+        rightComponent={isIosApp && ctaButton}
       />
       <OptionsPick
         options={options}
@@ -196,6 +185,7 @@ export const WalletUnlockInner: React.FC<IProps> = ({
               disableCancel
               errorMessage={passwordError}
             />
+            {!isIosApp && ctaButton}
           </View>
           <View style={styles.hiddenItems}>
             <WarningIcon

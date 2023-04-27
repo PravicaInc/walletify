@@ -23,6 +23,8 @@ import RevealEye from '../../assets/reveal-eye.svg';
 import { RootStackParamList } from '../../navigation/types';
 import styles from './styles';
 import { OptionsPick } from '../../components/OptionsPick';
+import GeneralButton from '../../components/shared/GeneralButton';
+import { isIosApp } from '../../shared/helpers';
 
 enum ScreenShape {
   Blurred = 'Blurred',
@@ -78,6 +80,15 @@ const CreateSeedPhrase: React.FC<Props> = ({
     ];
   }, [handleConfirm]);
 
+  const ctaButton = (
+    <GeneralButton
+      loading={false}
+      canGoNext
+      onClick={handlePressConfirm}
+      text={'Continue'}
+    />
+  );
+
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.white }]}>
       <Header
@@ -86,17 +97,7 @@ const CreateSeedPhrase: React.FC<Props> = ({
           <HeaderBack onPress={handleGoBack} text="Back" hasChevron />
         }
         rightComponent={
-          currentShape !== ScreenShape.Blurred && (
-            <TouchableOpacity onPress={handlePressConfirm}>
-              <Typography
-                type="buttonText"
-                style={{
-                  color: colors.secondary100,
-                }}>
-                Continue
-              </Typography>
-            </TouchableOpacity>
-          )
+          currentShape !== ScreenShape.Blurred && isIosApp && ctaButton
         }
       />
       <ProgressBar currentBarIdx={2} total={3} customStyle={styles.progress} />
@@ -141,6 +142,7 @@ const CreateSeedPhrase: React.FC<Props> = ({
           subTitle="You have to back up your Secret Key in safe place, theres NOTHING we can do if somebody finds it."
           ref={confirmModalRef}
         />
+        {!isIosApp && currentShape !== ScreenShape.Blurred && ctaButton}
       </View>
     </SafeAreaView>
   );

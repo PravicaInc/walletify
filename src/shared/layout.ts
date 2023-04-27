@@ -3,8 +3,8 @@ import { Dimensions } from 'react-native';
 
 const { width } = Dimensions.get('window');
 
-export const PADDING_HORIZONTAL = '2.5%';
-export const PADDING_VERTICAL = '2.5%';
+export const PADDING_HORIZONTAL = '5%';
+export const PADDING_VERTICAL = '5%';
 export const CARD_ITEM_WIDTH = width - width * 0.025;
 
 // Toast Configuration

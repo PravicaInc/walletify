@@ -15,6 +15,10 @@ if (typeof process === 'undefined') {
   }
 }
 
+if (typeof BigInt === 'undefined') {
+  global.BigInt = require('big-integer');
+}
+
 process.browser = false;
 if (typeof Buffer === 'undefined') {
   global.Buffer = require('buffer').Buffer;
@@ -27,7 +31,7 @@ if (typeof localStorage !== 'undefined') {
   localStorage.debug = isDev ? '*' : '';
 }
 
-import {NativeModules} from 'react-native';
+import { NativeModules } from 'react-native';
 const Aes = NativeModules.Aes;
 
 require('crypto').pbkdf2 = async (

@@ -1,5 +1,7 @@
 import { PuzzleItem } from './types';
+import { Platform } from 'react-native';
 
+export const isIosApp = Platform.OS === 'ios';
 export function shuffleArrayWithIndex<T>(array: T[]) {
   const newArray: PuzzleItem<T>[] = array.map((value, index) => ({
     index: index + 1,

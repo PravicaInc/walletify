@@ -24,8 +24,12 @@ import { ThemeContext } from '../../contexts/Theme/theme';
 import ReceiveBottomSheet from '../../components/ReceiveBottomSheet';
 import { stxToMicroStx, valueFromBalance } from '../../shared/balanceUtils';
 import { useStxPriceValue } from '../../hooks/useStxPrice/useStxPrice';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from 'react-native-safe-area-context';
 import TokenAvatar from '../../components/Home/TokenAvatar';
+import { isIosApp } from '../../shared/helpers';
 
 type AssetDetailsProps = NativeStackScreenProps<
   RootStackParamList,
@@ -43,6 +47,7 @@ const AssetDetails: React.FC<AssetDetailsProps> = ({
   const { name, amount, contractAddress, contractName } = asset;
   const { switchAccount, walletAccounts } = useAccounts();
   const { dispatch } = useNavigation();
+  const { top } = useSafeAreaInsets();
   const bottomSheetModalRef = useRef<BottomSheet>(null);
   const receiveRef = useRef<BottomSheetModal>(null);
   const stxPrice = useStxPriceValue();
@@ -65,7 +70,7 @@ const AssetDetails: React.FC<AssetDetailsProps> = ({
   }, [walletAccounts]);
 
   const handlePresentSend = useCallback(() => {
-    dispatch(StackActions.push('sendForm', { asset }));
+    dispatch(StackActions.push('SendForm', { asset }));
   }, []);
 
   const handlePresentReceive = useCallback(() => {
@@ -81,122 +86,117 @@ const AssetDetails: React.FC<AssetDetailsProps> = ({
     handleCancelSwitchAccount();
   }, []);
 
-  const renderTopPanel = () => {
-    return (
-      <>
-        <Header
-          containerStyles={styles.header}
-          leftComponent={
-            <HeaderBack
-              text="Back"
-              onPress={handleGoBack}
-              hasChevron={true}
-              chevronColor={colors.white}
-              textColor={colors.white}
-            />
-          }
-          rightComponent={
-            <SwitchAccountButton
-              mode="small"
-              handlePressSwitchAccount={handlePressSwitchAccount}
-            />
-          }
-        />
-        <View style={styles.balanceContainer}>
-          <Typography type="commonText" style={{ color: colors.white }}>
-            {`Total ${name} Balance`}
-          </Typography>
-          <Typography
-            type="hugeText"
-            style={[styles.balanceText, { color: colors.white }]}>
-            {`${amount}`}
-          </Typography>
-          <Typography
-            type="commonText"
-            style={[
-              styles.balanceValueTitle,
-              {
-                opacity: value ? 1 : 0,
-                color: colors.white,
-              },
-            ]}>
-            Balance in USD
-          </Typography>
-          <Typography
-            type="bigTitle"
-            style={[
-              styles.balanceText,
-              { opacity: value ? 1 : 0, color: colors.white },
-            ]}>
-            {`$${value}`}
-          </Typography>
-        </View>
-        {name === 'STX' ? (
-          <Stx
-            fill={'rgba(255,255,255,0.15)'}
-            width={85}
-            height={85}
-            style={styles.stxIcon}
-          />
-        ) : (
-          <TokenAvatar
-            customStyle={{ ...styles.stxIcon, ...styles.tokenImage }}
-            tokenName={asset.metaData?.symbol || ''}
-            tokenURL={asset.metaData?.image_uri}
-            showTokenSymbol
-          />
-        )}
-        <View style={styles.balanceActionsContainer}>
-          <TouchableHighlight
-            underlayColor={'#dddddd'}
-            onPress={handlePresentSend}
-            style={[
-              styles.balanceActionButton,
-              styles.sendButton,
-              {
-                backgroundColor: colors.white,
-              },
-            ]}>
-            <>
-              <UpArrow fill={primaryColor} />
-              <Typography
-                type="buttonText"
-                style={[
-                  styles.balanceActionButtonText,
-                  { color: primaryColor },
-                ]}>
-                Send
-              </Typography>
-            </>
-          </TouchableHighlight>
-          <TouchableHighlight
-            underlayColor={'#dddddd'}
-            onPress={handlePresentReceive}
-            style={[
-              styles.balanceActionButton,
-              {
-                backgroundColor: colors.white,
-              },
-            ]}>
-            <>
-              <DownArrow fill={primaryColor} />
-              <Typography
-                type="buttonText"
-                style={[
-                  styles.balanceActionButtonText,
-                  { color: primaryColor },
-                ]}>
-                Receive
-              </Typography>
-            </>
-          </TouchableHighlight>
-        </View>
-      </>
-    );
-  };
-
   const primaryColor = colors.primary100;
   const useGradient = name !== 'STX';
+
+  const renderTopPanel = (
+    <>
+      <Header
+        containerStyles={{
+          ...styles.header,
+          marginTop: isIosApp ? 0 : top / 2,
+        }}
+        leftComponent={
+          <HeaderBack
+            text="Back"
+            onPress={handleGoBack}
+            hasChevron={true}
+            chevronColor={colors.white}
+            textColor={colors.white}
+          />
+        }
+        rightComponent={
+          <SwitchAccountButton
+            mode="small"
+            handlePressSwitchAccount={handlePressSwitchAccount}
+          />
+        }
+      />
+      <View style={styles.balanceContainer}>
+        <Typography type="commonText" style={{ color: colors.white }}>
+          {`Total ${name} Balance`}
+        </Typography>
+        <Typography
+          type="hugeText"
+          style={[styles.balanceText, { color: colors.white }]}>
+          {`${amount}`}
+        </Typography>
+        <Typography
+          type="commonText"
+          style={[
+            styles.balanceValueTitle,
+            {
+              opacity: value ? 1 : 0,
+              color: colors.white,
+            },
+          ]}>
+          Balance in USD
+        </Typography>
+        <Typography
+          type="bigTitle"
+          style={[
+            styles.balanceText,
+            { opacity: value ? 1 : 0, color: colors.white },
+          ]}>
+          {`$${value}`}
+        </Typography>
+      </View>
+      {name === 'STX' ? (
+        <Stx
+          fill={'rgba(255,255,255,0.15)'}
+          width={85}
+          height={85}
+          style={styles.stxIcon}
+        />
+      ) : (
+        <TokenAvatar
+          customStyle={{ ...styles.stxIcon, ...styles.tokenImage }}
+          tokenName={asset.metaData?.symbol || ''}
+          tokenURL={asset.metaData?.image_uri}
+          showTokenSymbol
+        />
+      )}
+      <View style={styles.balanceActionsContainer}>
+        <TouchableHighlight
+          underlayColor={'#dddddd'}
+          onPress={handlePresentSend}
+          style={[
+            styles.balanceActionButton,
+            styles.sendButton,
+            {
+              backgroundColor: colors.white,
+            },
+          ]}>
+          <>
+            <UpArrow fill={primaryColor} />
+            <Typography
+              type="buttonText"
+              style={[styles.balanceActionButtonText, { color: primaryColor }]}>
+              Send
+            </Typography>
+          </>
+        </TouchableHighlight>
+        <TouchableHighlight
+          underlayColor={'#dddddd'}
+          onPress={handlePresentReceive}
+          style={[
+            styles.balanceActionButton,
+            {
+              backgroundColor: colors.white,
+            },
+          ]}>
+          <>
+            <DownArrow fill={primaryColor} />
+            <Typography
+              type="buttonText"
+              style={[styles.balanceActionButtonText, { color: primaryColor }]}>
+              Receive
+            </Typography>
+          </>
+        </TouchableHighlight>
+      </View>
+    </>
+  );
 
   return (
     <SafeAreaView
@@ -211,18 +211,29 @@ const AssetDetails: React.FC<AssetDetailsProps> = ({
             styles.contentContainer,
             {
               backgroundColor: primaryColor,
+              height: isIosApp ? 290 : 290 + top / 2,
             },
           ]}>
-          {renderTopPanel()}
+          {renderTopPanel}
         </ImageBackground>
       )}
       {!useGradient && (
         <View
-          style={[styles.contentContainer, { backgroundColor: primaryColor }]}>
-          {renderTopPanel()}
+          style={[
+            styles.contentContainer,
+            {
+              backgroundColor: primaryColor,
+              height: isIosApp ? 290 : 290 + top / 2,
+            },
+          ]}>
+          {renderTopPanel}
         </View>
       )}
-      <StatusBar barStyle={'light-content'} />
+      <StatusBar
+        translucent
+        backgroundColor="transparent"
+        barStyle={'light-content'}
+      />
       <View style={styles.transactionsContainer}>
         <Typography style={styles.transactionsHeader} type="smallTitleR">
           Asset activity

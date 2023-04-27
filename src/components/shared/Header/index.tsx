@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { View, StyleSheet, ActivityIndicator, ViewStyle } from 'react-native';
 import { Typography } from '../Typography';
 import { ThemeContext } from '../../../contexts/Theme/theme';
+import { isIosApp } from '../../../shared/helpers';
 
 interface IProps {
   leftComponent: React.ReactNode;
@@ -51,6 +52,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: '100%',
     alignItems: 'center',
+    paddingTop: isIosApp ? 0 : 10,
   },
   lateral: {
     flex: 1,
