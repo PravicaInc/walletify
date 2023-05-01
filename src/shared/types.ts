@@ -1,6 +1,12 @@
 import { AuthOptions } from '@stacks/connect';
 import { StacksNetwork } from '@stacks/network';
 
+export enum TransactionTypes {
+  ContractCall = 'contract_call',
+  ContractDeploy = 'smart_contract',
+  STXTransfer = 'token_transfer',
+  SignMessage = 'sign_message',
+}
 export interface PuzzleItem<T> {
   index: number;
   value: T;
@@ -36,6 +42,7 @@ export interface CommonSignaturePayload {
   appDetails?: AuthOptions['appDetails'];
   network?: StacksNetwork;
   postConditions?: null;
+  txType: TransactionTypes;
 }
 export interface SignaturePayload extends CommonSignaturePayload {
   message: string;

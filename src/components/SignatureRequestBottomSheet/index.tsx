@@ -25,7 +25,11 @@ import WarningIcon from '../shared/WarningIcon';
 import { isIosApp, titleCase } from '../../shared/helpers';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Portal } from '@gorhom/portal';
-import { SignatureData, SignaturePayload } from '../../shared/types';
+import {
+  SignatureData,
+  SignaturePayload,
+  TransactionTypes,
+} from '../../shared/types';
 import GeneralButton from '../shared/GeneralButton';
 import {
   signMessage,
@@ -48,7 +52,10 @@ const SignatureRequestBottomSheet: React.FC = () => {
   const bottomSheetRef = useRef<BottomSheet>(null);
 
   useEffect(() => {
-    if (transactionRequest) {
+    if (
+      transactionRequest &&
+      transactionRequest.txType === TransactionTypes.SignMessage
+    ) {
       bottomSheetRef.current?.snapToIndex(0);
     }
   }, [transactionRequest]);
