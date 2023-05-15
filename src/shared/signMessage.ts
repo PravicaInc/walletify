@@ -6,14 +6,14 @@ import {
   MessageSignature,
   signWithKey,
   ClarityType,
+  serializeCV,
 } from '@stacks/transactions';
 import {
   SignatureData,
   StacksMessageType,
   StructuredDataSignature,
 } from './types';
-import { sha256 } from 'bitcoinjs-lib/types/crypto';
-import { serializeCV } from '@stacks/transactions/dist';
+import { sha256 } from '@noble/hashes/sha256';
 
 const hexes = Array.from({ length: 256 }, (_, i) =>
   i.toString(16).padStart(2, '0'),
@@ -23,7 +23,6 @@ const MAX_SAFE_INTEGER = 9_007_199_254_740_991;
 export const STRUCTURED_DATA_PREFIX = new Uint8Array([
   0x53, 0x49, 0x50, 0x30, 0x31, 0x38,
 ]);
-declare const TextEncoder: any;
 
 export function utf8ToBytes(str: string): Uint8Array {
   return new TextEncoder().encode(str);
@@ -103,12 +102,8 @@ export function encode(number: number, bytes?: Uint8Array, offset: number = 0) {
   return bytes;
 }
 export function concatBytes(...arrays: Uint8Array[]): Uint8Array {
-  if (!arrays.every(a => a instanceof Uint8Array)) {
-    throw new Error('Uint8Array list expected');
-  }
-  if (arrays.length === 1) {
-    return arrays[0];
-  }
+  if (!arrays.every(a => a instanceof Uint8Array)) throw new Error('Uint8Array list expected');
+  if (arrays.length === 1) return arrays[0];
   const length = arrays.reduce((a, arr) => a + arr.length, 0);
   const result = new Uint8Array(length);
   for (let i = 0, pad = 0; i < arrays.length; i++) {
@@ -127,11 +122,10 @@ export function encodeMessage(
   const encodedLength = encode(messageBytes.length);
   return concatBytes(utf8ToBytes(prefix), encodedLength, messageBytes);
 }
-export function hashMessage(
+export async function hashMessage(
   message: string,
   prefix: string = chainPrefix,
-): Uint8Array {
-  // @ts-ignore
+): Promise<Uint8Array> {
   return sha256(encodeMessage(message, prefix));
 }
 export function bytesToHex(uint8a: Uint8Array): string {
@@ -161,18 +155,20 @@ export function signMessageHashRsv({
     data: signatureVrsToRsv(messageSignature.data),
   };
 }
-export function signMessage(
+export async function signMessage(
   message: string,
   privateKey: StacksPrivateKey,
-): SignatureData {
-  const hash = hashMessage(message);
+): Promise<SignatureData> {
+  const hash = await hashMessage(message);
   return {
     signature: signMessageHashRsv({ privateKey, messageHash: bytesToHex(hash) })
       .data,
     publicKey: publicKeyToString(getPublicKey(privateKey)),
   };
 }
-export function hashStructuredData(structuredData: ClarityValue): Uint8Array {
+export async function hashStructuredData(
+  structuredData: ClarityValue,
+): Promise<Uint8Array> {
   return sha256(serializeCV(structuredData));
 }
 
@@ -198,24 +194,24 @@ function isDomain(value: ClarityValue): boolean {
   }
   return true;
 }
-export function encodeStructuredData({
+export async function encodeStructuredData({
   message,
   domain,
 }: {
   message: ClarityValue;
   domain: ClarityValue;
-}): Uint8Array {
-  const structuredDataHash: Uint8Array = hashStructuredData(message);
+}): Promise<Uint8Array> {
+  const structuredDataHash: Uint8Array = await hashStructuredData(message);
   if (!isDomain(domain)) {
     throw new Error(
       "domain parameter must be a valid domain of type TupleCV with keys 'name', 'version', 'chain-id' with respective types StringASCII, StringASCII, UInt",
     );
   }
-  const domainHash: Uint8Array = hashStructuredData(domain);
+  const domainHash: Uint8Array = await hashStructuredData(domain);
 
   return concatBytes(STRUCTURED_DATA_PREFIX, domainHash, structuredDataHash);
 }
-export function signStructuredData({
+export async function signStructuredData({
   message,
   domain,
   privateKey,
@@ -223,10 +219,11 @@ export function signStructuredData({
   message: ClarityValue;
   domain: ClarityValue;
   privateKey: StacksPrivateKey;
-}): StructuredDataSignature {
+}): Promise<StructuredDataSignature> {
+  const encodedStructuredData = await encodeStructuredData({ message, domain });
   const structuredDataHash: string = bytesToHex(
     // @ts-ignore
-    sha256(encodeStructuredData({ message, domain })),
+    await sha256(encodedStructuredData),
   );
 
   const { data } = signMessageHashRsv({
@@ -238,16 +235,18 @@ export function signStructuredData({
     type: StacksMessageType.StructuredDataSignature,
   };
 }
-export function signStructuredDataMessage(
+export async function signStructuredDataMessage(
   message: ClarityValue,
   domain: ClarityValue,
   privateKey: StacksPrivateKey,
-): SignatureData {
-  const signature = signStructuredData({
-    message,
-    domain,
-    privateKey,
-  }).data;
+): Promise<SignatureData> {
+  const signature = (
+    await signStructuredData({
+      message,
+      domain,
+      privateKey,
+    })
+  ).data;
 
   return {
     signature,

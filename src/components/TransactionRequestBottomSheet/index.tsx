@@ -111,7 +111,10 @@ const TransactionRequestBottomSheetInner: React.FC<
     }
     return 0;
   }, [balance]);
-  const { selectedAccountState: account, sendTransaction } = useAccounts();
+  const { walletAccounts, sendTransaction } = useAccounts();
+  const account = walletAccounts?.find(
+    acc => acc.address === transferPayload?.stxAddress,
+  );
   const [isSending, toggleSending] = useState<boolean>(false);
   useEffect(() => {
     if (assets !== undefined && assets.length > 0) {

@@ -25,6 +25,7 @@ import PreviewTransaction from '../screens/PreviewTransaction';
 import AssetDetails from '../screens/AssetDetails';
 import { StatusBar } from 'react-native';
 import { CreateIdentityBottomSheetInner } from '../components/CreateIdentityBottomSheet';
+import SignatureRequestBottomSheet from '../components/SignatureRequestBottomSheet';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -37,6 +38,7 @@ export const Routes: React.FC = () => {
     <>
       <AuthenticationBottomSheet />
       <TransactionRequestBottomSheet />
+      <SignatureRequestBottomSheet />
       <StatusBar barStyle={'dark-content'} backgroundColor="white" />
       <Stack.Navigator initialRouteName="Splash">
         <Stack.Screen

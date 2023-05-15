@@ -17,11 +17,8 @@ import styles from './styles';
 import { useAtomValue } from 'jotai/utils';
 import { withSuspense } from '../shared/WithSuspense';
 import { CustomBackdrop } from '../shared/customBackdrop';
-import { signatureRequestTokenPayloadState } from '../../hooks/transactions/requests';
-import { useSignatureRequest } from '../../hooks/transactions/useTransactionRequest';
 import { isValidUrl } from '../../hooks/auth/useAuthRequest';
 import { useAccounts } from '../../hooks/useAccounts/useAccounts';
-import WarningIcon from '../shared/WarningIcon';
 import { isIosApp, titleCase } from '../../shared/helpers';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Portal } from '@gorhom/portal';
@@ -39,6 +36,8 @@ import {
   createStacksPrivateKey,
   deserializeCV,
 } from '@stacks/transactions/dist';
+import { transactionRequestTokenPayloadState } from '../../hooks/transactions/requests';
+import { useTransactionRequest } from '../../hooks/transactions/useTransactionRequest';
 
 export function isString(value: unknown): value is string {
   return typeof value === 'string';
@@ -46,9 +45,8 @@ export function isString(value: unknown): value is string {
 
 const SignatureRequestBottomSheet: React.FC = () => {
   const snapPoints = React.useMemo(() => ['95%'], []);
-  const transactionRequest = useAtomValue(signatureRequestTokenPayloadState);
-  const setTransactionRequest = useSignatureRequest();
-
+  const transactionRequest = useAtomValue(transactionRequestTokenPayloadState);
+  const setTransactionRequest = useTransactionRequest();
   const bottomSheetRef = useRef<BottomSheet>(null);
 
   useEffect(() => {
@@ -105,9 +103,12 @@ const SignatureRequestBottomSheetInner: React.FC<
     theme: { colors },
   } = useContext(ThemeContext);
   const { bottom } = useSafeAreaInsets();
-  const transactionRequest = useAtomValue(signatureRequestTokenPayloadState);
+  const transactionRequest = useAtomValue(transactionRequestTokenPayloadState);
   const transferPayload = transactionRequest as SignaturePayload;
-  const { selectedAccountState: account } = useAccounts();
+  const { walletAccounts } = useAccounts();
+  const account = walletAccounts?.find(
+    acc => acc.address === transferPayload?.stxAddress,
+  );
   const [isSending, toggleSending] = useState<boolean>(false);
   const handSendPress = useCallback(() => {
     async function handleTransfer() {
@@ -125,28 +126,28 @@ const SignatureRequestBottomSheetInner: React.FC<
         const privateKey = createStacksPrivateKey(account?.stxPrivateKey);
         let response: SignatureData;
         if (isString(transferPayload.message)) {
-          response = signMessage(transferPayload.message, privateKey);
+          response = await signMessage(transferPayload.message, privateKey);
         } else {
-          response = signStructuredDataMessage(
+          response = await signStructuredDataMessage(
             transferPayload.message,
             // eslint-disable-next-line no-undef
             deserializeCV(Buffer.from(dangerousUri, 'hex')),
             privateKey,
           );
         }
-
         toggleSending(false);
         const requestResult = {
           ...(transactionRequest.metadata || {}),
           response,
         };
-        const redirect = `${dangerousUri}?txResult=${JSON.stringify(
+        const redirect = `${dangerousUri}?sigResult=${JSON.stringify(
           requestResult,
         )}`;
         Linking.openURL(redirect);
         dismissBottomSheet();
       } catch (e) {
         Alert.alert(titleCase(e), `Failure reason: ${e}`);
+        toggleSending(false);
       }
     }
 
@@ -166,7 +167,7 @@ const SignatureRequestBottomSheetInner: React.FC<
     <View style={[styles.container, { paddingBottom: bottom + 10 }]}>
       <Header
         containerStyles={styles.header}
-        title="Transaction Signing"
+        title="Sign Message"
         leftComponent={
           <HeaderBack
             textColor={colors.secondary100}
@@ -192,25 +193,13 @@ const SignatureRequestBottomSheetInner: React.FC<
             />
           </View>
           <Typography type={'commonText'} style={styles.warning}>
-            {`${transactionRequest?.appDetails?.name} asks for your signature to proceed with this transaction, Please make sure transaction parameters are correct.`}
+            {`By signing this message, you are authorizing ${transactionRequest?.appDetails?.name} to do something specific on your behalf. Only sign messages that you understand from apps that you trust.`}
           </Typography>
         </View>
-        {transferPayload && account && <>// TODO: UI implementation here</>}
+        {transferPayload && account && (
+          <Typography type={'bigTitleR'}>{transferPayload.message}</Typography>
+        )}
       </Suspense>
-      <View style={[styles.horizontalFill, styles.centerItems]}>
-        <WarningIcon width={24} height={24} fill={colors.primary60} />
-        <Typography
-          type="commonText"
-          style={[
-            styles.warningText,
-            {
-              color: colors.primary60,
-            },
-          ]}>
-          If you confirm this transaction it is not reversible. Make sure all
-          inputs are correct.
-        </Typography>
-      </View>
       {!isIosApp && ctaButton}
     </View>
   );

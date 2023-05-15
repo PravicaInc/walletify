@@ -54,9 +54,7 @@ type StackParamsList = {
 export const CreateIdentityBottomSheetInner: React.FC<IProps> = ({
   onCancel,
 }) => {
-  const {
-    params: { selectedAccount },
-  } = useRoute<RouteProp<StackParamsList, 'CreateIdentity'>>();
+  const routeData = useRoute<RouteProp<StackParamsList, 'CreateIdentity'>>();
   const [userName, setUserName] = useState<string>('');
   const {
     theme: { colors },
@@ -67,8 +65,8 @@ export const CreateIdentityBottomSheetInner: React.FC<IProps> = ({
     isRegistering,
     registrationError,
     setRegistrationError,
-  } = useBns(selectedAccount);
-  const isEdit = !!selectedAccount;
+  } = useBns(routeData?.params?.selectedAccount);
+  const isEdit = !!routeData?.params?.selectedAccount;
 
   const isCreateDisabled = useMemo(() => userName.length === 0, [userName]);
 
