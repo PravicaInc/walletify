@@ -39,7 +39,7 @@ const ProgressBar = ({
               backgroundColor:
                 barIdx + 1 <= currentBarIdx
                   ? barsColor || colors.primary100
-                  : colors.primary10,
+                  : colors.deactiveState,
             },
           ]}
         />

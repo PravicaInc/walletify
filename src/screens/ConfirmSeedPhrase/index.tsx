@@ -76,7 +76,7 @@ const ConfirmSeedPhrase: React.FC<Props> = ({
   );
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: colors.white }]}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.defaultBlack }]}>
       <Header
         containerStyles={styles.header}
         leftComponent={
@@ -84,7 +84,7 @@ const ConfirmSeedPhrase: React.FC<Props> = ({
         }
         rightComponent={isIosApp && ctaButton}
       />
-      <ProgressBar currentBarIdx={3} total={3} customStyle={styles.progress} />
+      <ProgressBar currentBarIdx={3} barsColor={colors.activeState} total={3} customStyle={styles.progress} />
       <DraxProvider>
         <View style={styles.contentContainer}>
           <LockedShield />
@@ -93,7 +93,7 @@ const ConfirmSeedPhrase: React.FC<Props> = ({
           </Typography>
           <Typography
             type="commonText"
-            style={[styles.description, { color: colors.primary60 }]}>
+            style={[styles.description, { color: colors.textColor }]}>
             Just to make sure you backed up your Secret Key, give it a try to
             drag and drop the right word in its right place in your Secret Key.
           </Typography>

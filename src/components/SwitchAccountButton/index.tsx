@@ -55,7 +55,7 @@ const SwitchAccountButton: React.FC<SwitchAccountButtonProps> = props => {
       onPress={mode === 'large' ? handlePressSwitchAccount : undefined}
       style={[
         {
-          backgroundColor: colors.card,
+          backgroundColor: colors.cardsColor,
         },
         mode === 'large'
           ? styles.largeButtonContainer
@@ -72,7 +72,7 @@ const SwitchAccountButton: React.FC<SwitchAccountButtonProps> = props => {
             type={mode === 'large' ? 'smallTitle' : 'commonTextBold'}
             style={[
               mode === 'large' ? styles.accountName : styles.none,
-              { color: mode === 'large' ? colors.primary100 : colors.white },
+              { color: mode === 'large' ? colors.white : colors.white },
             ]}>
             {accountName}
           </Typography>
@@ -80,7 +80,7 @@ const SwitchAccountButton: React.FC<SwitchAccountButtonProps> = props => {
             type={mode === 'large' ? 'commonText' : 'smallText'}
             style={[
               mode === 'large' ? styles.address : styles.none,
-              { color: mode === 'large' ? colors.primary40 : colors.white },
+              { color: mode === 'large' ? colors.textColor : colors.white },
             ]}>
             {`(${
               selectedAccountState?.address
@@ -94,11 +94,11 @@ const SwitchAccountButton: React.FC<SwitchAccountButtonProps> = props => {
             {mode === 'large' && (
               <Typography
                 type="commonText"
-                style={[styles.switchText, { color: colors.secondary100 }]}>
+                style={[styles.switchText, { color: colors.activeState }]}>
                 Switch
               </Typography>
             )}
-            {mode === 'large' && <Switch fill={colors.secondary100} />}
+            {mode === 'large' && <Switch  fill={colors.activeState} />}
           </View>
         )}
       </>

@@ -89,7 +89,7 @@ export const OptionsPick = React.forwardRef<BottomSheet, IProps>(
           <View
             style={[
               styles.contentContainer,
-              { backgroundColor: colors.white },
+              { backgroundColor: colors.defaultBlack },
             ]}>
             {(username || userIcon) && (
               <>
@@ -104,7 +104,7 @@ export const OptionsPick = React.forwardRef<BottomSheet, IProps>(
                 <View
                   style={[
                     styles.separator,
-                    { backgroundColor: colors.primary20 },
+                    { backgroundColor: colors.darkgray  },
                   ]}
                 />
               </>
@@ -120,13 +120,13 @@ export const OptionsPick = React.forwardRef<BottomSheet, IProps>(
                 )}
                 <Typography
                   type="commonText"
-                  style={[styles.subTitle, { color: colors.primary40 }]}>
+                  style={[styles.subTitle, { color: colors.textColor }]}>
                   {subTitle}
                 </Typography>
                 <View
                   style={[
                     styles.separator,
-                    { backgroundColor: colors.primary20 },
+                    { backgroundColor: colors.darkgray },
                   ]}
                 />
               </>
@@ -145,7 +145,7 @@ export const OptionsPick = React.forwardRef<BottomSheet, IProps>(
             style={[
               styles.cancelWrapper,
               {
-                backgroundColor: colors.white,
+                backgroundColor: colors.defaultBlack,
               },
             ]}>
             <TouchableHighlight
@@ -153,7 +153,7 @@ export const OptionsPick = React.forwardRef<BottomSheet, IProps>(
               onPress={handleClose}
               style={styles.cancel}>
               <Typography
-                style={{ color: colors.secondary100 }}
+                style={{ color: colors.activeState }}
                 type="smallTitle">
                 {cancelText || 'Cancel'}
               </Typography>
@@ -197,7 +197,7 @@ const Option: React.FC<IOptionProps> = ({ option, isLast }) => {
           type={option.isSelected ? 'smallTitle' : 'buttonText'}
           style={[
             option.icon && styles.name,
-            { color: colors.secondary100 },
+            { color: colors.activeState },
             option.optionTextStyle,
           ]}>
           {option.label}

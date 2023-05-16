@@ -26,12 +26,12 @@ const Header: React.FC<IProps> = ({
   } = useContext(ThemeContext);
 
   return (
-    <View style={[styles.headerContainer, containerStyles]}>
+    <View style={[styles.headerContainer, containerStyles,{backgroundColor: colors.defaultBlack}]}>
       <View style={styles.lateral}>{leftComponent}</View>
       {title && (
         <Typography
           type="smallTitle"
-          style={{ color: titleColor || colors.primary100 }}>
+          style={{ color: titleColor || colors.activeState }}>
           {title}
         </Typography>
       )}

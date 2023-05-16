@@ -116,7 +116,7 @@ export const WalletUnlockInner: React.FC<IProps> = ({
       style={[
         styles.safeAreaContainer,
         {
-          backgroundColor: colors.white,
+          backgroundColor: colors.defaultBlack,
         },
       ]}>
       <Header
@@ -170,7 +170,7 @@ export const WalletUnlockInner: React.FC<IProps> = ({
                 Enter Your Password
               </Typography>
               <Typography
-                style={[styles.description, { color: colors.primary60 }]}
+                style={[styles.description, { color: colors.textColor }]}
                 type="commonText">
                 Just to make sure it’s you! Enter your password to view your
                 wallet.
@@ -199,7 +199,7 @@ export const WalletUnlockInner: React.FC<IProps> = ({
               style={[
                 styles.warningText,
                 {
-                  color: colors.primary60,
+                  color: colors.textColor,
                 },
               ]}>
               Forgot password? We can’t recover what we don’t have, reset your

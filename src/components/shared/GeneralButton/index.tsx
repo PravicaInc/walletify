@@ -36,8 +36,8 @@ const GeneralButton = React.forwardRef<TouchableOpacity, IProps>(
             : {
                 ...styles.container,
                 backgroundColor: canGoNext
-                  ? colors.primary100
-                  : colors.primary20,
+                  ? colors.activeState
+                  : colors.deactiveState,
               }
         }
         onPress={onClick}
@@ -53,8 +53,8 @@ const GeneralButton = React.forwardRef<TouchableOpacity, IProps>(
               {
                 color: isIosApp
                   ? canGoNext
-                    ? colors.secondary100
-                    : colors.primary40
+                    ? colors.activeState
+                    : colors.deactiveState
                   : colors.white,
               },
             ]}>

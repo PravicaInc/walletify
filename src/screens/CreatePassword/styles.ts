@@ -16,6 +16,7 @@ const styles = StyleSheet.create({
   progress: {
     marginTop: 22,
     marginHorizontal: PADDING_HORIZONTAL,
+    alignSelf:'center',
     width: '95%',
   },
   back: {
@@ -30,7 +31,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flexGrow: 1,
   },
-  title: { marginVertical: 10 },
+  title: { marginVertical: 10, color:'#999999' },
   description: {
     textAlign: 'center',
     width: '80%',

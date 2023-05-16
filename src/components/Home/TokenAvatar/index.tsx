@@ -39,7 +39,7 @@ const TokenAvatar: React.FC<TokenAvatarProps> = ({
       style={[
         styles.avatarContainer,
         {
-          backgroundColor: selectedColor,
+          backgroundColor: colors.defaultBlack,
         },
         customStyle,
         !(hasRemoteImage && !!tokenURL) && showTokenSymbol
@@ -64,7 +64,7 @@ const TokenAvatar: React.FC<TokenAvatarProps> = ({
           style={[
             styles.avatarInitial,
             {
-              color: showTokenSymbol ? 'rgba(255,255,255,0.5)' : colors.white,
+              color: showTokenSymbol ? colors.textColor : colors.white,
             },
           ]}>
           {showTokenSymbol ? tokenName : tokenName[0]}

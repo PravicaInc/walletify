@@ -64,15 +64,15 @@ const AccountBalanceCard: React.FC = () => {
       style={[
         styles.container,
         {
-          backgroundColor: colors.card,
+          backgroundColor: colors.cardsColor,
         },
       ]}>
-      <Typography type="commonText" style={{ color: colors.primary40 }}>
+      <Typography type="commonText" style={{ color: colors.white }}>
         Total STX Balance in USD
       </Typography>
       <View style={styles.balanceContainer}>
         {balanceAvailable && (
-          <Typography type="hugeText" style={{ color: colors.primary100 }}>
+          <Typography type="hugeText" style={{ color: colors.activeState }}>
             {`$${amountValue}`}
           </Typography>
         )}
@@ -90,7 +90,7 @@ const AccountBalanceCard: React.FC = () => {
         )}
         <Typography
           type="bigTitleR"
-          style={[styles.currency, { color: colors.primary40 }]}>
+          style={[styles.currency, { color: colors.white }]}>
           USD
         </Typography>
       </View>
@@ -102,14 +102,14 @@ const AccountBalanceCard: React.FC = () => {
             styles.balanceActionButton,
             styles.sendButton,
             {
-              backgroundColor: colors.primary100,
+              backgroundColor: colors.activeState,
             },
           ]}>
           <>
-            <UpArrow />
+            <UpArrow fill={'black'} />
             <Typography
               type="buttonText"
-              style={[styles.balanceActionButtonText, { color: colors.white }]}>
+              style={[styles.balanceActionButtonText, { color: colors.primary100 }]}>
               Send
             </Typography>
           </>
@@ -120,14 +120,14 @@ const AccountBalanceCard: React.FC = () => {
           style={[
             styles.balanceActionButton,
             {
-              backgroundColor: colors.primary100,
+              backgroundColor: colors.activeState,
             },
           ]}>
           <>
-            <DownArrow />
+            <DownArrow fill={'black'} />
             <Typography
               type="buttonText"
-              style={[styles.balanceActionButtonText, { color: colors.white }]}>
+              style={[styles.balanceActionButtonText, { color: colors.primary100 }]}>
               Receive
             </Typography>
           </>

@@ -18,11 +18,11 @@ const TabsHeader = (props: any) => {
   } = useContext(ThemeContext);
   return (
     <TabBar
-      indicatorStyle={{ backgroundColor: colors.primary100 }}
+      indicatorStyle={{ backgroundColor: colors.activeState }}
       style={[
         styles.tabsHeaderContainer,
         {
-          backgroundColor: colors.white,
+          backgroundColor: colors.defaultBlack,
         },
       ]}
       renderTabBarItem={tabProps => (
@@ -37,8 +37,8 @@ const TabsHeader = (props: any) => {
               color:
                 props.navigationState.routes[props.navigationState.index]
                   .key === tabProps.key
-                  ? colors.primary100
-                  : colors.primary40,
+                  ? colors.activeState
+                  : colors.deactiveState,
             }}>
             {tabProps.route.title}
           </Typography>

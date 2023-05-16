@@ -37,7 +37,7 @@ const RecoverSeedPhrase: React.FC = () => {
   const handleGoBack = () => dispatch(StackActions.pop());
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: colors.white }]}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.defaultBlack }]}>
       <EnterPasswordModal
         isDismissible
         ref={bottomSheetModalRef}

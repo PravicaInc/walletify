@@ -30,6 +30,11 @@ export const DefaultTheme: Theme = {
     warning10: 'rgba(255, 136, 0, 0.1)',
     gray: 'rgba(128,128,128,1)',
     darkgray: 'rgba(64, 64, 64, 1)',
+    textColor:'#999999',
+    cardsColor:'#2A2D3C',
+    activeState:'#FEBF32',
+    deactiveState:'#989898',
+    defaultBlack: '#17161B',
     white: 'rgba(255, 255, 255, 1)',
   },
 };

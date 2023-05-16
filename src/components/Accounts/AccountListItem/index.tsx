@@ -50,7 +50,7 @@ const AccountListItem: React.FC<AccountProps> = props => {
       style={[
         styles.container,
         {
-          backgroundColor: colors.card,
+          backgroundColor: colors.cardsColor,
           borderWidth: isSelected ? 1 : 0,
           borderColor: isSelected ? colors.confirm100 : undefined,
         },
@@ -62,10 +62,10 @@ const AccountListItem: React.FC<AccountProps> = props => {
           accountName={account.username || `Account ${account.index + 1}`}
         />
         <View style={[styles.accountNameWithAddress, disabledStyle]}>
-          <Typography type="smallTitle" numberOfLines={1} ellipsizeMode="tail">
+          <Typography type="smallTitle" style={{color:colors.white}} numberOfLines={1} ellipsizeMode="tail">
             {account.username || `Account ${account.index + 1}`}
           </Typography>
-          <Typography type="smallTitleR" style={{ color: colors.primary100 }}>
+          <Typography type="smallTitleR" style={{color:colors.activeState}}>
             {`$${valueInUsd}`}
           </Typography>
         </View>
@@ -73,7 +73,7 @@ const AccountListItem: React.FC<AccountProps> = props => {
           <Typography
             type="commonText"
             style={[
-              { color: colors.primary40 },
+              { color: colors.textColor },
               styles.accountAddress,
               disabledStyle,
             ]}>

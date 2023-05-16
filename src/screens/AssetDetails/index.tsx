@@ -118,7 +118,7 @@ const AssetDetails: React.FC<AssetDetailsProps> = ({
         </Typography>
         <Typography
           type="hugeText"
-          style={[styles.balanceText, { color: colors.white }]}>
+          style={[styles.balanceText, { color: colors.activeState }]}>
           {`${amount}`}
         </Typography>
         <Typography
@@ -164,14 +164,14 @@ const AssetDetails: React.FC<AssetDetailsProps> = ({
             styles.balanceActionButton,
             styles.sendButton,
             {
-              backgroundColor: colors.white,
+              backgroundColor: colors.activeState,
             },
           ]}>
           <>
             <UpArrow fill={primaryColor} />
             <Typography
               type="buttonText"
-              style={[styles.balanceActionButtonText, { color: primaryColor }]}>
+              style={[styles.balanceActionButtonText, { color: colors.primary100 }]}>
               Send
             </Typography>
           </>
@@ -182,14 +182,14 @@ const AssetDetails: React.FC<AssetDetailsProps> = ({
           style={[
             styles.balanceActionButton,
             {
-              backgroundColor: colors.white,
+              backgroundColor: colors.activeState,
             },
           ]}>
           <>
             <DownArrow fill={primaryColor} />
             <Typography
               type="buttonText"
-              style={[styles.balanceActionButtonText, { color: primaryColor }]}>
+              style={[styles.balanceActionButtonText, { color: colors.primary100 }]}>
               Receive
             </Typography>
           </>
@@ -201,28 +201,30 @@ const AssetDetails: React.FC<AssetDetailsProps> = ({
   return (
     <SafeAreaView
       edges={['bottom']}
-      style={[styles.fill, { backgroundColor: colors.white }]}>
+      style={[styles.fill, { backgroundColor: colors.defaultBlack }]}>
       {useGradient && (
-        <ImageBackground
-          source={require('../../assets/images/gradient.jpeg')}
-          resizeMode={'cover'}
-          imageStyle={styles.roundedBottomCorners}
-          style={[
-            styles.contentContainer,
-            {
-              backgroundColor: primaryColor,
-              height: isIosApp ? 290 : 290 + top / 2,
-            },
-          ]}>
+        // <ImageBackground
+        //   source={require('../../assets/images/gradient.jpeg')}
+        //   resizeMode={'cover'}
+        //   imageStyle={styles.roundedBottomCorners}
+        //   style={[
+        //     styles.contentContainer,
+        //     {
+        //       backgroundColor: colors.defaultBlack,
+        //       height: isIosApp ? 290 : 290 + top / 2,
+        //     },
+        //   ]}>
+        // </ImageBackground>
+        <View style={[styles.contentContainer,{backgroundColor: colors.defaultBlack, height: isIosApp ? 290 : 290 + top / 2}]}>
           {renderTopPanel}
-        </ImageBackground>
+        </View>
       )}
       {!useGradient && (
         <View
           style={[
             styles.contentContainer,
             {
-              backgroundColor: primaryColor,
+              backgroundColor: colors.defaultBlack,
               height: isIosApp ? 290 : 290 + top / 2,
             },
           ]}>
@@ -235,7 +237,7 @@ const AssetDetails: React.FC<AssetDetailsProps> = ({
         barStyle={'light-content'}
       />
       <View style={styles.transactionsContainer}>
-        <Typography style={styles.transactionsHeader} type="smallTitleR">
+        <Typography style={[styles.transactionsHeader,{color:colors.textColor} ]} type="smallTitleR">
           Asset activity
         </Typography>
         <AssetActivityList

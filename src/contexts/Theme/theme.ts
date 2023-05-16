@@ -27,6 +27,11 @@ export interface IThemeColors {
   gray: string;
   darkgray: string;
   white: string;
+  textColor: string;
+  activeState:string,
+  deactiveState:string,
+  cardsColor: string,
+  defaultBlack: string,
 }
 
 export interface Theme {

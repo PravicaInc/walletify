@@ -90,25 +90,25 @@ const CreateSeedPhrase: React.FC<Props> = ({
   );
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: colors.white }]}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.defaultBlack }]}>
       <Header
         containerStyles={styles.header}
         leftComponent={
-          <HeaderBack onPress={handleGoBack} text="Back" hasChevron />
+          <HeaderBack onPress={handleGoBack} textColor={colors.activeState} chevronColor={colors.activeState} text="Back" hasChevron />
         }
         rightComponent={
           currentShape !== ScreenShape.Blurred && isIosApp && ctaButton
         }
       />
-      <ProgressBar currentBarIdx={2} total={3} customStyle={styles.progress} />
+      <ProgressBar currentBarIdx={2} total={3} barsColor={colors.activeState} customStyle={styles.progress} />
       <View style={styles.contentContainer}>
         <LockedShield />
-        <Typography type="bigTitle" style={styles.title}>
+        <Typography type="bigTitle" style={[styles.title,{color:colors.textColor}]}>
           Your Secret Key
         </Typography>
         <Typography
           type="commonText"
-          style={[styles.description, { color: colors.primary60 }]}>
+          style={[styles.description, { color: colors.textColor }]}>
           {currentShape === ScreenShape.Blurred
             ? 'NEVER share or show your Secret Key.\n Keep it private and safe!'
             : 'Write it down, copy it, save it, or even memorize it. Just make sure your Seed Phrase is safe and accessible.'}
@@ -118,10 +118,10 @@ const CreateSeedPhrase: React.FC<Props> = ({
           isBlurred={currentShape === ScreenShape.Blurred}>
           {currentShape === ScreenShape.Blurred && (
             <TouchableOpacity onPress={handleView} style={styles.reveal}>
-              <RevealEye style={styles.smallSpace} />
+              <RevealEye fill={colors.activeState} style={styles.smallSpace} />
               <Typography
                 type="buttonText"
-                style={[styles.smallSpace, { color: colors.secondary100 }]}>
+                style={[styles.smallSpace, { color: colors.activeState }]}>
                 View Seed Phrase
               </Typography>
             </TouchableOpacity>
@@ -129,6 +129,7 @@ const CreateSeedPhrase: React.FC<Props> = ({
         </SeedPhraseGrid>
         <OptionsPick
           options={options}
+          cancelText='Let me back it up'
           userIcon={
             <WarningIcon
               fill={colors.warning100}

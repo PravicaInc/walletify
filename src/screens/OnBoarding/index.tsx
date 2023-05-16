@@ -84,8 +84,8 @@ const OnBoarding: React.FC = () => {
                     {
                       backgroundColor:
                         stepIndex === activeStep
-                          ? colors.primary100
-                          : colors.primary10,
+                          ? colors.activeState
+                          : colors.deactiveState,
                     },
                   ]}
                   onPress={handleNext(stepIndex)}
@@ -99,10 +99,10 @@ const OnBoarding: React.FC = () => {
               style={[
                 styles.button,
                 {
-                  backgroundColor: colors.primary100,
+                  backgroundColor: colors.activeState,
                 },
               ]}>
-              <Typography type="buttonText" style={{ color: colors.white }}>
+              <Typography type="buttonText" style={{ color: colors.primary100 }}>
                 Get Started
               </Typography>
             </TouchableHighlight>
@@ -114,7 +114,7 @@ const OnBoarding: React.FC = () => {
   );
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: colors.white }]}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.defaultBlack }]}>
       <AppIntroSlider
         keyExtractor={keyExtractor}
         renderItem={renderItem}

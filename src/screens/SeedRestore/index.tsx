@@ -55,7 +55,7 @@ const SeedRestore: React.FC<Props> = ({
     />
   );
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: colors.white }]}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.defaultBlack }]}>
       <Header
         containerStyles={styles.header}
         leftComponent={
@@ -79,7 +79,7 @@ const SeedRestore: React.FC<Props> = ({
               </Typography>
               <Typography
                 type="commonText"
-                style={[styles.description, { color: colors.primary60 }]}>
+                style={[styles.description, { color: colors.textColor }]}>
                 You can either enter it word by word or just paste it in the
                 first input and it will work.
               </Typography>

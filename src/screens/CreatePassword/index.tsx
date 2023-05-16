@@ -217,11 +217,11 @@ const CreatePassword: React.FC<Props> = ({
     />
   );
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: colors.white }]}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.defaultBlack }]}>
       <Header
         containerStyles={styles.header}
         leftComponent={
-          <HeaderBack onPress={handleGoBack} text="Back" hasChevron />
+          <HeaderBack chevronColor={colors.activeState} textColor={colors.activeState} onPress={handleGoBack} text="Back" hasChevron />
         }
         title={isEditPassword && 'Change Password'}
         rightComponent={isIosApp && ctaButton}
@@ -230,6 +230,7 @@ const CreatePassword: React.FC<Props> = ({
         <ProgressBar
           currentBarIdx={1}
           total={3}
+          barsColor={colors.activeState}
           customStyle={styles.progress}
         />
       )}
@@ -249,7 +250,7 @@ const CreatePassword: React.FC<Props> = ({
               </Typography>
               <Typography
                 type="commonText"
-                style={[styles.description, { color: colors.primary60 }]}>
+                style={[styles.description, { color: colors.textColor }]}>
                 Your password encrypts your Secret Key and confirms all your
                 transactions.
               </Typography>
@@ -282,7 +283,7 @@ const CreatePassword: React.FC<Props> = ({
                   <WarningIcon fill={colors.primary40} />
                   <Typography
                     type="smallText"
-                    style={{ color: colors.primary40 }}>
+                    style={{ color: colors.textColor }}>
                     You need at least 12 characters
                   </Typography>
                 </View>
@@ -326,7 +327,7 @@ const CreatePassword: React.FC<Props> = ({
                     <FingerPrint />
                   </View>
                   <View style={styles.switchLabel}>
-                    <Typography type="smallTitleR">Allow Biometrics</Typography>
+                    <Typography style={{color:colors.textColor}} type="smallTitleR">Allow Biometrics</Typography>
                   </View>
                   <View style={styles.switch}>
                     <GeneralSwitch
@@ -352,7 +353,7 @@ const CreatePassword: React.FC<Props> = ({
                   <View style={styles.switchLabel}>
                     <Typography
                       type="commonText"
-                      style={{ color: colors.primary40 }}>
+                      style={{ color: colors.textColor }}>
                       You can Authenticate and Sign transactions using your
                       biometrics.
                     </Typography>

@@ -9,7 +9,7 @@ import { UserPreferenceContext } from '../../contexts/UserPreference/userPrefere
 import { useWallet } from '../../hooks/useWallet/useWallet';
 import EnterPasswordModal from '../../components/EnterPasswordModal';
 import { useUnlockWallet } from '../../hooks/useWallet/useUnlockWallet';
-import WiseLogo from '../../assets/wise.svg';
+import WalletifyLogo from '../../assets/Walletify.svg';
 import styles from './styles';
 
 const Splash: React.FC = () => {
@@ -68,10 +68,10 @@ const Splash: React.FC = () => {
       style={[
         styles.container,
         {
-          backgroundColor: colors.white,
+          backgroundColor: colors.defaultBlack,
         },
       ]}>
-      <WiseLogo width={143} height={55} />
+      <WalletifyLogo width={143} height={55} />
       <EnterPasswordModal
         ref={passwordBottomSheet}
         isDismissible={false}

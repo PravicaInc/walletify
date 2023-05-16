@@ -61,7 +61,7 @@ export const GeneralTextInput = React.forwardRef<any, IProps>((props, ref) => {
             type="commonText"
             style={[
               styles.label,
-              { color: inputFocused ? colors.primary100 : colors.primary100 },
+              { color: inputFocused ? colors.activeState : colors.activeState },
             ]}>
             {props.labelText}
           </Typography>
@@ -77,9 +77,9 @@ export const GeneralTextInput = React.forwardRef<any, IProps>((props, ref) => {
               hasError && touched
                 ? colors.failed100
                 : inputFocused
-                ? colors.primary10
-                : colors.primary40,
-            backgroundColor: colors.white,
+                ? colors.activeState
+                : colors.deactiveState,
+            backgroundColor: colors.defaultBlack,
           },
           props.customStyle,
         ]}>
@@ -92,7 +92,7 @@ export const GeneralTextInput = React.forwardRef<any, IProps>((props, ref) => {
             styles.search,
             {
               fontFamily: fonts.regular,
-              color: colors.primary100,
+              color: colors.white,
             },
           ]}
           {...props}
@@ -111,7 +111,7 @@ export const GeneralTextInput = React.forwardRef<any, IProps>((props, ref) => {
             onPress={handleToggleEye}
             activeOpacity={0.6}
             containerStyle={styles.eye}>
-            {isEyeClosed ? <HiddenEye /> : <VisibleEye />}
+            {isEyeClosed ? <HiddenEye fill={colors.white}  /> : <VisibleEye  fill={colors.white} />}
           </TouchableOpacity>
         )}
       </View>
@@ -167,6 +167,7 @@ const styles = StyleSheet.create({
   },
   eye: {
     position: 'absolute',
+    
     right: 16,
     top: '25%',
     zIndex: 1,

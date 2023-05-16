@@ -5,7 +5,7 @@ import { ThemeContext } from '../../contexts/Theme/theme';
 import Header from '../../components/shared/Header';
 import HomeTabs from './HomeTabs';
 import AccountBalanceCard from './AccountBalanceCard';
-import Wise from '../../assets/wise.svg';
+import Wise from '../../assets/walletifyText.svg';
 import Settings from '../../assets/images/settings/settings.svg';
 import { styles } from './styles';
 import { useAccounts } from '../../hooks/useAccounts/useAccounts';
@@ -47,8 +47,8 @@ const Home = () => {
   }, []);
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: colors.white }]}>
-      <View style={styles.contentContainer}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.defaultBlack }]}>
+      <View style={[styles.contentContainer ,{backgroundColor:colors.defaultBlack}]}>
         <Header
           containerStyles={styles.header}
           leftComponent={<Wise width={92} height={36} />}
@@ -57,7 +57,7 @@ const Home = () => {
               onPress={goToSettings}
               activeOpacity={0.5}
               style={styles.settingsButton}>
-              <Settings />
+              <Settings fill={colors.activeState} />
             </TouchableOpacity>
           }
         />

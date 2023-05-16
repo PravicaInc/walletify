@@ -14,10 +14,10 @@ export const styles = StyleSheet.create({
     shadowOpacity: 0,
     paddingHorizontal: 0,
     paddingRight: 5,
+    width:'100%',
   },
   contentContainer: {
     paddingTop: 40,
-    paddingHorizontal: '5%',
     borderBottomLeftRadius: 35,
     borderBottomRightRadius: 35,
   },
