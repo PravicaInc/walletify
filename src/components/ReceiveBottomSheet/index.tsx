@@ -45,12 +45,15 @@ const ReceiveBottomSheet = React.forwardRef<any, Props>(({}, ref) => {
         ref={ref}
         index={-1}
         handleComponent={null}
+        style={{ backgroundColor: colors.white }}
+        backgroundStyle={{ backgroundColor: colors.white }}
         enablePanDownToClose
         backdropComponent={CustomBackdrop}>
         <View style={styles.container}>
           <Header
             containerStyles={styles.headerContainer}
             title="Receive"
+            titleColor={colors.text}
             leftComponent={
               <HeaderBack
                 textColor={colors.secondary100}
@@ -69,7 +72,7 @@ const ReceiveBottomSheet = React.forwardRef<any, Props>(({}, ref) => {
               width={20}
               height={20}
               style={styles.alignCenter}
-              fill={colors.primary60}
+              fill={colors.primary100}
             />
             <Typography
               type="commonText"
@@ -98,7 +101,7 @@ const ReceiveBottomSheet = React.forwardRef<any, Props>(({}, ref) => {
                 activeOpacity={0.5}
                 onPress={handleCopyAccountAddress}
                 style={styles.copyAddressButton}>
-                <Copy />
+                <Copy fill={colors.primary100} />
                 <Typography
                   type="commonText"
                   style={[

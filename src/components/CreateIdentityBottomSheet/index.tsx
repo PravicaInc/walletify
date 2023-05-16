@@ -16,6 +16,7 @@ import GeneralButton from '../shared/GeneralButton';
 import { isIosApp } from '../../shared/helpers';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { AccountWithAddress } from '../../models/account';
+import GradientText from '../shared/gradientText';
 
 interface CreateIdentityBottomSheetProps {
   bottomSheetRef: React.Ref<BottomSheet>;
@@ -111,7 +112,7 @@ export const CreateIdentityBottomSheetInner: React.FC<IProps> = ({
     <View style={[styles.container, { backgroundColor: colors.white }]}>
       <Header
         title="Create Identity"
-        titleColor={colors.primary100}
+        titleColor={colors.text}
         leftComponent={
           <HeaderBack
             text={isEdit ? 'Back' : 'Cancel'}
@@ -124,11 +125,9 @@ export const CreateIdentityBottomSheetInner: React.FC<IProps> = ({
       />
       <View style={styles.contentContainer}>
         <User />
-        <Typography
-          type="bigTitle"
-          style={[styles.title, { color: colors.primary100 }]}>
-          Choose a Username
-        </Typography>
+        <GradientText style={styles.title}>
+          <Typography type="bigTitle">Choose a Username</Typography>
+        </GradientText>
         <Typography
           type="commonText"
           style={[styles.description, { color: colors.primary40 }]}>
@@ -158,7 +157,7 @@ export const CreateIdentityBottomSheetInner: React.FC<IProps> = ({
             autoCorrect={false}
             value={userName}
             onChangeText={onUserNameChange}
-            style={styles.usernameInput}
+            style={[styles.usernameInput, { color: colors.text }]}
           />
           <Typography
             type="smallTitleR"

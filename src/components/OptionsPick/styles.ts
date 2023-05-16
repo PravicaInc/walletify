@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   subTitle: {
-    marginVertical: 20,
+    marginVertical: 10,
     alignSelf: 'center',
     textAlign: 'center',
     paddingHorizontal: 20,
@@ -48,7 +48,6 @@ const styles = StyleSheet.create({
   title: {
     paddingHorizontal: 20,
     marginTop: 20,
-    marginBottom: -10,
     alignSelf: 'center',
   },
   name: {

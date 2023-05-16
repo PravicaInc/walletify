@@ -29,7 +29,7 @@ import { AccountToken } from '../../models/account';
 import WarningIcon from '../shared/WarningIcon';
 import { isIosApp, titleCase } from '../../shared/helpers';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { microStxToStx, valueFromBalance } from '../../shared/balanceUtils';
+import { microStxToStx, valueFromBalance} from '../../shared/balanceUtils';
 import { currentAccountAvailableStxBalanceState } from '../../hooks/useAccounts/accountsStore';
 import { Portal } from '@gorhom/portal';
 import { FeesCalculations } from '../FeesCalculations';
@@ -38,6 +38,9 @@ import GeneralButton from '../shared/GeneralButton';
 
 const TransactionRequestBottomSheet: React.FC = () => {
   const snapPoints = React.useMemo(() => ['95%'], []);
+  const {
+    theme: { colors },
+  } = useContext(ThemeContext);
   const transactionRequest = useAtomValue(transactionRequestTokenPayloadState);
   const setTransactionRequest = useTransactionRequest();
 
@@ -71,6 +74,8 @@ const TransactionRequestBottomSheet: React.FC = () => {
       <BottomSheet
         onChange={handleSheetChanges}
         ref={bottomSheetRef}
+        style={{ backgroundColor: colors.white }}
+        backgroundStyle={{ backgroundColor: colors.white }}
         snapPoints={snapPoints}
         handleComponent={null}
         backdropComponent={CustomBackdrop}
@@ -111,10 +116,15 @@ const TransactionRequestBottomSheetInner: React.FC<
     }
     return 0;
   }, [balance]);
-  const { walletAccounts, sendTransaction } = useAccounts();
+  const { walletAccounts, switchAccount, sendTransaction } = useAccounts();
   const account = walletAccounts?.find(
     acc => acc.address === transferPayload?.stxAddress,
   );
+  useEffect(() => {
+    if (account) {
+      switchAccount(account?.index);
+    }
+  }, [account]);
   const [isSending, toggleSending] = useState<boolean>(false);
   useEffect(() => {
     if (assets !== undefined && assets.length > 0) {
@@ -124,7 +134,7 @@ const TransactionRequestBottomSheetInner: React.FC<
 
   const isEnoughBalance = microStxToStx(transferPayload?.amount || '0')
     .plus(selectedFee?.fee || '0')
-    .lte(amount);
+    .lte(balance || '0');
   const handSendPress = useCallback(() => {
     async function handleTransfer() {
       if (!transactionRequest || !transferPayload || !selectedAsset) {
@@ -187,6 +197,7 @@ const TransactionRequestBottomSheetInner: React.FC<
       <Header
         containerStyles={styles.header}
         title="Transaction Signing"
+        titleColor={colors.text}
         leftComponent={
           <HeaderBack
             textColor={colors.secondary100}
@@ -211,7 +222,7 @@ const TransactionRequestBottomSheetInner: React.FC<
               source={{ uri: transactionRequest?.appDetails?.icon }}
             />
           </View>
-          <Typography type={'commonText'} style={styles.warning}>
+          <Typography type={'commonText'} style={[styles.warning, {color: colors.primary100}]}>
             {`${transactionRequest?.appDetails?.name} asks for your signature to proceed with this transaction, Please make sure transaction parameters are correct.`}
           </Typography>
         </View>

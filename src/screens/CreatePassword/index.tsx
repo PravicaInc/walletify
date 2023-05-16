@@ -1,5 +1,11 @@
 import React, { useCallback, useContext, useMemo, useState } from 'react';
-import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
+import {
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  Text,
+  View,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -33,6 +39,9 @@ import { GeneralSwitch } from '../../components/shared/GeneralSwitch';
 import { decryptMnemonic } from '@stacks/encryption';
 import { isIosApp } from '../../shared/helpers';
 import GeneralButton from '../../components/shared/GeneralButton';
+import LinearGradient from 'react-native-linear-gradient';
+import MaskedView from '@react-native-masked-view/masked-view';
+import GradientText from '../../components/shared/gradientText';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'CreatePassword'>;
 
@@ -224,6 +233,7 @@ const CreatePassword: React.FC<Props> = ({
           <HeaderBack onPress={handleGoBack} text="Back" hasChevron />
         }
         title={isEditPassword && 'Change Password'}
+        titleColor={colors.text}
         rightComponent={isIosApp && ctaButton}
       />
       {nextScreen === 'CreateSeedPhrase' && (
@@ -244,9 +254,9 @@ const CreatePassword: React.FC<Props> = ({
           <View style={styles.smallPusher}>
             <Animated.View style={[styles.hiddenItems, animatedStyles]}>
               <PasswordShield />
-              <Typography type="bigTitle" style={styles.title}>
-                Create Your Password
-              </Typography>
+              <GradientText style={styles.title}>
+                <Typography type="bigTitle">Create Your Password</Typography>
+              </GradientText>
               <Typography
                 type="commonText"
                 style={[styles.description, { color: colors.primary60 }]}>
@@ -333,13 +343,13 @@ const CreatePassword: React.FC<Props> = ({
                       toggleLock={handleToggleBiometric}
                       isLocked={biometricEnabled}
                       switchPx={2.5}
-                      backgroundInactive={colors.card}
+                      backgroundInactive={colors.switchBG}
                       backgroundActive={colors.confirm100}
                       switchCircleStyle={[
                         styles.shadow,
                         {
                           shadowColor: colors.primary20,
-                          backgroundColor: colors.white,
+                          backgroundColor: colors.text,
                         },
                       ]}
                       barHeight={31}

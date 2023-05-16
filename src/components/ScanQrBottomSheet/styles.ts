@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'black',
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
   },
   itemsContainer: {
     width: '100%',
@@ -13,8 +13,8 @@ export default StyleSheet.create({
   headerContainer: {
     borderBottomLeftRadius: 23,
     borderBottomRightRadius: 23,
-    backgroundColor: 'black',
     paddingHorizontal: 20,
+    paddingTop: 10,
     zIndex: 1,
   },
   fill: { flex: 1, width: '100%' },
@@ -63,11 +63,10 @@ export default StyleSheet.create({
     borderTopLeftRadius: 23,
     borderTopRightRadius: 23,
     width: '100%',
-    height: 110,
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 48,
-    paddingVertical: 25,
+    paddingTop: 25,
     zIndex: 1,
   },
 });

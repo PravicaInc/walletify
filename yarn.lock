@@ -1268,10 +1268,10 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/netinfo/-/netinfo-7.1.7.tgz#10e96922c90a0ff9755dcfbfc92a9d83ec45cd87"
   integrity sha512-QCEuvbTAD7vyCsSsgbWedhTfXlClp4TVHVWYYMjnN7nz6xgZbSp+MI3oo7X5C4JlDHpRm/Q+63hsCgAqKt3WVA==
 
-"@react-native-masked-view/masked-view@^0.2.6":
-  version "0.2.6"
-  resolved "https://registry.yarnpkg.com/@react-native-masked-view/masked-view/-/masked-view-0.2.6.tgz#b26c52d5db3ad0926b13deea79c69620966a9221"
-  integrity sha512-303CxmetUmgiX9NSUxatZkNh9qTYYdiM8xkGf9I3Uj20U3eGY3M78ljeNQ4UVCJA+FNGS5nC1dtS9GjIqvB4dg==
+"@react-native-masked-view/masked-view@^0.2.9":
+  version "0.2.9"
+  resolved "https://registry.yarnpkg.com/@react-native-masked-view/masked-view/-/masked-view-0.2.9.tgz#723a7a076d56b8f5f3fda076eaa5b6b82988e854"
+  integrity sha512-Hs4vKBKj+15VxHZHFtMaFWSBxXoOE5Ea8saoigWhahp8Mepssm0ezU+2pTl7DK9z8Y9s5uOl/aPb4QmBZ3R3Zw==
 
 "@react-native/assets@1.0.0":
   version "1.0.0"
@@ -8357,10 +8357,10 @@ react-native-level-fs@^3.0.0:
     level-filesystem "^1.0.1"
     levelup "^0.18.2"
 
-react-native-linear-gradient@^2.5.6:
-  version "2.5.6"
-  resolved "https://registry.yarnpkg.com/react-native-linear-gradient/-/react-native-linear-gradient-2.5.6.tgz#96215cbc5ec7a01247a20890888aa75b834d44a0"
-  integrity sha512-HDwEaXcQIuXXCV70O+bK1rizFong3wj+5Q/jSyifKFLg0VWF95xh8XQgfzXwtq0NggL9vNjPKXa016KuFu+VFg==
+react-native-linear-gradient@^2.6.2:
+  version "2.6.2"
+  resolved "https://registry.yarnpkg.com/react-native-linear-gradient/-/react-native-linear-gradient-2.6.2.tgz#56598a76832724b2afa7889747635b5c80948f38"
+  integrity sha512-Z8Xxvupsex+9BBFoSYS87bilNPWcRfRsGC0cpJk72Nxb5p2nEkGSBv73xZbEHnW2mUFvP+huYxrVvjZkr/gRjQ==
 
 react-native-os@^1.0.1:
   version "1.2.6"

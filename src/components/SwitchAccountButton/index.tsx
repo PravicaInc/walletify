@@ -72,7 +72,7 @@ const SwitchAccountButton: React.FC<SwitchAccountButtonProps> = props => {
             type={mode === 'large' ? 'smallTitle' : 'commonTextBold'}
             style={[
               mode === 'large' ? styles.accountName : styles.none,
-              { color: mode === 'large' ? colors.primary100 : colors.white },
+              { color: colors.text },
             ]}>
             {accountName}
           </Typography>
@@ -80,7 +80,7 @@ const SwitchAccountButton: React.FC<SwitchAccountButtonProps> = props => {
             type={mode === 'large' ? 'commonText' : 'smallText'}
             style={[
               mode === 'large' ? styles.address : styles.none,
-              { color: mode === 'large' ? colors.primary40 : colors.white },
+              { color: colors.primary40 },
             ]}>
             {`(${
               selectedAccountState?.address

@@ -16,7 +16,7 @@ export default StyleSheet.create({
   stacksIllustrationContainer: {
     width: '50%',
     height: '26%',
-    marginTop: 85,
+    marginTop: 45,
   },
   stacksIllustration: {
     resizeMode: 'contain',

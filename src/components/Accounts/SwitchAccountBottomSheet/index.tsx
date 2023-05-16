@@ -59,6 +59,8 @@ const SwitchAccountBottomSheet: React.FC<
       ref={bottomSheetRef}
       snapPoints={snapPoints}
       index={-1}
+      style={{ backgroundColor: colors.white }}
+      backgroundStyle={{ backgroundColor: colors.white }}
       handleComponent={null}
       backdropComponent={CustomBackdrop}
       enablePanDownToClose>

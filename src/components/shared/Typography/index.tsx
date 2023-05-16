@@ -64,7 +64,7 @@ interface IProps extends TextProps {
 
 export const Typography: React.FC<IProps> = props => {
   const {
-    theme: { fonts },
+    theme: { colors, fonts },
   } = useContext(ThemeContext);
   const stylesMap: { [key in StylesTypes]: IStyleTypeProps } = useMemo(
     () => ({
@@ -139,6 +139,7 @@ export const Typography: React.FC<IProps> = props => {
       allowFontScaling={false}
       style={[
         defaultStyle,
+        { color: colors.text },
         ...incomingStyle,
         props.animationValue ? { fontSize: props.animationValue } : {},
       ]}>

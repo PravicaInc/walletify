@@ -99,15 +99,17 @@ const ChangeFeesBottomSheet = React.forwardRef<BottomSheet, IProps>(
         <BottomSheet
           onChange={handleSheetChanges}
           snapPoints={snapPoints}
+          style={[styles.container,{ backgroundColor: colors.white }]}
+          backgroundStyle={{ backgroundColor: colors.white }}
           ref={ref}
           index={-1}
           handleComponent={null}
           enablePanDownToClose
-          style={styles.container}
           backdropComponent={CustomBackdrop}>
           <Header
             containerStyles={styles.header}
             title="Change Fees"
+            titleColor={colors.text}
             rightComponent={isIosApp && ctaButton}
             leftComponent={
               <HeaderBack

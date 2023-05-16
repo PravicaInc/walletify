@@ -39,7 +39,7 @@ export const Routes: React.FC = () => {
       <AuthenticationBottomSheet />
       <TransactionRequestBottomSheet />
       <SignatureRequestBottomSheet />
-      <StatusBar barStyle={'dark-content'} backgroundColor="white" />
+      <StatusBar barStyle={'light-content'} backgroundColor="white" />
       <Stack.Navigator initialRouteName="Splash">
         <Stack.Screen
           options={{ headerShown: false }}

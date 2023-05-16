@@ -110,16 +110,14 @@ export const FeesCalculations: React.FC<IProps> = ({
                 onPress={handlePresentSpeedTransactions}
                 style={styles.changeFeesButton}
                 activeOpacity={0.6}>
-                <EditPenIcon />
+                <EditPenIcon fill={colors.primary100} />
                 <Typography
                   type="smallTitleR"
                   style={{ color: colors.secondary100 }}>
                   Change
                 </Typography>
               </TouchableOpacity>
-              <Typography
-                type="smallTitleR"
-                style={{ color: colors.primary100 }}>
+              <Typography type="smallTitleR" style={{ color: colors.text }}>
                 {`${selectedFee?.fee} STX`}
               </Typography>
             </>

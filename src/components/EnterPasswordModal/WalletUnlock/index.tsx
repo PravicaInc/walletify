@@ -19,6 +19,7 @@ import Animated from 'react-native-reanimated';
 import { useKeyboardWithAnimation } from '../../../hooks/common/useKeyboardWithAnimation';
 import GeneralButton from '../../shared/GeneralButton';
 import { isIosApp } from '../../../shared/helpers';
+import GradientText from '../../shared/gradientText';
 
 interface IProps {
   isDismissible: boolean;
@@ -136,6 +137,7 @@ export const WalletUnlockInner: React.FC<IProps> = ({
           )
         }
         title="Password"
+        titleColor={colors.text}
         rightComponent={isIosApp && ctaButton}
       />
       <OptionsPick
@@ -164,11 +166,9 @@ export const WalletUnlockInner: React.FC<IProps> = ({
           <View style={styles.fullWidth}>
             <Animated.View style={[styles.hiddenItems, animatedStyles]}>
               <PasswordShield />
-              <Typography
-                type="bigTitle"
-                style={[styles.contentHeader, { color: colors.primary100 }]}>
-                Enter Your Password
-              </Typography>
+              <GradientText style={styles.contentHeader}>
+                <Typography type="bigTitle"> Enter Your Password</Typography>
+              </GradientText>
               <Typography
                 style={[styles.description, { color: colors.primary60 }]}
                 type="commonText">
@@ -189,7 +189,9 @@ export const WalletUnlockInner: React.FC<IProps> = ({
           </View>
           <View style={styles.hiddenItems}>
             <WarningIcon
-              fill={colors.primary40}
+              fill={colors.primary100}
+              fillOpacity={0.1}
+              stroke={colors.primary100}
               style={[styles.warningIcon]}
               width={24}
               height={24}

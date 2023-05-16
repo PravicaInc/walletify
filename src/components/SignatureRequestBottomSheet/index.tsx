@@ -7,7 +7,7 @@ import React, {
   useState,
 } from 'react';
 import BottomSheet from '@gorhom/bottom-sheet';
-import { Alert, Image, Linking, View } from 'react-native';
+import { Alert, Image, Linking, ScrollView, View } from 'react-native';
 import ContentLoader from 'react-content-loader/native';
 import { ThemeContext } from '../../contexts/Theme/theme';
 import Header from '../shared/Header';
@@ -45,6 +45,9 @@ export function isString(value: unknown): value is string {
 
 const SignatureRequestBottomSheet: React.FC = () => {
   const snapPoints = React.useMemo(() => ['95%'], []);
+  const {
+    theme: { colors },
+  } = useContext(ThemeContext);
   const transactionRequest = useAtomValue(transactionRequestTokenPayloadState);
   const setTransactionRequest = useTransactionRequest();
   const bottomSheetRef = useRef<BottomSheet>(null);
@@ -76,6 +79,8 @@ const SignatureRequestBottomSheet: React.FC = () => {
     <Portal>
       <BottomSheet
         onChange={handleSheetChanges}
+        style={{ backgroundColor: colors.white }}
+        backgroundStyle={{ backgroundColor: colors.white }}
         ref={bottomSheetRef}
         snapPoints={snapPoints}
         handleComponent={null}
@@ -105,10 +110,15 @@ const SignatureRequestBottomSheetInner: React.FC<
   const { bottom } = useSafeAreaInsets();
   const transactionRequest = useAtomValue(transactionRequestTokenPayloadState);
   const transferPayload = transactionRequest as SignaturePayload;
-  const { walletAccounts } = useAccounts();
+  const { walletAccounts, switchAccount } = useAccounts();
   const account = walletAccounts?.find(
     acc => acc.address === transferPayload?.stxAddress,
   );
+  useEffect(() => {
+    if (account) {
+      switchAccount(account?.index);
+    }
+  }, [account]);
   const [isSending, toggleSending] = useState<boolean>(false);
   const handSendPress = useCallback(() => {
     async function handleTransfer() {
@@ -168,6 +178,7 @@ const SignatureRequestBottomSheetInner: React.FC<
       <Header
         containerStyles={styles.header}
         title="Sign Message"
+        titleColor={colors.text}
         leftComponent={
           <HeaderBack
             textColor={colors.secondary100}
@@ -192,12 +203,23 @@ const SignatureRequestBottomSheetInner: React.FC<
               source={{ uri: transactionRequest?.appDetails?.icon }}
             />
           </View>
-          <Typography type={'commonText'} style={styles.warning}>
+          <Typography
+            type={'commonText'}
+            style={[styles.warning, { color: colors.primary100 }]}>
             {`By signing this message, you are authorizing ${transactionRequest?.appDetails?.name} to do something specific on your behalf. Only sign messages that you understand from apps that you trust.`}
           </Typography>
         </View>
         {transferPayload && account && (
-          <Typography type={'bigTitleR'}>{transferPayload.message}</Typography>
+          <View style={[styles.message, { backgroundColor: colors.card }]}>
+            <ScrollView
+              indicatorStyle={'white'}
+              horizontal
+              style={styles.messageView}>
+              <Typography type={'smallTitleR'}>
+                {JSON.stringify(JSON.parse(transferPayload.message), null, 2)}
+              </Typography>
+            </ScrollView>
+          </View>
         )}
       </Suspense>
       {!isIosApp && ctaButton}

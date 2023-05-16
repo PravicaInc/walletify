@@ -13,6 +13,14 @@ export default StyleSheet.create({
   noBalanceTitle: {
     marginVertical: 5,
   },
+  message: {
+    marginTop: 40,
+    borderRadius: 13,
+    paddingHorizontal: 10,
+  },
+  messageView: {
+    paddingVertical: 10,
+  },
   noBalanceDesc: {
     textAlign: 'center',
     width: '85%',
@@ -22,7 +30,7 @@ export default StyleSheet.create({
     marginBottom: 30,
   },
   headerContainer: {
-    height: 106,
+    height: 110,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 13,
@@ -32,7 +40,7 @@ export default StyleSheet.create({
   warning: {
     textAlign: 'center',
     paddingHorizontal: 12,
-    marginTop: 12,
+    marginTop: 20,
   },
   appIconWrapper: {
     position: 'absolute',

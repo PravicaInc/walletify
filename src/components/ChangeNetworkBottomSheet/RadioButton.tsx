@@ -32,7 +32,7 @@ const RadioButton: React.FC<RadioButtonProps> = props => {
       style={[
         radioButtonStyles.container,
         {
-          borderColor: colors.primary100,
+          borderColor: props.selected ? colors.primary100 : colors.primary40,
         },
         props.containerStyle,
       ]}>

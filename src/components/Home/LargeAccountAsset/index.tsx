@@ -67,7 +67,7 @@ const LargeAccountAsset: React.FC<AccountAssetProps> = props => {
             tokenURL={metaData?.image_uri}
           />
           <View style={styles.fullWidth}>
-            <Typography style={{ color: colors.primary100 }} type="smallTitleR">
+            <Typography style={{ color: colors.text }} type="smallTitleR">
               {subtitle}
             </Typography>
             <Typography
@@ -87,7 +87,7 @@ const LargeAccountAsset: React.FC<AccountAssetProps> = props => {
           </Typography>
           <View style={styles.footer}>
             <Typography
-              style={[styles.balanceValue, { color: colors.primary40 }]}
+              style={[styles.balanceValue, { color: colors.text }]}
               type="commonText">
               {value ? value : ''}
             </Typography>
@@ -95,9 +95,9 @@ const LargeAccountAsset: React.FC<AccountAssetProps> = props => {
               <View
                 style={[
                   styles.expandIconContainer,
-                  { backgroundColor: colors.primary40 },
+                  { backgroundColor: colors.white },
                 ]}>
-                <ExpandIcon />
+                <ExpandIcon fill={colors.primary100} />
               </View>
             )}
           </View>

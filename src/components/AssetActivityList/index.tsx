@@ -59,7 +59,7 @@ const AssetActivityList: React.FC<AssetActivityListProps> = ({
   const EmptyActivity = useCallback(() => {
     return (
       <View style={styles.emptyContainer}>
-        <NoActivity />
+        <NoActivity stroke={colors.primary100} />
         {loading ? (
           <ActivityIndicator color={colors.secondary100} />
         ) : (

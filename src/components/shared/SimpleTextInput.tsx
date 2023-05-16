@@ -49,7 +49,10 @@ const SimpleTextInput: React.FC<SimpleTextInputProps> = ({
     <View style={styles.container}>
       <Typography
         type="commonText"
-        style={[{ color: colors.primary40 }, labelStyle]}>
+        style={[
+          { color: inputFocused ? colors.primary100 : colors.primary40 },
+          labelStyle,
+        ]}>
         {label}
       </Typography>
       <View>
@@ -59,7 +62,7 @@ const SimpleTextInput: React.FC<SimpleTextInputProps> = ({
             style={[
               styles.input,
               {
-                color: colors.primary100,
+                color: colors.text,
                 borderColor: inputFocused
                   ? colors.primary100
                   : colors.primary40,
@@ -75,7 +78,7 @@ const SimpleTextInput: React.FC<SimpleTextInputProps> = ({
             style={[
               styles.input,
               {
-                color: colors.primary100,
+                color: colors.text,
                 borderColor: inputFocused
                   ? colors.primary100
                   : colors.primary40,

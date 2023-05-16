@@ -21,6 +21,7 @@ export default StyleSheet.create({
   cardText: {
     flex: 1,
     textAlign: 'justify',
+    marginLeft: 5,
   },
   chips: {
     flexDirection: 'row',

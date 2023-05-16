@@ -57,7 +57,7 @@ const Home = () => {
               onPress={goToSettings}
               activeOpacity={0.5}
               style={styles.settingsButton}>
-              <Settings />
+              <Settings fill={colors.primary100} />
             </TouchableOpacity>
           }
         />

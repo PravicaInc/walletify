@@ -9,6 +9,7 @@ import rnTextSize, { TSFontSpecs } from 'react-native-text-size';
 import { Fonts } from '../../assets/fonts';
 import { ThemeContext } from '../../contexts/Theme/theme';
 import { CARD_ITEM_WIDTH } from '../../shared/layout';
+import GradientText from '../shared/gradientText';
 
 export interface IPickerOption {
   label: string;
@@ -112,11 +113,9 @@ export const OptionsPick = React.forwardRef<BottomSheet, IProps>(
             {subTitle && (
               <>
                 {title && (
-                  <Typography
-                    type="midTitle"
-                    style={[styles.title, { color: colors.primary100 }]}>
-                    {title}
-                  </Typography>
+                  <GradientText style={styles.title}>
+                    <Typography type="midTitle">{title}</Typography>
+                  </GradientText>
                 )}
                 <Typography
                   type="commonText"

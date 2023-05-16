@@ -86,7 +86,10 @@ const SeedPhraseGrid: React.FC<IProps> = ({
                   value={word}
                   onChangeText={handleChange}
                   autoCorrect={false}
-                  style={[styles.wordInput, { fontFamily: fonts.regular }]}
+                  style={[
+                    styles.wordInput,
+                    { fontFamily: fonts.regular, color: colors.text },
+                  ]}
                 />
               ) : (
                 <Typography type="commonText" numberOfLines={1}>

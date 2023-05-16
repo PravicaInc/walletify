@@ -65,7 +65,7 @@ const AssetPicker: React.FC<AccountAssetProps> = props => {
             />
             <View>
               <Typography
-                style={[styles.textSpace, { color: colors.primary100 }]}
+                style={[styles.textSpace, { color: colors.text }]}
                 type="smallTitleR">
                 {selectedName}
               </Typography>
@@ -78,7 +78,7 @@ const AssetPicker: React.FC<AccountAssetProps> = props => {
               </Typography>
             </View>
           </View>
-          <ChevronIcon />
+          <ChevronIcon fill={colors.primary100} />
         </>
       </TouchableHighlight>
     </>
@@ -179,6 +179,8 @@ const AssetsPickerBottomSheet: React.FC<AssetsPickerBottomSheetProps> = ({
         snapPoints={snapPoints}
         index={-1}
         handleComponent={null}
+        style={{ backgroundColor: colors.white }}
+        backgroundStyle={{ backgroundColor: colors.white }}
         backdropComponent={CustomBackdrop}
         enablePanDownToClose>
         <Header

@@ -90,7 +90,7 @@ const AccountBalanceCard: React.FC = () => {
         )}
         <Typography
           type="bigTitleR"
-          style={[styles.currency, { color: colors.primary40 }]}>
+          style={[styles.currency, { color: colors.text }]}>
           USD
         </Typography>
       </View>
@@ -106,7 +106,7 @@ const AccountBalanceCard: React.FC = () => {
             },
           ]}>
           <>
-            <UpArrow />
+            <UpArrow fill={colors.white} />
             <Typography
               type="buttonText"
               style={[styles.balanceActionButtonText, { color: colors.white }]}>
@@ -124,7 +124,7 @@ const AccountBalanceCard: React.FC = () => {
             },
           ]}>
           <>
-            <DownArrow />
+            <DownArrow fill={colors.white} />
             <Typography
               type="buttonText"
               style={[styles.balanceActionButtonText, { color: colors.white }]}>

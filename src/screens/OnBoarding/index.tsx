@@ -10,6 +10,7 @@ import { Typography } from '../../components/shared/Typography';
 import { ThemeContext } from '../../contexts/Theme/theme';
 import styles from './styles';
 import { UserPreferenceContext } from '../../contexts/UserPreference/userPreferenceContext';
+import GradientText from '../../components/shared/gradientText';
 
 interface OnBoardingStep {
   svg: SVGElement;
@@ -48,10 +49,12 @@ const OnBoarding: React.FC = () => {
     return (
       <View style={styles.slide}>
         {item.svg}
-        <Typography type="bigTitle" style={styles.title}>
-          {item.title}
-        </Typography>
-        <Typography type="commonText" style={styles.body}>
+        <GradientText style={styles.title}>
+          <Typography type="bigTitle">{item.title}</Typography>
+        </GradientText>
+        <Typography
+          type="commonText"
+          style={[styles.body, { color: colors.primary40 }]}>
           {item.body}
         </Typography>
       </View>

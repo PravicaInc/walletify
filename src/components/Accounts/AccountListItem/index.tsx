@@ -85,7 +85,7 @@ const AccountListItem: React.FC<AccountProps> = props => {
               onPress={handleGoToCreate}
               activeOpacity={0.6}
               style={styles.button}>
-              <Add />
+              <Add fill={colors.primary100}/>
               <Typography
                 type={'buttonText'}
                 style={[styles.buttonText, { color: colors.secondary100 }]}>

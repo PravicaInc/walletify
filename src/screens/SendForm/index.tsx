@@ -147,6 +147,7 @@ const SendForm: React.FC<SendFormProps> = ({
       <Header
         containerStyles={styles.header}
         title="Send"
+        titleColor={colors.text}
         leftComponent={
           <HeaderBack onPress={handleGoBack} text="Back" hasChevron />
         }

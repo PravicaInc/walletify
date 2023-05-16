@@ -1,12 +1,7 @@
 import BottomSheet, { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import React, { useRef, useCallback, useContext } from 'react';
-import {
-  ImageBackground,
-  StatusBar,
-  TouchableHighlight,
-  View,
-} from 'react-native';
+import { StatusBar, TouchableHighlight, View } from 'react-native';
 import SwitchAccountBottomSheet from '../../components/Accounts/SwitchAccountBottomSheet';
 import Header from '../../components/shared/Header';
 import HeaderBack from '../../components/shared/HeaderBack';
@@ -29,7 +24,7 @@ import {
   useSafeAreaInsets,
 } from 'react-native-safe-area-context';
 import TokenAvatar from '../../components/Home/TokenAvatar';
-import { isIosApp } from '../../shared/helpers';
+import GradientText from '../../components/shared/gradientText';
 
 type AssetDetailsProps = NativeStackScreenProps<
   RootStackParamList,
@@ -86,23 +81,22 @@ const AssetDetails: React.FC<AssetDetailsProps> = ({
     handleCancelSwitchAccount();
   }, []);
 
-  const primaryColor = colors.primary100;
-  const useGradient = name !== 'STX';
+  const primaryColor = colors.white;
 
   const renderTopPanel = (
     <>
       <Header
         containerStyles={{
           ...styles.header,
-          marginTop: isIosApp ? 0 : top / 2,
+          marginTop: top / 2,
         }}
         leftComponent={
           <HeaderBack
             text="Back"
             onPress={handleGoBack}
             hasChevron={true}
-            chevronColor={colors.white}
-            textColor={colors.white}
+            chevronColor={colors.text}
+            textColor={colors.text}
           />
         }
         rightComponent={
@@ -113,21 +107,19 @@ const AssetDetails: React.FC<AssetDetailsProps> = ({
         }
       />
       <View style={styles.balanceContainer}>
-        <Typography type="commonText" style={{ color: colors.white }}>
+        <Typography type="commonText" style={{ color: colors.text }}>
           {`Total ${name} Balance`}
         </Typography>
-        <Typography
-          type="hugeText"
-          style={[styles.balanceText, { color: colors.white }]}>
-          {`${amount}`}
-        </Typography>
+        <GradientText style={styles.balanceText}>
+          <Typography type="hugeText">{`${amount}`}</Typography>
+        </GradientText>
         <Typography
           type="commonText"
           style={[
             styles.balanceValueTitle,
             {
               opacity: value ? 1 : 0,
-              color: colors.white,
+              color: colors.text,
             },
           ]}>
           Balance in USD
@@ -136,7 +128,7 @@ const AssetDetails: React.FC<AssetDetailsProps> = ({
           type="bigTitle"
           style={[
             styles.balanceText,
-            { opacity: value ? 1 : 0, color: colors.white },
+            { opacity: value ? 1 : 0, color: colors.text },
           ]}>
           {`$${value}`}
         </Typography>
@@ -164,14 +156,17 @@ const AssetDetails: React.FC<AssetDetailsProps> = ({
             styles.balanceActionButton,
             styles.sendButton,
             {
-              backgroundColor: colors.white,
+              backgroundColor: colors.card,
             },
           ]}>
           <>
-            <UpArrow fill={primaryColor} />
+            <UpArrow fill={colors.primary100} />
             <Typography
               type="buttonText"
-              style={[styles.balanceActionButtonText, { color: primaryColor }]}>
+              style={[
+                styles.balanceActionButtonText,
+                { color: colors.primary100 },
+              ]}>
               Send
             </Typography>
           </>
@@ -182,14 +177,17 @@ const AssetDetails: React.FC<AssetDetailsProps> = ({
           style={[
             styles.balanceActionButton,
             {
-              backgroundColor: colors.white,
+              backgroundColor: colors.card,
             },
           ]}>
           <>
-            <DownArrow fill={primaryColor} />
+            <DownArrow fill={colors.primary100} />
             <Typography
               type="buttonText"
-              style={[styles.balanceActionButtonText, { color: primaryColor }]}>
+              style={[
+                styles.balanceActionButtonText,
+                { color: colors.primary100 },
+              ]}>
               Receive
             </Typography>
           </>
@@ -202,33 +200,16 @@ const AssetDetails: React.FC<AssetDetailsProps> = ({
     <SafeAreaView
       edges={['bottom']}
       style={[styles.fill, { backgroundColor: colors.white }]}>
-      {useGradient && (
-        <ImageBackground
-          source={require('../../assets/images/gradient.jpeg')}
-          resizeMode={'cover'}
-          imageStyle={styles.roundedBottomCorners}
-          style={[
-            styles.contentContainer,
-            {
-              backgroundColor: primaryColor,
-              height: isIosApp ? 290 : 290 + top / 2,
-            },
-          ]}>
-          {renderTopPanel}
-        </ImageBackground>
-      )}
-      {!useGradient && (
-        <View
-          style={[
-            styles.contentContainer,
-            {
-              backgroundColor: primaryColor,
-              height: isIosApp ? 290 : 290 + top / 2,
-            },
-          ]}>
-          {renderTopPanel}
-        </View>
-      )}
+      <View
+        style={[
+          styles.contentContainer,
+          {
+            backgroundColor: primaryColor,
+            height: 290 + top / 2,
+          },
+        ]}>
+        {renderTopPanel}
+      </View>
       <StatusBar
         translucent
         backgroundColor="transparent"

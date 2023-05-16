@@ -25,7 +25,7 @@ const ChangeNetworkBottomSheet: React.FC<ChangeNetworkBottomSheetProps> = ({
   onCancel,
   onChange,
 }) => {
-  const snapPoints = React.useMemo(() => ['60%'], []);
+  const snapPoints = React.useMemo(() => ['30%'], []);
   const {
     theme: { colors },
   } = useContext(ThemeContext);
@@ -63,11 +63,14 @@ const ChangeNetworkBottomSheet: React.FC<ChangeNetworkBottomSheetProps> = ({
         snapPoints={snapPoints}
         index={-1}
         handleComponent={null}
+        style={{ backgroundColor: colors.white }}
+        backgroundStyle={{ backgroundColor: colors.white }}
         backdropComponent={CustomBackdrop}
         enablePanDownToClose>
         <Header
           title="Change Network"
           containerStyles={styles.header}
+          titleColor={colors.text}
           leftComponent={
             <HeaderBack
               text="Cancel"
@@ -84,7 +87,9 @@ const ChangeNetworkBottomSheet: React.FC<ChangeNetworkBottomSheetProps> = ({
               styles.switchNetworkButton,
               styles.switchMainnetButtonSpacing,
             ]}>
-            <Typography type="buttonText">Mainnet</Typography>
+            <Typography type="buttonText" style={{ color: colors.primary100 }}>
+              Mainnet
+            </Typography>
             <RadioButton
               selected={currentNetwork.name === AvailableNetworks.MAINNET}
             />
@@ -93,7 +98,9 @@ const ChangeNetworkBottomSheet: React.FC<ChangeNetworkBottomSheetProps> = ({
             onPress={switchToTestnet}
             disabled={currentNetwork.name === AvailableNetworks.TESTNET}
             style={styles.switchNetworkButton}>
-            <Typography type="buttonText">Testnet</Typography>
+            <Typography type="buttonText" style={{ color: colors.primary100 }}>
+              Testnet
+            </Typography>
             <RadioButton
               selected={currentNetwork.name === AvailableNetworks.TESTNET}
             />

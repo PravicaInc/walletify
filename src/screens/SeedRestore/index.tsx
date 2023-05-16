@@ -10,12 +10,14 @@ import { ThemeContext } from '../../contexts/Theme/theme';
 import { RootStackParamList } from '../../navigation/types';
 import styles from './styles';
 import Animated from 'react-native-reanimated';
-import PasswordShield from '../../assets/password-shield.svg';
+import LockedShield from '../../assets/locked-shield.svg';
 import { useKeyboardWithAnimation } from '../../hooks/common/useKeyboardWithAnimation';
 import SeedPhraseGrid from '../../components/SeedPhraseGrid';
 import { useWallet } from '../../hooks/useWallet/useWallet';
 import { isIosApp } from '../../shared/helpers';
 import GeneralButton from '../../components/shared/GeneralButton';
+import LinearGradient from 'react-native-linear-gradient';
+import GradientText from '../../components/shared/gradientText';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'SeedRestore'>;
 
@@ -73,10 +75,10 @@ const SeedRestore: React.FC<Props> = ({
           contentContainerStyle={styles.scrollableContent}>
           <View style={styles.smallPusher}>
             <Animated.View style={[styles.hiddenItems, animatedStyles]}>
-              <PasswordShield />
-              <Typography type="bigTitle" style={styles.title}>
-                Enter Your Secret Key
-              </Typography>
+              <LockedShield />
+              <GradientText style={styles.title}>
+                <Typography type="bigTitle"> Enter Your Secret Key</Typography>
+              </GradientText>
               <Typography
                 type="commonText"
                 style={[styles.description, { color: colors.primary60 }]}>

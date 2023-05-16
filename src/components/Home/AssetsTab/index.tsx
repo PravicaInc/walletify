@@ -30,7 +30,7 @@ const AssetsTab: React.FC = () => {
   const EmptyAsset = useCallback(() => {
     return (
       <View style={styles.emptyContainer}>
-        <NoAssets />
+        <NoAssets fill={colors.primary100} />
         <Typography
           type="commonText"
           style={[styles.emptyMessage, { color: colors.primary40 }]}>
@@ -40,7 +40,7 @@ const AssetsTab: React.FC = () => {
           activeOpacity={0.5}
           onPress={handleCopyAccountAddress}
           style={styles.copyAddressButton}>
-          <Copy />
+          <Copy fill={colors.primary100} />
           <Typography
             type="commonText"
             style={[styles.copyAddressIcon, { color: colors.secondary100 }]}>

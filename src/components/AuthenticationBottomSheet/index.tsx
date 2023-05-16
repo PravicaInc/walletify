@@ -38,6 +38,9 @@ import {
 
 const AuthenticationBottomSheet: React.FC = () => {
   const snapPoints = React.useMemo(() => ['95%'], []);
+  const {
+    theme: { colors },
+  } = useContext(ThemeContext);
   const navigationRef = useRef<NavigationContainerRef>(null);
   const [selectedAccountIndex, setSelectedAccountIndex] = useState<
     number | undefined
@@ -83,7 +86,8 @@ const AuthenticationBottomSheet: React.FC = () => {
         onChange={handleSheetChanges}
         ref={bottomSheetRef}
         snapPoints={snapPoints}
-        style={styles.bottomSheet}
+        style={[styles.bottomSheet, { backgroundColor: colors.white }]}
+        backgroundStyle={{ backgroundColor: colors.white }}
         backdropComponent={CustomBackdrop}
         handleComponent={null}
         enablePanDownToClose
@@ -160,7 +164,9 @@ const AuthenticationBottomSheetInner: React.FC<BottomSheetInnerProps> = ({
             style={styles.appIcon}
             source={{ uri: authRequest?.appIcon }}
           />
-          <Typography type={'commonText'} style={styles.warning}>
+          <Typography
+            type={'commonText'}
+            style={[styles.warning, { color: colors.primary100 }]}>
             {`Allow ${authRequest?.appName} to proceed with the decentralized authentication process.`}
           </Typography>
           {bnsRequired && (
@@ -179,7 +185,11 @@ const AuthenticationBottomSheetInner: React.FC<BottomSheetInnerProps> = ({
         </View>
         <Typography
           type={'commonText'}
-          style={[styles.title, styles.titleSpace]}>
+          style={[
+            styles.title,
+            styles.titleSpace,
+            { color: colors.primary100 },
+          ]}>
           Select Account
         </Typography>
       </>
@@ -215,6 +225,7 @@ const AuthenticationBottomSheetInner: React.FC<BottomSheetInnerProps> = ({
     <View style={[styles.container, { backgroundColor: colors.white }]}>
       <Header
         title="Authentication"
+        titleColor={colors.text}
         leftComponent={
           <HeaderBack
             textColor={colors.secondary100}

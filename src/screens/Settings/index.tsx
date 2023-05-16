@@ -44,16 +44,26 @@ import ChangeNetworkBottomSheet from '../../components/ChangeNetworkBottomSheet'
 type TProps = {
   icon: React.FC;
   text: string;
+  stroke?: boolean;
   onPress?: () => void;
 };
 
 const TouchableSettingsItem = (props: TProps) => {
-  const SettingIcon = props.icon;
+  const {
+    theme: { colors },
+  } = useContext(ThemeContext);
+  const SettingIcon: any = props.icon;
   return (
     <TouchableOpacity onPress={props.onPress}>
       <View style={styles.settingsItem}>
-        <SettingIcon />
-        <Typography type="buttonText" style={styles.settingsItemText}>
+        {props.stroke ? (
+          <SettingIcon stroke={colors.primary100} />
+        ) : (
+          <SettingIcon fill={colors.primary100} />
+        )}
+        <Typography
+          type="buttonText"
+          style={[styles.settingsItemText, { color: colors.primary100 }]}>
           {props.text}
         </Typography>
       </View>
@@ -81,6 +91,7 @@ const bottomSettingsList = [
   {
     icon: BugIcon,
     text: 'Report a Bug',
+    stroke: true,
     onPress: () =>
       Linking.openURL('https://github.com/PravicaInc/Wise/issues/new/choose'),
   },
@@ -228,8 +239,8 @@ const Settings = () => {
                 onPress={handleGoBack}
                 text="Settings"
                 textType="bigTitle"
-                customStyle={{ color: colors.primary100 }}
-                chevronColor={colors.primary100}
+                customStyle={{ color: colors.text }}
+                chevronColor={colors.text}
                 hasChevron
                 chevronSize={{ width: 9, height: 16.2 }}
               />
@@ -253,7 +264,12 @@ const Settings = () => {
             <View style={[styles.settingsItem, styles.bioSetting]}>
               <View style={styles.bioSettingLeft}>
                 <FingerPrintIcon />
-                <Typography type="buttonText" style={styles.settingsItemText}>
+                <Typography
+                  type="buttonText"
+                  style={[
+                    styles.settingsItemText,
+                    { color: colors.primary100 },
+                  ]}>
                   Sign With Biometrics
                 </Typography>
               </View>
@@ -290,6 +306,7 @@ const Settings = () => {
               <TouchableSettingsItem
                 key={item.text}
                 icon={item.icon}
+                stroke={item.stroke}
                 text={item.text}
                 onPress={item.onPress}
               />

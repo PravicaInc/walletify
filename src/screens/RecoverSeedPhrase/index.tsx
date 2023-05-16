@@ -12,6 +12,7 @@ import styles from './styles';
 import { useUnlockWallet } from '../../hooks/useWallet/useUnlockWallet';
 import EnterPasswordModal from '../../components/EnterPasswordModal';
 import SeedPhraseGrid from '../../components/SeedPhraseGrid';
+import GradientText from '../../components/shared/gradientText';
 
 const RecoverSeedPhrase: React.FC = () => {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
@@ -51,9 +52,11 @@ const RecoverSeedPhrase: React.FC = () => {
       />
       <View style={styles.contentContainer}>
         <LockedShield />
-        <Typography type="bigTitle" style={styles.title}>
-          {decryptedSeedPhrase ? 'Secret Key' : 'Reveal Secret Key'}
-        </Typography>
+        <GradientText style={styles.title}>
+          <Typography type="bigTitle">
+            {decryptedSeedPhrase ? 'Secret Key' : 'Reveal Secret Key'}
+          </Typography>
+        </GradientText>
         <Typography
           type="commonText"
           style={[styles.description, { color: colors.primary60 }]}>

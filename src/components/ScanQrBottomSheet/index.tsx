@@ -54,11 +54,19 @@ const ScanQrBottomSheet = React.forwardRef<any, Props>(
           ref={ref}
           index={-1}
           handleComponent={null}
+          style={{ backgroundColor: colors.white }}
+          backgroundStyle={{ backgroundColor: colors.white }}
           enablePanDownToClose
           backdropComponent={CustomBackdrop}
           onChange={handleSheetChanges}>
-          <SafeAreaView style={styles.container}>
-            <SafeAreaView style={styles.headerContainer}>
+          <SafeAreaView
+            style={[styles.container, { backgroundColor: colors.card }]}>
+            <SafeAreaView
+              edges={['bottom']}
+              style={[
+                styles.headerContainer,
+                { backgroundColor: colors.card },
+              ]}>
               {isOpen && (
                 <StatusBar
                   barStyle={'light-content'}
@@ -67,7 +75,7 @@ const ScanQrBottomSheet = React.forwardRef<any, Props>(
               )}
               <Header
                 title="Scan Recipient QR Code"
-                titleColor={colors.white}
+                titleColor={colors.text}
                 leftComponent={
                   <HeaderBack
                     onPress={handleGoBack}
@@ -87,8 +95,10 @@ const ScanQrBottomSheet = React.forwardRef<any, Props>(
                   />
                 )}
               </View>
-              <View style={styles.footer}>
-                <Typography type="commonText" style={{ color: colors.white }}>
+              <View style={[styles.footer, { backgroundColor: colors.card }]}>
+                <Typography
+                  type="commonText"
+                  style={{ color: colors.text, textAlign: 'center' }}>
                   If you and your recipient are physically near each other,
                   let’s try to scan their QR code from their Receive screen.
                 </Typography>

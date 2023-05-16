@@ -94,7 +94,7 @@ const ManageAccounts: React.FC = () => {
           <TouchableOpacity
             style={styles.createIdentityButton}
             onPress={handlePressCreateIdentity}>
-            <Add />
+            <Add fill={colors.primary100} />
             <Typography
               type="buttonText"
               style={[
@@ -112,7 +112,7 @@ const ManageAccounts: React.FC = () => {
           style={[
             styles.accountsListTitle,
             {
-              color: colors.primary40,
+              color: colors.text,
             },
           ]}>
           Your Accounts
@@ -127,7 +127,7 @@ const ManageAccounts: React.FC = () => {
         <TouchableOpacity
           onPress={handleAddAccount}
           style={styles.addAccountButton}>
-          <AddAccount />
+          <AddAccount fill={colors.primary100} />
           <Typography
             type="buttonText"
             style={[

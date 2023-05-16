@@ -17,6 +17,7 @@ import { PuzzleItem } from '../../shared/types';
 import { DraxProvider } from 'react-native-drax';
 import { useWallet } from '../../hooks/useWallet/useWallet';
 import GeneralButton from '../../components/shared/GeneralButton';
+import GradientText from '../../components/shared/gradientText';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ConfirmSeedPhrase'>;
 
@@ -88,9 +89,9 @@ const ConfirmSeedPhrase: React.FC<Props> = ({
       <DraxProvider>
         <View style={styles.contentContainer}>
           <LockedShield />
-          <Typography type="bigTitle" style={styles.title}>
-            Confirm Secret Key
-          </Typography>
+          <GradientText style={styles.title}>
+            <Typography type="bigTitle">Confirm Secret Key</Typography>
+          </GradientText>
           <Typography
             type="commonText"
             style={[styles.description, { color: colors.primary60 }]}>
