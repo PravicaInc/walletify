@@ -2,12 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:/Users/mostafaamr/Desktop/Pravica-Auth/ios/wise.xcodeproj">
+      location = "group:wise.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">
-   </FileRef>
-   <FileRef
-      location = "group:wise.xcodeproj">
    </FileRef>
 </Workspace>
