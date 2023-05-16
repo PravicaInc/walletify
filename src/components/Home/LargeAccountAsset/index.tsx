@@ -55,7 +55,7 @@ const LargeAccountAsset: React.FC<AccountAssetProps> = props => {
         styles.tokenCard,
         ...extraStyles,
         {
-          backgroundColor: colors.card,
+          backgroundColor: colors.cardsColor,
         },
       ]}>
       <>
@@ -67,11 +67,11 @@ const LargeAccountAsset: React.FC<AccountAssetProps> = props => {
             tokenURL={metaData?.image_uri}
           />
           <View style={styles.fullWidth}>
-            <Typography style={{ color: colors.primary100 }} type="smallTitleR">
+            <Typography style={{ color: colors.white }} type="smallTitleR">
               {subtitle}
             </Typography>
             <Typography
-              style={{ color: colors.primary40 }}
+              style={{ color: colors.textColor }}
               numberOfLines={1}
               type="commonText">
               {title}
@@ -79,15 +79,15 @@ const LargeAccountAsset: React.FC<AccountAssetProps> = props => {
           </View>
         </View>
         <View style={styles.balanceInformationContainer}>
-          <Typography style={{ color: colors.primary40 }} type="smallText">
+          <Typography style={{ color: colors.textColor }} type="smallText">
             {isFungible ? 'Balance:' : 'Owned:'}
           </Typography>
-          <Typography style={{ color: colors.primary100 }} type="midTitle">
+          <Typography style={{ color: colors.activeState }} type="midTitle">
             {amount}
           </Typography>
           <View style={styles.footer}>
             <Typography
-              style={[styles.balanceValue, { color: colors.primary40 }]}
+              style={[styles.balanceValue, { color: colors.textColor }]}
               type="commonText">
               {value ? value : ''}
             </Typography>
@@ -95,9 +95,9 @@ const LargeAccountAsset: React.FC<AccountAssetProps> = props => {
               <View
                 style={[
                   styles.expandIconContainer,
-                  { backgroundColor: colors.primary40 },
+                  { backgroundColor: colors.defaultBlack },
                 ]}>
-                <ExpandIcon />
+                <ExpandIcon fill={colors.activeState} />
               </View>
             )}
           </View>

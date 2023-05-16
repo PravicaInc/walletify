@@ -16,6 +16,7 @@ export default StyleSheet.create({
   body: {
     textAlign: 'center',
     width: '80%',
+    color:'#999999'
   },
   paginationContainer: {
     paddingHorizontal: PADDING_HORIZONTAL,

@@ -27,13 +27,14 @@ import { useAccounts } from '../../hooks/useAccounts/useAccounts';
 import { useAssets } from '../../hooks/useAssets/useAssets';
 import { AccountToken } from '../../models/account';
 import WarningIcon from '../shared/WarningIcon';
-import { titleCase } from '../../shared/helpers';
+import { isIosApp, titleCase } from '../../shared/helpers';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { microStxToStx, valueFromBalance } from '../../shared/balanceUtils';
 import { currentAccountAvailableStxBalanceState } from '../../hooks/useAccounts/accountsStore';
 import { Portal } from '@gorhom/portal';
 import { FeesCalculations } from '../FeesCalculations';
 import { SelectedFee } from '../../shared/types';
+import GeneralButton from '../shared/GeneralButton';
 
 const TransactionRequestBottomSheet: React.FC = () => {
   const snapPoints = React.useMemo(() => ['95%'], []);
@@ -110,7 +111,10 @@ const TransactionRequestBottomSheetInner: React.FC<
     }
     return 0;
   }, [balance]);
-  const { selectedAccountState: account, sendTransaction } = useAccounts();
+  const { walletAccounts, sendTransaction } = useAccounts();
+  const account = walletAccounts?.find(
+    acc => acc.address === transferPayload?.stxAddress,
+  );
   const [isSending, toggleSending] = useState<boolean>(false);
   useEffect(() => {
     if (assets !== undefined && assets.length > 0) {
@@ -166,6 +170,18 @@ const TransactionRequestBottomSheetInner: React.FC<
       handleTransfer();
     }
   }, [transactionRequest, selectedFee, selectedAsset]);
+  const ctaButton = (
+    <GeneralButton
+      loading={isSending}
+      canGoNext={
+        !(
+          Number(selectedFee?.fee) === null || !(isEnoughBalance && selectedFee)
+        )
+      }
+      onClick={handSendPress}
+      text={'Confirm'}
+    />
+  );
   return (
     <View style={[styles.container, { paddingBottom: bottom + 10 }]}>
       <Header
@@ -178,23 +194,7 @@ const TransactionRequestBottomSheetInner: React.FC<
             onPress={dismissBottomSheet}
           />
         }
-        isRightLoading={isSending}
-        rightComponent={
-          <HeaderBack
-            disabled={
-              Number(selectedFee?.fee) === null ||
-              !(isEnoughBalance && selectedFee)
-            }
-            textColor={
-              Number(selectedFee?.fee) === null ||
-              !(isEnoughBalance && selectedFee)
-                ? colors.primary40
-                : colors.secondary100
-            }
-            text="Confirm"
-            onPress={handSendPress}
-          />
-        }
+        rightComponent={isIosApp && ctaButton}
       />
       <Suspense fallback={<ContentLoader />}>
         <View
@@ -282,6 +282,7 @@ const TransactionRequestBottomSheetInner: React.FC<
           inputs are correct.
         </Typography>
       </View>
+      {!isIosApp && ctaButton}
     </View>
   );
 };

@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
     paddingLeft: 0,
   },
   contentContainer: {
-    paddingHorizontal: '2.5%',
+    paddingHorizontal: '5%',
     paddingBottom: PADDING_VERTICAL,
     flex: 1,
     justifyContent: 'space-between',

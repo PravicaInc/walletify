@@ -4,18 +4,30 @@ const authenticationBottomSheetStyles = StyleSheet.create({
   accountsList: {
     paddingVertical: 10,
   },
+  bottomSheet: {
+    borderRadius: 13,
+    overflow: 'hidden',
+    flex: 1,
+  },
   headerContainer: {
-    height: 106,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 13,
     marginTop: 40,
     position: 'relative',
+    paddingTop: 40,
+    paddingBottom: 10,
   },
   warning: {
     textAlign: 'center',
     paddingHorizontal: 12,
-    marginTop: 12,
+  },
+  required: {
+    paddingHorizontal: 12,
+    alignItems: 'center',
+    marginTop: 10,
+    paddingVertical: 10,
+    borderRadius: 13,
   },
   appIcon: {
     position: 'absolute',
@@ -29,7 +41,7 @@ const authenticationBottomSheetStyles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 20,
-    paddingTop: 22,
+    paddingVertical: 22,
   },
   title: { textAlign: 'center' },
   titleSpace: { marginVertical: 12 },

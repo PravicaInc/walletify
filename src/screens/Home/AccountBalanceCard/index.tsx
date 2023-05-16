@@ -1,5 +1,5 @@
 import React, { useContext, useMemo, useRef, useCallback } from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { TouchableHighlight, View } from 'react-native';
 import ContentLoader, { Rect } from 'react-content-loader/native';
 import { Typography } from '../../../components/shared/Typography';
 import { ThemeContext } from '../../../contexts/Theme/theme';
@@ -35,7 +35,7 @@ const AccountBalanceCard: React.FC = () => {
       return;
     }
     dispatch(
-      StackActions.push('sendForm', {
+      StackActions.push('SendForm', {
         asset: {
           ...stxAsset,
           value: valueFromBalance(balance || new BigNumber(0), 'stx'),
@@ -58,22 +58,21 @@ const AccountBalanceCard: React.FC = () => {
   }, [balance, price]);
 
   const balanceAvailable = balance !== undefined;
-  const buttonsDisabled = account === undefined;
 
   return (
     <View
       style={[
         styles.container,
         {
-          backgroundColor: colors.card,
+          backgroundColor: colors.cardsColor,
         },
       ]}>
-      <Typography type="commonText" style={{ color: colors.primary40 }}>
+      <Typography type="commonText" style={{ color: colors.white }}>
         Total STX Balance in USD
       </Typography>
       <View style={styles.balanceContainer}>
         {balanceAvailable && (
-          <Typography type="hugeText" style={{ color: colors.primary100 }}>
+          <Typography type="hugeText" style={{ color: colors.activeState }}>
             {`$${amountValue}`}
           </Typography>
         )}
@@ -91,50 +90,48 @@ const AccountBalanceCard: React.FC = () => {
         )}
         <Typography
           type="bigTitleR"
-          style={[styles.currency, { color: colors.primary40 }]}>
+          style={[styles.currency, { color: colors.white }]}>
           USD
         </Typography>
       </View>
       <View style={styles.balanceActionsContainer}>
-        <TouchableOpacity
+        <TouchableHighlight
           onPress={handlePresentSend}
-          activeOpacity={0.9}
-          disabled={buttonsDisabled}
+          underlayColor={'#dddddd'}
           style={[
             styles.balanceActionButton,
             styles.sendButton,
             {
-              backgroundColor: buttonsDisabled
-                ? colors.primary40
-                : colors.primary100,
+              backgroundColor: colors.activeState,
             },
           ]}>
-          <UpArrow />
-          <Typography
-            type="buttonText"
-            style={[styles.balanceActionButtonText, { color: colors.white }]}>
-            Send
-          </Typography>
-        </TouchableOpacity>
-        <TouchableOpacity
+          <>
+            <UpArrow fill={'black'} />
+            <Typography
+              type="buttonText"
+              style={[styles.balanceActionButtonText, { color: colors.primary100 }]}>
+              Send
+            </Typography>
+          </>
+        </TouchableHighlight>
+        <TouchableHighlight
           onPress={handlePresentReceive}
-          activeOpacity={0.9}
-          disabled={buttonsDisabled}
+          underlayColor={'#dddddd'}
           style={[
             styles.balanceActionButton,
             {
-              backgroundColor: buttonsDisabled
-                ? colors.primary40
-                : colors.primary100,
+              backgroundColor: colors.activeState,
             },
           ]}>
-          <DownArrow />
-          <Typography
-            type="buttonText"
-            style={[styles.balanceActionButtonText, { color: colors.white }]}>
-            Receive
-          </Typography>
-        </TouchableOpacity>
+          <>
+            <DownArrow fill={'black'} />
+            <Typography
+              type="buttonText"
+              style={[styles.balanceActionButtonText, { color: colors.primary100 }]}>
+              Receive
+            </Typography>
+          </>
+        </TouchableHighlight>
         <ReceiveBottomSheet ref={receiveRef} />
       </View>
     </View>

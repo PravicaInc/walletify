@@ -65,13 +65,13 @@ const SwitchAccountBottomSheet: React.FC<
       <Header
         containerStyles={styles.headerContainer}
         title="Switch Account"
-        titleColor={colors.primary100}
+        titleColor={colors.white}
         leftComponent={
           <HeaderBack
             text="Cancel"
             onPress={onCancel}
             hasChevron={false}
-            textColor={colors.secondary100}
+            textColor={colors.activeState}
           />
         }
       />
@@ -80,7 +80,7 @@ const SwitchAccountBottomSheet: React.FC<
         keyExtractor={account => account.address}
         scrollEnabled={canScroll}
         renderItem={renderAccount}
-        contentContainerStyle={styles.accountsList}
+        contentContainerStyle={[styles.accountsList,{backgroundColor:colors.defaultBlack,height:'100%'}]}
       />
     </BottomSheet>
   );

@@ -7,6 +7,7 @@ export default StyleSheet.create({
     padding: 16,
     borderRadius: 13,
     marginBottom: 15.5,
+    position: 'relative',
   },
   balanceContainer: {
     flexDirection: 'row',
@@ -20,7 +21,10 @@ export default StyleSheet.create({
   balanceActionsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    bottom: -16.5,
+    bottom: -24,
+    position: 'absolute',
+    left: '5%',
+    zIndex: 10,
   },
   balanceActionButton: {
     height: 53,

@@ -1,6 +1,6 @@
 import { StackActions, useNavigation } from '@react-navigation/native';
 import React, { useContext, useState } from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { View } from 'react-native';
 import { ThemeContext } from '../../contexts/Theme/theme';
 import styles from './styles';
 import Header from '../../components/shared/Header';
@@ -14,6 +14,8 @@ import { useAccounts } from '../../hooks/useAccounts/useAccounts';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/types';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import GeneralButton from '../../components/shared/GeneralButton';
+import { isIosApp } from '../../shared/helpers';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'previewTransaction'>;
 
@@ -79,31 +81,21 @@ const PreviewTransaction: React.FC<Props> = ({
     });
   };
 
+  const ctaButton = (
+    <GeneralButton
+      loading={isSending}
+      canGoNext={!isSending}
+      onClick={handleSendPress}
+      text={'Send'}
+    />
+  );
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.white }]}>
       <Header
         title="Preview"
         containerStyles={styles.header}
-        leftComponent={
-          <HeaderBack
-            textColor={colors.secondary100}
-            text="Back"
-            hasChevron
-            chevronColor={colors.secondary100}
-            onPress={goBack}
-          />
-        }
-        rightComponent={
-          <TouchableOpacity disabled={isSending} onPress={handleSendPress}>
-            <Typography
-              type="buttonText"
-              style={{
-                color: isSending ? colors.primary40 : colors.secondary100,
-              }}>
-              Send
-            </Typography>
-          </TouchableOpacity>
-        }
+        leftComponent={<HeaderBack text="Back" hasChevron onPress={goBack} />}
+        rightComponent={isIosApp && ctaButton}
       />
       <View style={styles.inputsContainer}>
         {account && selectedAsset && (
@@ -130,6 +122,7 @@ const PreviewTransaction: React.FC<Props> = ({
             arguments are correct.
           </Typography>
         </View>
+        {!isIosApp && ctaButton}
       </View>
     </SafeAreaView>
   );

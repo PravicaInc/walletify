@@ -8,6 +8,9 @@ import {
 import { Typography, StylesTypes } from '../Typography';
 import { ThemeContext } from '../../../contexts/Theme/theme';
 import Chevron from '../../../assets/chevron-right.svg';
+import BackIcon from '../../../assets/icon-back-android.svg';
+import CloseIcon from '../../../assets/icon-close-android.svg';
+import { isIosApp } from '../../../shared/helpers';
 
 interface IProps {
   onPress: () => void;
@@ -43,18 +46,28 @@ const HeaderBack: React.FC<IProps> = ({
       onPress={onPress}
       disabled={disabled}
       onLayout={onLayout}>
-      {hasChevron && (
+      {!isIosApp &&
+        (hasChevron ? (
+          <BackIcon
+            fill={chevronColor ? chevronColor : colors.activeState}
+            width={16}
+            height={16}
+          />
+        ) : (
+          <CloseIcon />
+        ))}
+      {hasChevron && isIosApp && (
         <Chevron
           width={chevronSize ? chevronSize.width : 7.5}
           height={chevronSize ? chevronSize.height : 13.5}
           style={styles.arrow}
-          fill={chevronColor ? chevronColor : colors.secondary100}
+          fill={chevronColor ? chevronColor : colors.activeState}
         />
       )}
-      {text && (
+      {text && isIosApp && (
         <Typography
           type={textType || 'buttonText'}
-          style={[{ color: textColor || colors.secondary100 }, customStyle]}>
+          style={[{ color: textColor || colors.activeState }, customStyle]}>
           {text}
         </Typography>
       )}

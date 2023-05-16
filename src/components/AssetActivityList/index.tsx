@@ -160,7 +160,7 @@ const AssetActivityList: React.FC<AssetActivityListProps> = ({
       renderSectionHeader={info => (
         <Typography
           type="commonText"
-          style={[{ color: colors.primary40 }, styles.sectionHeader]}>
+          style={[{ color: colors.white }, styles.sectionHeader]}>
           {formatDate(info.section.title)}
         </Typography>
       )}

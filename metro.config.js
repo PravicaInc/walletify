@@ -6,6 +6,7 @@ module.exports = (async () => {
   } = await getDefaultConfig();
   return {
     transformer: {
+      minifierPath: require.resolve('metro-minify-terser'),
       babelTransformerPath: require.resolve('react-native-svg-transformer'),
       getTransformOptions: async () => ({
         transform: {

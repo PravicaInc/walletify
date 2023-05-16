@@ -82,7 +82,7 @@ const ManageAccounts: React.FC = () => {
       style={[
         styles.container,
         {
-          backgroundColor: colors.white,
+          backgroundColor: colors.defaultBlack,
         },
       ]}>
       <Header

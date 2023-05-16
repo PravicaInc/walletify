@@ -5,6 +5,7 @@ import { PADDING_HORIZONTAL } from '../../shared/layout';
 export default StyleSheet.create({
   container: {
     flex: 1,
+    paddingBottom: 20,
   },
   header: {
     paddingHorizontal: PADDING_HORIZONTAL,

@@ -1,11 +1,5 @@
 import React, { useCallback, useContext, useMemo, useState } from 'react';
-import {
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -37,6 +31,8 @@ import { useKeyboardWithAnimation } from '../../hooks/common/useKeyboardWithAnim
 import { useProgressState } from '../../hooks/useProgressState';
 import { GeneralSwitch } from '../../components/shared/GeneralSwitch';
 import { decryptMnemonic } from '@stacks/encryption';
+import { isIosApp } from '../../shared/helpers';
+import GeneralButton from '../../components/shared/GeneralButton';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'CreatePassword'>;
 
@@ -205,52 +201,36 @@ const CreatePassword: React.FC<Props> = ({
       setBiometricEnabled(false);
     }
   };
-
+  const ctaButton = isEditPassword ? (
+    <GeneralButton
+      loading={loading}
+      canGoNext={canGoNext}
+      onClick={handleEditConfirm}
+      text={'Confirm'}
+    />
+  ) : (
+    <GeneralButton
+      loading={loading}
+      canGoNext={canGoNext}
+      onClick={handlePressCreate}
+      text={'Create'}
+    />
+  );
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: colors.white }]}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.defaultBlack }]}>
       <Header
         containerStyles={styles.header}
         leftComponent={
-          <HeaderBack onPress={handleGoBack} text="Back" hasChevron />
+          <HeaderBack chevronColor={colors.activeState} textColor={colors.activeState} onPress={handleGoBack} text="Back" hasChevron />
         }
         title={isEditPassword && 'Change Password'}
-        isRightLoading={loading}
-        rightComponent={
-          isEditPassword ? (
-            <TouchableOpacity
-              style={styles.confirmContainer}
-              onPress={handleEditConfirm}
-              disabled={!canGoNext || loading}>
-              <Typography
-                type="buttonText"
-                style={[
-                  { color: colors.secondary100 },
-                  !canGoNext && { color: colors.primary40 },
-                ]}>
-                Confirm
-              </Typography>
-            </TouchableOpacity>
-          ) : (
-            <TouchableOpacity
-              onPress={handlePressCreate}
-              disabled={!canGoNext}
-              style={styles.confirmContainer}>
-              <Typography
-                type="buttonText"
-                style={[
-                  { color: colors.secondary100 },
-                  !canGoNext && { color: colors.primary40 },
-                ]}>
-                Create
-              </Typography>
-            </TouchableOpacity>
-          )
-        }
+        rightComponent={isIosApp && ctaButton}
       />
       {nextScreen === 'CreateSeedPhrase' && (
         <ProgressBar
           currentBarIdx={1}
           total={3}
+          barsColor={colors.activeState}
           customStyle={styles.progress}
         />
       )}
@@ -270,7 +250,7 @@ const CreatePassword: React.FC<Props> = ({
               </Typography>
               <Typography
                 type="commonText"
-                style={[styles.description, { color: colors.primary60 }]}>
+                style={[styles.description, { color: colors.textColor }]}>
                 Your password encrypts your Secret Key and confirms all your
                 transactions.
               </Typography>
@@ -303,7 +283,7 @@ const CreatePassword: React.FC<Props> = ({
                   <WarningIcon fill={colors.primary40} />
                   <Typography
                     type="smallText"
-                    style={{ color: colors.primary40 }}>
+                    style={{ color: colors.textColor }}>
                     You need at least 12 characters
                   </Typography>
                 </View>
@@ -339,9 +319,7 @@ const CreatePassword: React.FC<Props> = ({
             disableCancel
             errorMessage={confirmPasswordError}
           />
-          {isEditPassword ? (
-            <View style={styles.pusher} />
-          ) : (
+          {!isEditPassword && (
             <>
               <View style={styles.switchGroupContainer}>
                 <View style={styles.switchTop}>
@@ -349,7 +327,7 @@ const CreatePassword: React.FC<Props> = ({
                     <FingerPrint />
                   </View>
                   <View style={styles.switchLabel}>
-                    <Typography type="smallTitleR">Allow Biometrics</Typography>
+                    <Typography style={{color:colors.textColor}} type="smallTitleR">Allow Biometrics</Typography>
                   </View>
                   <View style={styles.switch}>
                     <GeneralSwitch
@@ -375,16 +353,17 @@ const CreatePassword: React.FC<Props> = ({
                   <View style={styles.switchLabel}>
                     <Typography
                       type="commonText"
-                      style={{ color: colors.primary40 }}>
+                      style={{ color: colors.textColor }}>
                       You can Authenticate and Sign transactions using your
                       biometrics.
                     </Typography>
                   </View>
                 </View>
               </View>
-              <View style={styles.pusher} />
             </>
           )}
+          {!isIosApp && ctaButton}
+          <View style={styles.pusher} />
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>

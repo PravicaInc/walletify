@@ -1,19 +1,18 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
-  wrapper: { width: '100%', height: 60 },
   container: {
-    flex: 1,
+    alignItems: 'center',
     justifyContent: 'center',
+    width: '100%',
     borderRadius: 13,
+    height: 56,
+    marginTop: 20,
   },
-  containerActiveSecondary: {
-    borderWidth: 1,
+  containerIOS: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
-  containerInactiveSecondary: {
-    borderWidth: 1,
-  },
-  txt: { textAlign: 'center' },
 });
 
 export default styles;

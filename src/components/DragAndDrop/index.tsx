@@ -52,15 +52,15 @@ const DragAndDrop: React.FC<Props> = ({
                         ? colors.confirm10
                         : colors.failed10
                       : filledContent
-                      ? colors.primary5
-                      : colors.white,
+                      ? colors.cardsColor
+                      : colors.defaultBlack,
                     borderColor: isCompleted
                       ? isValid
                         ? colors.confirm100
                         : colors.failed100
                       : filledContent
-                      ? colors.primary100
-                      : colors.primary20,
+                      ? colors.cardsColor
+                      : colors.deactiveState,
                   },
                 ]}
                 receivingStyle={{ borderColor: colors.primary100 }}
@@ -83,8 +83,8 @@ const DragAndDrop: React.FC<Props> = ({
                         ? colors.confirm100
                         : colors.failed100
                       : filledContent
-                      ? colors.primary100
-                      : colors.primary20,
+                      ? colors.white
+                      : colors.deactiveState,
                   }}
                   type={'smallTitle'}>
                   {filledContent?.value ||
@@ -106,7 +106,7 @@ const DragAndDrop: React.FC<Props> = ({
                 style={[
                   styles.puzzleItem,
                   {
-                    backgroundColor: colors.primary10,
+                    backgroundColor: colors.cardsColor,
                     borderColor: colors.primary20,
                     opacity: filledContent ? 0 : 1,
                   },
@@ -118,7 +118,7 @@ const DragAndDrop: React.FC<Props> = ({
                 draggable={!filledContent}>
                 <Typography
                   style={{
-                    color: colors.primary100,
+                    color: colors.white,
                   }}
                   type={'smallTitleR'}>
                   {puzzleItemValue}

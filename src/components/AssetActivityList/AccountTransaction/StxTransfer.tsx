@@ -73,7 +73,7 @@ export const StxTransferTransaction: React.FC<{
       style={[
         styles.transactionCard,
         {
-          backgroundColor: colors.card,
+          backgroundColor: colors.cardsColor,
         },
       ]}>
       <>
@@ -97,12 +97,12 @@ export const StxTransferTransaction: React.FC<{
           <Typography
             numberOfLines={1}
             ellipsizeMode="tail"
-            style={{ color: colors.primary100 }}
+            style={{ color: colors.activeState }}
             type="smallTitleR">
             {getTxTitle(transaction)}
           </Typography>
           <Typography
-            style={{ color: colors.primary40, marginTop: 10 }}
+            style={{ color: colors.textColor, marginTop: 10 }}
             type="commonText">
             {getTxCaption(transaction, selectedAccountState?.address)}
           </Typography>
@@ -114,7 +114,7 @@ export const StxTransferTransaction: React.FC<{
             marginLeft: 'auto',
           }}>
           {value ? (
-            <Typography style={{ color: colors.primary100 }} type="smallTitleR">
+            <Typography style={{ color: colors.activeState   }} type="smallTitleR">
               {value}
             </Typography>
           ) : (

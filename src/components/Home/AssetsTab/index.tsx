@@ -78,7 +78,7 @@ const AssetsTab: React.FC = () => {
       children.push(
         <Typography
           key={'coins'}
-          style={[styles.assetGroupHeader, { color: colors.primary40 }]}
+          style={[styles.assetGroupHeader, { color: colors.textColor }]}
           type="smallTitleR">
           Coins
         </Typography>,
@@ -94,7 +94,7 @@ const AssetsTab: React.FC = () => {
       children.push(
         <Typography
           key={'collectibles'}
-          style={[styles.assetGroupHeader, { color: colors.primary40 }]}
+          style={[styles.assetGroupHeader, { color: colors.textColor }]}
           type="smallTitleR">
           Collectibles
         </Typography>,

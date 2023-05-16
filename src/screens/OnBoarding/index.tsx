@@ -1,5 +1,5 @@
 import React, { useRef, useContext, useCallback } from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, TouchableHighlight } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AppIntroSlider from 'react-native-app-intro-slider';
 import { StackActions, useNavigation } from '@react-navigation/native';
@@ -84,27 +84,29 @@ const OnBoarding: React.FC = () => {
                     {
                       backgroundColor:
                         stepIndex === activeStep
-                          ? colors.primary100
-                          : colors.primary10,
+                          ? colors.activeState
+                          : colors.deactiveState,
                     },
                   ]}
                   onPress={handleNext(stepIndex)}
                 />
               ))}
           </View>
-          <TouchableOpacity
-            onPress={handleDone}
-            disabled={!isDone}
-            style={[
-              styles.button,
-              {
-                backgroundColor: isDone ? colors.primary100 : colors.primary20,
-              },
-            ]}>
-            <Typography type="buttonText" style={{ color: colors.white }}>
-              Get Started
-            </Typography>
-          </TouchableOpacity>
+          {isDone && (
+            <TouchableHighlight
+              underlayColor={colors.primary60}
+              onPress={handleDone}
+              style={[
+                styles.button,
+                {
+                  backgroundColor: colors.activeState,
+                },
+              ]}>
+              <Typography type="buttonText" style={{ color: colors.primary100 }}>
+                Get Started
+              </Typography>
+            </TouchableHighlight>
+          )}
         </View>
       );
     },
@@ -112,7 +114,7 @@ const OnBoarding: React.FC = () => {
   );
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: colors.white }]}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.defaultBlack }]}>
       <AppIntroSlider
         keyExtractor={keyExtractor}
         renderItem={renderItem}

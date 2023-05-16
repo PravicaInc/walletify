@@ -16,6 +16,13 @@ export default StyleSheet.create({
     flex: 1,
     height: '100%',
   },
+  button: {
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  buttonText: {
+    marginLeft: 5,
+  },
   accountNameWithAddress: {
     height: '100%',
     maxWidth: '50%',

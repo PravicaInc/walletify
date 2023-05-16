@@ -12,7 +12,7 @@ export default StyleSheet.create({
     paddingBottom: 10,
   },
   header: {
-    paddingHorizontal: '2.5%',
+    paddingHorizontal: '5%',
   },
   inputsContainer: {
     flex: 1,

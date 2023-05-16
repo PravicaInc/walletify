@@ -30,6 +30,8 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/types';
 import BigNumber from 'bignumber.js';
 import { withSuspense } from '../../components/shared/WithSuspense';
+import GeneralButton from '../../components/shared/GeneralButton';
+import { isIosApp } from '../../shared/helpers';
 
 type SendFormProps = NativeStackScreenProps<RootStackParamList, 'SendForm'>;
 
@@ -132,6 +134,14 @@ const SendForm: React.FC<SendFormProps> = ({
   }, []);
   const isReadyForPreview =
     amount && recipient && !amountError && !recipientError && !memoError;
+  const ctaButton = (
+    <GeneralButton
+      loading={false}
+      canGoNext={Boolean(isReadyForPreview)}
+      onClick={handleGoToPreview}
+      text={'Preview'}
+    />
+  );
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.white }]}>
       <Header
@@ -140,21 +150,7 @@ const SendForm: React.FC<SendFormProps> = ({
         leftComponent={
           <HeaderBack onPress={handleGoBack} text="Back" hasChevron />
         }
-        rightComponent={
-          <TouchableOpacity
-            disabled={!isReadyForPreview}
-            onPress={handleGoToPreview}>
-            <Typography
-              type="buttonText"
-              style={{
-                color: !isReadyForPreview
-                  ? colors.primary40
-                  : colors.secondary100,
-              }}>
-              Preview
-            </Typography>
-          </TouchableOpacity>
-        }
+        rightComponent={isIosApp && ctaButton}
       />
       <KeyboardAvoidingView
         style={styles.inputsContainer}
@@ -282,6 +278,7 @@ const SendForm: React.FC<SendFormProps> = ({
             memo={memo}
             selectedFee={selectedFee}
           />
+          {!isIosApp && ctaButton}
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>

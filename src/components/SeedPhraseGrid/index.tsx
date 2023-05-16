@@ -38,7 +38,7 @@ const SeedPhraseGrid: React.FC<IProps> = ({
     }
   }, [phraseState]);
   return (
-    <View style={[styles.container, { backgroundColor: colors.card }]}>
+    <View style={[styles.container, { backgroundColor: colors.cardsColor }]}>
       {phraseState.map((word, i) => {
         const handleChange = (text: string) => {
           if (text[text.length - 1] === ' ') {
@@ -63,7 +63,8 @@ const SeedPhraseGrid: React.FC<IProps> = ({
               styles.word,
               i < phraseLength - 4 && {
                 ...styles.bottomBorder,
-                borderBottomColor: colors.primary20,
+                backgroundColor:colors.cardsColor,
+                borderBottomColor: colors.defaultBlack,
               },
             ]}
             key={`word${i}`}>
@@ -73,10 +74,16 @@ const SeedPhraseGrid: React.FC<IProps> = ({
                 isEditable &&
                   (i + 1) % 4 !== 0 && {
                     ...styles.rightBorder,
-                    borderRightColor: colors.primary20,
+                backgroundColor:colors.cardsColor,
+
+                    borderRightColor: colors.defaultBlack,
                   },
               ]}>
-              <Typography type="commonTextBold">{i + 1 + '. '}</Typography>
+              <Typography style={{
+                backgroundColor:colors.cardsColor,
+                color:colors.white,
+
+                }}  type="commonTextBold">{i + 1 + '. '}</Typography>
               {isEditable ? (
                 <TextInput
                   ref={el => {
@@ -89,7 +96,11 @@ const SeedPhraseGrid: React.FC<IProps> = ({
                   style={[styles.wordInput, { fontFamily: fonts.regular }]}
                 />
               ) : (
-                <Typography type="commonText" numberOfLines={1}>
+                <Typography type="commonText" style={{
+                backgroundColor:colors.cardsColor,
+                color:colors.white,
+
+                }} numberOfLines={1}>
                   {word}
                 </Typography>
               )}
@@ -98,7 +109,7 @@ const SeedPhraseGrid: React.FC<IProps> = ({
         );
       })}
       {isBlurred && (
-        <BlurView style={styles.absolute} blurType="light" blurAmount={2} />
+        <BlurView style={[styles.absolute,{backgroundColor:colors.cardsColor}]} blurType="light" blurAmount={2} />
       )}
       {children}
     </View>

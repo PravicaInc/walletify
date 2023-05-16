@@ -26,9 +26,19 @@ import { useWallet } from '../../hooks/useWallet/useWallet';
 import { CustomBackdrop } from '../shared/customBackdrop';
 import { selectedNetwork } from '../../hooks/useNetwork/networkStore';
 import { Portal } from '@gorhom/portal';
+import GeneralButton from '../shared/GeneralButton';
+import { isIosApp } from '../../shared/helpers';
+import WarningIcon from '../shared/WarningIcon';
+import { AuthenticationRoutes } from '../../navigation';
+import {
+  NavigationContainer,
+  NavigationContainerRef,
+  CommonActions,
+} from '@react-navigation/native';
 
 const AuthenticationBottomSheet: React.FC = () => {
   const snapPoints = React.useMemo(() => ['95%'], []);
+  const navigationRef = useRef<NavigationContainerRef>(null);
   const [selectedAccountIndex, setSelectedAccountIndex] = useState<
     number | undefined
   >();
@@ -56,6 +66,12 @@ const AuthenticationBottomSheet: React.FC = () => {
     (index: number) => {
       if (index === -1) {
         dismissBottomSheet();
+        navigationRef.current?.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [{ name: 'Authenticate' }],
+          }),
+        );
       }
     },
     [dismissBottomSheet],
@@ -67,15 +83,18 @@ const AuthenticationBottomSheet: React.FC = () => {
         onChange={handleSheetChanges}
         ref={bottomSheetRef}
         snapPoints={snapPoints}
+        style={styles.bottomSheet}
         backdropComponent={CustomBackdrop}
         handleComponent={null}
         enablePanDownToClose
         index={-1}>
-        <WrappedAuthenticationBottomSheetInner
-          selectedAccountIndex={selectedAccountIndex}
-          setSelectedAccountIndex={setSelectedAccountIndex}
-          dismissBottomSheet={dismissBottomSheet}
-        />
+        <NavigationContainer ref={navigationRef} independent={true}>
+          <AuthenticationRoutes
+            dismissBottomSheet={dismissBottomSheet}
+            setSelectedAccountIndex={setSelectedAccountIndex}
+            selectedAccountIndex={selectedAccountIndex}
+          />
+        </NavigationContainer>
       </BottomSheet>
     </Portal>
   );
@@ -102,6 +121,7 @@ const AuthenticationBottomSheetInner: React.FC<BottomSheetInnerProps> = ({
   const { walletAccounts, switchAccount } = useAccounts();
   const { walletState } = useWallet();
   const { loading, setSuccess, setLoading, setFailure } = useProgressState();
+  const bnsRequired = authRequest.decodedAuthRequest?.bnsRequired;
   const handleSelectAccount = (index: number) => {
     if (!loading && walletAccounts?.length) {
       setSelectedAccountIndex(index);
@@ -143,6 +163,19 @@ const AuthenticationBottomSheetInner: React.FC<BottomSheetInnerProps> = ({
           <Typography type={'commonText'} style={styles.warning}>
             {`Allow ${authRequest?.appName} to proceed with the decentralized authentication process.`}
           </Typography>
+          {bnsRequired && (
+            <View style={[styles.required, { backgroundColor: colors.white }]}>
+              <WarningIcon width={24} height={24} fill={colors.primary60} />
+              <Typography
+                type="commonText"
+                searchWords={['identity']}
+                style={[styles.warning, { color: colors.primary60 }]}
+                highlightStyle={{ fontWeight: 'bold' }}>
+                This app require an account with identity to make a successful
+                authentication
+              </Typography>
+            </View>
+          )}
         </View>
         <Typography
           type={'commonText'}
@@ -151,20 +184,35 @@ const AuthenticationBottomSheetInner: React.FC<BottomSheetInnerProps> = ({
         </Typography>
       </>
     );
-  }, [loading, colors, authRequest?.appName, authRequest?.appIcon]);
+  }, [
+    loading,
+    colors,
+    bnsRequired,
+    authRequest?.appName,
+    authRequest?.appIcon,
+  ]);
 
   const renderAccount: ListRenderItem<AccountWithAddress> = ({ item }) => {
     return (
       <AccountListItem
         account={item}
+        disabled={bnsRequired && !item.username}
         onPressAccount={() => handleSelectAccount(item.index)}
         isSelected={item.index === selectedAccountIndex}
         key={item.address}
       />
     );
   };
+  const ctaButton = (
+    <GeneralButton
+      loading={loading}
+      canGoNext={!(loading || selectedAccountIndex === undefined)}
+      onClick={handleConfirmAuth}
+      text={'Confirm'}
+    />
+  );
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: colors.white }]}>
       <Header
         title="Authentication"
         leftComponent={
@@ -174,19 +222,7 @@ const AuthenticationBottomSheetInner: React.FC<BottomSheetInnerProps> = ({
             onPress={dismissBottomSheet}
           />
         }
-        isRightLoading={loading}
-        rightComponent={
-          <HeaderBack
-            disabled={loading || selectedAccountIndex === undefined}
-            textColor={
-              loading || selectedAccountIndex === undefined
-                ? colors.primary40
-                : colors.secondary100
-            }
-            text="Confirm"
-            onPress={handleConfirmAuth}
-          />
-        }
+        rightComponent={isIosApp && ctaButton}
       />
       <Suspense fallback={<ContentLoader />}>
         <BottomSheetFlatList
@@ -197,11 +233,12 @@ const AuthenticationBottomSheetInner: React.FC<BottomSheetInnerProps> = ({
           contentContainerStyle={styles.accountsList}
         />
       </Suspense>
+      {!isIosApp && ctaButton}
     </View>
   );
 };
 
-const WrappedAuthenticationBottomSheetInner = withSuspense(
+export const WrappedAuthenticationBottomSheetInner = withSuspense(
   AuthenticationBottomSheetInner,
   <ContentLoader />,
 );

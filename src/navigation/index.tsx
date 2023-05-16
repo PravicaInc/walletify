@@ -14,7 +14,9 @@ import { RootStackParamList } from './types';
 import ManageAccounts from '../screens/ManageAccounts';
 import { useStxPrice } from '../hooks/useStxPrice/useStxPrice';
 import { useAuthenticationListener } from '../hooks/useLinkingListener/useAuthenticationListener';
-import AuthenticationBottomSheet from '../components/AuthenticationBottomSheet';
+import AuthenticationBottomSheet, {
+  WrappedAuthenticationBottomSheetInner,
+} from '../components/AuthenticationBottomSheet';
 import { useTransactionRequestListener } from '../hooks/useLinkingListener/useTransactionRequestsListener';
 import TransactionRequestBottomSheet from '../components/TransactionRequestBottomSheet';
 import { useInternetConnection } from '../hooks/useInternetConnnection';
@@ -22,6 +24,8 @@ import SendForm from '../screens/SendForm';
 import PreviewTransaction from '../screens/PreviewTransaction';
 import AssetDetails from '../screens/AssetDetails';
 import { StatusBar } from 'react-native';
+import { CreateIdentityBottomSheetInner } from '../components/CreateIdentityBottomSheet';
+import SignatureRequestBottomSheet from '../components/SignatureRequestBottomSheet';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -34,7 +38,8 @@ export const Routes: React.FC = () => {
     <>
       <AuthenticationBottomSheet />
       <TransactionRequestBottomSheet />
-      <StatusBar barStyle={'dark-content'} />
+      <SignatureRequestBottomSheet />
+      <StatusBar barStyle={'dark-content'} backgroundColor="white" />
       <Stack.Navigator initialRouteName="Splash">
         <Stack.Screen
           options={{ headerShown: false }}
@@ -97,7 +102,7 @@ export const Routes: React.FC = () => {
           component={ManageAccounts}
         />
         <Stack.Screen
-          name="sendForm"
+          name="SendForm"
           component={SendForm}
           options={{ headerShown: false }}
         />
@@ -107,6 +112,44 @@ export const Routes: React.FC = () => {
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
+    </>
+  );
+};
+
+const Stack2 = createStackNavigator();
+
+interface IProps {
+  selectedAccountIndex?: number;
+  setSelectedAccountIndex: (index: number) => void;
+  dismissBottomSheet: () => void;
+}
+export const AuthenticationRoutes: React.FC<IProps> = ({
+  selectedAccountIndex,
+  setSelectedAccountIndex,
+  dismissBottomSheet,
+}) => {
+  return (
+    <>
+      <Stack2.Navigator initialRouteName="Authenticate">
+        <Stack2.Screen options={{ headerShown: false }} name="Authenticate">
+          {props => (
+            <WrappedAuthenticationBottomSheetInner
+              {...props}
+              selectedAccountIndex={selectedAccountIndex}
+              setSelectedAccountIndex={setSelectedAccountIndex}
+              dismissBottomSheet={dismissBottomSheet}
+            />
+          )}
+        </Stack2.Screen>
+        <Stack2.Screen options={{ headerShown: false }} name="CreateIdentity">
+          {props => (
+            <CreateIdentityBottomSheetInner
+              {...props}
+              onCancel={dismissBottomSheet}
+            />
+          )}
+        </Stack2.Screen>
+      </Stack2.Navigator>
     </>
   );
 };

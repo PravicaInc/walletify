@@ -3,8 +3,8 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   container: {
     overflow: 'hidden',
-    width: '95%',
-    marginLeft: '2.5%',
+    width: '90%',
+    marginLeft: '5%',
     borderRadius: 13,
   },
   contentContainer: {

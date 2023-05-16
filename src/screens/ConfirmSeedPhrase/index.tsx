@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useMemo, useState } from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -12,10 +12,11 @@ import { ThemeContext } from '../../contexts/Theme/theme';
 import LockedShield from '../../assets/locked-shield.svg';
 import { RootStackParamList } from '../../navigation/types';
 import styles from './styles';
-import { shuffleArrayWithIndex } from '../../shared/helpers';
+import { isIosApp, shuffleArrayWithIndex } from '../../shared/helpers';
 import { PuzzleItem } from '../../shared/types';
 import { DraxProvider } from 'react-native-drax';
 import { useWallet } from '../../hooks/useWallet/useWallet';
+import GeneralButton from '../../components/shared/GeneralButton';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ConfirmSeedPhrase'>;
 
@@ -65,32 +66,25 @@ const ConfirmSeedPhrase: React.FC<Props> = ({
     setPuzzleState([]);
   }, [seedPhrase]);
 
+  const ctaButton = (
+    <GeneralButton
+      loading={loading}
+      canGoNext={isCompleted}
+      onClick={isValid ? handleDone : handleRetry}
+      text={isValid || !isCompleted ? 'Done' : 'Retry'}
+    />
+  );
+
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: colors.white }]}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.defaultBlack }]}>
       <Header
         containerStyles={styles.header}
         leftComponent={
           <HeaderBack onPress={handleGoBack} text="Back" hasChevron />
         }
-        isRightLoading={loading}
-        rightComponent={
-          <TouchableOpacity
-            disabled={!isCompleted || loading}
-            onPress={isValid ? handleDone : handleRetry}>
-            <Typography
-              type="buttonText"
-              style={{
-                color:
-                  !isCompleted || loading
-                    ? colors.primary40
-                    : colors.secondary100,
-              }}>
-              {isValid || !isCompleted ? 'Done' : 'Retry'}
-            </Typography>
-          </TouchableOpacity>
-        }
+        rightComponent={isIosApp && ctaButton}
       />
-      <ProgressBar currentBarIdx={3} total={3} customStyle={styles.progress} />
+      <ProgressBar currentBarIdx={3} barsColor={colors.activeState} total={3} customStyle={styles.progress} />
       <DraxProvider>
         <View style={styles.contentContainer}>
           <LockedShield />
@@ -99,7 +93,7 @@ const ConfirmSeedPhrase: React.FC<Props> = ({
           </Typography>
           <Typography
             type="commonText"
-            style={[styles.description, { color: colors.primary60 }]}>
+            style={[styles.description, { color: colors.textColor }]}>
             Just to make sure you backed up your Secret Key, give it a try to
             drag and drop the right word in its right place in your Secret Key.
           </Typography>
@@ -110,6 +104,8 @@ const ConfirmSeedPhrase: React.FC<Props> = ({
             puzzleState={puzzleState}
             setPuzzleState={setPuzzleState}
           />
+          <View style={styles.pusher} />
+          {!isIosApp && ctaButton}
         </View>
       </DraxProvider>
     </SafeAreaView>

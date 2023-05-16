@@ -11,10 +11,12 @@ import {
 import { useAccounts } from '../useAccounts/useAccounts';
 import { useProgressState } from '../useProgressState';
 import { useWallet } from '../useWallet/useWallet';
+import { AccountWithAddress } from '../../models/account';
 
-export const useBns = () => {
+export const useBns = (selectedAccount?: AccountWithAddress) => {
   const { walletState, setWalletState } = useWallet();
-  const { selectedAccountState, selectedAccountIndexState } = useAccounts();
+  const { selectedAccountState } = useAccounts();
+  const chosenAccount = selectedAccount || selectedAccountState;
   const { loading, setLoading, setFailure, setSuccess, success, failure } =
     useProgressState();
   const [registrationError, setRegistrationError] = useState<string>('');
@@ -30,7 +32,7 @@ export const useBns = () => {
         subdomain,
         Subdomains.STACKS,
       );
-      if (walletState && selectedAccountState) {
+      if (walletState && chosenAccount) {
         if (subdomainError) {
           setRegistrationError(subdomainError);
           setFailure();
@@ -41,7 +43,7 @@ export const useBns = () => {
             wallet: walletState,
           });
           await registerSubdomain({
-            account: selectedAccountState,
+            account: chosenAccount,
             username: subdomain,
             gaiaHubConfig: gaiaHubConfig,
           });
@@ -50,7 +52,7 @@ export const useBns = () => {
             accounts: walletState.accounts.map(account => ({
               ...account,
               username:
-                account.index === selectedAccountIndexState
+                account.index === chosenAccount.index
                   ? `${subdomain}.id.stx`
                   : account.username,
             })),

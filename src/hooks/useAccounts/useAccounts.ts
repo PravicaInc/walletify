@@ -308,7 +308,6 @@ export const useAccounts = () => {
     for (let i = 0; i < MAX_NONCE_INCREMENT_RETRIES; i++) {
       const tx = await makeTransaction(nextNonce ?? BigInt(0));
       txSendResult = await broadcastTransaction(tx, network.stacksNetwork);
-      console.log(txSendResult);
       if (!txSendResult.error) {
         break;
       }

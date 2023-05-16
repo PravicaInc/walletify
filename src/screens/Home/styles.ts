@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
     paddingRight: 5,
   },
   contentContainer: {
-    paddingHorizontal: '2.5%',
+    paddingHorizontal: '5%',
     flex: 1,
   },
   settingsButton: {

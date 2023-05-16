@@ -12,10 +12,10 @@ export default StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  title: { textAlign: 'center', marginBottom: 45, marginTop: 40 },
+  title: { textAlign: 'center', marginBottom: 45, marginTop: 40 , color:'white',},
   stacksIllustrationContainer: {
-    width: '50%',
-    height: '26%',
+    width: '80%',
+    height: '40%',
     marginTop: 85,
   },
   stacksIllustration: {

@@ -5,12 +5,12 @@ export default StyleSheet.create({
     flex: 1,
   },
   header: {
-    paddingHorizontal: '2.5%',
+    paddingHorizontal: '5%',
   },
   inputsContainer: {
-    paddingHorizontal: '2.5%',
+    paddingHorizontal: '5%',
     justifyContent: 'space-between',
-    paddingTop: 40,
+    paddingVertical: 40,
     flex: 1,
   },
   horizontalFill: { width: '100%' },
