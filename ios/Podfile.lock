@@ -318,7 +318,7 @@ PODS:
     - React-Core
   - RNPermissions (3.2.0):
     - React-Core
-  - RNReanimated (2.2.4):
+  - RNReanimated (2.17.0):
     - DoubleConversion
     - FBLazyVector
     - FBReactNativeSpec
@@ -326,7 +326,6 @@ PODS:
     - RCT-Folly
     - RCTRequired
     - RCTTypeSafety
-    - React
     - React-callinvoker
     - React-Core
     - React-Core/DevSupport
@@ -344,7 +343,6 @@ PODS:
     - React-RCTNetwork
     - React-RCTSettings
     - React-RCTText
-    - React-RCTVibration
     - ReactCommon/turbomodule/core
     - Yoga
   - RNScreens (2.18.1):
@@ -352,8 +350,8 @@ PODS:
   - RNSentry (3.2.13):
     - React-Core
     - Sentry (= 7.9.0)
-  - RNSVG (12.1.1):
-    - React
+  - RNSVG (12.5.1):
+    - React-Core
   - RNTextSize (4.0.0-rc.1):
     - React
   - Sentry (7.9.0):
@@ -580,10 +578,10 @@ SPEC CHECKSUMS:
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNKeychain: 4f63aada75ebafd26f4bc2c670199461eab85d94
   RNPermissions: f7ebe52db07c00901127966ca080b4ec6a6ceb0a
-  RNReanimated: f58d4f027fcea2197b63588138decdf5f8ac5e89
+  RNReanimated: 4c2ecfbeaf98cd03abd4f77b2dfe0fa8f418d4fd
   RNScreens: f7ad633b2e0190b77b6a7aab7f914fad6f198d8d
   RNSentry: 0aa1567f66c20390f3834637fc4f73380dcd0774
-  RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
+  RNSVG: d7d7bc8229af3842c9cfc3a723c815a52cdd1105
   RNTextSize: 7efa06531c6bb7ab6ed070b4ce0d1248cf06fcdf
   Sentry: 2f7e91f247cfb05b05bd01e0b5d0692557a7687b
   Yoga: aa0cb45287ebe1004c02a13f279c55a95f1572f4
