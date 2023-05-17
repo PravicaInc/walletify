@@ -20,18 +20,18 @@ interface OnBoardingStep {
 const onBoardingSteps: OnBoardingStep[] = [
   {
     svg: <OnBoarding1 width="300" height="300" />,
-    title: 'Manage Your Assets',
-    body: 'WISE is a mobile wallet for Stacks that can be used anywhere anytime. You are the sole owner of your assets.',
+    title: 'Manage Assets',
+    body: 'Own your assets and pay on-the-go with Walletify - the mobile wallet for anytime, anywhere use.',
   },
   {
     svg: <OnBoarding2 width="300" height="300" />,
-    title: 'Manage Your Accounts',
-    body: 'Choose between your accounts for payments and authentication. Create unlimited accounts.',
+    title: 'Manage Accounts',
+    body: 'Easily switch between payment and authentication accounts with Walletify. Plus, create as many accounts as you need - the possibilities are unlimited!',
   },
   {
     svg: <OnBoarding3 width="300" height="300" />,
-    title: 'Earn BTC',
-    body: 'With WISE you can stack your STX and earn rewards in BTC with zero fees.',
+    title: 'Decentralized Authentication',
+    body: 'Your personal information stays private and secure, thanks to blockchain technology that eliminates the need for centralized authentication systems.',
   },
 ];
 
