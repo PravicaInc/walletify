@@ -11,6 +11,7 @@ export interface IThemeColors {
   primary20: string;
   primary10: string;
   primary5: string;
+  primaryButtonClick: string;
   secondary100: string;
   secondary60: string;
   secondary40: string;

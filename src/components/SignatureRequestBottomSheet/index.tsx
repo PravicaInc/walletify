@@ -87,9 +87,11 @@ const SignatureRequestBottomSheet: React.FC = () => {
         backdropComponent={CustomBackdrop}
         enablePanDownToClose
         index={-1}>
-        <WrappedSignatureRequestBottomSheetInner
-          dismissBottomSheet={dismissBottomSheet}
-        />
+        {transactionRequest?.txType === TransactionTypes.SignMessage && (
+          <WrappedSignatureRequestBottomSheetInner
+            dismissBottomSheet={dismissBottomSheet}
+          />
+        )}
       </BottomSheet>
     </Portal>
   );
@@ -120,51 +122,45 @@ const SignatureRequestBottomSheetInner: React.FC<
     }
   }, [account]);
   const [isSending, toggleSending] = useState<boolean>(false);
-  const handSendPress = useCallback(() => {
-    async function handleTransfer() {
-      if (!transactionRequest || !transferPayload || !account?.stxPrivateKey) {
-        return;
-      }
-
-      const dangerousUri = transactionRequest.redirect_uri;
-      if (!isValidUrl(dangerousUri) || dangerousUri.includes('javascript')) {
-        Alert.alert('Cannot proceed auth with malformed url');
-      }
-
-      toggleSending(true);
-      try {
-        const privateKey = createStacksPrivateKey(account?.stxPrivateKey);
-        let response: SignatureData;
-        if (isString(transferPayload.message)) {
-          response = await signMessage(transferPayload.message, privateKey);
-        } else {
-          response = await signStructuredDataMessage(
-            transferPayload.message,
-            // eslint-disable-next-line no-undef
-            deserializeCV(Buffer.from(dangerousUri, 'hex')),
-            privateKey,
-          );
-        }
-        toggleSending(false);
-        const requestResult = {
-          ...(transactionRequest.metadata || {}),
-          response,
-        };
-        const redirect = `${dangerousUri}?sigResult=${JSON.stringify(
-          requestResult,
-        )}`;
-        Linking.openURL(redirect);
-        dismissBottomSheet();
-      } catch (e) {
-        Alert.alert(titleCase(e), `Failure reason: ${e}`);
-        toggleSending(false);
-      }
+  const handSendPress = async () => {
+    if (!transactionRequest || !transferPayload || !account?.stxPrivateKey) {
+      return;
     }
 
-    if (transactionRequest) {
-      handleTransfer();
+    const dangerousUri = transactionRequest.redirect_uri;
+    if (!isValidUrl(dangerousUri) || dangerousUri.includes('javascript')) {
+      Alert.alert('Cannot proceed auth with malformed url');
     }
-  }, [transactionRequest, account]);
+
+    toggleSending(true);
+    try {
+      const privateKey = createStacksPrivateKey(account?.stxPrivateKey);
+      let response: SignatureData;
+      if (isString(transferPayload.message)) {
+        response = await signMessage(transferPayload.message, privateKey);
+      } else {
+        response = await signStructuredDataMessage(
+          transferPayload.message,
+          // eslint-disable-next-line no-undef
+          deserializeCV(Buffer.from(dangerousUri, 'hex')),
+          privateKey,
+        );
+      }
+      toggleSending(false);
+      const requestResult = {
+        ...(transactionRequest.metadata || {}),
+        response,
+      };
+      const redirect = `${dangerousUri}?sigResult=${JSON.stringify(
+        requestResult,
+      )}`;
+      Linking.openURL(redirect);
+      dismissBottomSheet();
+    } catch (e) {
+      Alert.alert(titleCase(e), `Failure reason: ${e}`);
+      toggleSending(false);
+    }
+  };
   const ctaButton = (
     <GeneralButton
       loading={isSending}

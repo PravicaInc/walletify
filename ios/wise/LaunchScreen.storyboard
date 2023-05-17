@@ -17,29 +17,24 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Splash" translatesAutoresizingMaskIntoConstraints="NO" id="mmK-PR-znB">
-                                <rect key="frame" x="0.0" y="-493" width="414" height="1389"/>
+                                <rect key="frame" x="0.0" y="48" width="414" height="848"/>
                                 <color key="backgroundColor" red="0.086259789759999997" green="0.082104720179999993" blue="0.1019650027" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <color key="tintColor" red="0.086259789759999997" green="0.082104720179999993" blue="0.1019650027" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Bcu-3y-fUS"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" red="0.090317837890000002" green="0.085862211879999997" blue="0.10588479789999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
                             <constraint firstItem="mmK-PR-znB" firstAttribute="trailing" secondItem="Bcu-3y-fUS" secondAttribute="trailing" id="0oW-uB-jpV"/>
                             <constraint firstItem="mmK-PR-znB" firstAttribute="top" secondItem="Bcu-3y-fUS" secondAttribute="top" id="Qv7-1p-BIL"/>
                             <constraint firstAttribute="bottom" secondItem="mmK-PR-znB" secondAttribute="bottom" id="bHk-BG-hQk"/>
                             <constraint firstItem="mmK-PR-znB" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="r5F-UQ-An3"/>
                         </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="Qv7-1p-BIL"/>
-                            </mask>
-                        </variation>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="50.724637681159422" y="374.18478260869568"/>
+            <point key="canvasLocation" x="50.724637681159422" y="373.66071428571428"/>
         </scene>
     </scenes>
     <resources>

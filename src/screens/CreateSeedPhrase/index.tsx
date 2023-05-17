@@ -118,7 +118,7 @@ const CreateSeedPhrase: React.FC<Props> = ({
           isBlurred={currentShape === ScreenShape.Blurred}>
           {currentShape === ScreenShape.Blurred && (
             <TouchableOpacity onPress={handleView} style={styles.reveal}>
-              <RevealEye style={styles.smallSpace} />
+              <RevealEye fill={colors.primary100} style={styles.smallSpace} />
               <Typography
                 type="buttonText"
                 style={[styles.smallSpace, { color: colors.secondary100 }]}>

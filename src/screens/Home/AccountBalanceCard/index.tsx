@@ -97,7 +97,7 @@ const AccountBalanceCard: React.FC = () => {
       <View style={styles.balanceActionsContainer}>
         <TouchableHighlight
           onPress={handlePresentSend}
-          underlayColor={'#dddddd'}
+          underlayColor={colors.primaryButtonClick}
           style={[
             styles.balanceActionButton,
             styles.sendButton,
@@ -116,7 +116,7 @@ const AccountBalanceCard: React.FC = () => {
         </TouchableHighlight>
         <TouchableHighlight
           onPress={handlePresentReceive}
-          underlayColor={'#dddddd'}
+          underlayColor={colors.primaryButtonClick}
           style={[
             styles.balanceActionButton,
             {

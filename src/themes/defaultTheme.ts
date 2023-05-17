@@ -15,6 +15,7 @@ export const DefaultTheme: Theme = {
     primary20: '#2A2D3C',
     primary10: 'rgba(254, 191, 50, 0.1)',
     primary5: 'rgba(254, 191, 50, 0.05)',
+    primaryButtonClick: '#fac042',
     secondary100: '#FEBF32',
     gradient1: '#8CDCFF',
     gradient2: '#5EEF77',

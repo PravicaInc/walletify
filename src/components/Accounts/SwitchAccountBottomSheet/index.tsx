@@ -67,7 +67,7 @@ const SwitchAccountBottomSheet: React.FC<
       <Header
         containerStyles={styles.headerContainer}
         title="Switch Account"
-        titleColor={colors.primary100}
+        titleColor={colors.text}
         leftComponent={
           <HeaderBack
             text="Cancel"
