@@ -19,12 +19,12 @@ To know more and view our planned milestones, check this [Wise grant](https://gi
 
 <table style="width:80%">
   <tr>
-    <td><img src="screenshots/ss1.png" alt="Home Screen"></td>
-    <td><img src="screenshots/ss2.png" alt="Authentication"></td>
+    <td><img src="screenshots/ss1.png" alt="Create-Restore Wallet"></td>
+    <td><img src="screenshots/ss2.png" alt="Connected"></td>
   </tr>
   <tr>
-   <td><img src="screenshots/ss3.png" alt="Send Multiple Assets"></td>
-   <td><img src="screenshots/ss4.png" alt="Asset Detail screen"></td>
+   <td><img src="screenshots/ss3.png" alt="Assets Long"></td>
+   <td><img src="screenshots/ss4.png" alt="Activity Long"></td>
   </tr>
 </table>
 
